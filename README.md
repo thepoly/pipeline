@@ -1,5 +1,5 @@
 # Pipeline [<img align="right" width="200px" src="https://cloud.githubusercontent.com/assets/335234/18211402/6fb5bdd6-710b-11e6-93dc-f47559d8ba19.png">](https://poly.rpi.edu)
-Pipeline is a tool for organizing, tracking, and distributing content for The Rensselaer Polytechnic or a similar newspaper.
+Pipeline is a tool for organizing, tracking, and distributing content for *The Rensselaer Polytechnic* or a similar newspaper.
 
 ## Goals
 

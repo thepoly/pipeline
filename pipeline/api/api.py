@@ -13,6 +13,12 @@ def json_serializer(obj):
 def json_dump(data):
     return json.dumps(data, default=json_serializer)
 
+def json_load(data):
+    try:
+        return json.loads(data)
+    except json.decoder.JSONDecodeError:
+        raise falcon.HTTPBadRequest(None, 'invalid JSON')
+
 stories_schema = schemas.StorySchema(many=True)
 story_schema = schemas.StorySchema()
 
@@ -23,6 +29,18 @@ class StoriesResource:
         result = stories_schema.dump(stories)
 
         resp.body = json_dump(result.data)
+
+    def on_post(self, req, resp):
+        data = json_load(req.stream.read().decode('utf-8'))
+        data, errors = story_schema.load(data)
+        if errors:
+            raise falcon.HTTPBadRequest(None, errors)
+
+        story = models.Story.create(**data)
+        result = story_schema.dump(story)
+
+        resp.body = json_dump(result.data)
+
 
 models.connect()
 

@@ -42,7 +42,41 @@ class StoriesResource:
         resp.body = json_dump(result.data)
 
 
+class StoryResource:
+
+    def on_get(self, req, resp, story_id):
+        try:
+            story = models.Story.get(id=story_id)
+        except models.Story.DoesNotExist:
+            resp.body = json.dumps({'message': 'Story does not exist'})
+            raise falcon.HTTPNotFound()
+
+        result = story_schema.dump(story)
+        resp.body = json_dump(result.data)
+
+    def on_post(self, req, resp, story_id):
+        try:
+            story = models.Story.get(id=story_id)
+        except models.Story.DoesNotExist:
+            resp.body = json.dumps({'message': 'Story does not exist'})
+            raise falcon.HTTPNotFound()
+
+        data = json_load(req.stream.read().decode('utf-8'))
+        data, errors = story_schema.load(data, partial=True)
+        if errors:
+            raise falcon.HTTPBadRequest(None, errors)
+
+        for field, value in data.items():
+            setattr(story, field, value)
+
+        data, errors = story_schema.dump(story)
+        if errors:
+            raise falcon.HTTPBadRequest(None, errors)
+        story.save()
+
+
 models.connect()
 
 api = falcon.API()
 api.add_route('/stories', StoriesResource())
+api.add_route('/stories/{story_id}', StoryResource())

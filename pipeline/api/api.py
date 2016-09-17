@@ -21,6 +21,8 @@ def json_load(data):
 
 stories_schema = schemas.StorySchema(many=True)
 story_schema = schemas.StorySchema()
+people_schema = schemas.PersonSchema(many=True)
+person_schema = schemas.PersonSchema()
 
 class StoriesResource:
 
@@ -74,9 +76,68 @@ class StoryResource:
             raise falcon.HTTPBadRequest(None, errors)
         story.save()
 
+        resp.body = json_dump(data)
+
+
+class PeopleResource:
+
+    def on_get(self, req, resp):
+        people = models.Person.select()
+        result = people_schema.dump(people)
+
+        resp.body = json_dump(result.data)
+
+    def on_post(self, req, resp):
+        data = json_load(req.stream.read().decode('utf-8'))
+        data, errors = person_schema.load(data)
+        if errors:
+            raise falcon.HTTPBadRequest(None, errors)
+
+        person = models.Person.create(**data)
+        result = person_schema.dump(person)
+
+        resp.body = json_dump(result.data)
+
+
+class PersonResource:
+
+    def on_get(self, req, resp, person_id):
+        try:
+            person = models.Person.get(id=person_id)
+        except models.Person.DoesNotExist:
+            resp.body = json.dumps({'message': 'Person does not exist'})
+            raise falcon.HTTPNotFound()
+
+        result = person_schema.dump(person)
+        resp.body = json_dump(result.data)
+
+    def on_post(self, req, resp, person_id):
+        try:
+            person = models.Person.get(id=person_id)
+        except models.Person.DoesNotExist:
+            resp.body = json.dumps({'message': 'Person does not exist'})
+            raise falcon.HTTPNotFound()
+
+        data = json_load(req.stream.read().decode('utf-8'))
+        data, errors = person_schema.load(data, partial=True)
+        if errors:
+            raise falcon.HTTPBadRequest(None, errors)
+
+        for field, value in data.items():
+            setattr(person, field, value)
+
+        data, errors = person_schema.dump(person)
+        if errors:
+            raise falcon.HTTPBadRequest(None, errors)
+        person.save()
+
+        resp.body = json_dump(data)
+
 
 models.connect()
 
 api = falcon.API()
 api.add_route('/stories', StoriesResource())
 api.add_route('/stories/{story_id}', StoryResource())
+api.add_route('/people', PeopleResource())
+api.add_route('/people/{person_id}', PersonResource())

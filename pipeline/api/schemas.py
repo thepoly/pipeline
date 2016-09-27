@@ -20,3 +20,11 @@ class PersonSchema(marshmallow.Schema):
     def wrap(self, data, many):
         key = 'people' if many else 'person'
         return {key: data}
+
+class AddStoryPersonSchema(marshmallow.Schema):
+    id = marshmallow.fields.Int()
+
+    @marshmallow.post_dump(pass_many=True)
+    def wrap(self, data, many):
+        key = 'story_people' if many else 'story_person'
+        return {key: data}

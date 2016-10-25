@@ -1,0 +1,8 @@
+falcon==1.0.0
+gevent==1.1.2
+greenlet==0.4.10
+gunicorn==19.6.0
+marshmallow==2.10.0
+peewee==2.8.3
+python-mimeparse==1.5.2
+six==1.10.0

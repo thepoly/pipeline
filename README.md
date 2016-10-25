@@ -15,3 +15,23 @@ After an article has been copy read, it can be pulled into Adobe InDesign for la
 ## Motivation
 
 Currently, by the time an article is published, it exists in three separate places: Google Drive, our InDesign layout file, and the website. There is no single, authoritative history of edits. Additionally, organization of an issue's content is currently done with a spreadsheet, and it is not associated with the resulting articles.
+
+## Running Pipeline
+
+Pipeline's API is written in Python, and it uses Angular and TypeScript on the
+frontend. To run it for development, not production, use these commands:
+
+### API
+
+```
+pip install -r requirements.txt
+gunicorn pipeline.api.api:api --reload -k gevent
+```
+
+### Frontend
+
+```
+cd web
+npm install
+npm start
+```

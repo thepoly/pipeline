@@ -5,6 +5,10 @@ class StorySchema(marshmallow.Schema):
     id = marshmallow.fields.Int(dump_only=True)
     title = marshmallow.fields.Str(required=True)
     created = marshmallow.fields.DateTime(dump_only=True)
+    date = marshmallow.fields.Date()
+    time = marshmallow.fields.Time()
+    location = marshmallow.fields.Str()
+    section = marshmallow.fields.Str()
 
     @marshmallow.post_dump(pass_many=True)
     def wrap(self, data, many):
@@ -20,6 +24,7 @@ class PersonSchema(marshmallow.Schema):
     def wrap(self, data, many):
         key = 'people' if many else 'person'
         return {key: data}
+
 
 class AddStoryPersonSchema(marshmallow.Schema):
     id = marshmallow.fields.Int()

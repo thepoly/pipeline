@@ -1,13 +1,20 @@
 /* Master Styles */
 h1 {
-  color: #369;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 250%;
+  color: white;
+  background-color: #DA1E05;
+  font-family: Raleway, sans-serif;
+  font-weight: 535;
+  font-size: 755%;
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: 100;
+  background-image: url(https://poly.rpi.edu/wp-content/themes/poly_new_testbed/images/logo_m.png);
+  text-indent: 760px;
 }
 h2, h3 {
   color: #444;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: lighter;
+  font-family: Oswald, sans-serif;
+  font-weight: normal;
 }
 body {
   margin: 2em;

@@ -1,0 +1,14 @@
+<h2>Current Stories</h2>
+<ul class="stories">
+  <li *ngFor="let story of stories"
+    [class.selected]="story === selectedStory"
+    (click)="onSelect(story)">
+    <span class="badge">{{story.id}}</span> {{story.title}}
+  </li>
+</ul>
+<div *ngIf="selectedStory">
+  <!-- <h2>
+    {{selectedStory.title | uppercase}} is currently being edited
+  </h2> may be useful in the future-->
+  <button (click)="gotoDetail()">View Details</button>
+</div>

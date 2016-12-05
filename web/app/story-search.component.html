@@ -1,0 +1,8 @@
+<h3>Stories</h3>
+<div class="grid grid-pad">
+  <a *ngFor="let story of stories"  [routerLink]="['/detail', story.id]"  class="col-1-4">
+    <div class="module story">
+      <h4>{{story.title}}</h4>
+    </div>
+  </a>
+</div>

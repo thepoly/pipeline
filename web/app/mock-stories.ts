@@ -1,6 +1,6 @@
 import { Story } from './story';
 
-export const STORIES: Story[] = [
+export var STORIES: Story[] = [
   { id: 11, title: 'tacos' },
   { id: 12, title: 'pizza' },
   { id: 13, title: 'bacon' },

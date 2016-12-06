@@ -14,8 +14,6 @@ import { StoryService } from './story.service';
 
 import { SafePipe } from './safepipe';
 
-import { AppRoutingModule }     from './app-routing.module';
-
 @NgModule({
   imports:      [
     BrowserModule,

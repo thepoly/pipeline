@@ -6,5 +6,8 @@
     <label>name: </label>
     <input [(ngModel)]="story.title" placeholder="title" />
   </div>
+  <div>
+    <iframe [src]="'https://poly.rpi.edu/pipeline_dev/editor/#' + story.id | safe" width="400" height="300"></iframe>
+  </div>
   <button (click)="goBack()">Back</button>
 </div>

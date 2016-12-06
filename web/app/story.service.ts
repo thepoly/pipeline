@@ -8,4 +8,9 @@ export class StoryService {
   getStories(): Promise<Story[]> {
     return Promise.resolve(STORIES);
   }
+
+  getStory(id: number): Promise<Story> {
+    return this.getStories()
+               .then(stories => stories.find(story => story.id === id));
+           }
 }

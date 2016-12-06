@@ -1,0 +1,36 @@
+h1 {
+  color: white;
+  background-color: #DA1E05;
+  font-family: Raleway, sans-serif;
+  font-weight: 535;
+  font-size: 755%;
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: 90;
+  background-image: url(https://poly.rpi.edu/wp-content/themes/poly_new_testbed/images/logo_m.png);
+  text-indent: 760px;
+  margin-bottom: 0;
+}
+h2 {
+  font-size: 2em;
+  margin-top: 0;
+  padding-top: 0;
+}
+nav a {
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #eee;
+  border-radius: 4px;
+}
+nav a:visited, a:link {
+  color: #DA1E05;
+}
+nav a:hover {
+  color: #ba1a05;
+  background-color: #dccfcf;
+}
+nav a.active {
+  color: #DA1E05;
+}

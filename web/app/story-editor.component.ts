@@ -22,6 +22,25 @@ export class StoryEditorComponent implements OnInit {
     this.storyService.getStories().then(stories => this.stories = stories);
   }
 
+  add(title: string): void {
+   title = title.trim();
+   if (!title) { return; }
+   this.storyService.create(title)
+     .then(story => {
+       this.stories.push(story);
+       this.selectedStory = null;
+     });
+ }
+
+ delete(story: Story): void {
+ this.storyService
+     .delete(story.id)
+     .then(() => {
+       this.stories = this.stories.filter(s => s !== story);
+       if (this.selectedStory === story) { this.selectedStory = null; }
+     });
+}
+
   ngOnInit(): void {
     this.getStories();
   }
@@ -29,7 +48,7 @@ export class StoryEditorComponent implements OnInit {
   onSelect(story: Story): void {
     this.selectedStory = story;
   }
-  
+
   gotoDetail(): void {
     this.router.navigate(['/detail', this.selectedStory.id]);
   }

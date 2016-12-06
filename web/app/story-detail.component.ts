@@ -30,6 +30,11 @@ export class StoryDetailComponent implements OnInit{
       .subscribe(story => this.story = story);
   }
 
+  save(): void {
+    this.storyService.update(this.story)
+      .then(() => this.goBack());
+  }
+
   goBack(): void {
     this.location.back();
   }

@@ -9,6 +9,8 @@ import { StoryTextComponent } from './story-text.component';
 import { StorySearchComponent} from './story-search.component';
 import { StoryService } from './story.service';
 
+import { SafePipe } from './safepipe';
+
 import { AppRoutingModule }     from './app-routing.module';
 
 @NgModule({
@@ -22,7 +24,8 @@ import { AppRoutingModule }     from './app-routing.module';
     StoryEditorComponent,
     StoryDetailComponent,
     StoryTextComponent,
-    StorySearchComponent
+    StorySearchComponent,
+    SafePipe
   ],
   providers: [StoryService],
   bootstrap:    [ AppComponent ]

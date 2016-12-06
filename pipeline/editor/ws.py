@@ -100,7 +100,7 @@ def producer():
 
 
 asyncio.get_event_loop().run_until_complete(initialize())
-start_server = websockets.serve(handler, '0.0.0.0', 8765)
+start_server = websockets.serve(handler, '0.0.0.0', 8003)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_until_complete(producer())
 print('Server started.')

@@ -59,7 +59,7 @@ class StoryResource:
         result = story_schema.dump(story)
         resp.body = json_dump(result.data)
 
-    def on_post(self, req, resp, story_id):
+    def on_put(self, req, resp, story_id):
         try:
             story = models.Story.get(id=story_id)
         except models.Story.DoesNotExist:
@@ -158,7 +158,7 @@ class PersonResource:
         result = person_schema.dump(person)
         resp.body = json_dump(result.data)
 
-    def on_post(self, req, resp, person_id):
+    def on_put(self, req, resp, person_id):
         try:
             person = models.Person.get(id=person_id)
         except models.Person.DoesNotExist:

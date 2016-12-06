@@ -35,3 +35,13 @@ cd web
 npm install
 npm start
 ```
+
+### Editor
+
+Requires Redis to be running on its default port. Additionally, the files in pipeline/editor should be served over HTTP (can be accomplished with `python -m http.server`).
+
+```
+pip install -r requirements.txt
+cd pipeline/editor
+python ws.py
+```

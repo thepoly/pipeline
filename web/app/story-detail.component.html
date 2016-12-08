@@ -5,13 +5,13 @@
     <input [(ngModel)]="story.title" placeholder="title" />
   </div>
   <div>
-    <label>Event time: </label>{{story.date}}, {{story.time}}
+    <label>Event time: </label>{{story.date | date:"short" }}
   </div>
   <div>
     <label>Section: </label>{{story.section}}
   </div>
   <div>
-    <label>Created: </label>{{story.created}}
+    <label>Created: </label>{{story.created | date:"short"}}
   </div>
   <div>
     <label>Location: </label>{{story.location}}

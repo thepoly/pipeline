@@ -1,23 +1,20 @@
 <div *ngIf="story">
   <h2>{{story.title}} details!</h2>
   <div>
-    <label>title: </label>
+    <label>Title: </label>
     <input [(ngModel)]="story.title" placeholder="title" />
   </div>
   <div>
-    <label>date: </label>{{story.date}}
+    <label>Event time: </label>{{story.date}}, {{story.time}}
   </div>
   <div>
-    <label>time: </label>{{story.time}}
+    <label>Section: </label>{{story.section}}
   </div>
   <div>
-    <label>section: </label>{{story.section}}
+    <label>Created: </label>{{story.created}}
   </div>
   <div>
-    <label>created: </label>{{story.created}}
-  </div>
-  <div>
-    <label>location: </label>{{story.location}}
+    <label>Location: </label>{{story.location}}
   </div>
   <div>
     <iframe [src]="'https://poly.rpi.edu/pipeline_dev/editor/#' + story.id | safe" width="400" height="300"></iframe>

@@ -6,13 +6,12 @@
   </button>
 </div>
 <ul class="stories">
-  <li *ngFor="let story of stories"
-    [class.selected]="story === selectedStory"
-    (click)="onSelect(story)">
+  <li *ngFor="let story of stories" [class.selected]="story === selectedStory" (click)="onSelect(story)">
     <span class="badge">{{story.id}}</span>
     <span> {{story.title}} </span>
-    <button class="delete"
-      (click)="delete(hero); $event.stopPropagation()">x</button>
+    <button class="delete" (click)="delete(hero); $event.stopPropagation()">
+      x
+    </button>
   </li>
 </ul>
 <div *ngIf="selectedStory">

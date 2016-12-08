@@ -4,12 +4,17 @@ h1 {
   font-family: Raleway, sans-serif;
   font-weight: 535;
   font-size: 755%;
-  position: relative;
+  text-align: left;
+  position:relative;
   background-repeat: no-repeat;
+  background-clip: content-box;
   background-size: 90;
-  background-image: url(https://poly.rpi.edu/wp-content/themes/poly_new_testbed/images/logo_m.png);
-  text-indent: 760px;
+  /*text-indent: 760px;*/
   margin-bottom: 0;
+}
+img {
+  display: block;
+  margin: 0 auto;
 }
 h2 {
   font-size: 2em;
@@ -19,7 +24,7 @@ h2 {
 nav a {
   padding: 5px 10px;
   text-decoration: none;
-  margin-top: 10px;
+  /*margin-top: 10px;*/
   display: inline-block;
   background-color: #eee;
   border-radius: 4px;

@@ -81,6 +81,7 @@
 			var editor = ace.edit('editor');
 			editor.setTheme('ace/theme/monokai');
 			editor.getSession().setMode('ace/mode/text');
+			editor.getSession().setUseWrapMode(true);
 			editor.$blockScrolling = Infinity
             editor.setShowPrintMargin(false);
             editor.renderer.setShowGutter(false);

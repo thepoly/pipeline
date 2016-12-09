@@ -1,22 +1,30 @@
 /* Master Styles */
-h1 {
+html {
+  padding: 0;
+}
+body {
+  padding: 0;
+  margin: 0;
+}
+.header {
   color: white;
   background-color: #DA1E05;
   font-family: Raleway, sans-serif;
   font-weight: 535;
   font-size: 755%;
-  position: relative;
-  background-repeat: no-repeat;
-  background-size: 100;
-  text-indent: 760px;
+  padding: 10px;
+  margin: 0;
+}
+.header img {
+  width: 300px;
+}
+.container {
+  padding: 20px;
 }
 h2, h3 {
   color: #444;
   font-family: Oswald, sans-serif;
   font-weight: normal;
-}
-body {
-  margin: 2em;
 }
 body, input[text], button {
   color: #444;

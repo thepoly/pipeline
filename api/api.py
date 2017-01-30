@@ -4,7 +4,7 @@ import json
 import falcon
 import peewee
 
-from pipeline.api import models, schemas
+import models, schemas
 
 def json_serializer(obj):
     if isinstance(obj, datetime.datetime):

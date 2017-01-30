@@ -1,13 +1,16 @@
 {
-  "name": "angular-quickstart",
-  "version": "1.0.0",
+  "name": "pipeline-web",
+  "version": "0.1.0",
+  "description": "Frontend for Pipeline: content organization, tracking, and distribution for media organizations.",
+  "repository": "thepoly/Pipeline",
+  "private": true,
   "scripts": {
     "start": "tsc && concurrently \"tsc -w\" \"lite-server\" ",
     "lite": "lite-server",
     "tsc": "tsc",
     "tsc:w": "tsc -w"
   },
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@angular/common": "~2.0.1",
     "@angular/compiler": "~2.0.1",

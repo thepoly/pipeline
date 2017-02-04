@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   web:
     build: web
@@ -8,3 +8,5 @@ services:
     build: api
     ports:
       - "8000:8000"
+    volumes:
+      - ./api:/app

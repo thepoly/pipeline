@@ -15,7 +15,6 @@ RUN npm install
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
 COPY . /app
-RUN npm run tsc
 
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sh", "/app/web.sh"]

@@ -4,7 +4,7 @@ import json
 import falcon
 import peewee
 
-import models, schemas
+import models, schemas, middleware
 
 def json_serializer(obj):
     if isinstance(obj, datetime.datetime):
@@ -183,7 +183,7 @@ class PersonResource:
 
 models.connect()
 
-api = falcon.API()
+api = falcon.API(middleware=middleware.components)
 api.add_route('/stories', StoriesResource())
 api.add_route('/stories/{story_id}', StoryResource())
 api.add_route('/stories/{story_id}/people', StoryPeopleResource())

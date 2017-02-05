@@ -12,7 +12,8 @@ import { Story } from './story';
 export class StoryService {
 
   private headers = new Headers({'Content-Type': 'application/json'});
-  private storiesUrl = 'https://poly.rpi.edu/pipeline_dev/api/stories';  // URL to web api
+  private storiesUrl = 'http://localhost:8001/stories';  // URL to local api
+  // private storiesUrl = 'https://poly.rpi.edu/pipeline_dev/api/stories';  // URL to web api
 
   constructor(private http: Http) { }
 

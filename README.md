@@ -19,29 +19,6 @@ Currently, by the time an article is published, it exists in three separate plac
 ## Running Pipeline
 
 Pipeline's API is written in Python, and it uses Angular and TypeScript on the
-frontend. To run it for development, not production, use these commands:
+frontend. To run it for development, install [Docker](https://www.docker.com/products/overview), clone this repo, run `docker-compose up`, and then check out [localhost:8000](http://localhost:8000). Take a look at the Dockerfiles in the API, web, and rt-editor folders to figure out how the containers are built.
 
-### API
-
-```
-pip install -r requirements.txt
-gunicorn pipeline.api.api:api --reload -k gevent
-```
-
-### Frontend
-
-```
-cd web
-npm install
-npm start
-```
-
-### Editor
-
-Requires Redis to be running on its default port. Additionally, the files in pipeline/editor should be served over HTTP (can be accomplished with `python -m http.server`).
-
-```
-pip install -r requirements.txt
-cd pipeline/editor
-python ws.py
-```
+Docker Hub builds three containers from this repo, and they can be found on [_The Poly_'s Hub page](https://hub.docker.com/u/thepoly/).

@@ -12,7 +12,7 @@ send_queue = asyncio.Queue()
 @asyncio.coroutine
 def initialize():
     global redis
-    redis = yield from asyncio_redis.Pool.create(host='localhost', poolsize=10, db=1)
+    redis = yield from asyncio_redis.Pool.create(host='redis', poolsize=10, db=1)
     yield from redis.delete(['clients', 'documents'])
 
 
@@ -100,7 +100,7 @@ def producer():
 
 
 asyncio.get_event_loop().run_until_complete(initialize())
-start_server = websockets.serve(handler, '0.0.0.0', 8003)
+start_server = websockets.serve(handler, '0.0.0.0', 8002)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_until_complete(producer())
 print('Server started.')

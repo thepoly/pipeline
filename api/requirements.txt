@@ -6,5 +6,3 @@ marshmallow==2.10.0
 peewee==2.8.3
 python-mimeparse==1.5.2
 six==1.10.0
-asyncio-redis==0.14.3
-websockets==3.2

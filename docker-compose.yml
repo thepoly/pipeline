@@ -6,6 +6,16 @@ services:
       - "8001:8000"
     volumes:
       - ./api:/app
+  redis:
+    image: redis:3.2
+  rt-editor:
+    build: rt-editor
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./rt-editor:/app
+    links:
+      - redis
   web:
     build: web
     ports:

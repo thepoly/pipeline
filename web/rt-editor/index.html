@@ -20,9 +20,9 @@
 			// comms
 			function init_socket() {
 				// socket = new WebSocket('wss://4307c6b8.ngrok.com');
-				// socket = new WebSocket('ws://localhost:8765');
+				socket = new WebSocket('ws://localhost:8002');
 				// socket = new WebSocket('ws://129.161.36.229:8765');
-				socket = new WebSocket('wss://poly.rpi.edu/pipeline_dev/editor/ws');
+				// socket = new WebSocket('wss://poly.rpi.edu/pipeline_dev/editor/ws');
 
 				setInterval(function() {
 					socket.send(JSON.stringify({'method': 'ping'})); // ping server every 30 seconds to keep connection alive

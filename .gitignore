@@ -6,3 +6,4 @@ web/app/*.js
 web/app/*.map
 web/node_modules
 typings/
+.*.swp

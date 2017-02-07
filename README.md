@@ -23,10 +23,23 @@ Currently, by the time a story is published, it exists in three separate places:
 ## Running Pipeline
 
 Pipeline's API is written in Python, and it uses Angular and TypeScript on the
-frontend. To run it for development, install [Docker](https://www.docker.com/products/overview), clone this repo, run `docker-compose up`, and then check out [localhost:8000](http://localhost:8000). Take a look at the Dockerfiles in the API, web, and rt-editor folders to figure out how the containers are built.
+frontend. To run it for development:
 
-Docker Hub builds three containers from this repo, and they can be found on [_The Poly_'s Hub page](https://hub.docker.com/u/thepoly/).
+1. Install [Docker](https://www.docker.com/products/overview)
+2. Clone this repo
+3. Run `docker-compose up`
+
+Pipeline's web interface will be running on
+[localhost:8000](http://localhost:8000). The API will be at
+[localhost:8001](http://localhost:8001).
+
+Take a look at the Dockerfiles in the API, web, and rt-editor folders to figure
+out how the containers are built.
+
+Docker Hub builds three containers from this repo, and they can be found on
+[_The Poly_'s Hub page](https://hub.docker.com/u/thepoly/).
 
 ### Tests
 
-Pipeline currently has incomplete tests for its API. They require Docker, and can be run by executing `api/tests/test.sh`.
+Pipeline currently has incomplete tests for its API. They require Docker, and
+can be run by executing `api/tests/test.sh`.

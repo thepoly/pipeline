@@ -5,8 +5,7 @@ class StorySchema(marshmallow.Schema):
     id = marshmallow.fields.Int(dump_only=True)
     title = marshmallow.fields.Str(required=True)
     created = marshmallow.fields.DateTime(dump_only=True)
-    date = marshmallow.fields.Date()
-    time = marshmallow.fields.Time()
+    event = marshmallow.fields.DateTime()
     location = marshmallow.fields.Str()
     section = marshmallow.fields.Str()
 

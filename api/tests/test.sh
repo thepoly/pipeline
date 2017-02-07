@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# change working directory to script location
+cd "$(dirname "$0")"
+
 # define some colors to use for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'

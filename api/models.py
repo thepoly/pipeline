@@ -14,8 +14,7 @@ class Story(BaseModel):
     # TODO: id = peewee.UUIDField or something...
     created = peewee.DateTimeField(default=datetime.datetime.now)
     title = peewee.TextField()
-    date = peewee.DateField(null=True)
-    time = peewee.TimeField(null=True)
+    event = peewee.DateTimeField(null=True)
     location = peewee.TextField(null=True)
     section = peewee.TextField(null=True)
 

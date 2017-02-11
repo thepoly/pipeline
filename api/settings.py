@@ -1,7 +1,7 @@
 import models
 
 
-class AppConfig:
+class AppSettings:
 
     default_settings = {
         'slack_api_key': None,
@@ -12,7 +12,7 @@ class AppConfig:
         # ensure our tables have been created and a DB connection established
         models.connect()
 
-        # create default config
+        # create default settings
         self.create_settings()
 
     def create_settings(self):

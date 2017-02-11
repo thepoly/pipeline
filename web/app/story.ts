@@ -3,7 +3,7 @@ export class Story {
   id: number;
   date: string;
   location: string;
-  time: string;
+  event_time: string;
   title: string;
   section: string;
 }

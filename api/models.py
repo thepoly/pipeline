@@ -2,7 +2,7 @@ import datetime
 
 import peewee
 
-db = peewee.SqliteDatabase('pipeline.db')
+db = peewee.PostgresqlDatabase('postgres', user='postgres', host='db')
 
 
 class BaseModel(peewee.Model):

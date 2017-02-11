@@ -6,3 +6,7 @@ services:
       - api
   api:
     build: ../
+    links:
+      - db
+  db:
+    image: postgres:9.6

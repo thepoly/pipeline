@@ -5,6 +5,7 @@ import middleware
 
 import route_stories
 import route_people
+import route_settings
 
 models.connect()
 
@@ -14,3 +15,4 @@ api.add_route('/stories/{story_id}', route_stories.StoryResource())
 api.add_route('/stories/{story_id}/people', route_stories.StoryPeopleResource())
 api.add_route('/people', route_people.PeopleResource())
 api.add_route('/people/{person_id}', route_people.PersonResource())
+api.add_route('/settings', route_settings.SettingsResource())

@@ -37,8 +37,12 @@ class StoryPerson(BaseModel):
         primary_key = peewee.CompositeKey('story', 'person')
 
 
-def connect():
+class Setting(BaseModel):
+    key = peewee.TextField(unique=True)
+    value = peewee.TextField(null=True)
 
+
+def connect():
     # Wait at most 10 seconds for database to come up
     start_time = time.time()
     while True:
@@ -51,4 +55,4 @@ def connect():
         break
 
     # we connected; make our tables
-    db.create_tables([Story, Person, StoryPerson], safe=True)
+    db.create_tables([Story, Person, StoryPerson, Setting], safe=True)

@@ -6,8 +6,8 @@ class StorySchema(marshmallow.Schema):
     title = marshmallow.fields.Str(required=True)
     created = marshmallow.fields.DateTime(dump_only=True)
     event_time = marshmallow.fields.DateTime(allow_none=True)
-    location = marshmallow.fields.Str()
-    section = marshmallow.fields.Str()
+    location = marshmallow.fields.Str(allow_none=True)
+    section = marshmallow.fields.Str(allow_none=True)
 
     @marshmallow.post_dump(pass_many=True)
     def wrap(self, data, many):

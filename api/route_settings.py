@@ -7,10 +7,6 @@ import schemas
 import api_util
 
 
-settings_schema = schemas.SettingSchema(many=True)
-setting_schema = schemas.SettingSchema()
-
-
 class SettingsResource:
 
     def on_get(self, req, resp):

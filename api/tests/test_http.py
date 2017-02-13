@@ -19,7 +19,7 @@ class TestStoriesResource:
         story_id = j['story']['id']
 
         j = requests.put(f'http://api:8000/stories/{story_id}', json={'section': 'News'}).json()
-        
+
         j = requests.get(f'http://api:8000/stories/{story_id}').json()
         assert j['story']['section'] == 'News'
 
@@ -46,3 +46,10 @@ class TestStoriesResource:
         # Ensure it has no event time
         j = requests.get(f'http://api:8000/stories/{story_id}').json()
         assert j['story']['event_time'] == None
+
+
+class TestSettingsResource:
+
+    def test_get_settings(self):
+        j = requests.get('http://api:8000/settings').json()
+        assert isinstance(j['settings'], dict)

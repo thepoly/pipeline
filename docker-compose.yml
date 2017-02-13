@@ -6,8 +6,15 @@ services:
       - "8001:8000"
     volumes:
       - ./api:/app
-  redis:
-    image: redis:3.2
+    links:
+      - db
+  web:
+    build: web
+    ports:
+      - "8000:80"
+    volumes:
+      - ./web:/app
+      - /app/node_modules
   rt-editor:
     build: rt-editor
     ports:
@@ -16,10 +23,7 @@ services:
       - ./rt-editor:/app
     links:
       - redis
-  web:
-    build: web
-    ports:
-      - "8000:80"
-    volumes:
-      - ./web:/app
-      - /app/node_modules
+  db:
+    image: postgres:9.6
+  redis:
+    image: redis:3.2

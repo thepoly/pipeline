@@ -59,3 +59,8 @@ Docker Hub builds three containers from this repo, and they can be found on
 
 Pipeline currently has incomplete tests for its API. They require Docker, and
 can be run by executing `api/tests/test.sh`.
+
+### Troubleshooting
+
+If you're seeing weirdness, try rebuilding the containers with `docker compose
+up --build`. If it persists, please contact a team member or open an issue.

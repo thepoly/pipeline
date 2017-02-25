@@ -1,7 +1,10 @@
+html {
+  font-family: 'Raleway', sans-serif;
+}
+
 h1 {
   color: white;
   background-color: #DA1E05;
-  font-family: Raleway, sans-serif;
   font-weight: 535;
   font-size: 755%;
   text-align: left;
@@ -20,14 +23,17 @@ h2 {
   font-size: 2em;
   margin-top: 0;
   padding-top: 0;
+  font-family: serif;
+
 }
 nav a {
   padding: 5px 10px;
   text-decoration: none;
-  /*margin-top: 10px;*/
+  /*margin-top:  10px;*/
   display: inline-block;
   background-color: #eee;
   border-radius: 4px;
+
 }
 nav a:visited, a:link {
   color: #DA1E05;

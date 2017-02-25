@@ -65,7 +65,7 @@ nav a:visited, a:link {
   color: #607D8B;
 }
 nav a:hover {
-  color: #039be5;
+  color: blue;
   background-color: #CFD8DC;
 }
 nav a.active {

@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   selector: 'my-app',
   template: `
     <div class="header">
-      <img src="https://poly.rpi.edu/wp-content/themes/poly_new_testbed/images/logo_m.png">
+      <img src="../pipeline_logo.png">
     </div>
     <div class="container">
     <nav>

@@ -1,3 +1,8 @@
+h2 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+}
+
 .selected {
   background-color: #dccfcf !important;
   color: white;

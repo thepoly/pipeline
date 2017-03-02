@@ -8,7 +8,7 @@ import api_util
 
 
 class SettingsResource:
-
+    
     def on_get(self, req, resp):
         settings = models.Setting.select()
 

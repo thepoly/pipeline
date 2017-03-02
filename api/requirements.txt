@@ -7,3 +7,4 @@ peewee==2.8.3
 python-mimeparse==1.5.2
 six==1.10.0
 psycopg2==2.6.2
+requests==2.13.0

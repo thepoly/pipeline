@@ -19,7 +19,8 @@ body {
   width: 300px;
 }
 .container {
-  padding: 20px;
+  padding: 0px;
+  margin: 0;
 }
 h2, h3 {
   color: #444;
@@ -53,13 +54,11 @@ button:disabled {
 }
 
 /* Navigation link styles */
-nav a {
+/*nav a {
   padding: 5px 10px;
   text-decoration: none;
   margin-top: 10px;
   display: inline-block;
-  background-color: #eee;
-  border-radius: 4px;
 }
 nav a:visited, a:link {
   color: #607D8B;
@@ -71,7 +70,7 @@ nav a:hover {
 nav a.active {
   color: #039be5;
 }
-
+*/
 /* items class */
 .items {
   margin: 0 0 2em 0;

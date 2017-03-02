@@ -7,13 +7,13 @@ import { Component } from '@angular/core';
     <div class="header">
       <img src="../pipeline_logo.png">
     </div>
-    <div class="container">
-    <nav>
-      <a routerLink="/story-editor" routerLinkActive="active">Story Editor</a>
-      <a routerLink="/story-search" routerLinkActive="active">Story Search</a>
+    <nav class="navbar-navbar-default">
+      <div class = "container-fluid">
+          <a class = "navbar-left"routerLink="/story-editor" routerLinkActive="active">Story Editor</a>
+          <a class = "navbar-right" routerLink="/story-search" routerLinkActive="active">Story Search</a>
+      </div>
     </nav>
     <router-outlet></router-outlet>
-    </div>
   `,
   styleUrls: ['app.component.css'],
 })

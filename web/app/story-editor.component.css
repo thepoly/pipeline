@@ -1,6 +1,7 @@
 h2 {
   font-family: 'Raleway', sans-serif;
   font-weight: bold;
+  padding-left: 20px;
 }
 
 .selected {
@@ -68,4 +69,9 @@ button.delete {
   margin-right: .8em;
   background-color: gray !important;
   color:white;
+}
+
+label {
+  font-family: 'Raleway', sans-serif;
+  margin-left: 20px;
 }

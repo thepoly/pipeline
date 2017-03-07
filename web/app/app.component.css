@@ -1,7 +1,12 @@
+html {
+  font-family: 'Raleway', sans-serif;
+}
+header {
+  margin: 0;
+}
 h1 {
   color: white;
   background-color: #DA1E05;
-  font-family: Raleway, sans-serif;
   font-weight: 535;
   font-size: 755%;
   text-align: left;
@@ -12,6 +17,7 @@ h1 {
   /*text-indent: 760px;*/
   margin-bottom: 0;
 }
+
 img {
   display: block;
   margin: 0 auto;
@@ -20,22 +26,62 @@ h2 {
   font-size: 2em;
   margin-top: 0;
   padding-top: 0;
+  font-family: serif;
+  padding-left: 10px;
+
 }
+nav.navbar-navbar-default {
+  padding-bottom: 40px;
+  margin: 0px;
+  border-width: 20px;
+  border-style: solid;
+  border-color: #DA1E05;
+
+}
+
+@media (min-width: 653px){
+  a.navbar-right {
+  float: right;
+  margin-right: 150px;
+  margin-top: 0;
+  }
+  a.navbar-left {
+    float:left;
+    margin-left: 150px;
+    margin-top: 0;
+  }
+}
+@media (max-width: 652px){
+  a.navbar-right {
+  float: right;
+  margin-top: 0;
+  }
+  a.navbar-left {
+    float:left;
+    margin-top: 0;
+  }
+}
+
+
+/* add media query/ figure out how to accomodate for smaller screen size*/
 nav a {
   padding: 5px 10px;
   text-decoration: none;
-  /*margin-top: 10px;*/
-  display: inline-block;
-  background-color: #eee;
-  border-radius: 4px;
+  /*margin-top:  10px;*/
+  display: inline;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  font-size: 1.5em;
+
 }
 nav a:visited, a:link {
   color: #DA1E05;
 }
 nav a:hover {
-  color: #ba1a05;
-  background-color: #dccfcf;
+  color:  #fb7b6a;
 }
-nav a.active {
-  color: #DA1E05;
-}
+
+
+
+
+

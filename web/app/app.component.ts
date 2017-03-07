@@ -5,15 +5,15 @@ import { Component } from '@angular/core';
   selector: 'my-app',
   template: `
     <div class="header">
-      <img src="https://poly.rpi.edu/wp-content/themes/poly_new_testbed/images/logo_m.png">
+      <img src="../pipeline_logo.png">
     </div>
-    <div class="container">
-    <nav>
-      <a routerLink="/story-editor" routerLinkActive="active">Story Editor</a>
-      <a routerLink="/story-search" routerLinkActive="active">Story Search</a>
+    <nav class="navbar-navbar-default">
+      <div class = "container-fluid">
+          <a class = "navbar-left"routerLink="/story-editor" routerLinkActive="active">Story Editor</a>
+          <a class = "navbar-right" routerLink="/story-search" routerLinkActive="active">Story Search</a>
+      </div>
     </nav>
     <router-outlet></router-outlet>
-    </div>
   `,
   styleUrls: ['app.component.css'],
 })

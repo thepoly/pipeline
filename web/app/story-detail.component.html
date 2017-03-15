@@ -2,13 +2,25 @@
   <h2>{{story.title}} details!</h2>
   <div>
     <label>Title: </label>
-    <input [(ngModel)]="story.title" placeholder="title" />
+    <input [(ngModel)]="story.title" placeholder="Title" />
   </div>
+
+<!-- figure out how to save author -->
+
+
+  <div>
+    <label>Author: </label>
+    <input [(ngModel)]="story.author" placeholder="Author" />
+  </div>
+
+<!-- ..................................... -->
+
   <div>
     <label>Event time: </label>{{story.date | date:"short" }}
   </div>
   <div>
-    <label>Section: </label>{{story.section}}
+    <label>Section: </label>
+    <input [(ngModel)]="story.section" placeholder="Section" />
   </div>
   <div>
     <label>Created: </label>{{story.created | date:"short"}}

@@ -6,6 +6,7 @@ body {
   padding: 0;
   margin: 0;
 }
+
 .header {
   color: white;
   background-color: #DA1E05;
@@ -27,7 +28,7 @@ h2, h3 {
   font-family: Oswald, sans-serif;
   font-weight: normal;
 }
-body, input[text], button {
+body, input[text], {
   color: #444;
   font-family: Cambria, Georgia;
 }
@@ -35,7 +36,7 @@ a {
   cursor: pointer;
   cursor: hand;
 }
-button {
+/*button {
   font-family: Arial;
   background-color: #eee;
   border: none;
@@ -52,7 +53,7 @@ button:disabled {
   color: #aaa;
   cursor: auto;
 }
-
+*/
 /* Navigation link styles */
 /*nav a {
   padding: 5px 10px;
@@ -148,7 +149,4 @@ nav a.active {
   margin-right: .8em;
   border-radius: 4px 0 0 4px;
 }
-/* everywhere else */
-* {
-  font-family: Arial, Helvetica, sans-serif;
-}
+

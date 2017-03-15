@@ -1,77 +1,101 @@
 h2 {
   font-family: 'Raleway', sans-serif;
   font-weight: bold;
-  padding-left: 20px;
+  text-align: center;
+}
+li.story {
+  height: 90px;
+  font-family: 'Raleway', sans-serif;
+  position: relative;
+  left: 0;
+  margin-left: 10px;
+  padding-top: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  border-style: solid;
+  border-color: #cecece;
+  border-width: 2px;
+  text-align: left;
+  padding-bottom: 10px;
 }
 
-.selected {
+li.story.selected {
+  background-color: #f48989;
+}
+
+.story-photo {
+  float: left;
+  padding-right: 20px;
+  padding-left: 10px;
+}
+.info {
+  font-family: 'Raleway', sans-serif;
+  color: #838384;
+  padding-left: 20px;
+  text-overflow: ellipsis;
+}
+.title {
+  font-weight: bold;
+}
+.author {
+  font-weight: light;
+}
+.section {
+  font-weight: light;
+}
+
+input {
+  background: url("../search-icon-f-01.png") no-repeat scroll;
+  padding-left:50px;
+  margin-left: 10px;
+  border-style: solid;
+  border-color: #cecece;
+}
+/*.selected {
   background-color: #dccfcf !important;
   color: white;
-}
+}*/
 .stories {
   margin: 0 0 2em 0;
   list-style-type: none;
   padding: 0;
-  width: 15em;
+  width: 410px;
 }
-.stories li {
-  cursor: pointer;
-  position: relative;
-  left: 0;
-  background-color: #EEE;
-  margin: .5em;
-  padding: .3em 0;
-  height: 1.6em;
-  border-radius: 4px;
+
+.add-button {
+  padding: 10px;
+  background-color: #eee;
+  font-family: 'Raleway', sans-serif;
 }
-.stories li.selected:hover {
-  background-color: #edc7c7 !important;
-  color: white;
-}
-.stories li:hover {
-  color: #e53b3b;
-  background-color: #DDD;
-  left: .1em;
-}
-.stories .text {
-  position: relative;
-  top: -3px;
-}
-.stories .badge {
-  display: inline-block;
-  font-size: small;
-  color: white;
-  padding: 0.8em 0.7em 0 0.7em;
-  background-color: #DA1E05;
-  line-height: 1em;
-  position: relative;
-  left: -1px;
-  top: -4px;
-  height: 1.8em;
-  margin-right: .8em;
-  border-radius: 4px 0 0 4px;
-}
+
 button {
   font-family: Arial;
-  background-color: #eee;
-  border: none;
-  padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
   cursor: hand;
+  background-color: transparent;
+  border: none;
 }
-button:hover {
-  background-color: #cfd8dc;
-}
+
 button.delete {
   float:right;
-  margin-top: 2px;
-  margin-right: .8em;
   background-color: gray !important;
   color:white;
+  font-family: 'Raleway', sans-serif;
+  margin-left: 5px;
+
+}
+button.details {
+  float:right;
+  background-color: gray !important;
+  color:white;
+  font-family: 'Raleway', sans-serif;
+  margin-left: 5px;
+
 }
 
 label {
   font-family: 'Raleway', sans-serif;
   margin-left: 20px;
+  font-size: 1.5em;
 }

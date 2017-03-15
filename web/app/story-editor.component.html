@@ -1,22 +1,50 @@
-<h2>Current Stories</h2>
-<div>
-  <label>Story title:</label> <input #storyTitle />
-  <button (click)="add(storyTitle.value); storyTitle.value=''">
-    Add
-  </button>
-</div>
-<ul class="stories">
-  <li *ngFor="let story of stories" [class.selected]="story === selectedStory" (click)="onSelect(story)">
-    <span class="badge">{{story.id}}</span>
-    <span> {{story.title}} </span>
-    <button class="delete" (click)="delete(hero); $event.stopPropagation()">
-      x
-    </button>
-  </li>
-</ul>
-<div *ngIf="selectedStory">
-  <!-- <h2>
-    {{selectedStory.title | uppercase}} is currently being edited
-  </h2> may be useful in the future-->
-  <button (click)="gotoDetail()">View Details</button>
+<div class = "container">
+  <div class = "col-lg-4 col-xs-2 col-s-2 col-md-4 sidebar">
+      <h2>Current Stories</h2>
+      <div>
+        <input type="text" name = "search" placeholder="Search for or a current story, or add a story" style="width: 400px; height: 60px; font-size: 1em; font-family: 'Raleway', sans-serif;" #storyTitle />
+
+
+        <!-- change this to add only when there are no search results -->
+
+
+
+        <button (click)="add(storyTitle.value); storyTitle.value=''" class = "add-button"> Add
+        </button> 
+      </div>
+      <ul class="stories">
+        <li class = "story" *ngFor="let story of stories" [class.selected]="story === selectedStory" (click)="onSelect(story)">
+
+          <!-- AUTOMATIC WAY TO IMPORT STORY'S PHOTO? -->
+
+          <img class = "story-photo" src = "../pic.jpg" style= "width: 20%;">
+          <div class = "info">    
+            <div class = "title"> {{story.title}} </div>
+            <div class = "section"> {{story.section}} </div>
+            <div class = "author"> Ana Wishnoff </div>
+            <button class="delete" (click)="delete(hero); $event.stopPropagation()">
+            delete story
+            </button>
+
+
+
+            <!-- Weird bug with this button: only goes on second click -->
+
+
+
+
+             <button (click)="gotoDetail()" class = "details">
+            see details
+            </button> 
+          </div>
+          
+
+        </li>
+      </ul>
+      <!-- <div *ngIf="selectedStory">
+         <h2>
+          {{selectedStory.title | uppercase}} is currently being edited
+        </h2> may be useful in the future
+      </div> -->
+  </div>
 </div>

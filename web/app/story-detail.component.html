@@ -2,7 +2,7 @@
   <h2>{{story.title}} details!</h2>
   <div>
     <label>Title: </label>
-    <input [(ngModel)]="story.title" placeholder="title" />
+    <input [(ngModel)]="story.title" (change) = "save()" placeholder="title" />
   </div>
   <div>
     <label>Event time: </label>{{story.date | date:"short" }}
@@ -20,5 +20,4 @@
     <iframe [src]="'rt-editor/#' + story.id | safe" width="700" height="500"></iframe>
   </div>
   <button (click)="goBack()">Back</button>
-  <button (click)="save()">Save</button>
 </div>

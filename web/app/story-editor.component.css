@@ -14,11 +14,16 @@ li.story {
   cursor: pointer;
   border-style: solid;
   border-color: #cecece;
-  border-width: 2px;
+  border-left-width: 3px;
+  border-right-width: 3px;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
   text-align: left;
   padding-bottom: 10px;
 }
-
+ul.stories {
+  margin-left: 20px;
+}
 li.story.selected {
   background-color: #f48989;
 }
@@ -35,7 +40,7 @@ li.story.selected {
   text-overflow: ellipsis;
 }
 .title {
-  font-weight: bold;
+  font-weight: 700;
 }
 .author {
   font-weight: light;
@@ -45,11 +50,29 @@ li.story.selected {
 }
 
 input {
-  background: url("../search-icon-f-01.png") no-repeat scroll;
+  background: url("../search-icon-final-01.png") no-repeat scroll;
   padding-left:50px;
-  margin-left: 10px;
+  margin-left: 30px;
   border-style: solid;
   border-color: #cecece;
+  border-width: 3px;
+  padding-right: 70px;
+  overflow: scroll;
+}
+
+input[type="submit"] {
+  margin-left: -60px;
+  height: 35px;
+  width: 45px;
+  padding: 10px;
+  font-family: 'Raleway', sans-serif;
+  background: none;
+  background-color: #eee;
+  border-radius: 4px;
+  cursor: pointer;
+  cursor: hand;
+  border: none;
+
 }
 /*.selected {
   background-color: #dccfcf !important;
@@ -59,7 +82,7 @@ input {
   margin: 0 0 2em 0;
   list-style-type: none;
   padding: 0;
-  width: 410px;
+  width: 500px;
 }
 
 .add-button {

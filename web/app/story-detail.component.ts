@@ -31,8 +31,7 @@ export class StoryDetailComponent implements OnInit{
   }
 
   save(): void {
-    this.storyService.update(this.story)
-      .then(() => this.goBack());
+    this.storyService.update(this.story);
   }
 
   goBack(): void {

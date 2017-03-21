@@ -1,5 +1,5 @@
 <div class = "container">
-  <div class = "col-lg-4 col-xs-2 col-s-2 col-md-4 sidebar">
+  <div class = "col-lg-6 col-xs-2 col-s-2 col-md-4 sidebar">
       <h2>Current Stories</h2>
       <div>
         <input type="text" name = "search" placeholder="Search for or a current story, or add a story" style="width: 490px; height: 60px; font-size: 1em; font-family: 'Raleway', sans-serif;" 
@@ -8,7 +8,7 @@
 
          <!-- change this to add only when there are no search results, add button should only come up when there are no search results!! -->
 
-         
+
         <input type = "submit" value = "Add" (click)="add(storyTitle.value); storyTitle.value=''" class = "add-button">
       </div>
       <ul class="stories">
@@ -25,12 +25,7 @@
             delete story
             </button>
 
-
-
-            <!-- Weird bug with this button: only goes on second click -->
-
-
-
+            <!-- Change an item's "active" state so that it doesn't have to be active for the user to see the details -->
 
              <button (click)="gotoDetail()" class = "details">
             see details

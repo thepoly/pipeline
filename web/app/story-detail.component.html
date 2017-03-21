@@ -1,35 +1,61 @@
-<div *ngIf="story">
-  <h2>{{story.title}} details!</h2>
-  <div>
-    <label>Title: </label>
-    <input [(ngModel)]="story.title" (change) = "save()" placeholder="Title" />
-  </div>
+<div *ngIf="story" class = "editor-w-details">
+  <div id = "editor">
 
-<!-- figure out how to save author -->
+        <!-- how to style the text editor? separate stylesheet or edit the ace stylesheet?? -->
 
-
-  <div>
-    <label>Author: </label>
-    <input [(ngModel)]="story.author" placeholder="Author" />
-  </div>
-
-<!-- ..................................... -->
-
-  <div>
-    <label>Event time: </label>{{story.date | date:"short" }}
-  </div>
-  <div>
-    <label>Section: </label>
-    <input [(ngModel)]="story.section" placeholder="Section" />
-  </div>
-  <div>
-    <label>Created: </label>{{story.created | date:"short"}}
-  </div>
-  <div>
-    <label>Location: </label>{{story.location}}
-  </div>
-  <div>
     <iframe [src]="'rt-editor/#' + story.id | safe" width="700" height="500"></iframe>
   </div>
+  <div class = "col-lg-6 col-xs-4 col-s-4 col-md-6 details" >
+    <h3>DETAILS</h3>
+    <div id = "title">
+      <label>Headline: </label>
+      {{story.title}}
+      <input [(ngModel)]="story.title" placeholder="Title" />
+    </div>
+
+  <!-- figure out how to save author and other new categories  -->
+  <!-- suggestion: new categories for details - author job, kicker, photographer, issue date. -->
+
+    <div id = "section">
+      <label>Section: </label>
+      {{story.section}}
+      <input class = "editable" [(ngModel)]="story.section" placeholder="Section" />
+    </div>
+    <div id = "author">
+      <label>Author: </label>
+      {{story.author}}
+      Ana Wishnoff
+      <input class = "editable" [(ngModel)]="story.author" placeholder="Author" />
+    </div>
+    <div id = "author-job">
+      <label>Author Job: </label>
+      Senior Reporter<!-- {{story.author-job}} -->
+      <input class = "editable" [(ngModel)]="story.author" placeholder="Author" />
+    </div>
+    <div id = "kicker">
+      <label>Kicker: </label>
+      {{story.kicker}}
+      Administration      
+      <input class = "editable" [(ngModel)]="story.author" placeholder="Author" />
+    </div>
+    <div id = "issue">
+      <label>Issue Date: </label>{{story.date | date:"short" }}
+    </div>
+    <div id = "photographer">
+      <label>Photographer: </label>{{story.date | date:"short" }}
+    </div>
+    <div id = "event-time">
+      <label>Event time: </label>{{story.date | date:"short" }}
+    </div>
+    <div id = "location">
+      <label>Location: </label>{{story.location}}
+    </div>
+    <div id = "created">
+      <label>Created: </label>{{story.created | date:"short"}}
+    </div>
+  </div>
+
+    <!-- ..................................... -->
+  
   <button (click)="goBack()">Back</button>
 </div>

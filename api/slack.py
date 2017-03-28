@@ -5,11 +5,6 @@ import datetime
 import models
 import settings
 
-
-#Implement for errors
-#What do we wanna do?
-#Print out errors, retry 5 times
-
 class SlackConnection:
     
     def __init__(self):

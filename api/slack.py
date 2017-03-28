@@ -6,7 +6,6 @@ import models
 import settings
 
 
-
 class SlackConnection:
     
     def __init__(self):

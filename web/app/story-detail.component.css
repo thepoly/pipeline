@@ -6,17 +6,23 @@
   border: solid;
   border-color: #cecece;
   margin-right: 20px;
-  padding: 10px;
+  padding-left: 10px;
   margin-top: 10px;
+  padding-right: 0px;
+  padding-top: 10px;
 }
 
 label {
   display: inline-block;
-/*  width: 8em;*/
   margin: .5em 0;
   color: #DA1E05;
   font-weight: bold;
 }
+input.editable{
+  border: none;
+  width: 525px;
+}
+
 input {
   height: 2em;
   font-size: 1em;

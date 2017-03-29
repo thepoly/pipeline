@@ -90,6 +90,9 @@ input[type="submit"] {
   background-color: #eee;
   font-family: 'Raleway', sans-serif;
 }
+.add-button:focus{
+  outline: none;
+}
 
 button {
   font-family: Arial;

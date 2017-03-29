@@ -1,12 +1,5 @@
-<div class = "container">
-	<h3 class = "sidebar_top">Current Stories</h3>
-	    	<!-- **USE THIS AS STORY SIDEBAR FOR CURRENT STORIES TAB**-->
-
-	<div class="grid grid-pad">
-	  <a *ngFor="let story of stories"  [routerLink]="['/detail', story.id]"  class="col-1-4">
-	    <div class="module story">
-	      <h4>{{story.title}}</h4>
-	    </div>
-	  </a>
-	</div>
+<h2 id = "search-text">Search for a past story...</h2>
+<div class = "search-bar">
+	<input class = "search" type="text" name = "search"/>
+	<button class = "search-button">Search</button>
 </div>

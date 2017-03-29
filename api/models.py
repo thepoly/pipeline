@@ -26,6 +26,8 @@ class Story(BaseModel):
 class Person(BaseModel):
     created = peewee.DateTimeField(default=datetime.datetime.now)
     name = peewee.TextField()
+    slack_handle = peewee.TextField(null=True)
+    slack_id = peewee.TextField(null=True)
 
 
 class StoryPerson(BaseModel):

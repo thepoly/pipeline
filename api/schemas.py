@@ -18,6 +18,8 @@ class StorySchema(marshmallow.Schema):
 class PersonSchema(marshmallow.Schema):
     id = marshmallow.fields.Int(dump_only=True)
     name = marshmallow.fields.Str(required=True)
+    slack_handle = marshmallow.fields.Str(allow_none=True)
+    slack_id = marshmallow.fields.Str(allow_none=True)
 
     @marshmallow.post_dump(pass_many=True)
     def wrap(self, data, many):

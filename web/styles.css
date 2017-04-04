@@ -6,6 +6,7 @@ body {
   padding: 0;
   margin: 0;
 }
+
 .header {
   color: white;
   background-color: #DA1E05;
@@ -16,17 +17,18 @@ body {
   margin: 0;
 }
 .header img {
-  width: 300px;
+  width: 400px;
 }
 .container {
-  padding: 20px;
+  padding: 0px;
+  margin: 0;
 }
 h2, h3 {
   color: #444;
   font-family: Oswald, sans-serif;
   font-weight: normal;
 }
-body, input[text], button {
+body, input[text], {
   color: #444;
   font-family: Cambria, Georgia;
 }
@@ -34,7 +36,7 @@ a {
   cursor: pointer;
   cursor: hand;
 }
-button {
+/*button {
   font-family: Arial;
   background-color: #eee;
   border: none;
@@ -51,27 +53,25 @@ button:disabled {
   color: #aaa;
   cursor: auto;
 }
-
+*/
 /* Navigation link styles */
-nav a {
+/*nav a {
   padding: 5px 10px;
   text-decoration: none;
   margin-top: 10px;
   display: inline-block;
-  background-color: #eee;
-  border-radius: 4px;
 }
 nav a:visited, a:link {
   color: #607D8B;
 }
 nav a:hover {
-  color: #039be5;
+  color: blue;
   background-color: #CFD8DC;
 }
 nav a.active {
   color: #039be5;
 }
-
+*/
 /* items class */
 .items {
   margin: 0 0 2em 0;
@@ -149,7 +149,4 @@ nav a.active {
   margin-right: .8em;
   border-radius: 4px 0 0 4px;
 }
-/* everywhere else */
-* {
-  font-family: Arial, Helvetica, sans-serif;
-}
+

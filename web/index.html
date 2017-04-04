@@ -1,10 +1,17 @@
 <html>
   <head>
+    <!DOCTYPE html>
     <script>document.write('<base href="/" />');</script>
     <title>Pipeline</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles.css">
+    
+<!--     Connect to google fonts to get raleway --> 
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:black" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:light" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:medium" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:bold" rel="stylesheet">
     <!-- 1. Load libraries -->
      <!-- Polyfill(s) for older browsers -->
     <script src="node_modules/core-js/client/shim.min.js"></script>
@@ -16,6 +23,15 @@
     <script>
       System.import('app').catch(function(err){ console.error(err); });
     </script>
+    <!-- Include bootstrap framework: -->
+    <!-- Latest compiled and minified CSS -->
+      <link href="css/bootstrap.css" rel="stylesheet">
+      <link rel="stylesheet" href="styles.css">
+      
+      <!-- jQuery for bootstrap:-->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </head>
   <!-- 3. Display the application -->
   <body>

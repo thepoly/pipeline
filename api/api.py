@@ -1,5 +1,6 @@
 import falcon
 
+import settings
 import models
 import middleware
 
@@ -7,7 +8,13 @@ import route_stories
 import route_people
 import route_settings
 
+
+
+
 models.connect()
+
+#Initialize settings
+settings.AppSettings()
 
 api = falcon.API(middleware=middleware.components)
 api.add_route('/stories', route_stories.StoriesResource())

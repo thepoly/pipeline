@@ -1,8 +1,5 @@
 <div *ngIf="story" class = "editor-w-details">
   <div id = "editor">
-
-        <!-- how to style the text editor? separate stylesheet or edit the ace stylesheet?? -->
-
     <iframe [src]="'rt-editor/#' + story.id | safe" width="700" height="500"></iframe>
   </div>
   <div class = "col-lg-6 col-xs-4 col-s-4 col-md-6 details" >

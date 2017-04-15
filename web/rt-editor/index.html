@@ -79,13 +79,18 @@
 
 			// editor
 			var editor = ace.edit('editor');
-			editor.setTheme('ace/theme/monokai');
-			editor.getSession().setMode('ace/mode/text');
+			editor.setTheme('ace/theme/eclipse');
+			editor.session.setOptions({
+			    tabSize: 4,
+			    useSoftTabs: true
+			});
+			editor.getSession().setMode('ace/mode/plain_text');
 			editor.getSession().setUseWrapMode(true);
 			editor.$blockScrolling = Infinity
             editor.setShowPrintMargin(false);
             editor.renderer.setShowGutter(false);
             editor.setFontSize(16);
+            editor.setBehavioursEnabled(false)
 
 			var syncTimer;
 

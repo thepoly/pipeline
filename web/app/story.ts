@@ -6,4 +6,10 @@ export class Story {
   event_time: string;
   title: string;
   section: string;
+  //not in api:
+  author: string;
+  author-job: string;
+  kicker: string;
+  issue-date: string;
+  photographer: string;
 }

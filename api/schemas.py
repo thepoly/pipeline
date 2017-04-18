@@ -34,3 +34,11 @@ class AddStoryPersonSchema(marshmallow.Schema):
     def wrap(self, data, many):
         key = 'story_people' if many else 'story_person'
         return {key: data}
+
+class AddStoryPhotoSchema(marshmallow.Schema):
+    id = marshmallow.fields.Int()
+        
+    @marshmallow.post_dump(pass_many=True)
+    def wrap(self, data, many):
+        key = 'story_photo' if many else 'story_photo'
+        return {key: data}

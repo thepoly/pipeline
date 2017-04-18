@@ -10,9 +10,12 @@ import api_util
 
 people_schema = schemas.PersonSchema(many=True)
 person_schema = schemas.PersonSchema()
+photos_schema = schemas.PhotoSchema(many=True)
+photo_schema = schemas.PhotoSchema()
 stories_schema = schemas.StorySchema(many=True)
 story_schema = schemas.StorySchema()
 add_story_person_schema = schemas.AddStoryPersonSchema()
+add_story_photo_schema = schemas.AddStoryPhotoSchema()
 
 
 class StoriesResource:
@@ -116,7 +119,7 @@ class StoryPeopleResource:
 
 
 class StoryPhotoResource:
-    
+
     def on_get(self, req, resp, story_id):
         try:
             story = models.Story.get(id=story_id)
@@ -128,7 +131,7 @@ class StoryPhotoResource:
                   .join(models.StoryPhoto)
                   .where(models.StoryPhoto.story == story))
 
-        result = photo_schema.dump(photo)
+        result = photos_schema.dump(photos)
         resp.body = api_util.json_dump(result.data)
 
     def on_post(self, req, resp, story_id):
@@ -137,23 +140,23 @@ class StoryPhotoResource:
         if errors:
                 raise falcon.HTTPBadRequest(None, errors)
         photo_id = data['id']
-            
+
         try:
             models.Story.get(id=story_id)
         except models.Story.DoesNotExist:
             resp.body = json.dumps({'message': 'Story does not exist'})
             raise falcon.HTTPNotFound()
-            
+
         try:
             photo = models.Photo.get(id=photo_id)
         except models.Photo.DoesNotExist:
             resp.body = json.dumps({'message': 'Photo does not exist'})
             raise falcon.HTTPNotFound()
-            
+
         try:
             models.StoryPhoto.create(story_id=story_id, photo_id=photo.id)
         except peewee.IntegrityError:
             # Phto has already been added to this story_id
             raise falcon.HTTPConflict(None, 'Photo has already been added to this story')
-            
+
         self.on_get(req, resp, story_id)

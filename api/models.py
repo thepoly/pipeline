@@ -33,6 +33,7 @@ class Person(BaseModel):
 class Photo(BaseModel):
     created = peewee.DateTimeField(default=datetime.datetime.now)
     photo = peewee.BlobField(null=False)
+    mime_type = peewee.TextField(null=False)
 
 
 class StoryPerson(BaseModel):
@@ -46,8 +47,8 @@ class StoryPerson(BaseModel):
 
 class StoryPhoto(BaseModel):
     created = peewee.DateTimeField(default=datetime.datetime.now)
-    person = peewee.ForeignKeyField(Photo, related_name='story_photo')
-    photo = peewee.ForeignKeyField(Story, related_name='story_photo')
+    photo = peewee.ForeignKeyField(Photo, related_name='story_photos')
+    story = peewee.ForeignKeyField(Story, related_name='story_photos')
 
     class Meta:
         primary_key = peewee.CompositeKey('story', 'photo')
@@ -71,4 +72,5 @@ def connect():
         break
 
     # we connected; make our tables
-    db.create_tables([Story, Person, StoryPerson, StoryPhoto, Setting], safe=True)
+    db.create_tables([Story, Person, Photo, StoryPerson, StoryPhoto, Setting],
+                     safe=True)

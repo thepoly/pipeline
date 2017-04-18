@@ -27,6 +27,17 @@ class PersonSchema(marshmallow.Schema):
         return {key: data}
 
 
+class PhotoSchema(marshmallow.Schema):
+    id = marshmallow.fields.Int(dump_only=True)
+    created = marshmallow.fields.DateTime(dump_only=True)
+    mime_type = marshmallow.fields.Str(dump_only=True)
+
+    @marshmallow.post_dump(pass_many=True)
+    def wrap(self, data, many):
+        key = 'photos' if many else 'photo'
+        return {key: data}
+
+
 class AddStoryPersonSchema(marshmallow.Schema):
     id = marshmallow.fields.Int()
 
@@ -35,9 +46,10 @@ class AddStoryPersonSchema(marshmallow.Schema):
         key = 'story_people' if many else 'story_person'
         return {key: data}
 
+
 class AddStoryPhotoSchema(marshmallow.Schema):
     id = marshmallow.fields.Int()
-        
+
     @marshmallow.post_dump(pass_many=True)
     def wrap(self, data, many):
         key = 'story_photo' if many else 'story_photo'

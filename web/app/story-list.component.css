@@ -1,0 +1,132 @@
+h2 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  margin-left: 185px;
+}
+li.story {
+  height: 90px;
+  font-family: 'Raleway', sans-serif;
+  position: relative;
+  left: 0;
+  margin-left: 10px;
+  padding-top: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  border-style: solid;
+  border-color: #cecece;
+  border-left-width: 3px;
+  border-right-width: 3px;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  text-align: left;
+  padding-bottom: 10px;
+}
+ul.stories {
+  margin-left: 20px;
+}
+li.story.selected {
+  background-color: #f48989;
+}
+
+.story-photo {
+  float: left;
+  padding-right: 20px;
+  padding-left: 10px;
+}
+.info {
+  font-family: 'Raleway', sans-serif;
+  color: #838384;
+  padding-left: 20px;
+  text-overflow: ellipsis;
+}
+.title {
+  font-weight: 700;
+}
+.author {
+  font-weight: light;
+}
+.section {
+  font-weight: light;
+}
+
+input {
+  background: url("../search-icon-final-01.png") no-repeat scroll;
+  padding-left:50px;
+  margin-left: 30px;
+  border-style: solid;
+  border-color: #cecece;
+  border-width: 3px;
+  padding-right: 70px;
+  overflow: scroll;
+}
+
+input[type="submit"] {
+  margin-left: -60px;
+  height: 35px;
+  width: 45px;
+  padding: 10px;
+  font-family: 'Raleway', sans-serif;
+  background: none;
+  background-color: #eee;
+  border-radius: 4px;
+  cursor: pointer;
+  cursor: hand;
+  border: none;
+
+}
+/*.selected {
+  background-color: #dccfcf !important;
+  color: white;
+}*/
+.stories {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 500px;
+}
+
+.add-button {
+  padding: 10px;
+  background-color: #eee;
+  font-family: 'Raleway', sans-serif;
+}
+.add-button:focus{
+  outline: none;
+}
+
+button {
+  font-family: Arial;
+  border-radius: 4px;
+  cursor: pointer;
+  cursor: hand;
+  background-color: transparent;
+  border: none;
+}
+
+button.delete {
+  float:right;
+  background-color: gray !important;
+  color:white;
+  font-family: 'Raleway', sans-serif;
+  margin-left: 5px;
+
+}
+button.details {
+  float:right;
+  background-color: gray !important;
+  color:white;
+  font-family: 'Raleway', sans-serif;
+  margin-left: 5px;
+
+}
+
+label {
+  font-family: 'Raleway', sans-serif;
+  margin-left: 20px;
+  font-size: 1.5em;
+}
+
+.container {
+  float: left;
+  display: inline;
+}

@@ -126,12 +126,7 @@ label {
   font-size: 1.5em;
 }
 
-.story-list{
+.container {
   float: left;
-  display: inline-block;
-}
-
-.story-detail {
-  float:right;
-  display: inline-block;
+  display: inline;
 }

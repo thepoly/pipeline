@@ -7,6 +7,7 @@ import { AppRoutingModule }     from './app-routing.module';
 
 import { AppComponent }   from './app.component';
 import { StoryEditorComponent} from './story-editor.component';
+import { StoryListComponent } from './story-list.component';
 import { StoryDetailComponent } from './story-detail.component';
 import { StoryTextComponent } from './story-text.component';
 import { StorySearchComponent} from './story-search.component';
@@ -24,6 +25,7 @@ import { SafePipe } from './safepipe';
   declarations: [
     AppComponent,
     StoryEditorComponent,
+    StoryListComponent,
     StoryDetailComponent,
     StoryTextComponent,
     StorySearchComponent,

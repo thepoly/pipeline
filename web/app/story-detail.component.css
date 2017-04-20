@@ -1,5 +1,6 @@
 .editor-w-details {
   float: right;
+  display: inline;
 }
 
 .details {
@@ -59,4 +60,3 @@ h3 {
   margin-top: 20px;
   margin-right: 20px;
 }
-

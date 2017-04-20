@@ -125,3 +125,13 @@ label {
   margin-left: 20px;
   font-size: 1.5em;
 }
+
+.story-list{
+  float: left;
+  display: inline-block;
+}
+
+.story-detail {
+  float:right;
+  display: inline-block;
+}

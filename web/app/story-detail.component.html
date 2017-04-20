@@ -27,12 +27,12 @@
       <input class = "editable" (change) = "save()" placeholder="Author Job" />
     </div>
     <div id = "kicker">
-      <label>Kicker: </label>   
+      <label>Kicker: </label>
       <!-- needs value: [(ngModel)]="story.kicker"-->
       <input class = "editable" (change) = "save()" placeholder="Kicker" />
     </div>
     <div id = "issue">
-      <label>Issue Date: </label>{{story.date | date:"short" }}      
+      <label>Issue Date: </label>{{story.date | date:"short" }}
       <input class = "editable" (change) = "save()" placeholder="Issue Date" />
     </div>
     <div id = "photographer">
@@ -53,7 +53,7 @@
   </div>
 
     <!-- ..................................... -->
-  
-  <button (click)="goBack()">Back</button>
+
+  <!-- <button (click)="goBack()">Back</button> -->
 <!--   <button (click)="save()">Save</button>
  --></div>

@@ -37,4 +37,5 @@ export class StoryDetailComponent implements OnInit{
   goBack(): void {
     this.location.back();
   }
+
 }

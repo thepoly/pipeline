@@ -26,6 +26,14 @@ class Story(BaseModel):
 class Person(BaseModel):
     created = peewee.DateTimeField(default=datetime.datetime.now)
     name = peewee.TextField()
+    slack_handle = peewee.TextField(null=True)
+    slack_id = peewee.TextField(null=True)
+
+
+class Photo(BaseModel):
+    created = peewee.DateTimeField(default=datetime.datetime.now)
+    photo = peewee.BlobField(null=False)
+    mime_type = peewee.TextField(null=False)
 
 
 class StoryPerson(BaseModel):
@@ -35,6 +43,15 @@ class StoryPerson(BaseModel):
 
     class Meta:
         primary_key = peewee.CompositeKey('story', 'person')
+
+
+class StoryPhoto(BaseModel):
+    created = peewee.DateTimeField(default=datetime.datetime.now)
+    photo = peewee.ForeignKeyField(Photo, related_name='story_photos')
+    story = peewee.ForeignKeyField(Story, related_name='story_photos')
+
+    class Meta:
+        primary_key = peewee.CompositeKey('story', 'photo')
 
 
 class Setting(BaseModel):
@@ -55,4 +72,5 @@ def connect():
         break
 
     # we connected; make our tables
-    db.create_tables([Story, Person, StoryPerson, Setting], safe=True)
+    db.create_tables([Story, Person, Photo, StoryPerson, StoryPhoto, Setting],
+                     safe=True)

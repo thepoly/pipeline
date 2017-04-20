@@ -1,7 +1,7 @@
 h2 {
   font-family: 'Raleway', sans-serif;
   font-weight: bold;
-  text-align: center;
+  margin-left: 185px;
 }
 li.story {
   height: 90px;
@@ -89,6 +89,9 @@ input[type="submit"] {
   padding: 10px;
   background-color: #eee;
   font-family: 'Raleway', sans-serif;
+}
+.add-button:focus{
+  outline: none;
 }
 
 button {

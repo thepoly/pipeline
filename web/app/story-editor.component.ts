@@ -8,7 +8,7 @@ import { StoryService } from './story.service';
   moduleId: module.id,
   selector: 'story-editor',
   templateUrl: 'story-editor.component.html',
-  styleUrls: [ 'story-editor.component.css', 'bootstrap.css' ]
+  styleUrls: [ 'story-editor.component.css']
 })
 export class StoryEditorComponent implements OnInit {
   stories: Story[];

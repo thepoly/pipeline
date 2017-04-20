@@ -1,10 +1,28 @@
+.editor-w-details {
+  float: right;
+}
+
+.details {
+  border: solid;
+  border-color: #cecece;
+  margin-right: 20px;
+  padding-left: 10px;
+  margin-top: 10px;
+  padding-right: 0px;
+  padding-top: 10px;
+}
+
 label {
   display: inline-block;
-  width: 5em;
   margin: .5em 0;
   color: #DA1E05;
   font-weight: bold;
 }
+input.editable{
+  border: none;
+  width: 525px;
+}
+
 input {
   height: 2em;
   font-size: 1em;
@@ -27,3 +45,18 @@ button:disabled {
   color: #ccc;
   cursor: auto;
 }
+
+h3, #title, #author, #event-time, #section, #created, #location, #author-job, #kicker, #issue, #photographer {
+  font-family: 'Raleway', sans-serif;
+  margin-right: 20px;
+}
+h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #DA1E05;
+}
+#editor {
+  margin-top: 20px;
+  margin-right: 20px;
+}
+

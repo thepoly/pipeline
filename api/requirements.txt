@@ -4,6 +4,7 @@ greenlet==0.4.10
 gunicorn==19.6.0
 marshmallow==2.10.0
 peewee==2.8.3
+python-magic==0.4.13
 python-mimeparse==1.5.2
 six==1.10.0
 psycopg2==2.6.2

@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
     </div>
     <nav class="navbar-navbar-default">
       <div class = "container-fluid">
-          <a class = "navbar-left"routerLink="/story-editor" routerLinkActive="active">Story Editor</a>
+          <a class = "navbar-left"routerLink="/story-editor/1" routerLinkActive="active">Story Editor</a>
           <a class = "navbar-right" routerLink="/story-search" routerLinkActive="active">Story Search</a>
       </div>
     </nav>

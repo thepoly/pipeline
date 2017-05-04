@@ -9,9 +9,6 @@
       <input class = "editable" [(ngModel)]="story.title" (change) = "save()" placeholder="Title" />
     </div>
 
-  <!-- figure out how to save author and other new categories  -->
-  <!-- suggestion: new categories for details - author, author job, kicker, photographer, issue date. -->
-
     <div id = "section">
       <label>Section: </label>
       <input class = "editable" [(ngModel)]="story.section"(change) = "save()" placeholder="Section" />
@@ -50,10 +47,8 @@
     <div id = "created">
       <label>Created: </label>{{story.created | date:"short"}}
     </div>
+      <button class="delete" (click)="delete(story); $event.stopPropagation()">
+            Delete Story
+    </button> 
   </div>
-
-    <!-- ..................................... -->
-
-  <!-- <button (click)="goBack()">Back</button> -->
-<!--   <button (click)="save()">Save</button>
- --></div>
+ </div>

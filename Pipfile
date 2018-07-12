@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 wagtail = "*"
+"bs4" = "*"
+django-debug-toolbar = "*"
+django-webpack-loader = "*"
 
 [dev-packages]
 

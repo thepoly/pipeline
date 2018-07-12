@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block content %}
+    <h1>Authors</h1>
+
+    {% for author in page.get_authors %}
+        <a href="{% pageurl author %}">{{ author.title }}</a>
+    {% endfor %}
+
+{% endblock %}

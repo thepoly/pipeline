@@ -1,4 +1,5 @@
 {% load static wagtailuserbar %}
+{% load render_bundle from webpack_loader %}
 
 <!DOCTYPE html>
 <html class="no-js">
@@ -18,7 +19,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/pipeline.css' %}">
+        {# <link rel="stylesheet" type="text/css" href="{% static 'css/pipeline.css' %}"> #}
+        {% render_bundle 'main' 'css' %}
 
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
@@ -28,10 +30,19 @@
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
-        {% block content %}{% endblock %}
+        <div class="container">
+            <header>
+                <img src="https://poly.rpi.edu/wp-content/themes/poly_new_testbed/images/logo_m.png" alt="The Polytechnic">
+            </header>
+
+            <section class="content">
+                {% block content %}{% endblock %}
+            </section>
+        </div>
 
         {# Global javascript #}
-        <script type="text/javascript" src="{% static 'js/pipeline.js' %}"></script>
+        {# <script type="text/javascript" src="{% static 'js/pipeline.js' %}"></script> #}
+        {% render_bundle 'main' 'js' %}
 
         {% block extra_js %}
             {# Override this in templates to add extra javascript #}

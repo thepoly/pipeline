@@ -1,0 +1,6 @@
+/*.sqlite3
+/node_modules/
+/pipeline/static/webpack_bundles/
+/media/
+/webpack-stats.json
+/.vscode/

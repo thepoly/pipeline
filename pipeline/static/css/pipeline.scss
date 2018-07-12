@@ -1,0 +1,38 @@
+// @import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i');
+@import '~bootstrap/scss/bootstrap';
+
+body {
+    margin: 0;
+    font-family: 'Lora', serif;
+}
+
+header {
+    margin: 0;
+    background: #DA1E05;
+    color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 120px;
+    min-height: 450px;
+}
+
+header h1 {
+    margin: 0;
+    font-weight: 500;
+}
+
+header img {
+    scale: rotate(90deg);
+    transform: rotate(-90deg);
+    position: absolute;
+    left: -140px;
+    top: 180px;
+    width: 400px;
+}
+
+section.content {
+    margin-left: 120px;
+    padding: 0 20px;
+}

@@ -1,0 +1,8 @@
+{% load core_menu wagtailcore_tags %}
+<div class="nav-scroller py-1 mb-2">
+    <nav class="nav d-flex justify-content-around">
+        {% for menuitem in menuitems %}
+            <a class="p-2 text-muted" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+        {% endfor %}
+    </nav>
+</div>

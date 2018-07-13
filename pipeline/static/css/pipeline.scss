@@ -1,38 +1,78 @@
 // @import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i');
 @import '~bootstrap/scss/bootstrap';
 
-body {
-    margin: 0;
-    font-family: 'Lora', serif;
-}
+// body {
+//     margin: 0;
+//     font-family: 'Lora', serif;
+// }
 
-header {
-    margin: 0;
-    background: #DA1E05;
-    color: white;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 120px;
-    min-height: 450px;
-}
+// header {
+//     margin: 0;
+//     background: #DA1E05;
+//     color: white;
+//     position: absolute;
+//     top: 0;
+//     bottom: 0;
+//     left: 0;
+//     width: 120px;
+//     min-height: 450px;
+// }
 
-header h1 {
-    margin: 0;
-    font-weight: 500;
-}
+// header h1 {
+//     margin: 0;
+//     font-weight: 500;
+// }
 
-header img {
-    scale: rotate(90deg);
-    transform: rotate(-90deg);
-    position: absolute;
-    left: -140px;
-    top: 180px;
-    width: 400px;
-}
+// header img {
+//     scale: rotate(90deg);
+//     transform: rotate(-90deg);
+//     position: absolute;
+//     left: -140px;
+//     top: 180px;
+//     width: 400px;
+// }
 
-section.content {
-    margin-left: 120px;
-    padding: 0 20px;
-}
+// section.content {
+//     margin-left: 120px;
+//     padding: 0 20px;
+// }
+
+.blog-header {
+    line-height: 1;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .blog-header-logo {
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+  }
+  
+  .blog-header-logo:hover {
+    text-decoration: none;
+  }
+
+  .nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+  }
+  
+  .nav-scroller .nav {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .nav-scroller .nav-link {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: .875rem;
+  }

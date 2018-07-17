@@ -30,12 +30,12 @@
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
-        <div class="container">
             {# <header> #}
                 {# <img src="https://poly.rpi.edu/wp-content/themes/poly_new_testbed/images/logo_m.png" alt="The Polytechnic"> #}
             {# </header> #}
 
-            <header class="blog-header py-3">
+        <header class="blog-header py-3">
+            <div class="container">
                 <div class="row flex-nowrap justify-content-between align-items-center">
                     <div class="col-3 pt-1">
                         <a class="text-muted" href="#">Subscribe</a>
@@ -50,13 +50,17 @@
                         <a class="btn btn-sm btn-outline-secondary" href="#">Sign up</a>
                     </div>
                 </div>
-            </header>
+            </div>
+        </header>
 
+        <div class="container">
             {% block menu %}
                 {% get_site_root as site_root %}
                 {% top_menu parent=site_root calling_page=self %}
             {% endblock %}
+        </div>
 
+        <div class="container">
             <section class="content">
                 {% block content %}{% endblock %}
             </section>

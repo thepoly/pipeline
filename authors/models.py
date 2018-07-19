@@ -25,7 +25,7 @@ class AuthorPage(Page):
     def clean(self):
         super().clean()
         self.title = f'{self.first_name} {self.last_name}'
-    
+
 # AuthorPage.slug.default = 'blank-slug'
 
 

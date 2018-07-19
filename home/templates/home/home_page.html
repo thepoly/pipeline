@@ -8,12 +8,24 @@
     {% if page.featured_article %}
     <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
-            <h1 class="display-4">{{ page.featured_article.specific.headline|richtext }}</h1>
+            <h1 class="display-4">
+                <a class="text-white" href="{% pageurl page.featured_article %}">
+                    {{ page.featured_article.specific.headline|richtext }}
+                </a>
+            </h1>
             <div class="lead my-3">{{ page.featured_article.specific.summary|richtext }}</div>
             <p class="lead mb-0"><a href="{% pageurl page.featured_article %}" class="text-white font-weight-bold">Continue reading...</a></p>
         </div>
     </div>
     {% endif %}
+
+    <div class="row mb-2">
+    {% for block in page.featured_articles %}
+        {% if block.block_type == 'article' %}
+            {% include_block block %}
+        {% endif %}
+    {% endfor %}
+    </div>
 
     <div class="row mb-2">
         <div class="col-md-6">

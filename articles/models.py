@@ -3,9 +3,10 @@ from django.db import models
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.blocks import RichTextBlock
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel, InlinePanel, PageChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from modelcluster.fields import ParentalKey
 
 from bs4 import BeautifulSoup
 
@@ -42,6 +43,7 @@ class ArticlePage(Page):
                 FieldPanel('date'),
                 # TODO: use https://github.com/wagtail/wagtail-autocomplete for kicker
                 SnippetChooserPanel('kicker'),
+                InlinePanel('article_author_relationship', label='Author', min_num=1),
             ],
             heading='Metadata'),
         FieldPanel('summary'),
@@ -53,6 +55,9 @@ class ArticlePage(Page):
 
         soup = BeautifulSoup(self.headline)
         self.title = soup.text
+    
+    def authors(self):
+        return [r.author for r in self.article_author_relationship.all()]
 
 
 class ArticlesIndex(Page):
@@ -65,3 +70,18 @@ class Kicker(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ArticleAuthorRelationship(models.Model):
+    article = ParentalKey('ArticlePage', related_name='article_author_relationship', on_delete=models.PROTECT)
+    author = models.ForeignKey('authors.AuthorPage', related_name='author_article_relationship', on_delete=models.PROTECT)
+    title = RichTextField(
+        features=['italic'],
+        null=True,
+        blank=True
+    )
+
+    panels = [
+        PageChooserPanel('author'),
+        FieldPanel('title'),
+    ]

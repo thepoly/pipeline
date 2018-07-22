@@ -1,10 +1,7 @@
 from django.db import models
-from django.utils.text import slugify
 
 from wagtail.core.models import Page
-from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.snippets.models import register_snippet
 from wagtail.search import index
 
 
@@ -25,8 +22,6 @@ class AuthorPage(Page):
     def clean(self):
         super().clean()
         self.title = f'{self.first_name} {self.last_name}'
-
-# AuthorPage.slug.default = 'blank-slug'
 
 
 class AuthorsIndexPage(Page):

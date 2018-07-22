@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-articlepage{% endblock %}
+
+{% block content %}
+    <div class="metadata">
+        {% if page.kicker %}
+            <strong class="text-primary text-uppercase">{{ page.kicker }}</strong>
+        {% endif %}
+        <h1 class="article-headline mb-0">{{ page.headline|richtext }}</h1>
+        <div class="mb-4">
+            By {% for author in page.authors %}
+                <a href="{% pageurl author %}">{{ author }}</a>
+            {% endfor %}
+            <span class="text-muted small ml-1">
+                {{ page.date }}
+            </span>
+        </div>
+    </div>
+
+    {% include_block page.body %}
+
+    <hr>
+    <div class="more">
+        <p>See more by {{page.authors|first}}</p>
+        <p>See more articles about {{page.kicker}}</p>
+        <p>See similar articles</p>
+        <p>See recent articles</p>
+    </div>
+{% endblock %}

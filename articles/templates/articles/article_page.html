@@ -1,27 +1,49 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-articlepage{% endblock %}
 
 {% block content %}
-    <div class="metadata">
+<article class="narrow">
+    <div class="container">
         {% if page.kicker %}
-            <strong class="text-primary text-uppercase">{{ page.kicker }}</strong>
+            <strong class="text-primary text-uppercase text-kicker">{{ page.kicker }}</strong>
         {% endif %}
-        <h1 class="article-headline mb-0">{{ page.headline|richtext }}</h1>
-        <div class="mb-4">
-            By {% for author in page.authors %}
-                <a href="{% pageurl author %}">{{ author }}</a>
-            {% endfor %}
-            <span class="text-muted small ml-1">
-                {{ page.date }}
-            </span>
+        <h1 class="article-headline mb-3">{{ page.headline|richtext }}</h1>
+    </div>
+    {% if page.featured_photo %}
+        <div class="featured-photo mt-4 mb-4 text-center">
+            {% image page.featured_photo width-1200 as photo %}
+            <img class="" src="{{ photo.url }}">
         </div>
+    {% endif %}
+    <div class="container mb-4">
+        {% if page.authors %}
+        <span class="authors mr-1">
+            By {% for author in page.authors %}
+                <a class="author-name" href="{% pageurl author %}">{{ author }}</a>
+            {% endfor %}
+        </span>
+        {% endif %}
+        <a class="text-muted small published-date" href="{% pageurl page %}">
+            {{ page.date }}
+        </a>
     </div>
 
-    {% include_block page.body %}
+    <div class="container body">
+        {% for block in page.body %}
+            {% if block.block_type == 'image' %}
+                {% image block.value width-1200 as photo %}
+                <img src="{{ photo.url }}">
+            {% else %}
+                {% include_block block %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</article>
 
+<div class="container">
     <hr>
     <div class="more">
         <p>See more by {{page.authors|first}}</p>
@@ -29,4 +51,5 @@
         <p>See similar articles</p>
         <p>See recent articles</p>
     </div>
+</div>
 {% endblock %}

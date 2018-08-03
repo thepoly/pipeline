@@ -1,4 +1,4 @@
-{% load core_menu static wagtailuserbar %}
+{% load core_menu static wagtailuserbar wagtailcore_tags %}
 {% load render_bundle from webpack_loader %}
 
 <!DOCTYPE html>
@@ -6,14 +6,18 @@
     <head>
         <meta charset="utf-8" />
         <title>
-            {% block title %}
-                {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
-            {% endblock %}
-            {% block title_suffix %}
-                {% with self.get_site.site_name as site_name %}
-                    {% if site_name %}- {{ site_name }}{% endif %}
-                {% endwith %}
-            {% endblock %}
+            {% if request.path == '/' %}
+                {{ request.site.site_name }}
+            {% else %}
+                {% block title %}
+                    {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
+                {% endblock %}
+                {% block title_suffix %}
+                    {% with request.site.site_name as site_name %}
+                        {% if site_name %}- {{ site_name }}{% endif %}
+                    {% endwith %}
+                {% endblock %}
+            {% endif %}
         </title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,19 +34,16 @@
     <body class="bg-light {% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
-        <header class="blog-header py-2 bg-gradient-primary">
+        <header class="py-2 bg-gradient-primary">
             <div class="container">
-                <div class="row flex-nowrap justify-content-between align-items-center">
-                    <!-- <div class="col align-items-baseline">
-                        <a class="text-light" href="#">Subscribe</a>
-                    </div> -->
+                <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
                     <div class="col">
-                        <a class="header-logo" href="{{ page.get_site.root_url }}">
+                        <a class="header-logo" href="{% pageurl request.site.root_page %}">
                             <img src="{% static 'images/logo.png' %}" alt="The Polytechnic">
                         </a>
                     </div>
-                    <div class="col d-flex justify-content-end align-items-baseline">
-                        <a class="text-light" href="#">
+                    <div class="col text-right">
+                        <a class="text-light" href="{% url 'search' %}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
                         </a>
                         <a class="btn btn-sm btn-outline-light" href="#">Subscribe</a>
@@ -56,11 +57,16 @@
             {% top_menu parent=site_root calling_page=self %}
         {% endblock %}
 
-        <div class="container">
-            <section class="content">
-                {% block content %}{% endblock %}
-            </section>
-        </div>
+        <section class="content">
+            {% block content %}{% endblock %}
+        </section>
+
+        <footer class="footer px-2">
+            <p>
+                <span class="text-nowrap">&copy; {% now "Y" %} <i>The Rensselaer Polytechnic</i>.</span>
+                <span class="text-nowrap">Powered by <a href="https://github.com/thepoly/pipeline">Pipeline</a>.</span>
+            </p>
+        </footer>
 
         {# Global javascript #}
         {# <script type="text/javascript" src="{% static 'js/pipeline.js' %}"></script> #}

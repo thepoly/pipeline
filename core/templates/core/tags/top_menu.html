@@ -3,7 +3,7 @@
     <div class="container">
         <nav class="nav d-flex justify-content-between">
             {% for menuitem in menuitems %}
-                <a class="px-0 text-muted nav-link" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+                <a class="px-0 text-muted nav-link{% if menuitem.active %} active{% endif %}" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
             {% endfor %}
         </nav>
     </div>

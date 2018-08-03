@@ -6,6 +6,9 @@ from wagtail.core.blocks import RichTextBlock
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel, InlinePanel, PageChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.search import index
 from modelcluster.fields import ParentalKey
 
 from bs4 import BeautifulSoup
@@ -25,6 +28,7 @@ class ArticlePage(Page):
     date = models.DateField()
     body = StreamField([
         ('paragraph', RichTextBlock()),
+        ('image', ImageChooserBlock()),
     ])
     summary = RichTextField(
         features=['italic'],
@@ -32,22 +36,37 @@ class ArticlePage(Page):
         blank=True,
         help_text='Displayed on the home page or other places to provide a taste of what the article is about.'
     )
+    featured_photo = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        help_text='Shown at the top of the article and on the home page.'
+    )
 
     content_panels = [
         MultiFieldPanel([
-                FieldPanel('headline'),
+                FieldPanel('headline', classname="title"),
                 FieldPanel('subdeck'),
-            ],
-            heading='Front matter'),
+            ]),
         MultiFieldPanel([
                 FieldPanel('date'),
                 # TODO: use https://github.com/wagtail/wagtail-autocomplete for kicker
                 SnippetChooserPanel('kicker'),
                 InlinePanel('article_author_relationship', label='Author', min_num=1),
+                ImageChooserPanel('featured_photo'),
             ],
-            heading='Metadata'),
+            heading='Metadata',
+            classname='collapsible'),
         FieldPanel('summary'),
         StreamFieldPanel('body'),
+    ]
+
+    search_fields = Page.search_fields + [
+        index.SearchField('headline'),
+        index.SearchField('subdeck'),
+        index.SearchField('body'),
+        index.SearchField('summary'),
     ]
 
     def clean(self):
@@ -60,8 +79,11 @@ class ArticlePage(Page):
         return [r.author for r in self.article_author_relationship.all()]
 
 
-class ArticlesIndex(Page):
+class ArticlesIndexPage(Page):
     subpage_types = ['ArticlePage']
+
+    def get_articles(self):
+        return ArticlePage.objects.live().descendant_of(self).order_by('date')
 
 
 @register_snippet

@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 wagtail = "*"
-"bs4" = "*"
 django-debug-toolbar = "*"
 django-webpack-loader = "*"
+"beautifulsoup4" = "*"
 
 [dev-packages]
 "flake8" = "*"

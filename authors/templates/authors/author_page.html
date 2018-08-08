@@ -5,5 +5,22 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
+<div class="container">
     <h1>{{ page.title }}</h1>
+    {% include_block page.biography %}
+    <hr>
+
+    <div class="row">
+        {% for article in page.get_articles %}
+        <div class="col-lg-6 article mb-3">
+            <h2 class="mb-0">
+                <a href="{% pageurl article %}">{{ article.headline|richtext }}</a>
+            </h2>
+            {% if article.summary %}
+                {{ article.summary|richtext }}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

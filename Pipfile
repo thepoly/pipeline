@@ -4,9 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-wagtail = "*"
+wagtail = "~=2.1.2"
 django-debug-toolbar = "*"
 django-webpack-loader = "*"
+Django = "~=2.0.8"
 "beautifulsoup4" = "*"
 
 [dev-packages]

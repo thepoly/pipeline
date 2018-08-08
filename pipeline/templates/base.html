@@ -26,6 +26,9 @@
         {# <link rel="stylesheet" type="text/css" href="{% static 'css/pipeline.css' %}"> #}
         {% render_bundle 'main' 'css' %}
 
+        {# Global javascript #}
+        {% render_bundle 'main' 'js' attrs='defer' %}
+
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
@@ -67,10 +70,6 @@
                 <span class="text-nowrap">Powered by <a href="https://github.com/thepoly/pipeline">Pipeline</a>.</span>
             </p>
         </footer>
-
-        {# Global javascript #}
-        {# <script type="text/javascript" src="{% static 'js/pipeline.js' %}"></script> #}
-        {% render_bundle 'main' 'js' %}
 
         {% block extra_js %}
             {# Override this in templates to add extra javascript #}

@@ -22,11 +22,10 @@
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        {# Global stylesheets #}
-        {# <link rel="stylesheet" type="text/css" href="{% static 'css/pipeline.css' %}"> #}
+        {# Global stylesheet #}
         {% render_bundle 'main' 'css' %}
 
-        {# Global javascript #}
+        {# Global JavaScript #}
         {% render_bundle 'main' 'js' attrs='defer' %}
 
         {% block extra_css %}
@@ -72,7 +71,7 @@
         </footer>
 
         {% block extra_js %}
-            {# Override this in templates to add extra javascript #}
+            {# Override this in templates to add extra JavaScript #}
         {% endblock %}
     </body>
 </html>

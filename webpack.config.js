@@ -5,7 +5,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   context: __dirname,
-  entry: './pipeline/static/js/pipeline.js',
+  entry: [
+    './pipeline/static/js/pipeline.js',
+    './pipeline/static/css/pipeline.scss',
+  ],
   output: {
     path: path.resolve('./pipeline/static/webpack_bundles/'),
     filename: '[name]-[hash].js'
@@ -18,7 +21,6 @@ module.exports = {
       chunkFilename: '[id].css'
     })
   ],
-
   module: {
     rules: [
       {
@@ -30,16 +32,6 @@ module.exports = {
           }
         ]
       },
-      // {
-      //   test: /\.css$/,
-      //   use: [
-      //     {
-      //       loader: MiniCssExtractPlugin.loader,
-      //       options: {}
-      //     },
-      //     'css-loader'
-      //   ]
-      // },
       {
         test: /\.(scss)$/,
         use: [

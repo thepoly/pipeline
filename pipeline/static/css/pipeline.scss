@@ -8,7 +8,69 @@ $enable-gradients: true;
 
 $font-family-base: 'Lora', serif;
 
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+// Optional
+@import "~bootstrap/scss/root";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/images";
+// @import "~bootstrap/scss/code";
+@import "~bootstrap/scss/grid";
+// @import "~bootstrap/scss/tables";
+// @import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/buttons";
+// @import "~bootstrap/scss/transitions";
+// @import "~bootstrap/scss/dropdown";
+// @import "~bootstrap/scss/button-group";
+// @import "~bootstrap/scss/input-group";
+// @import "~bootstrap/scss/custom-forms";
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/navbar";
+// @import "~bootstrap/scss/card";
+// @import "~bootstrap/scss/breadcrumb";
+// @import "~bootstrap/scss/pagination";
+// @import "~bootstrap/scss/badge";
+// @import "~bootstrap/scss/jumbotron";
+// @import "~bootstrap/scss/alert";
+// @import "~bootstrap/scss/progress";
+// @import "~bootstrap/scss/media";
+// @import "~bootstrap/scss/list-group";
+// @import "~bootstrap/scss/close";
+// @import "~bootstrap/scss/modal";
+// @import "~bootstrap/scss/tooltip";
+// @import "~bootstrap/scss/popover";
+// @import "~bootstrap/scss/carousel";
+@import "~bootstrap/scss/utilities";
+// @import "~bootstrap/scss/print";
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .border#{$infix}-top {      border-top: $border-width solid $border-color ; }
+    .border#{$infix}-right {    border-right: $border-width solid $border-color ; }
+    .border#{$infix}-bottom {   border-bottom: $border-width solid $border-color ; }
+    .border#{$infix}-left {     border-left: $border-width solid $border-color ; }
+
+    .border#{$infix}-top-0 {    border-top: 0 !important; }
+    .border#{$infix}-right-0 {  border-right: 0 !important; }
+    .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
+    .border#{$infix}-left-0 {   border-left: 0 !important; }
+
+    .border#{$infix}-x {
+      border-left: $border-width solid $border-color ;
+      border-right: $border-width solid $border-color ;
+    }
+
+    .border#{$infix}-y {
+      border-top: $border-width solid $border-color ;
+      border-bottom: $border-width solid $border-color ;
+    }
+  }
+}
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Playfair Display', serif;
@@ -56,11 +118,6 @@ header {
 
 .nav-scroller .nav-link.active {
   font-weight: bold;
-}
-
-.card-img-right {
-  height: 100%;
-  border-radius: 0 3px 3px 0;
 }
 
 .flex-auto {
@@ -124,19 +181,7 @@ header {
   background-image: linear-gradient(141deg, theme-color-level("primary", 1) 0, theme-color-level("primary", -4) 71%, theme-color-level("primary", -5) 100%);
 }
 
-.template-homepage .top-featured .text-featured-kicker {
-  color: theme-color-level("primary", -8);
-}
-
-.template-homepage .top-featured p {
-  margin-bottom: 0;
-}
-
-.template-homepage .top-featured .photo img {
-  width: 100%;
-}
-
-.template-homepage .top-featured p {
+.template-homepage .featured .summary p, .template-homepage .featured .headline p {
   margin-bottom: 0;
 }
 

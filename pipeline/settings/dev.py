@@ -11,6 +11,13 @@ ALLOWED_HOSTS = ['*']
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+] + MIDDLEWARE
+
+INSTALLED_APPS = INSTALLED_APPS + [
+    'debug_toolbar',
+]
 
 try:
     from .local import *

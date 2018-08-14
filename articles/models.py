@@ -72,7 +72,7 @@ class ArticlePage(Page):
     def clean(self):
         super().clean()
 
-        soup = BeautifulSoup(self.headline)
+        soup = BeautifulSoup(self.headline, 'html.parser')
         self.title = soup.text
     
     def authors(self):

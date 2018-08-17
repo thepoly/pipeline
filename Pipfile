@@ -12,6 +12,10 @@ Django = "~=2.0.8"
 
 [dev-packages]
 "flake8" = "*"
+black = "==18.6b4"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

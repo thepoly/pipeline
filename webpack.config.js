@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
+  mode: 'none',
   context: __dirname,
   entry: [
     './pipeline/static/js/pipeline.js',
@@ -17,7 +18,7 @@ module.exports = {
 
   plugins: [
     new CleanWebpackPlugin(['./pipeline/static/webpack_bundles/']),
-    new BundleTracker({filename: './webpack-stats.json'}),
+    new BundleTracker({ filename: './webpack-stats.json' }),
     new MiniCssExtractPlugin({
       filename: '[name]-[hash].css',
       chunkFilename: '[id].css'

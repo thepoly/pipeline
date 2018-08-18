@@ -9,18 +9,39 @@ import wagtail.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authors', '0003_authorsindexpage'),
-        ('articles', '0006_articlepage_kicker'),
+        # ('authors', '0003_authorsindexpage'),
+        ("articles", "0006_articlepage_kicker")
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ArticleAuthorRelationship',
+            name="ArticleAuthorRelationship",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', wagtail.core.fields.RichTextField(blank=True, null=True)),
-                ('article', modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.PROTECT, related_name='authors', to='articles.ArticlePage')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='authors.AuthorPage')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", wagtail.core.fields.RichTextField(blank=True, null=True)),
+                (
+                    "article",
+                    modelcluster.fields.ParentalKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="authors",
+                        to="articles.ArticlePage",
+                    ),
+                ),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="authors.AuthorPage",
+                    ),
+                ),
             ],
-        ),
+        )
     ]

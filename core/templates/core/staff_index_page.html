@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-staffindexpage{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Staff</h1>
+    <div class="row">
+        {% for person in page.get_active_staff %}
+            <div class="col-sm-6 col-md-4 text-center person">
+                {% if person.photo %}
+                    {% image person.photo width-400 as photo %}
+                    <a href="{% pageurl person %}">
+                        <img class="rounded mb-2" src="{{ photo.url }}">
+                    </a>
+                {% endif %}
+                <h3 class="mb-0">
+                    <a href="{% pageurl person %}">{{ person.title }}</a>
+                </h3>
+                <p>
+                {% for position in person.get_current_positions %}
+                    {% if forloop.last and person.get_current_positions|length > 1 %} and {% endif %}
+                    {{ position.title }}{% if not forloop.last and person.get_current_positions|length > 2 %}, {% endif %}
+                {% endfor %}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

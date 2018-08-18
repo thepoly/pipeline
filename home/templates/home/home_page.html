@@ -20,7 +20,9 @@
         </div>
         <div class="col-lg-5">
             {% image page.featured_article.specific.featured_photo width-1200 as photo %}
-            <img class="img-fluid mb-3" src="{{ photo.url }}">
+            <a href="{% pageurl page.featured_article %}">
+                <img class="img-fluid mb-3" src="{{ photo.url }}">
+            </a>
         </div>
         <div class="col-lg-7 d-lg-none">
             <div class="lead">{{ page.featured_article.specific.summary|richtext }}</div>

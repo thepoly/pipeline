@@ -114,6 +114,18 @@ header {
   padding-top: .35rem;
   padding-bottom: .75rem;
   font-size: .875rem;
+  flex-grow: 1;
+  flex-basis: auto;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.nav-scroller .nav-link:first-child {
+  padding-left: 0;
+}
+
+.nav-scroller .nav-link:last-child {
+  padding-right: 0;
 }
 
 .nav-scroller .nav-link.active {
@@ -123,6 +135,9 @@ header {
 .nav-scroller .divider {
   margin-top: 0.25rem;
   height: 1.5rem;
+  flex-grow: 2;
+  padding: 0.5px;
+  background-color: $border-color;
 }
 
 .flex-auto {

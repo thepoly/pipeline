@@ -120,6 +120,11 @@ header {
   font-weight: bold;
 }
 
+.nav-scroller .divider {
+  margin-top: 0.25rem;
+  height: 1.5rem;
+}
+
 .flex-auto {
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;

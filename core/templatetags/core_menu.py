@@ -31,9 +31,9 @@ def top_menu(context, parent, calling_page=None):
 
         # Add a divider after the links to sections and before the static pages.
         if (
-            not isinstance(menuitem.specific, ArticlesIndexPage)
+            divider_index is None
             and len(menuitems) > 1
-            and divider_index is None
+            and not isinstance(menuitem.specific, ArticlesIndexPage)
         ):
             divider_index = i - 1
     return {

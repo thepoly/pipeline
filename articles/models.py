@@ -51,7 +51,7 @@ class ArticlePage(Page):
                 FieldPanel("date"),
                 # TODO: use https://github.com/wagtail/wagtail-autocomplete for kicker
                 SnippetChooserPanel("kicker"),
-                InlinePanel("article_author_relationship", label="Author", min_num=1),
+                InlinePanel("authors", label="Author", min_num=1),
                 ImageChooserPanel("featured_photo"),
             ],
             heading="Metadata",
@@ -74,8 +74,8 @@ class ArticlePage(Page):
         soup = BeautifulSoup(self.headline, "html.parser")
         self.title = soup.text
 
-    def authors(self):
-        return [r.author for r in self.article_author_relationship.all()]
+    def get_authors(self):
+        return [r.author for r in self.authors.all()]
 
 
 class ArticlesIndexPage(Page):
@@ -95,15 +95,10 @@ class Kicker(models.Model):
 
 class ArticleAuthorRelationship(models.Model):
     article = ParentalKey(
-        "ArticlePage",
-        related_name="article_author_relationship",
-        on_delete=models.PROTECT,
+        "ArticlePage", related_name="authors", on_delete=models.PROTECT
     )
     author = models.ForeignKey(
-        "authors.AuthorPage",
-        related_name="author_article_relationship",
-        on_delete=models.PROTECT,
+        "core.StaffPage", related_name="articles", on_delete=models.PROTECT
     )
-    title = RichTextField(features=["italic"], null=True, blank=True)
 
-    panels = [PageChooserPanel("author"), FieldPanel("title")]
+    panels = [PageChooserPanel("author")]

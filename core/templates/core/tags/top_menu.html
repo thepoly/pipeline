@@ -4,6 +4,9 @@
         <nav class="nav d-flex justify-content-between">
             {% for menuitem in menuitems %}
                 <a class="px-0 text-muted nav-link{% if menuitem.active %} active{% endif %}" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+                {% if divider_index == forloop.counter0 %}
+                    <span class="divider border-left"></span>
+                {% endif %}
             {% endfor %}
         </nav>
     </div>

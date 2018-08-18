@@ -36,6 +36,9 @@ class StaffPage(Page):
 
     search_fields = [index.SearchField("first_name"), index.SearchField("last_name")]
 
+    parent_page_types = ["StaffIndexPage"]
+    subpage_types = []
+
     def clean(self):
         super().clean()
         self.title = f"{self.first_name} {self.last_name}"

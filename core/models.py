@@ -44,7 +44,7 @@ class StaffPage(Page):
         self.title = f"{self.first_name} {self.last_name}"
 
     def get_articles(self):
-        return [r.article for r in self.articles.all()]
+        return [r.article for r in self.articles.select_related("article").all()]
 
     def get_current_positions(self):
         return [
@@ -53,6 +53,9 @@ class StaffPage(Page):
                 "position"
             )
         ]
+
+    def get_active_positions(self):
+        return [term.position for term in self.terms.all() if term.date_ended is None]
 
 
 class StaffIndexPage(Page):
@@ -63,6 +66,8 @@ class StaffIndexPage(Page):
             StaffPage.objects.live()
             .descendant_of(self)
             .filter(terms__date_ended__isnull=True)
+            .select_related("photo")
+            .prefetch_related("terms__position")
             .distinct()
         )
 

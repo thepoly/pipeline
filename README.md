@@ -98,3 +98,7 @@ Many of the following features are partially complete, but this isn't indicated.
 - [ ] Search
   - [x] Basic headline search
   - [ ] Search all fields of articles
+- [ ] Instrumentation
+  - [x] Basic Prometheus metrics
+  - [ ] DB metrics
+  - [ ] HTTP Basic auth

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "165cd00f8223f7f5bf6e3155012ee1defa59a542d63e0302513f04d52c0e6526"
+            "sha256": "baee576175e4fe9a9f3f9df2072f87cae384ea94765e715d93484ae2dd9ef43f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -60,6 +60,14 @@
                 "sha256:42bd7fa91af9996d7dfd34e6b027445acbece188d371d63abd19dde4c7ac8fc8"
             ],
             "version": "==4.2"
+        },
+        "django-prometheus": {
+            "hashes": [
+                "sha256:571d89a13e2547e1c3d19901f155bde8e101323fbcb0439363d670bc61c8c541",
+                "sha256:e8da2eb91cb20cfe0b8130305d34f3503766b7a08a244ce1031c36136beeb7a5"
+            ],
+            "index": "pypi",
+            "version": "==1.0.15"
         },
         "django-taggit": {
             "hashes": [
@@ -145,6 +153,12 @@
             ],
             "markers": "python_version != '3.3.*' and python_version != '3.0.*' and python_version != '3.1.*' and python_version >= '2.7' and python_version != '3.2.*'",
             "version": "==5.2.0"
+        },
+        "prometheus-client": {
+            "hashes": [
+                "sha256:17bc24c09431644f7c65d7bce9f4237252308070b6395d6d8e87767afe867e24"
+            ],
+            "version": "==0.3.1"
         },
         "pytz": {
             "hashes": [

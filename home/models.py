@@ -6,24 +6,50 @@ from wagtail.admin.edit_handlers import PageChooserPanel, StreamFieldPanel
 from wagtail.core import blocks
 
 
-class HomePage(Page):
-    featured_article = models.ForeignKey(
-        'articles.ArticlePage',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        help_text='Article that is displayed prominently at the top of the home page.'
+class ArticleBlock(blocks.StructBlock):
+    article = blocks.PageChooserBlock(target_model="articles.ArticlePage")
+    headline = blocks.RichTextBlock(
+        help_text="Optional text to override the article headline", required=False
     )
-    featured_articles = StreamField([
-            ('article', blocks.PageChooserBlock(
-                target_model='articles.ArticlePage',
-                template='home/featured_article_block.html'
-            ))
-        ],
-        null=True
+    # TODO: add a photo override block
+
+    class Meta:
+        template = "home/article_block.html"
+
+
+class OneColumnBlock(blocks.StructBlock):
+    column = ArticleBlock()
+
+
+class TwoColumnBlock(blocks.StructBlock):
+    left_column = ArticleBlock()
+    right_column = ArticleBlock()
+    emphasize_column = blocks.ChoiceBlock(
+        choices=[("left", "Left"), ("right", "Right")],
+        required=False,
+        help_text="Which article, if either, should appear larger.",
     )
 
-    content_panels = Page.content_panels + [
-        PageChooserPanel('featured_article'),
-        StreamFieldPanel('featured_articles')
-    ]
+
+class ThreeColumnBlock(blocks.StructBlock):
+    left_column = ArticleBlock()
+    middle_column = ArticleBlock()
+    right_column = ArticleBlock()
+
+
+class RecentArticlesBlock(blocks.StructBlock):
+    num_articles = blocks.IntegerBlock()
+
+
+class HomePage(Page):
+    featured_articles = StreamField(
+        [
+            ("one_column", OneColumnBlock()),
+            ("two_columns", TwoColumnBlock()),
+            ("three_columns", ThreeColumnBlock()),
+            ("recent_articles", RecentArticlesBlock()),
+        ],
+        null=True,
+    )
+
+    content_panels = Page.content_panels + [StreamFieldPanel("featured_articles")]

@@ -5,46 +5,69 @@
 
 {% block content %}
 <div class="container">
-    {% if page.featured_article %}
-    <div class="top-featured mb-4 border-md-bottom pb-1 row">
-        <div class="col-lg-7">
-            {% if page.featured_article.specific.kicker %}
-                <strong class="text-primary text-uppercase text-kicker">{{ page.featured_article.specific.kicker }}</strong>
-            {% endif %}
-            <h1 class="display-4 mb-3">
-                <a class="text-dark" href="{% pageurl page.featured_article %}">
-                    {{ page.featured_article.specific.headline|richtext }}
-                </a>
-            </h1>
-            <div class="lead d-none d-lg-block">{{ page.featured_article.specific.summary|richtext }}</div>
-        </div>
-        <div class="col-lg-5">
-            {% image page.featured_article.specific.featured_photo width-1200 as photo %}
-            <a href="{% pageurl page.featured_article %}">
-                <img class="img-fluid mb-3" src="{{ photo.url }}">
-            </a>
-        </div>
-        <div class="col-lg-7 d-lg-none">
-            <div class="lead">{{ page.featured_article.specific.summary|richtext }}</div>
-        </div>
-        <div class="clearfix visible"></div>
-    </div>
-    {% endif %}
-
-    <div class="row">
-        {% for block in page.featured_articles %}
-            {% if forloop.counter0 == 0 %}
-                <div class="col-md-8 featured border-md-right pr-md-4 mb-4 mb-md-0">
-            {% elif forloop.counter0 == 1 %}
-                <div class="col-md-4 featured pl-md-4 mb-4 mb-md-0">
-            {% else %}
-                {% cycle '<div class="col-12 my-md-4 border-md-bottom"></div>' '' %}
-                <div class="col-md-6 col-lg-4 featured mb-4 mb-md-0">
-            {% endif %}
-                    {% include_block block %}
+    {% for block in page.featured_articles %}
+        <div class="row mb-md-4">
+            {% if block.block_type == "one_column" %}
+                <div class="featured border-md-bottom pb-1 mb-5 mb-md-0 d-lg-flex">
+                    <div class="col-lg-7">
+                        {% if block.value.column.article.specific.kicker %}
+                            <strong class="text-primary text-uppercase text-kicker">{{ block.value.column.article.specific.kicker }}</strong>
+                        {% endif %}
+                        <h1 class="display-4 mb-3">
+                            <a class="text-dark" href="{% pageurl block.value.column.article %}">
+                                {{ block.value.column.article.specific.headline|richtext }}
+                            </a>
+                        </h1>
+                        <div class="lead d-none d-lg-block">{{ block.value.column.article.specific.summary|richtext }}</div>
+                    </div>
+                    <div class="col-lg-5">
+                        {% image block.value.column.article.featured_photo width-1200 as photo %}
+                        <a href="{% pageurl block.value.column.article %}">
+                            <img class="img-fluid mb-3" src="{{ photo.url }}">
+                        </a>
+                    </div>
+                    <div class="col-lg-7 d-lg-none">
+                        <div class="lead">{{ block.value.column.article.specific.summary|richtext }}</div>
+                    </div>
                 </div>
-        {% endfor %}
-    </div>
+            {% elif block.block_type == "two_columns" %}
+                <div class="
+                    {% if block.value.emphasize_column == 'left' %}
+                        col-md-8
+                    {% elif block.value.emphasize_column == 'right' %}
+                        col-md-4
+                    {% else %}
+                        col-md-6
+                    {% endif %}
+                    featured border-md-right pr-md-4 mb-5 mb-md-0">
+                    {% include_block block.value.left_column %}
+                </div>
+                <div class="
+                    {% if block.value.emphasize_column == 'left' %}
+                        col-md-4
+                    {% elif block.value.emphasize_column == 'right' %}
+                        col-md-8
+                    {% else %}
+                        col-md-6
+                    {% endif %}
+                    featured pl-md-4 mb-5 mb-md-0">
+                    {% include_block block.value.right_column %}
+                </div>
+            {% elif block.block_type == "three_columns" %}
+                <div class="col-md-4 featured border-md-right pr-md-4 mb-5 mb-md-0">
+                    {% include_block block.value.left_column %}
+                </div>
+                <div class="col-md-4 featured border-md-right pl-md-4 pr-md-4 mb-5 mb-md-0">
+                    {% include_block block.value.middle_column %}
+                </div>
+                <div class="col-md-4 featured pl-md-4 mb-5 mb-md-0">
+                    {% include_block block.value.right_column %}
+                </div>
+            {% else %}
+                unsupported block type
+            {% endif %}
+        </div>
+    {% endfor %}
 
 </div>
 {% endblock %}

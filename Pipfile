@@ -9,6 +9,7 @@ django-debug-toolbar = "*"
 django-webpack-loader = "*"
 Django = "~=2.0.8"
 "beautifulsoup4" = "==4.6.0"
+django-prometheus = "*"
 
 [dev-packages]
 "flake8" = "*"

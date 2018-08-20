@@ -1,6 +1,6 @@
 from django.db import models
 
-from wagtail.core.models import Page
+from wagtail.core.models import Page, PageManager
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.blocks import RichTextBlock
 from wagtail.admin.edit_handlers import (
@@ -74,8 +74,10 @@ class ArticlePage(Page):
         soup = BeautifulSoup(self.headline, "html.parser")
         self.title = soup.text
 
-    def get_authors(self):
-        return [r.author for r in self.authors.all()]
+    def get_context(self, request):
+        context = super().get_context(request)
+        context["authors"] = [r.author for r in self.authors.select_related("author")]
+        return context
 
 
 class ArticlesIndexPage(Page):

@@ -19,9 +19,9 @@
         </div>
     {% endif %}
     <div class="container mb-4">
-        {% if page.get_authors %}
+        {% if authors %}
         <span class="authors mr-1">
-            By {% for author in page.get_authors %}
+            By {% for author in authors %}
                 <a class="author-name" href="{% pageurl author %}">{{ author }}</a>
             {% endfor %}
         </span>
@@ -46,8 +46,8 @@
 <div class="container">
     <hr>
     <div class="more">
-        <p>See more by {{page.get_authors|first}}</p>
-        <p>See more articles about {{page.kicker}}</p>
+        <p>See more by {{ authors|first }}</p>
+        <p>See more articles about {{ page.kicker }}</p>
         <p>See similar articles</p>
         <p>See recent articles</p>
     </div>

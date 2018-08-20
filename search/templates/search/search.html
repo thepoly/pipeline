@@ -6,11 +6,16 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-    <h1>Search</h1>
-
-    <form action="{% url 'search' %}" method="get">
-        <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
-        <input type="submit" value="Search" class="button">
+<div class="container">
+    <form class="my-5" action="{% url 'search' %}" method="get">
+        <div class="form-row justify-content-center">
+            <div class="col-md-10">
+                <input type="text" placeholder="Search..." class="form-control form-control-lg mr-sm-2 mb-2" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+            </div>
+            <div class="col-3 col-md-2">
+                <input type="submit" value="Search" class="form-control form-control-lg btn btn-primary mb-2">
+            </div>
+        </div>
     </form>
 
     {% if search_results %}
@@ -35,4 +40,5 @@
     {% elif search_query %}
         No results found
     {% endif %}
+</div>
 {% endblock %}

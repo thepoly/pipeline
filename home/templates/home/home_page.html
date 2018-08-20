@@ -63,6 +63,16 @@
                 <div class="col-md-4 featured pl-md-4 mb-5 mb-md-0">
                     {% include_block block.value.right_column %}
                 </div>
+            {% elif block.block_type == "recent_articles" %}
+                {% for article in block.value.get_articles %}
+                    <div class="col-md-4 featured mb-5 mb-md-0
+                        {% cycle 'pr-md-4' 'pr-md-4 pl-md-4 border-md-left' 'pl-md-4 border-md-left' %}">
+                        {% include "home/article.html" with article=article only %}
+                    </div>
+                    {% if forloop.counter|divisibleby:"3" and not forloop.last %}
+                        <div class="col-12 mb-4 d-none d-md-block"></div>
+                    {% endif %}
+                {% endfor %}
             {% else %}
                 unsupported block type
             {% endif %}

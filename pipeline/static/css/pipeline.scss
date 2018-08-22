@@ -202,6 +202,16 @@ header a.search {
   font-size: 1.1rem;
 }
 
+.template-homepage .header-logo img {
+  height: 70px;
+}
+
+@include media-breakpoint-down(sm) {
+  .template-homepage .header-logo img {
+    height: 50px;
+  }
+}
+
 .template-homepage .nav-scroller {
   @extend .sticky-top;
 }

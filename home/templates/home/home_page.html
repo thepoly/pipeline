@@ -1,9 +1,29 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block title_block %}{{ request.site.site_name }}{% endblock %}
 
 {% block body_class %}template-homepage{% endblock %}
+
+{% block header_block %}
+    <header class="pb-4 pb-md-5 pt-3 bg-gradient-primary">
+        <div class="container">
+            <div class="flex-row no-gutters align-items-center">
+                <div class="col text-right mb-3 mb-md-0">
+                    <a class="text-light search" href="{% url 'search' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
+                    </a>
+                    <a class="btn btn-sm btn-outline-light" href="#">Subscribe</a>
+                </div>
+                <div class="col-12 text-center">
+                    <a class="header-logo" href="{% pageurl request.site.root_page %}">
+                        <img class="img-fluid" src="{% static 'images/logo.png' %}" alt="The Polytechnic">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
 
 {% block content %}
 <div class="container">

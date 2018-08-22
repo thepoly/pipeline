@@ -8,28 +8,38 @@ import modelcluster.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wagtailimages', '0021_image_file_hash'),
-        ('core', '0003_auto_20180818_1303'),
+        ("wagtailimages", "0021_image_file_hash"),
+        ("core", "0003_auto_20180818_1303"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='staffpage',
-            name='positions',
-        ),
+        migrations.RemoveField(model_name="staffpage", name="positions"),
         migrations.AddField(
-            model_name='staffpage',
-            name='photo',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='wagtailimages.Image'),
+            model_name="staffpage",
+            name="photo",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="wagtailimages.Image",
+            ),
         ),
         migrations.AlterField(
-            model_name='term',
-            name='person',
-            field=modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.PROTECT, related_name='terms', to='core.StaffPage'),
+            model_name="term",
+            name="person",
+            field=modelcluster.fields.ParentalKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="terms",
+                to="core.StaffPage",
+            ),
         ),
         migrations.AlterField(
-            model_name='term',
-            name='position',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='terms', to='core.Position'),
+            model_name="term",
+            name="position",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="terms",
+                to="core.Position",
+            ),
         ),
     ]

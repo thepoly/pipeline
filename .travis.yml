@@ -19,7 +19,7 @@ install:
     
 before_script:
   - pipenv check
-  - black . --check --exclude node_modules/
+  - if [[ $TRAVIS_PYTHON_VERSION != 3.5 ]]; then black . --check --exclude node_modules/; fi
   - flake8 --exclude node_modules/ || true
 
 script:

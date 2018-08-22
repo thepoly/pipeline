@@ -1,6 +1,5 @@
 language: python
 python:
-  - "3.5"
   - "3.6"
 matrix:
   include:
@@ -19,7 +18,7 @@ install:
     
 before_script:
   - pipenv check
-  - if [[ $TRAVIS_PYTHON_VERSION != 3.5 ]]; then black . --check --exclude node_modules/; fi
+  - black . --check --exclude node_modules/
   - flake8 --exclude node_modules/ || true
 
 script:

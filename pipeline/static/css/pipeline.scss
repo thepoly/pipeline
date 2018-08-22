@@ -80,6 +80,10 @@ header {
   font-family: var(--font-family-sans-serif);
 }
 
+header a.search {
+  text-decoration: none;
+}
+
 .header-logo img {
   height: 35px;
 }

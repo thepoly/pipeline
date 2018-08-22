@@ -5,26 +5,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0005_auto_20180818_1623'),
-    ]
+    dependencies = [("core", "0005_auto_20180818_1623")]
 
     operations = [
-        migrations.AlterModelOptions(
-            name='position',
-            options={},
-        ),
-        migrations.AlterModelOptions(
-            name='term',
-            options={'ordering': ['sort_order']},
-        ),
-        migrations.RemoveField(
-            model_name='position',
-            name='sort_order',
-        ),
+        migrations.AlterModelOptions(name="position", options={}),
+        migrations.AlterModelOptions(name="term", options={"ordering": ["sort_order"]}),
+        migrations.RemoveField(model_name="position", name="sort_order"),
         migrations.AddField(
-            model_name='term',
-            name='sort_order',
+            model_name="term",
+            name="sort_order",
             field=models.IntegerField(blank=True, editable=False, null=True),
         ),
     ]

@@ -7,14 +7,22 @@ import wagtail.core.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('home', '0003_homepage_featured_article'),
-    ]
+    dependencies = [("home", "0003_homepage_featured_article")]
 
     operations = [
         migrations.AddField(
-            model_name='homepage',
-            name='featured_articles',
-            field=wagtail.core.fields.StreamField([('article', wagtail.core.blocks.PageChooserBlock(target_model=['articles.ArticlePage']))], null=True),
-        ),
+            model_name="homepage",
+            name="featured_articles",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "article",
+                        wagtail.core.blocks.PageChooserBlock(
+                            target_model=["articles.ArticlePage"]
+                        ),
+                    )
+                ],
+                null=True,
+            ),
+        )
     ]

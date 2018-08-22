@@ -6,19 +6,21 @@ import wagtail.core.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('articles', '0003_articlesindex'),
-    ]
+    dependencies = [("articles", "0003_articlesindex")]
 
     operations = [
         migrations.AddField(
-            model_name='articlepage',
-            name='subdeck',
+            model_name="articlepage",
+            name="subdeck",
             field=wagtail.core.fields.RichTextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='articlepage',
-            name='summary',
-            field=wagtail.core.fields.RichTextField(blank=True, help_text='Displayed on the home page or other places to provide a taste of what the article is about.', null=True),
+            model_name="articlepage",
+            name="summary",
+            field=wagtail.core.fields.RichTextField(
+                blank=True,
+                help_text="Displayed on the home page or other places to provide a taste of what the article is about.",
+                null=True,
+            ),
         ),
     ]

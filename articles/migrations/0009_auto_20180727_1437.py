@@ -8,22 +8,25 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wagtailforms', '0003_capitalizeverbose'),
-        ('contenttypes', '0002_remove_content_type_name'),
-        ('wagtailcore', '0040_page_draft_title'),
+        ("wagtailforms", "0003_capitalizeverbose"),
+        ("contenttypes", "0002_remove_content_type_name"),
+        ("wagtailcore", "0040_page_draft_title"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('wagtailredirects', '0005_capitalizeverbose'),
-        ('articles', '0008_auto_20180726_1915'),
+        ("wagtailredirects", "0005_capitalizeverbose"),
+        ("articles", "0008_auto_20180726_1915"),
     ]
 
     operations = [
-        migrations.RenameModel(
-            old_name='ArticlesIndex',
-            new_name='ArticlesIndexPage',
-        ),
+        migrations.RenameModel(old_name="ArticlesIndex", new_name="ArticlesIndexPage"),
         migrations.AlterField(
-            model_name='articlepage',
-            name='featured_photo',
-            field=models.ForeignKey(blank=True, help_text='Shown at the top of the article and on the home page.', null=True, on_delete=django.db.models.deletion.PROTECT, to='wagtailimages.Image'),
+            model_name="articlepage",
+            name="featured_photo",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Shown at the top of the article and on the home page.",
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="wagtailimages.Image",
+            ),
         ),
     ]

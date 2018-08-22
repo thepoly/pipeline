@@ -7,19 +7,27 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wagtailcore', '0040_page_draft_title'),
-        ('articles', '0002_articlepage_headline'),
+        ("wagtailcore", "0040_page_draft_title"),
+        ("articles", "0002_articlepage_headline"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ArticlesIndex',
+            name="ArticlesIndex",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.Page",
+                    ),
+                )
             ],
-            options={
-                'abstract': False,
-            },
-            bases=('wagtailcore.page',),
-        ),
+            options={"abstract": False},
+            bases=("wagtailcore.page",),
+        )
     ]

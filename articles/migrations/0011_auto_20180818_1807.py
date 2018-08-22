@@ -8,28 +8,31 @@ import modelcluster.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0008_auto_20180818_1804'),
-        ('articles', '0010_auto_20180817_2321'),
+        ("core", "0008_auto_20180818_1804"),
+        ("articles", "0010_auto_20180817_2321"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='articleauthorrelationship',
-            name='author',
-        ),
-        migrations.RemoveField(
-            model_name='articleauthorrelationship',
-            name='title',
-        ),
+        migrations.RemoveField(model_name="articleauthorrelationship", name="author"),
+        migrations.RemoveField(model_name="articleauthorrelationship", name="title"),
         migrations.AddField(
-            model_name='articleauthorrelationship',
-            name='person',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, related_name='articles', to='core.StaffPage'),
+            model_name="articleauthorrelationship",
+            name="person",
+            field=models.ForeignKey(
+                default=0,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="articles",
+                to="core.StaffPage",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='articleauthorrelationship',
-            name='article',
-            field=modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.PROTECT, related_name='authors', to='articles.ArticlePage'),
+            model_name="articleauthorrelationship",
+            name="article",
+            field=modelcluster.fields.ParentalKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="authors",
+                to="articles.ArticlePage",
+            ),
         ),
     ]

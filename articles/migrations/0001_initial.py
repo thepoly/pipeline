@@ -10,21 +10,32 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('wagtailcore', '0040_page_draft_title'),
-    ]
+    dependencies = [("wagtailcore", "0040_page_draft_title")]
 
     operations = [
         migrations.CreateModel(
-            name='ArticlePage',
+            name="ArticlePage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
-                ('date', models.DateField()),
-                ('body', wagtail.core.fields.StreamField([('paragraph', wagtail.core.blocks.RichTextBlock())])),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.Page",
+                    ),
+                ),
+                ("date", models.DateField()),
+                (
+                    "body",
+                    wagtail.core.fields.StreamField(
+                        [("paragraph", wagtail.core.blocks.RichTextBlock())]
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
-            bases=('wagtailcore.page',),
-        ),
+            options={"abstract": False},
+            bases=("wagtailcore.page",),
+        )
     ]

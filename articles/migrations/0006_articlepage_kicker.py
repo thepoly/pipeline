@@ -6,14 +6,16 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('articles', '0005_kicker'),
-    ]
+    dependencies = [("articles", "0005_kicker")]
 
     operations = [
         migrations.AddField(
-            model_name='articlepage',
-            name='kicker',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='articles.Kicker'),
-        ),
+            model_name="articlepage",
+            name="kicker",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="articles.Kicker",
+            ),
+        )
     ]

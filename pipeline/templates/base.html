@@ -6,9 +6,7 @@
     <head>
         <meta charset="utf-8" />
         <title>
-            {% if request.path == '/' %}
-                {{ request.site.site_name }}
-            {% else %}
+            {% block title_block %}
                 {% block title %}
                     {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
                 {% endblock %}
@@ -17,7 +15,7 @@
                         {% if site_name %}- {{ site_name }}{% endif %}
                     {% endwith %}
                 {% endblock %}
-            {% endif %}
+            {% endblock %}
         </title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -36,23 +34,25 @@
     <body class="bg-light {% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
-        <header class="py-2 bg-gradient-primary">
-            <div class="container">
-                <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
-                    <div class="col">
-                        <a class="header-logo" href="{% pageurl request.site.root_page %}">
-                            <img src="{% static 'images/logo.png' %}" alt="The Polytechnic">
-                        </a>
-                    </div>
-                    <div class="col text-right">
-                        <a class="text-light search" href="{% url 'search' %}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
-                        </a>
-                        <a class="btn btn-sm btn-outline-light" href="#">Subscribe</a>
+        {% block header_block %}
+            <header class="py-2 bg-gradient-primary">
+                <div class="container">
+                    <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
+                        <div class="col">
+                            <a class="header-logo" href="{% pageurl request.site.root_page %}">
+                                <img src="{% static 'images/logo.png' %}" alt="The Polytechnic">
+                            </a>
+                        </div>
+                        <div class="col text-right">
+                            <a class="text-light search" href="{% url 'search' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
+                            </a>
+                            <a class="btn btn-sm btn-outline-light" href="#">Subscribe</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </header>
+            </header>
+        {% endblock %}
 
         {% block menu %}
             {% get_site_root as site_root %}

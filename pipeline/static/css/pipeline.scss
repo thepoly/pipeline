@@ -94,7 +94,6 @@ header {
 }
 
 .nav-scroller {
-  position: relative;
   z-index: 2;
   height: 2.35rem;
   overflow-y: hidden;
@@ -116,8 +115,8 @@ header {
   font-size: .875rem;
   flex-grow: 1;
   flex-basis: auto;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
 }
 
 .nav-scroller .nav-link:first-child {
@@ -138,6 +137,8 @@ header {
   flex-grow: 2;
   padding: 0.5px;
   background-color: $border-color;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .flex-auto {
@@ -195,6 +196,10 @@ header {
 
 .template-articlepage .body {
   font-size: 1.1rem;
+}
+
+.template-homepage .nav-scroller {
+  @extend .sticky-top;
 }
 
 .template-homepage .bg-featured-gradient {

@@ -38,8 +38,7 @@ class Migration(migrations.Migration):
                 (
                     "author",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.PROTECT,
-                        to="authors.AuthorPage",
+                        on_delete=django.db.models.deletion.PROTECT, to="core.StaffPage"
                     ),
                 ),
             ],

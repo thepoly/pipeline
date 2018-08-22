@@ -1,5 +1,6 @@
 from django.test import TestCase
 from wagtail.core.models import Page, Site
+from bs4 import BeautifulSoup
 
 from articles.models import ArticlePage
 from .models import HomePage
@@ -18,6 +19,7 @@ class HomePageTest(TestCase):
         root_page.add_child(instance=home_page)
         site = Site.objects.get()
         site.root_page = home_page
+        site.site_name = "The Polytechnic"
         site.save()
         default_home.delete()
 
@@ -35,16 +37,22 @@ class HomePageTest(TestCase):
         page.save_revision().publish()
         page.save()
 
-        home_page.featured_article = page
+        featured_articles = [
+            (b.block_type, b.value) for b in home_page.featured_articles
+        ]
+        featured_articles.append(("one_column", {"column": {"article": page}}))
+        home_page.featured_articles = featured_articles
         home_page.save_revision().publish()
         home_page.save()
 
         resp = self.client.get("/")
-        self.assertEqual(resp.context["page"].featured_article, page)
+        blocks = resp.context["page"].featured_articles
+        self.assertEqual(len(blocks), 1)
+        # self.assertEqual(, page)
 
     def test_no_featured_article(self):
         resp = self.client.get("/")
-        self.assertIsNone(resp.context["page"].featured_article)
+        self.assertEqual(len(resp.context["page"].featured_articles), 0)
 
     def test_status_code(self):
         resp = self.client.get("/")
@@ -53,3 +61,8 @@ class HomePageTest(TestCase):
     def test_template(self):
         resp = self.client.get("/")
         self.assertEqual(resp.template_name, "home/home_page.html")
+
+    def test_title(self):
+        resp = self.client.get("/")
+        soup = BeautifulSoup(resp.content, "html.parser")
+        self.assertEqual(soup.title.string.strip(), "The Polytechnic")

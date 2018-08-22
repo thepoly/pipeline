@@ -10,7 +10,7 @@ online-first journalism.
 
 Ensure these are installed before continuing.
 
-- [Python 3.7](https://www.python.org)
+- [Python 3.7](https://www.python.org) or Python 3.6
 - [Pipenv](https://docs.pipenv.org)
 - [npm](https://www.npmjs.com/get-npm)
 

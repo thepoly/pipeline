@@ -16,8 +16,5 @@ django-prometheus = "*"
 black = "==18.6b4"
 nplusone = "*"
 
-[requires]
-python_version = "3.7"
-
 [pipenv]
 allow_prereleases = true

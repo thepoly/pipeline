@@ -1,0 +1,23 @@
+language: python
+python:
+  - "3.5"
+  - "3.6"
+matrix:
+  include:
+    - python: "3.7"
+      dist: xenial
+      sudo: true
+  
+before_install:
+  - pip install pipenv
+  - npm install -g npm@"^6.4.0"
+
+install:
+  - pipenv install --dev --deploy
+  - npm ci
+  - npx webpack --config webpack.development.config.js
+    
+script:
+  - pipenv check
+  - pipenv run python manage.py test
+      

@@ -17,7 +17,10 @@ install:
   - npm ci
   - npx webpack --config webpack.development.config.js
     
-script:
+before_script:
   - pipenv check
+  - black . --check --exclude node_modules/
+  - flake8 --exclude node_modules/ || true
+
+script:
   - pipenv run python manage.py test
-      

@@ -1,0 +1,18 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="row">
+    {% for article in articles %}
+    <div class="col-lg-6 article mb-3">
+        <h2>
+            <a href="{% pageurl article %}">{{ article.headline|richtext }}</a>
+        </h2>
+        {% if article.summary %}
+            {{ article.summary|richtext }}
+        {% endif %}
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p>No articles.</p>
+    </div>
+    {% endfor %}
+</div>

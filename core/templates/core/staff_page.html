@@ -11,21 +11,8 @@
     {% if page.email_address %}
         <a href="mailto:{{ page.email_address }}">{{ page.email_address }}</a>
     {% endif %}
-
-    {% if page.get_articles %}
     <hr>
-    <div class="row">
-        {% for article in page.get_articles %}
-        <div class="col-lg-6 article mb-3">
-            <h2 class="mb-0">
-                <a href="{% pageurl article %}">{{ article.headline|richtext }}</a>
-            </h2>
-            {% if article.summary %}
-                {{ article.summary|richtext }}
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+
+    {% include "core/includes/articles_list.html" with articles=page.get_articles %}
 </div>
 {% endblock %}

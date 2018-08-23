@@ -8,17 +8,6 @@
 <div class="container">
     <h1>{{ page.title }}</h1>
 
-    <div class="row">
-        {% for article in page.get_articles %}
-        <div class="col-lg-6 article mb-3">
-            <h2>
-                <a href="{% pageurl article %}">{{ article.headline|richtext }}</a>
-            </h2>
-            {% if article.summary %}
-                {{ article.summary|richtext }}
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
+    {% include "core/includes/articles_list.html" with articles=page.get_articles %}
 </div>
 {% endblock %}

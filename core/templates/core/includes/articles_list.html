@@ -2,13 +2,25 @@
 
 <div class="row">
     {% for article in articles %}
-    <div class="col-lg-6 article mb-3">
-        <h2>
-            <a href="{% pageurl article %}">{{ article.headline|richtext }}</a>
-        </h2>
-        {% if article.summary %}
-            {{ article.summary|richtext }}
+    <div class="col-lg-6 row article mb-4">
+        {% image article.featured_photo fill-400x400 as photo %}
+        {% if photo %}
+            <div class="col-4">
+                <a href="{% pageurl article %}">
+                    <img class="mt-2 img-fluid" src="{{ photo.url }}">
+                </a>
+            </div>
+            <div class="col-8">
+        {% else %}
+            <div class="col-12">
         {% endif %}
+            <h2>
+                <a href="{% pageurl article %}">{{ article.headline|richtext }}</a>
+            </h2>
+            {% if article.summary %}
+                {{ article.summary|richtext }}
+            {% endif %}
+        </div>
     </div>
     {% empty %}
     <div class="col-12">

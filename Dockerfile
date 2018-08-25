@@ -1,21 +1,24 @@
-FROM python:3.6
-LABEL maintainer="hello@wagtail.io"
+FROM node:10 as node
+
+COPY . /app/
+WORKDIR /app
+RUN npm ci && npx webpack-command --config webpack.production.config.js
+
+FROM python:3.7 as python
+LABEL maintainer="web@poly.rpi.edu"
 
 ENV PYTHONUNBUFFERED 1
-ENV DJANGO_ENV dev
+ENV DJANGO_SETTINGS_MODULE pipeline.settings.production
 
-COPY ./requirements.txt /code/requirements.txt
-RUN pip install -r /code/requirements.txt
-RUN pip install gunicorn
+RUN pip install pipenv
+COPY ./Pipfile ./Pipfile.lock /app/
+WORKDIR /app
+RUN pipenv install --system --deploy
 
-COPY . /code/
-WORKDIR /code/
+COPY . /app/
+COPY --from=node /app/pipeline/static/webpack_bundles/ /app/pipeline/static/webpack_bundles/
+COPY --from=node /app/webpack-stats.json /app/
 
-RUN python manage.py migrate
-
-RUN useradd wagtail
-RUN chown -R wagtail /code
-USER wagtail
-
+COPY ./start.sh start.sh
 EXPOSE 8000
-CMD exec gunicorn pipeline.wsgi:application --bind 0.0.0.0:8000 --workers 3
+CMD ["./start.sh"]

@@ -1,0 +1,32 @@
+version: '2'
+services:
+  django:
+    build:
+      context: .
+    networks:
+      - django-nginx
+    volumes:
+      - django-static:/app/static
+    ports:
+      - 8000
+    environment:
+      - SECRET_KEY
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "8001:8000"
+    networks:
+      - django-nginx
+    volumes:
+      - django-static:/app/static
+    ports:
+      - 8000:80
+    depends_on:
+      - django
+volumes:
+  django-static:
+
+networks:
+  django-nginx:
+    driver: bridge

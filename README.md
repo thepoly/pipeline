@@ -44,7 +44,22 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-### Developing
+#### Docker
+
+Pipeline can also be run in its production configuration with Docker. It requires two containers: one for running the Django project with gunicorn, and another to put nginx in front of it and additionally serve static files.
+
+```docker-compose up```
+
+Ensure that the `SECRET_KEY` environment variable is set. Additionally, run the following inside of the `django` container (e.g. `docker-compose exec django bash`):
+
+```
+python manage.py migrate
+python manage.py createsuperuser
+```
+
+Pipeline will be available at port 8000 on localhost.
+
+### Standards
 
 Make sure you format your code with [Black](https://github.com/ambv/black) and use [Flake8](http://flake8.pycqa.org/en/latest/) to find problems. Compliance will soon be enforced on push.
 

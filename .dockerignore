@@ -1,0 +1,16 @@
+*
+!pipeline
+!articles
+!core
+!home
+!search
+!manage.py
+!package.json
+!package-lock.json
+!Pipfile
+!Pipfile.lock
+!postcss.config.js
+!start.sh
+!webpack.config.js
+!webpack.development.config.js
+!webpack.production.config.js

@@ -3,10 +3,13 @@ matrix:
   include:
     - python: "3.6"
       dist: trusty
-      sudo: false
+      sudo: true
     - python: "3.7"
       dist: xenial
       sudo: true
+
+services:
+  - docker
   
 before_install:
   - pip install pipenv
@@ -24,3 +27,4 @@ before_script:
 
 script:
   - pipenv run python manage.py test
+  - docker-compose build

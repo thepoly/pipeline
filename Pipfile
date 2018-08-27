@@ -11,6 +11,7 @@ Django = "~=2.0.8"
 "beautifulsoup4" = "==4.6.0"
 django-prometheus = "*"
 gunicorn = "*"
+"psycopg2" = "*"
 
 [dev-packages]
 "flake8" = "*"

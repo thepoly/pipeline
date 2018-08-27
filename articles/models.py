@@ -66,6 +66,9 @@ class ArticlePage(Page):
         index.SearchField("subdeck"),
         index.SearchField("body"),
         index.SearchField("summary"),
+        index.RelatedFields("kicker", [index.SearchField("title")]),
+        index.FilterField("date"),
+        index.SearchField("get_author_names"),
     ]
 
     def clean(self):
@@ -76,8 +79,14 @@ class ArticlePage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context["authors"] = [r.author for r in self.authors.select_related("author")]
+        context["authors"] = self.get_authors()
         return context
+
+    def get_authors(self):
+        return [r.author for r in self.authors.select_related("author")]
+
+    def get_author_names(self):
+        return [f"{a.first_name} {a.last_name}" for a in self.get_authors()]
 
 
 class ArticlesIndexPage(Page):

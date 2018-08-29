@@ -11,6 +11,8 @@ services:
       - 8000
     environment:
       - SECRET_KEY
+    depends_on:
+      - postgres
   nginx:
     build:
       context: ./nginx
@@ -24,8 +26,19 @@ services:
       - 8000:80
     depends_on:
       - django
+  postgres:
+    image: postgres:10
+    networks:
+      - django-nginx
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: pipeline
+      POSTGRES_PASSWORD: pipeline
+      POSTGRES_DB: pipeline
 volumes:
   django-static:
+  postgres-data:
 
 networks:
   django-nginx:

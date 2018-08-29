@@ -45,7 +45,7 @@ If you have issues with the database, ensure that Postgres is running and you ha
 
 #### Docker
 
-Pipeline can also be run in its production configuration with Docker. It requires two containers: one for running the Django project with gunicorn, and another to put nginx in front of it and additionally serve static files.
+Pipeline can also be run in its production configuration with Docker. It requires three containers: one for running the Django project with gunicorn, another to put nginx in front of it and additionally serve static files, and finally a Postgres container.
 
 ```docker-compose up```
 

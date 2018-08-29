@@ -247,11 +247,11 @@
         },
         "wagtail": {
             "hashes": [
-                "sha256:27d27242bbc88b64d433702c409569408485b4dd9a352f938f3987a857929413",
-                "sha256:67b0fce3487e9dc2378e8ecdbc6ee8469d1baddcdf1061b35f41ad54ca98268d"
+                "sha256:5813b303a2f7e82f614d2a1301c5bbe1c88c829ba16101b2f9dbf945ce6bf8f7",
+                "sha256:ea3913bcab30ea22ab6914210f9612083c8702255a408059ae246eddd229cd49"
             ],
             "index": "pypi",
-            "version": "==2.2.1"
+            "version": "==2.2.2"
         },
         "webencodings": {
             "hashes": [

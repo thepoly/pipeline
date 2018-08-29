@@ -61,7 +61,7 @@ class RecentArticlesValue(blocks.StructValue):
         pks = homepage.article_pks()
         return (
             a
-            for a in ArticlePage.objects.order_by("-date")
+            for a in ArticlePage.objects.reverse()
             .exclude(pk__in=pks)
             .prefetch_related("kicker", "featured_photo")[: self["num_articles"]]
         )

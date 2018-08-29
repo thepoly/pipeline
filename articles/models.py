@@ -26,7 +26,6 @@ class ArticlePage(Page):
     kicker = models.ForeignKey(
         "articles.Kicker", null=True, blank=True, on_delete=models.PROTECT
     )
-    date = models.DateField()
     body = StreamField([("paragraph", RichTextBlock()), ("image", ImageChooserBlock())])
     summary = RichTextField(
         features=["italic"],
@@ -48,7 +47,6 @@ class ArticlePage(Page):
         ),
         MultiFieldPanel(
             [
-                FieldPanel("date"),
                 # TODO: use https://github.com/wagtail/wagtail-autocomplete for kicker
                 SnippetChooserPanel("kicker"),
                 InlinePanel("authors", label="Author", min_num=1),
@@ -67,7 +65,6 @@ class ArticlePage(Page):
         index.SearchField("body"),
         index.SearchField("summary"),
         index.RelatedFields("kicker", [index.SearchField("title")]),
-        index.FilterField("date"),
         index.SearchField("get_author_names"),
     ]
 
@@ -88,12 +85,15 @@ class ArticlePage(Page):
     def get_author_names(self):
         return [f"{a.first_name} {a.last_name}" for a in self.get_authors()]
 
+    def get_published_date(self):
+        return self.go_live_at or self.first_published_at
+
 
 class ArticlesIndexPage(Page):
     subpage_types = ["ArticlePage"]
 
     def get_articles(self):
-        return ArticlePage.objects.live().descendant_of(self).order_by("date")
+        return ArticlePage.objects.live().descendant_of(self)
 
 
 @register_snippet

@@ -27,7 +27,7 @@
         </span>
         {% endif %}
         <a class="text-muted small published-date" href="{% pageurl page %}">
-            {{ page.date }}
+            {{ page.get_published_date|date:"F j, Y" }}
         </a>
     </div>
 

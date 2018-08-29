@@ -26,10 +26,7 @@ class HomePageTest(TestCase):
     def test_featured_article(self):
         home_page = HomePage.objects.get(title="Home")
         page = ArticlePage(
-            headline="<p>Headline</p>",
-            slug="article-page",
-            date="2018-08-17",
-            title="Headline",
+            headline="<p>Headline</p>", slug="article-page", title="Headline"
         )
         home_page.add_child(instance=page)
         home_page.save_revision().publish()

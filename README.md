@@ -13,12 +13,9 @@ Ensure these are installed before continuing.
 - [Python 3.7](https://www.python.org) or Python 3.6
 - [Pipenv](https://docs.pipenv.org)
 - [npm](https://www.npmjs.com/get-npm)
-
-### Optional
-
 - [Postgres](https://www.postgresql.org)
 
-By default, Django will use SQLite, which comes with Python. Postgres will be required once search gets more attention.
+You can change Pipeline's settings to use SQLite instead of Postgres, but this is not recommended because Pipeline relies on Postgres's full-text search features.
 
 ## Getting started
 
@@ -43,6 +40,8 @@ python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
 ```
+
+If you have issues with the database, ensure that Postgres is running and you have created a database named `pipeline`.
 
 #### Docker
 

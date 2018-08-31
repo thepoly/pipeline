@@ -14,7 +14,7 @@
     </div>
     {% if page.featured_photo %}
         <div class="featured-photo mt-4 mb-4 text-center">
-            {% image page.featured_photo width-1200 as photo %}
+            {% image page.featured_photo.image width-1200 as photo %}
             <img class="" src="{{ photo.url }}">
         </div>
     {% endif %}

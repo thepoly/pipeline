@@ -43,7 +43,7 @@
                         <div class="lead d-none d-lg-block">{{ block.value.column.article.specific.summary|richtext }}</div>
                     </div>
                     <div class="col-lg-5">
-                        {% image block.value.column.article.featured_photo width-1200 as photo %}
+                        {% image block.value.column.article.featured_photo.image width-1200 as photo %}
                         <a href="{% pageurl block.value.column.article %}">
                             <img class="img-fluid mb-3" src="{{ photo.url }}">
                         </a>

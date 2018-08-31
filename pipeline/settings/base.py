@@ -157,6 +157,8 @@ WAGTAILSEARCH_BACKENDS = {
     "default": {"BACKEND": "wagtail.contrib.postgres_search.backend"}
 }
 
+WAGTAILIMAGES_IMAGE_MODEL = "core.CustomImage"
+
 # Miscellaneous
 
 INTERNAL_IPS = ["127.0.0.1"]

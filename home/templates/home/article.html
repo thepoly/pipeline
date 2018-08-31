@@ -3,7 +3,7 @@
 <div class="flex-md-row">
     <div class="d-flex flex-column align-items-start">
         {% if article.featured_photo %}
-            {% image article.featured_photo width-1200 as photo %}
+            {% image article.featured_photo.image width-1200 as photo %}
             <a href="{% pageurl article %}">
                 <img class="img-fluid mb-4" src="{{ photo.url }}">
             </a>

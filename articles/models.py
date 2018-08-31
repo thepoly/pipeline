@@ -34,7 +34,7 @@ class ArticlePage(Page):
         help_text="Displayed on the home page or other places to provide a taste of what the article is about.",
     )
     featured_photo = models.ForeignKey(
-        "wagtailimages.Image",
+        "core.Photo",
         null=True,
         blank=True,
         on_delete=models.PROTECT,
@@ -50,7 +50,7 @@ class ArticlePage(Page):
                 # TODO: use https://github.com/wagtail/wagtail-autocomplete for kicker
                 SnippetChooserPanel("kicker"),
                 InlinePanel("authors", label="Author", min_num=1),
-                ImageChooserPanel("featured_photo"),
+                SnippetChooserPanel("featured_photo"),
             ],
             heading="Metadata",
             classname="collapsible",

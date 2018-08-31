@@ -9,7 +9,7 @@ from .models import ArticlePage, ArticlesIndexPage
 
 class ArticlePageTest(TestCase):
     def setUp(self):
-        home = Page.objects.get(title="Home")
+        home = Page.objects.get(slug="home")
         section_index = ArticlesIndexPage(title="Section", slug="section")
         home.add_child(instance=section_index)
         section_index.save_revision().publish()

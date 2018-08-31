@@ -8,7 +8,7 @@ from .models import HomePage
 
 class HomePageTest(TestCase):
     def setUp(self):
-        default_home = Page.objects.get(title="Home")
+        default_home = Page.objects.get(slug="home")
         default_home.title = "Home Old"
         default_home.slug = "home-old"
         default_home.save_revision().publish()

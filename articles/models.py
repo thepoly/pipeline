@@ -106,7 +106,7 @@ class Kicker(models.Model):
 
 class ArticleAuthorRelationship(models.Model):
     article = ParentalKey(
-        "ArticlePage", related_name="authors", on_delete=models.PROTECT
+        "ArticlePage", related_name="authors", on_delete=models.CASCADE
     )
     author = models.ForeignKey(
         "core.StaffPage", related_name="articles", on_delete=models.PROTECT

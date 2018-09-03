@@ -113,3 +113,6 @@ class ArticleAuthorRelationship(models.Model):
     )
 
     panels = [PageChooserPanel("author")]
+
+    class Meta:
+        unique_together = ("article", "author")

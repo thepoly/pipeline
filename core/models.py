@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import pre_delete, pre_save
+from django.dispatch import receiver
 
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page, Orderable
@@ -107,6 +109,21 @@ class CustomImage(AbstractImage):
     admin_form_fields = Image.admin_form_fields + ("photographer",)
 
 
+# Delete the source image file when an image is deleted
+@receiver(pre_delete, sender=CustomImage)
+def image_delete(sender, instance, **kwargs):
+    instance.file.delete(False)
+
+
+# Do feature detection when a user saves an image without a focal point
+@receiver(pre_save, sender=CustomImage)
+def image_feature_detection(sender, instance, **kwargs):
+    # Make sure the image doesn't already have a focal point
+    if not instance.has_focal_point():
+        # Set the focal point
+        instance.set_focal_point(instance.get_suggested_focal_point())
+
+
 class CustomRendition(AbstractRendition):
     image = models.ForeignKey(
         CustomImage, on_delete=models.CASCADE, related_name="renditions"
@@ -114,6 +131,12 @@ class CustomRendition(AbstractRendition):
 
     class Meta:
         unique_together = ("image", "filter_spec", "focal_point_key")
+
+
+# Delete the rendition image file when a rendition is deleted
+@receiver(pre_delete, sender=CustomRendition)
+def rendition_delete(sender, instance, **kwargs):
+    instance.file.delete(False)
 
 
 @register_snippet

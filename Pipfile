@@ -12,6 +12,8 @@ Django = "~=2.0.8"
 django-prometheus = "*"
 gunicorn = "*"
 "psycopg2" = "*"
+requests = "*"
+opencv-python = "*"
 
 [dev-packages]
 "flake8" = "*"

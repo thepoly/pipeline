@@ -7,14 +7,16 @@ import modelcluster.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('articles', '0003_auto_20180903_1816'),
-    ]
+    dependencies = [("articles", "0003_auto_20180903_1816")]
 
     operations = [
         migrations.AlterField(
-            model_name='articleauthorrelationship',
-            name='article',
-            field=modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='authors', to='articles.ArticlePage'),
-        ),
+            model_name="articleauthorrelationship",
+            name="article",
+            field=modelcluster.fields.ParentalKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="authors",
+                to="articles.ArticlePage",
+            ),
+        )
     ]

@@ -1,2 +1,0 @@
-asyncio-redis==0.14.3
-websockets==3.2

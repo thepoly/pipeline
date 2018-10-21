@@ -7,12 +7,21 @@
 {% block content %}
 <div class="container">
     <h1>{{ page.title }}</h1>
-    {% include_block page.biography %}
-    {% if page.email_address %}
-        <a href="mailto:{{ page.email_address }}">{{ page.email_address }}</a>
-    {% endif %}
+    <h4>{% for position in person.get_active_positions %}
+        {% if forloop.last and person.get_active_positions|length > 1 %} and {% endif %}
+        <span class="text-nowrap">{{ position.title }}{% if not forloop.last and person.get_active_positions|length > 2 %}, {% endif %}</span>
+        {% endfor %}</h4>
     <hr>
-
+    {% include_block page.biography %}
+    
+    <h3>Contact Information</h3>
+    {% if page.email_address %}
+    <p>{{page.title}} can be reached at <a href="mailto:{{ page.email_address }}">{{ page.email_address }}</a></p>
+    {% else %}
+    <p>Contact The Polytechnic at <a href="mailto:poly@rpi.edu">poly@rpi.edu</a>.</p>
+    {% endif %}
+    
+    <h3>Articles Written</h3>
     {% include "core/includes/articles_list.html" with articles=page.get_articles %}
 </div>
 {% endblock %}

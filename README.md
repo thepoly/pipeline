@@ -75,7 +75,7 @@ Many of the following features are partially complete, but this isn't indicated.
   - [x] Summaries
   - [ ] Kickers
     - [ ] Autocomplete
-  - [ ] Subdecks
+  - [x] Subdecks
   - [ ] Archive pages
   - [ ] WordPress importer
   - [ ] Old site importer

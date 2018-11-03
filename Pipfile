@@ -19,6 +19,7 @@ opencv-python = "*"
 "flake8" = "*"
 black = "==18.6b4"
 nplusone = "*"
+pylint = "*"
 
 [pipenv]
 allow_prereleases = true

@@ -89,8 +89,8 @@ Many of the following features are partially complete, but this isn't indicated.
 - [ ] Syndication
   - [x] RSS feed
   - [ ] Sitemap
-  - [ ] Facebook tags
-  - [ ] Twitter tags
+  - [x] Facebook tags
+  - [x] Twitter tags
   - [ ] oEmbed
   - [ ] Apple News
 - [ ] Home page

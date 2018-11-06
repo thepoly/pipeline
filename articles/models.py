@@ -115,16 +115,26 @@ class ArticlePage(Page):
         # description: either the article's summary or first paragraph
         if self.summary is not None:
             tags["og:description"] = self.summary
+            tags["twitter:description"] = self.summary
         else:
             first_paragraph = self.get_first_chars()
             if first_paragraph is not None:
                 tags["og:description"] = first_paragraph
+                tags["twitter:description"] = first_paragraph
 
         # image
         if self.featured_photo is not None:
-            tags["og:image"] = self.featured_photo.image.get_rendition(
-                "fill-600x400"
-            ).url
+            rendition = self.featured_photo.image.get_rendition("fill-600x400")
+            rendition_url = self.get_site().root_url + rendition.url
+            tags["og:image"] = rendition_url
+            tags["twitter:image"] = rendition_url
+
+        tags["twitter:site"] = "@rpipoly"
+        tags["twitter:title"] = self.title
+        if "twitter:description" in tags and "twitter:image" in tags:
+            tags["twitter:card"] = "summary_large_image"
+        else:
+            tags["twitter:card"] = "summary"
 
         return tags
 

@@ -111,6 +111,7 @@ class ArticlePage(Page):
         tags["og:type"] = "article"
         tags["og:title"] = self.title
         tags["og:url"] = self.full_url
+        tags["og:site_name"] = self.get_site().site_name
 
         # description: either the article's summary or first paragraph
         if self.summary is not None:

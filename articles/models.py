@@ -88,6 +88,46 @@ class ArticlePage(Page):
     def get_published_date(self):
         return self.go_live_at or self.first_published_at
 
+    def get_first_chars(self, n=100):
+        """Convert the body to HTML, extract the text, and then build
+        a string out of it until we have at least n characters.
+        If this isn't possible, then return None."""
+
+        builder = ""
+        soup = BeautifulSoup(str(self.body), "html.parser")
+        lines = soup.text.split("\n")
+        first = True
+        for line in lines:
+            if not first:
+                builder += " "
+                first = False
+            builder += line
+            if len(builder) > n:
+                return builder
+        return None
+
+    def get_meta_tags(self):
+        tags = {}
+        tags["og:type"] = "article"
+        tags["og:title"] = self.title
+        tags["og:url"] = self.full_url
+
+        # description: either the article's summary or first paragraph
+        if self.summary is not None:
+            tags["og:description"] = self.summary
+        else:
+            first_paragraph = self.get_first_chars()
+            if first_paragraph is not None:
+                tags["og:description"] = first_paragraph
+
+        # image
+        if self.featured_photo is not None:
+            tags["og:image"] = self.featured_photo.image.get_rendition(
+                "fill-600x400"
+            ).url
+
+        return tags
+
 
 class ArticlesIndexPage(Page):
     subpage_types = ["ArticlePage"]

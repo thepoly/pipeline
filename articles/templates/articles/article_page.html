@@ -2,6 +2,12 @@
 
 {% load wagtailcore_tags wagtailimages_tags %}
 
+{% block extra_head %}
+    {% for tag, val in page.get_meta_tags.items %}
+        <meta property="{{tag}}" content="{{val}}">
+    {% endfor %}
+{% endblock %}
+
 {% block body_class %}template-articlepage{% endblock %}
 
 {% block content %}

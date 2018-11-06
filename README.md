@@ -88,7 +88,7 @@ Many of the following features are partially complete, but this isn't indicated.
   - [ ] Galleries
 - [ ] Syndication
   - [x] RSS feed
-  - [x] Sitemap (only articles for now)
+  - [x] Sitemap
   - [x] Facebook tags
   - [x] Twitter tags
   - [ ] oEmbed

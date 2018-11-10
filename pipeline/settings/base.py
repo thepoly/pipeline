@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "search",
     "articles",
     "lights",
+    "wagtailautocomplete",
     "wagtail.contrib.forms",
     "wagtail.contrib.postgres_search",
     "wagtail.contrib.redirects",

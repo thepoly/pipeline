@@ -45,7 +45,6 @@ class HomePageTest(TestCase):
         resp = self.client.get("/")
         blocks = resp.context["page"].featured_articles
         self.assertEqual(len(blocks), 1)
-        # self.assertEqual(, page)
 
     def test_no_featured_article(self):
         resp = self.client.get("/")

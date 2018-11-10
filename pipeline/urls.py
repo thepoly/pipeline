@@ -5,15 +5,20 @@ from django.contrib import admin
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
+from wagtail.contrib.sitemaps.views import sitemap
 
 from search import views as search_views
+from core.feeds import RecentArticlesFeed
+from lights import urls as lights_urls
 
 urlpatterns = [
-    url(r"^lights/", include("lights.urls")),
+    url(r"^lights/", include(lights_urls)),
     url(r"^django-admin/", admin.site.urls),
     url(r"^admin/", include(wagtailadmin_urls)),
     url(r"^documents/", include(wagtaildocs_urls)),
     url(r"^search/$", search_views.search, name="search"),
+    url(r"^feed/$", RecentArticlesFeed()),
+    url(r"^sitemap\.xml$", sitemap),
 ]
 
 if settings.DEBUG:

@@ -87,10 +87,10 @@ Many of the following features are partially complete, but this isn't indicated.
   - [x] Multiple per article
   - [ ] Galleries
 - [ ] Syndication
-  - [ ] RSS/atom feeds
-  - [ ] Sitemap
-  - [ ] Facebook tags
-  - [ ] Twitter tags
+  - [x] RSS feed
+  - [x] Sitemap
+  - [x] Facebook tags
+  - [x] Twitter tags
   - [ ] oEmbed
   - [ ] Apple News
 - [ ] Home page

@@ -24,11 +24,11 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Application definition
 
 INSTALLED_APPS = [
-    "lights",
     "core",
     "home",
     "search",
     "articles",
+    "lights",
     "wagtail.contrib.forms",
     "wagtail.contrib.postgres_search",
     "wagtail.contrib.redirects",
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
     "webpack_loader",
     "django_prometheus",
 ]

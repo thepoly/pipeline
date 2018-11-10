@@ -31,7 +31,7 @@ $font-family-base: 'Lora', serif;
 @import "~bootstrap/scss/navbar";
 // @import "~bootstrap/scss/card";
 // @import "~bootstrap/scss/breadcrumb";
-// @import "~bootstrap/scss/pagination";
+@import "~bootstrap/scss/pagination";
 // @import "~bootstrap/scss/badge";
 // @import "~bootstrap/scss/jumbotron";
 // @import "~bootstrap/scss/alert";
@@ -175,6 +175,10 @@ header a.search {
 .text-kicker {
   font-family: 'Raleway', sans-serif;
   font-weight: 700;
+}
+
+ul.pagination {
+  font-family: var(--font-family-sans-serif);
 }
 
 // CUSTOM

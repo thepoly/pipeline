@@ -1,6 +1,8 @@
+from django.core.paginator import Paginator
 from django.db import models
 
-from wagtail.core.models import Page, PageManager
+from bs4 import BeautifulSoup
+from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.blocks import RichTextBlock
 from wagtail.admin.edit_handlers import (
@@ -13,11 +15,8 @@ from wagtail.admin.edit_handlers import (
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.images.blocks import ImageChooserBlock
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from modelcluster.fields import ParentalKey
-
-from bs4 import BeautifulSoup
 
 
 class ArticlePage(Page):
@@ -144,7 +143,25 @@ class ArticlesIndexPage(Page):
     subpage_types = ["ArticlePage"]
 
     def get_articles(self):
-        return ArticlePage.objects.live().descendant_of(self)
+        return (
+            ArticlePage.objects.live()
+            .descendant_of(self)
+            .order_by("-go_live_at")
+            .select_related("featured_photo__image")
+        )
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        paginator = Paginator(
+            ArticlePage.objects.live()
+            .descendant_of(self)
+            .order_by("-go_live_at")
+            .select_related("featured_photo__image"),
+            24,
+        )
+        page = request.GET.get("page")
+        context["articles"] = paginator.get_page(page)
+        return context
 
 
 @register_snippet

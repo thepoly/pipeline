@@ -17,9 +17,10 @@ opencv-python = "*"
 
 [dev-packages]
 "flake8" = "*"
-black = "==18.6b4"
+black = "==18.9b0"
 nplusone = "*"
 pylint = "*"
+pylint-django = "*"
 
 [pipenv]
 allow_prereleases = true

@@ -90,7 +90,7 @@ Many of the following features are partially complete, but this isn't indicated.
   - [x] Multiple per article
   - [ ] Galleries
 - [ ] Syndication
-  - [x] RSS/atom feeds
+  - [x] RSS
   - [x] Sitemap
   - [x] Facebook tags
   - [x] Twitter tags

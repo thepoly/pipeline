@@ -27,9 +27,12 @@ run Pipeline for development:
 ```
 git clone git@github.com:thepoly/pipeline.git
 cd pipeline
-pipenv install
+pipenv install --dev
+brew install postgresql
 npm install
 npx wp --config webpack.development.config.js
+brew services start postgresql
+createdb pipeline //only on first run
 ```
 
 ### Running
@@ -75,7 +78,7 @@ Many of the following features are partially complete, but this isn't indicated.
   - [x] Summaries
   - [ ] Kickers
     - [ ] Autocomplete
-  - [x] Subdecks
+  - [ ] Subdecks
   - [ ] Archive pages
   - [ ] WordPress importer
   - [ ] Old site importer
@@ -87,10 +90,10 @@ Many of the following features are partially complete, but this isn't indicated.
   - [x] Multiple per article
   - [ ] Galleries
 - [ ] Syndication
-  - [x] RSS feed
-  - [x] Sitemap
-  - [x] Facebook tags
-  - [x] Twitter tags
+  - [ ] RSS/atom feeds
+  - [ ] Sitemap
+  - [ ] Facebook tags
+  - [ ] Twitter tags
   - [ ] oEmbed
   - [ ] Apple News
 - [ ] Home page

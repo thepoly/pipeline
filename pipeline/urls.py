@@ -15,7 +15,7 @@ from lights import urls as lights_urls
 urlpatterns = [
     url(r"^lights/", include(lights_urls)),
     url(r"^django-admin/", admin.site.urls),
-    url(r'^admin/autocomplete/', include(autocomplete_admin_urls)),
+    url(r"^admin/autocomplete/", include(autocomplete_admin_urls)),
     url(r"^admin/", include(wagtailadmin_urls)),
     url(r"^documents/", include(wagtaildocs_urls)),
     url(r"^search/$", search_views.search, name="search"),

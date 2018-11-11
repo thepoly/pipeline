@@ -47,7 +47,7 @@ class ArticlePage(Page):
         ),
         MultiFieldPanel(
             [
-                AutocompletePanel("kicker",page_type="articles.Kicker"),
+                AutocompletePanel("kicker", page_type="articles.Kicker"),
                 InlinePanel("authors", label="Author", min_num=1),
                 SnippetChooserPanel("featured_photo"),
             ],

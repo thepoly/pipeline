@@ -167,9 +167,9 @@ class ArticlesIndexPage(Page):
 @register_snippet
 class Kicker(models.Model):
     title = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.title
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(title=value)
 
 
 class ArticleAuthorRelationship(models.Model):

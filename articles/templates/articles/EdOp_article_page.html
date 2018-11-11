@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block extra_head %}
+    {% for tag, val in page.get_meta_tags.items %}
+        <meta property="{{tag}}" content="{{val}}">
+    {% endfor %}
+{% endblock %}
+
+{% block body_class %}template-articlepage{% endblock %}
+
+{% block content %}
+<article class="narrow">
+    <div class="container">
+        {% if page.kicker %}
+            <strong class="text-primary text-uppercase text-kicker">{{ page.kicker }}</strong>
+        {% endif %}
+        <h1 class="article-headline mb-3">{{ page.headline|richtext }}</h1>
+        {% if page.subdeck %}
+            <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext }}</h4>
+        {% endif %}
+    </div>
+    {% if page.featured_photo %}
+        <div class="featured-photo mt-4 mb-4 text-center">
+            {% image page.featured_photo.image width-1200 as photo %}
+            <img class="" src="{{ photo.url }}">
+        </div>
+    {% endif %}
+    <div class="container mb-4">
+        {% if authors %}
+        <span class="authors mr-1">
+            By {% for author in authors %}
+                <a class="author-name" href="{% pageurl author %}">{{ author }}</a>
+            {% endfor %}
+        </span>
+        {% endif %}
+        <a class="text-muted small published-date" href="{% pageurl page %}">
+            {{ page.get_published_date|date:"F j, Y" }}
+        </a>
+    </div>
+
+    <div class="container body">
+        {% for block in page.body %}
+            {% if block.block_type == 'image' %}
+                {% image block.value width-1200 as photo %}
+                <img src="{{ photo.url }}">
+            {% else %}
+                {% include_block block %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</article>
+
+<div class="container">
+    <hr>
+    <div class="more">
+        <p>See more by {{ authors|first }}</p>
+        <p>See more articles about {{ page.kicker }}</p>
+        <p>See similar articles</p>
+        <p>See recent articles</p>
+    </div>
+</div>
+{% endblock %}

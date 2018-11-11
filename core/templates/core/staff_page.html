@@ -7,7 +7,9 @@
 {% block content %}
 <div class="container">
     <h1>{{ page.title }}</h1>
-    {% include_block page.biography %}
+    {% if page.biograph %}
+        {% include_block page.biography %}
+    {% endif %}
     {% if page.email_address %}
         <a href="mailto:{{ page.email_address }}">{{ page.email_address }}</a>
     {% endif %}

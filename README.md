@@ -78,7 +78,7 @@ Many of the following features are partially complete, but this isn't indicated.
   - [x] Summaries
   - [ ] Kickers
     - [ ] Autocomplete
-  - [ ] Subdecks
+  - [x] Subdecks
   - [ ] Archive pages
   - [ ] WordPress importer
   - [ ] Old site importer
@@ -90,10 +90,10 @@ Many of the following features are partially complete, but this isn't indicated.
   - [x] Multiple per article
   - [ ] Galleries
 - [ ] Syndication
-  - [ ] RSS/atom feeds
-  - [ ] Sitemap
-  - [ ] Facebook tags
-  - [ ] Twitter tags
+  - [x] RSS/atom feeds
+  - [x] Sitemap
+  - [x] Facebook tags
+  - [x] Twitter tags
   - [ ] oEmbed
   - [ ] Apple News
 - [ ] Home page

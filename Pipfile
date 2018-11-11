@@ -14,6 +14,7 @@ gunicorn = "*"
 "psycopg2" = "*"
 requests = "*"
 opencv-python = "*"
+wagtail-autocomplete = "*"
 
 [dev-packages]
 "flake8" = "*"

@@ -14,6 +14,7 @@ from wagtail.admin.edit_handlers import (
 )
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.search import index
 from modelcluster.fields import ParentalKey
@@ -46,8 +47,7 @@ class ArticlePage(Page):
         ),
         MultiFieldPanel(
             [
-                # TODO: use https://github.com/wagtail/wagtail-autocomplete for kicker
-                SnippetChooserPanel("kicker"),
+                AutocompletePanel("kicker", page_type="articles.Kicker"),
                 InlinePanel("authors", label="Author", min_num=1),
                 SnippetChooserPanel("featured_photo"),
             ],
@@ -167,6 +167,10 @@ class ArticlesIndexPage(Page):
 @register_snippet
 class Kicker(models.Model):
     title = models.CharField(max_length=255)
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(title=value)
 
     def __str__(self):
         return self.title

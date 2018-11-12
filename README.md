@@ -27,9 +27,12 @@ run Pipeline for development:
 ```
 git clone git@github.com:thepoly/pipeline.git
 cd pipeline
-pipenv install
+pipenv install --dev
+brew install postgresql
 npm install
 npx wp --config webpack.development.config.js
+brew services start postgresql
+createdb pipeline //only on first run
 ```
 
 ### Running

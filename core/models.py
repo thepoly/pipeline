@@ -23,7 +23,7 @@ class StaffPage(Page):
     last_name = models.CharField(max_length=100)
     biography = RichTextField(null=True, blank=True)
     photo = models.ForeignKey(
-        "wagtailimages.Image", null=True, blank=True, on_delete=models.PROTECT
+        "CustomImage", null=True, blank=True, on_delete=models.PROTECT
     )
     email_address = models.EmailField(null=True, blank=True)
 

@@ -56,7 +56,7 @@ class HomePageTest(TestCase):
 
     def test_template(self):
         resp = self.client.get("/")
-        self.assertEqual(resp.template_name, "home/home_page.html")
+        self.assertTemplateUsed(resp, "home/home_page.html")
 
     def test_title(self):
         resp = self.client.get("/")

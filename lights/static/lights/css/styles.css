@@ -18,35 +18,13 @@ body{
     z-index: -1;
   }
   .main-header{
-    font-size: 50px;
+    font-size: 30px;
     font-weight: 10px;
     z-index: 200;
+    color: white;
+    text-align: center;
   }
   
-  .project-title{
-    margin-top: 75px;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    vertical-align: center;
-    line-height: 150px;
-    width: auto;
-    text-align: center;
-    z-index: 2;
-    border-radius: 20px;
-  }
-  
-  .project-title{
-    margin-top: 75px;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    height: 150px;
-    vertical-align: center;
-    line-height: 150px;
-    width: auto;
-    text-align: center;
-    border-radius: 20px;
-    z-index: 2;
-  }
   div{
     background-color: transparent;
   }
@@ -89,12 +67,10 @@ body{
   .sub-text{
     width:auto;
     height: auto;
-    float: center;
     text-align: center;
     margin-top: auto;
     padding-bottom: 50px;
     top: 100px;
-    position: relative;
     color: black;
   }
   
@@ -110,13 +86,6 @@ body{
      height:auto;
   }
   
-  .footer{
-    float: center;
-    width: 100%;
-    height: 30px;
-    margin-top: 40px;
-  }
-  
   .header{
     z-index: 1;
     width: 100%;
@@ -125,8 +94,6 @@ body{
     padding-top: 0px;
     top: 0;
     left: 0;
-    position: absolute;;
-    float: left;
     background-color: transparent;
     -webkit-transition: background-color 500ms linear;
     -ms-transition: background-color 500ms linear;

@@ -34,7 +34,7 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
+    beforeSend: function (xhr, settings) {
         let csrftoken = getCookie('csrftoken');
         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -65,7 +65,7 @@ var colorPicker = Vue.component('color-picker', {
                 G: res[1],
                 B: res[2]
             }
-            $.post("submit", pkg, function (data) {});
+            $.post("submit", pkg, function (data) { });
 
         }
     },
@@ -87,8 +87,7 @@ $(window).resize(function () {
 Vue.component('app-body', {
     template: `
     <div>
-      <div class="header"><img class="title-logo" src="/static/lights/images/logo_m.png"/></div>
-      <div class ="project-title"><p class="main-header">PolyLights</p></div>
+      <div class="header"><p class="main-header"><i>Poly</i> Lights</p></div>
       <div style="margin: 0 auto; width:75%;top:50px;position:relative;"><color-picker/></div>
       <br><br><br>
       <div class="apiHolder" style="display:none;">
@@ -97,7 +96,7 @@ Vue.component('app-body', {
       <div class="api"><div class="get">GET</div> https://poly.rpi.edu/lights/stats</div>
       </div>
       <div class="sub-text">Change the color of <a class="link" href="https://poly.rpi.edu">The Rensselaer Polytechnic's</a> Lights in the Rensselaer Student Union.<br><br>
-      View the <a style="font-size20px;" class="link" href="#" onclick="$('.apiHolder').toggle();">API</a> | <a style="font-size20px;" class="link" href="https://github.com/thepoly/lights">Github</a>
+      View the <a style="font-size20px;" class="link" href="#" data-turbolinks="false" onclick="$('.apiHolder').toggle();">API</a>
       </div>
     </div>
   `

@@ -46,9 +46,19 @@
 <div class="container">
     <hr>
     <div class="more">
-        <p>See more by {{ authors|first }}</p>
-        <p>See more articles about {{ page.kicker }}</p>
+        <p>See more by
+        {% for author in authors %}
+            <a class="author-name" href="{% pageurl author %}">{{ author }}</a>
+        {% endfor %}</p>
+        {% if page.kicker %}
+            <p>See more articles about {{ page.kicker }}</p>
+        {% endif %}
         <p>See similar articles</p>
+        {% for article in page.get_related_articles %}
+            <div class="ml-3" style="margin-left: 40px">
+                <p><a href="{% pageurl article %}">{{ article.headline|richtext }}</a></p>
+            </div>
+        {% endfor %}
         <p>See recent articles</p>
     </div>
 </div>

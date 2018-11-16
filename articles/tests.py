@@ -43,7 +43,7 @@ class ArticlePageTest(TestCase):
 
     def test_template(self):
         resp = self.client.get("/section/article-page/")
-        self.assertEqual(resp.template_name, "articles/article_page.html")
+        self.assertTemplateUsed(resp, "articles/article_page.html")
 
     def test_title(self):
         resp = self.client.get("/section/article-page/")

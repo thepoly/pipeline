@@ -4,7 +4,7 @@
     {% for article in articles %}
     <div class="col-lg-6 row article mb-4">
         {% image article.featured_photo.image fill-400x400 as photo %}
-        {% if photo %}
+        {% if article.featured_photo %}
             <div class="col-4">
                 <a href="{% pageurl article %}">
                     <img class="mt-2 img-fluid" src="{{ photo.url }}">

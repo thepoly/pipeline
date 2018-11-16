@@ -2,6 +2,12 @@
 
 {% load wagtailcore_tags wagtailimages_tags %}
 
+{% block extra_head %}
+    {% for tag, val in page.get_meta_tags.items %}
+        <meta property="{{tag}}" content="{{val}}">
+    {% endfor %}
+{% endblock %}
+
 {% block body_class %}template-articlepage{% endblock %}
 
 {% block content %}
@@ -11,6 +17,9 @@
             <strong class="text-primary text-uppercase text-kicker">{{ page.kicker }}</strong>
         {% endif %}
         <h1 class="article-headline mb-3">{{ page.headline|richtext }}</h1>
+        {% if page.subdeck %}
+            <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext }}</h4>
+        {% endif %}
     </div>
     {% if page.featured_photo %}
         <div class="featured-photo mt-4 mb-4 text-center">

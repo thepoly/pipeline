@@ -1,8 +1,6 @@
-from django.db import models
-
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField
-from wagtail.admin.edit_handlers import PageChooserPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.core import blocks
 
 from articles.models import ArticlePage
@@ -24,7 +22,7 @@ class OneColumnBlock(blocks.StructBlock):
     column = ArticleBlock()
 
     def article_pks(self):
-        return set(self.column.value.pk)
+        return set(self.column.value.pk)  # pylint: disable=E1101
 
 
 class TwoColumnBlock(blocks.StructBlock):
@@ -37,6 +35,7 @@ class TwoColumnBlock(blocks.StructBlock):
     )
 
     def article_pks(self):
+        # pylint: disable=E1101
         return set(self.left_column.value.pk, self.right_column.value.pk)
 
 
@@ -46,6 +45,7 @@ class ThreeColumnBlock(blocks.StructBlock):
     right_column = ArticleBlock()
 
     def article_pks(self):
+        # pylint: disable=E1101
         return set(
             self.left_column.value.pk,
             self.middle_column.value.pk,
@@ -61,9 +61,10 @@ class RecentArticlesValue(blocks.StructValue):
         pks = homepage.article_pks()
         return (
             a
-            for a in ArticlePage.objects.reverse()
+            for a in ArticlePage.objects.order_by("-go_live_at")
             .exclude(pk__in=pks)
-            .prefetch_related("kicker", "featured_photo")[: self["num_articles"]]
+            .select_related("featured_photo__image")
+            .prefetch_related("kicker")[: self["num_articles"]]
         )
 
 
@@ -94,7 +95,7 @@ class HomePage(Page):
 
     def article_pks(self):
         pks = set()
-        for block in self.featured_articles:
+        for block in self.featured_articles:  # pylint: disable=E1133
             if block.block_type == "one_column":
                 pks.add(block.value["column"]["article"].pk)
             elif block.block_type == "two_columns":

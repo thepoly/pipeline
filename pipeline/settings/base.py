@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     "home",
     "search",
     "articles",
+    "lights",
+    "wagtailautocomplete",
     "wagtail.contrib.forms",
     "wagtail.contrib.postgres_search",
     "wagtail.contrib.redirects",
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
     "webpack_loader",
     "django_prometheus",
 ]

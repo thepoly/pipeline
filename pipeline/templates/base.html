@@ -19,6 +19,7 @@
         </title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="alternate" type="application/rss+xml" title="The Polytechnic" href="/feed/">
 
         {# Global stylesheet #}
         {% render_bundle 'main' 'css' attrs='data-turbolinks-track="reload"' %}
@@ -26,8 +27,8 @@
         {# Global JavaScript #}
         {% render_bundle 'main' 'js' attrs='defer data-turbolinks-track="reload"' %}
 
-        {% block extra_css %}
-            {# Override this in templates to add extra stylesheets #}
+        {% block extra_head %}
+            {# Override this in templates to add elements to head #}
         {% endblock %}
     </head>
 

@@ -14,12 +14,12 @@
         {% else %}
             <div class="col-12">
         {% endif %}
-            <h2>
-                <a href="{% pageurl article %}">{{ article.headline|richtext }}</a>
-            </h2>
-            {% if article.summary %}
-                {{ article.summary|richtext }}
-            {% endif %}
+        <h3>
+            <a href="{% pageurl article %}">{{ article.headline|richtext }}</a>
+        </h3>
+        {% if article.summary %}
+            {{ article.summary|richtext }}
+        {% endif %}
         </div>
     </div>
     {% empty %}

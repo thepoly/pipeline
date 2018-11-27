@@ -3,7 +3,6 @@ from django.db import models
 import operator
 from bs4 import BeautifulSoup
 
-from bs4 import BeautifulSoup
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.blocks import RichTextBlock
@@ -88,11 +87,11 @@ class ArticlePage(Page):
 
     def get_published_date(self):
         return self.go_live_at or self.first_published_at
-    
+
     def get_text(self):
         builder = ""
         for block in self.body:
-            if block.block_type=="paragraph":
+            if block.block_type == "paragraph":
                 soup = BeautifulSoup(str(block.value), "html.parser")
                 lines = soup.text.split("\n")
                 first = True
@@ -101,21 +100,28 @@ class ArticlePage(Page):
                         builder += " "
                         first = False
                     builder += line
-            return builder
+                return builder
 
     def get_related_articles(self):
-        found_articles=[]
-        related_articles=[]
-        current_article_text=self.get_text()
-        current_article_words=set(current_article_text.split(" "))
-        authors=self.get_authors()
+        found_articles = []
+        related_articles = []
+        current_article_text = self.get_text()
+        current_article_words = set(current_article_text.split(" "))
+        authors = self.get_authors()
         for author in authors:
-            articles=author.get_articles()
+            articles = author.get_articles()
             for article in articles:
-                if article.headline!=self.headline:
-                    text_to_match=article.get_text()
-                    article_words=set(text_to_match.split(" "))
-                    found_articles.append((article, len(list(current_article_words.intersection(article_words)))))
+                if article.headline != self.headline:
+                    text_to_match = article.get_text()
+                    article_words = set(text_to_match.split(" "))
+                    found_articles.append(
+                        (
+                            article,
+                            len(
+                                list(current_article_words.intersection(article_words))
+                            ),
+                        )
+                    )
         found_articles.sort(key=operator.itemgetter(1), reverse=True)
         for i in range(5):
             related_articles.append(found_articles[i][0])
@@ -169,7 +175,9 @@ class ArticlePage(Page):
             tags["twitter:card"] = "summary_large_image"
         else:
             tags["twitter:card"] = "summary"
+
         return tags
+
 
 class ArticlesIndexPage(Page):
     subpage_types = ["ArticlePage"]

@@ -279,13 +279,6 @@
             ],
             "version": "==2018.7"
         },
-        "rake-nltk": {
-            "hashes": [
-                "sha256:fe2b5d4422754f80f292763dac9e5be366af7a7a0431a621d79c603110cd004e"
-            ],
-            "index": "pypi",
-            "version": "==1.0.4"
-        },
         "requests": {
             "hashes": [
                 "sha256:65b3a120e4329e33c9889db89c80976c5272f56ea92d3e74da8a463992e3ff54",

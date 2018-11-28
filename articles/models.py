@@ -1,7 +1,8 @@
 from django.core.paginator import Paginator
 from django.db import models
-
+import operator
 from bs4 import BeautifulSoup
+
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.blocks import RichTextBlock
@@ -86,6 +87,50 @@ class ArticlePage(Page):
 
     def get_published_date(self):
         return self.go_live_at or self.first_published_at
+
+    def get_text(self):
+        builder = ""
+        for block in self.body:
+            if block.block_type == "paragraph":
+                soup = BeautifulSoup(str(block.value), "html.parser")
+                lines = soup.text.split("\n")
+                first = True
+                for line in lines:
+                    if not first:
+                        builder += " "
+                        first = False
+                    builder += line
+                return builder
+
+    def get_related_articles(self):
+        found_articles = []
+        related_articles = []
+        current_article_text = self.get_text()
+        if current_article_text is not None:
+            current_article_words = set(current_article_text.split(" "))
+            authors = self.get_authors()
+            for author in authors:
+                articles = author.get_articles()
+                for article in articles:
+                    if article.headline != self.headline:
+                        text_to_match = article.get_text()
+                        article_words = set(text_to_match.split(" "))
+                        found_articles.append(
+                            (
+                                article,
+                                len(
+                                    list(
+                                        current_article_words.intersection(
+                                            article_words
+                                        )
+                                    )
+                                ),
+                            )
+                        )
+            found_articles.sort(key=operator.itemgetter(1), reverse=True)
+            for i in range(5):
+                related_articles.append(found_articles[i][0])
+        return related_articles
 
     def get_first_chars(self, n=100):
         """Convert the body to HTML, extract the text, and then build

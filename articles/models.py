@@ -106,25 +106,30 @@ class ArticlePage(Page):
         found_articles = []
         related_articles = []
         current_article_text = self.get_text()
-        current_article_words = set(current_article_text.split(" "))
-        authors = self.get_authors()
-        for author in authors:
-            articles = author.get_articles()
-            for article in articles:
-                if article.headline != self.headline:
-                    text_to_match = article.get_text()
-                    article_words = set(text_to_match.split(" "))
-                    found_articles.append(
-                        (
-                            article,
-                            len(
-                                list(current_article_words.intersection(article_words))
-                            ),
+        if current_article_text is not None:
+            current_article_words = set(current_article_text.split(" "))
+            authors = self.get_authors()
+            for author in authors:
+                articles = author.get_articles()
+                for article in articles:
+                    if article.headline != self.headline:
+                        text_to_match = article.get_text()
+                        article_words = set(text_to_match.split(" "))
+                        found_articles.append(
+                            (
+                                article,
+                                len(
+                                    list(
+                                        current_article_words.intersection(
+                                            article_words
+                                        )
+                                    )
+                                ),
+                            )
                         )
-                    )
-        found_articles.sort(key=operator.itemgetter(1), reverse=True)
-        for i in range(5):
-            related_articles.append(found_articles[i][0])
+            found_articles.sort(key=operator.itemgetter(1), reverse=True)
+            for i in range(5):
+                related_articles.append(found_articles[i][0])
         return related_articles
 
     def get_first_chars(self, n=100):

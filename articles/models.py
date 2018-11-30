@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
-from wagtail.core.blocks import RichTextBlock
+from wagtail.core.blocks import RichTextBlock, ListBlock
 from wagtail.admin.edit_handlers import (
     FieldPanel,
     StreamFieldPanel,
@@ -13,6 +13,7 @@ from wagtail.admin.edit_handlers import (
     InlinePanel,
     PageChooserPanel,
 )
+from wagtail.snippets.blocks import SnippetChooserBlock
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtailautocomplete.edit_handlers import AutocompletePanel
@@ -27,7 +28,13 @@ class ArticlePage(Page):
     kicker = models.ForeignKey(
         "articles.Kicker", null=True, blank=True, on_delete=models.PROTECT
     )
-    body = StreamField([("paragraph", RichTextBlock()), ("image", ImageChooserBlock())])
+    body = StreamField(
+        [
+            ("paragraph", RichTextBlock()),
+            ("image", ImageChooserBlock()),
+            ("photo_gallery", ListBlock(SnippetChooserBlock("core.Photo"))),
+        ]
+    )
     summary = RichTextField(
         features=["italic"],
         null=True,

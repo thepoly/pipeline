@@ -57,6 +57,11 @@ module.exports = {
           },
           'sass-loader'
         ]
+      },
+      {
+        test: /\.(js|ts)$/,
+        exclude: /node_modules/,
+        loader: "babel-loader"
       }
     ]
   }

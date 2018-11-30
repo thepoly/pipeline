@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags rich_text %}
 
 {% block extra_head %}
     {% for tag, val in page.get_meta_tags.items %}
@@ -16,15 +16,28 @@
         {% if page.kicker %}
             <strong class="text-primary text-uppercase text-kicker">{{ page.kicker }}</strong>
         {% endif %}
-        <h1 class="article-headline mb-3">{{ page.headline|richtext }}</h1>
+        <h1 class="article-headline mb-3">{{ page.headline|richtext_unwrapped }}</h1>
         {% if page.subdeck %}
-            <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext }}</h4>
+            <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext_unwrapped }}</h4>
         {% endif %}
     </div>
     {% if page.featured_photo %}
-        <div class="featured-photo mt-4 mb-4 text-center">
+        <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
             {% image page.featured_photo.image width-1200 as photo %}
             <img class="" src="{{ photo.url }}">
+            {% if page.featured_photo.caption or photo.image.photographer %}
+                <div class="meta container mt-1 mb-2">
+                {% if page.featured_photo.caption %}
+                    <span class="caption text-dark">{{ page.featured_photo.caption|richtext_unwrapped }}</span>
+                {% endif %}
+                {% if photo.image.photographer %}
+                    <span class="small text-muted">
+                        <a href="{% pageurl photo.image.photographer %}">
+                            {{ photo.image.photographer }}</a>/<i>The Polytechnic</i>
+                    </span>
+                {% endif %}
+                </div>
+            {% endif %}
         </div>
     {% endif %}
     <div class="container mb-4">
@@ -45,6 +58,27 @@
             {% if block.block_type == 'image' %}
                 {% image block.value width-1200 as photo %}
                 <img src="{{ photo.url }}">
+            {% elif block.block_type == 'photo_gallery' %}
+                <div class="photo-gallery d-flex flex-row justify-content-center flex-wrap row no-gutters" data-controller="photo-gallery">
+                    <div class="large-photo flex-column justify-content-center" data-target="photo-gallery.largePhoto" data-action="click->photo-gallery#dismissPhoto">
+                        <div class="wrapper">
+                            <img data-target="photo-gallery.largePhotoImg">
+                            <p>
+                                <span data-target="photo-gallery.largePhotoCaption">Hi there! This is a caption for the above photo.</span>
+                                <span data-target="photo-gallery.largePhotoPhotographer">Sidney Kochman/<i>The Polytechnic</i></span>
+                            </p>
+                        </div>
+                    </div>
+                    {% for photo in block.value %}
+                        <div class="photo col-6">
+                            {% image photo.image fill-600x600 as small_photo %}
+                            {% image photo.image max-2000x1500 as large_photo %}
+                            <a href="#" data-action="photo-gallery#showPhoto">
+                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ photo.caption }}" data-photographer="{{ photo.image.get_attribution_html }}">
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
             {% else %}
                 {% include_block block %}
             {% endif %}

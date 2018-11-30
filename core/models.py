@@ -108,6 +108,11 @@ class CustomImage(AbstractImage):
 
     admin_form_fields = Image.admin_form_fields + ("photographer",)
 
+    def get_attribution_html(self):
+        if self.photographer is None:
+            return ""
+        return f"{self.photographer.first_name} {self.photographer.last_name}"
+
 
 # Delete the source image file when an image is deleted
 @receiver(pre_delete, sender=CustomImage)

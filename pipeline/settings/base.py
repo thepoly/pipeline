@@ -28,11 +28,14 @@ INSTALLED_APPS = [
     "home",
     "search",
     "articles",
+    "newsletter",
     "lights",
     "wagtailautocomplete",
     "wagtail.contrib.forms",
+    "wagtail.contrib.modeladmin",
     "wagtail.contrib.postgres_search",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.settings",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -53,6 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.sitemaps",
     "webpack_loader",
     "django_prometheus",
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [

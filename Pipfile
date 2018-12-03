@@ -15,6 +15,7 @@ gunicorn = "*"
 requests = "*"
 opencv-python = "*"
 wagtail-autocomplete = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 "flake8" = "*"

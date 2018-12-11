@@ -27,6 +27,7 @@ class ArticlePage(Page):
     kicker = models.ForeignKey(
         "articles.Kicker", null=True, blank=True, on_delete=models.PROTECT
     )
+    #spotify_widget = RichTextField(null=True, blank=True)      doesn't work yet
     body = StreamField([("paragraph", RichTextBlock()), ("image", ImageChooserBlock())])
     summary = RichTextField(
         features=["italic"],

@@ -13,6 +13,7 @@
 {% block content %}
 <article class="narrow">
     <div class="container">
+        
         {% if page.kicker %}
             <strong class="text-primary text-uppercase text-kicker">{{ page.kicker }}</strong>
         {% endif %}
@@ -20,6 +21,14 @@
         {% if page.subdeck %}
             <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext }}</h4>
         {% endif %}
+    </div>
+    <div class="row">
+       
+            <div class="col-md-4 col-md-offset-4"><br>
+                <iframe src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            </div>
+            
+
     </div>
     {% if page.featured_photo %}
         <div class="featured-photo mt-4 mb-4 text-center">

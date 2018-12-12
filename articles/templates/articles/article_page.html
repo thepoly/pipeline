@@ -23,12 +23,13 @@
         {% endif %}
     </div>
     <div class="row">
-       
-            <div class="col-md-4 col-md-offset-4"><br>
-                <iframe src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-            </div>
-            
-
+       {% for block in page.body %}
+            {% if block.block_type == 'spotify_widget' %}
+                <div class="col-md-4 col-md-offset-4" style="position:fixed; top:100px"><br>
+                	<iframe src="block.value" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            	</div>
+            {% endif %}
+        {% endfor %}
     </div>
     {% if page.featured_photo %}
         <div class="featured-photo mt-4 mb-4 text-center">

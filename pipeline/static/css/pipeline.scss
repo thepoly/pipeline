@@ -239,12 +239,12 @@ ul.pagination {
 }
 
 .template-homepage .header-logo img {
-  height: 70px;
+  height: 80px;
 }
 
 @include media-breakpoint-down(sm) {
   .template-homepage .header-logo img {
-    height: 50px;
+    height: 70px;
   }
 }
 

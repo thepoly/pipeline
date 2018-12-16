@@ -70,6 +70,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "wagtail.core.middleware.SiteMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "core.middleware.MigrationRedirectMiddleware",
     "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 

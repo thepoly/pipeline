@@ -135,7 +135,7 @@ class ArticlePage(Page):
                             )
                         )
             found_articles.sort(key=operator.itemgetter(1), reverse=True)
-            for i in range(5):
+            for i in range(min(5, len(found_articles))):
                 related_articles.append(found_articles[i][0])
         return related_articles
 
@@ -176,6 +176,7 @@ class ArticlePage(Page):
 
         # image
         if self.featured_photo is not None:
+            # pylint: disable=E1101
             rendition = self.featured_photo.image.get_rendition("fill-600x400")
             rendition_url = self.get_site().root_url + rendition.url
             tags["og:image"] = rendition_url
@@ -240,3 +241,11 @@ class ArticleAuthorRelationship(models.Model):
 
     class Meta:
         unique_together = ("article", "author")
+
+
+class MigrationInformation(models.Model):
+    """Contains information about articles migrated from WordPress posts at poly.rpi.edu."""
+
+    article = models.OneToOneField(ArticlePage, on_delete=models.CASCADE)
+    link = models.URLField(db_index=True)
+    guid = models.CharField(max_length=255, primary_key=True)

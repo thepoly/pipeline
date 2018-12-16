@@ -44,7 +44,8 @@
         {% if authors %}
         <span class="authors mr-1">
             By {% for author in authors %}
-                <a class="author-name" href="{% pageurl author %}">{{ author }}</a>
+                {% if forloop.last and authors|length > 1 %} and {% endif %}
+                <a class="author-name" href="{% pageurl author %}">{{ author }}</a>{% if not forloop.last and authors|length > 2 %}, {% endif %}
             {% endfor %}
         </span>
         {% endif %}

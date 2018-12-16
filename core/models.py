@@ -152,3 +152,6 @@ class Photo(models.Model):
     caption = RichTextField(blank=True, null=True)
 
     panels = [ImageChooserPanel("image"), FieldPanel("caption")]
+
+    def __str__(self):
+        return self.image.title

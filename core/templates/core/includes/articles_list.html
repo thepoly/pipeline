@@ -19,6 +19,8 @@
         </h3>
         {% if article.summary %}
             {{ article.summary|richtext }}
+        {% else %}
+            {{ article.get_first_chars|richtext }}
         {% endif %}
         </div>
     </div>

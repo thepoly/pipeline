@@ -20,7 +20,6 @@ You can change Pipeline's settings to use SQLite instead of Postgres, but this i
 ## Getting started
 
 Pipeline is written in Python. It uses Sass and PostCSS on the frontend with webpack to glue them together.
-run Pipeline for development:
 
 #### Note about Postgres
 

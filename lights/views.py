@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
+from django.views.decorators.cache import never_cache
 
 from .models import Color
 from .forms import ColorForm
@@ -9,6 +10,7 @@ def index(request):
     return render(request, "lights/index.html")
 
 
+@never_cache
 def getColor(request):
     try:
         c = Color.objects.get(id=0)

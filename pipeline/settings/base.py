@@ -61,6 +61,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
+    "django.middleware.cache.UpdateCacheMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -71,6 +72,7 @@ MIDDLEWARE = [
     "wagtail.core.middleware.SiteMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "core.middleware.MigrationRedirectMiddleware",
+    "django.middleware.cache.FetchFromCacheMiddleware",
     "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
@@ -168,5 +170,15 @@ WAGTAILSEARCH_BACKENDS = {
 WAGTAILIMAGES_IMAGE_MODEL = "core.CustomImage"
 
 # Miscellaneous
-
 INTERNAL_IPS = ["127.0.0.1"]
+
+# Caching
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache",
+        "OPTIONS": {
+            "MAX_ENTRIES": 1000  # This is just a guess and should eventually be supported by metrics
+        },
+    }
+}

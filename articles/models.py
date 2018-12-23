@@ -1,8 +1,7 @@
-from django.core.paginator import Paginator
-from django.db import models
 import operator
 from bs4 import BeautifulSoup
-
+from django.core.paginator import Paginator
+from django.db import models
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.blocks import RichTextBlock, ListBlock
@@ -16,9 +15,9 @@ from wagtail.admin.edit_handlers import (
 from wagtail.snippets.blocks import SnippetChooserBlock
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
-from wagtailautocomplete.edit_handlers import AutocompletePanel
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.search import index
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 from modelcluster.fields import ParentalKey
 
 

@@ -13,12 +13,12 @@ ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-# MIDDLEWARE = [
-#     "debug_toolbar.middleware.DebugToolbarMiddleware",
-#     "nplusone.ext.django.NPlusOneMiddleware",
-# ] + MIDDLEWARE
+MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "nplusone.ext.django.NPlusOneMiddleware",
+] + MIDDLEWARE
 
-# INSTALLED_APPS = INSTALLED_APPS + ["debug_toolbar", "nplusone.ext.django"]
+INSTALLED_APPS = INSTALLED_APPS + ["debug_toolbar", "nplusone.ext.django"]
 
 LOGGING = {
     "version": 1,
@@ -27,8 +27,8 @@ LOGGING = {
     "loggers": {"nplusone": {"handlers": ["console"], "level": "WARN"}},
 }
 
-# NPLUSONE_LOGGER = logging.getLogger("nplusone")
-# NPLUSONE_LOG_LEVEL = logging.WARN
+NPLUSONE_LOGGER = logging.getLogger("nplusone")
+NPLUSONE_LOG_LEVEL = logging.WARN
 
 try:
     from .local import *

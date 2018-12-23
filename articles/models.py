@@ -146,14 +146,10 @@ class ArticlePage(Page):
         builder = ""
         soup = BeautifulSoup(str(self.body), "html.parser")
         lines = soup.text.split("\n")
-        first = True
         for line in lines:
-            if not first:
-                builder += " "
-                first = False
-            builder += line
+            builder += line + " "
             if len(builder) > n:
-                return builder
+                return builder[:-1]
         return None
 
     def get_meta_tags(self):

@@ -17,16 +17,7 @@
     </form>
 
     {% if search_results %}
-        <ul>
-            {% for result in search_results %}
-                <li>
-                    <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
-                    {% if result.search_description %}
-                        {{ result.search_description }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+        {% include "core/includes/articles_list.html" with articles=search_results %}
 
         {% if search_results.has_previous %}
             <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>

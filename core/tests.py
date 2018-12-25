@@ -52,3 +52,18 @@ class RecentArticlesFeedTest(TestCase):
             item.find("pubDate").text,
             datetime.strftime(page.get_published_date(), "%a, %d %b %Y %H:%M:%S %z"),
         )
+
+    def test_dump_cache_on_publish(self):
+        page = ArticlePage.objects.get()
+        page.headline = "Original headline"
+        page.save_revision().publish()
+        resp = self.client.get("/section/article-page/")
+        self.assertContains(resp, "Original headline")
+        self.assertNotContains(resp, "Updated headline")
+
+        page = ArticlePage.objects.get()
+        page.headline = "Updated headline"
+        page.save_revision().publish()
+        resp = self.client.get("/section/article-page/")
+        self.assertNotContains(resp, "Original headline")
+        self.assertContains(resp, "Updated headline")

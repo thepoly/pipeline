@@ -3,7 +3,7 @@ from wagtail.core.fields import StreamField
 from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.core import blocks
 
-from articles.models import ArticlePage
+from articles.models import ArticlePage, ArticlesIndexPage
 
 
 class ArticleBlock(blocks.StructBlock):
@@ -106,3 +106,6 @@ class HomePage(Page):
                 pks.add(block.value["middle_column"]["article"].pk)
                 pks.add(block.value["right_column"]["article"].pk)
         return pks
+
+    def get_sections(self):
+        return list(ArticlesIndexPage.objects.live().descendant_of(self))

@@ -101,5 +101,16 @@
         </div>
     {% endfor %}
 
+    {% if page.get_sections %}
+        <div class="see-more">
+            <img src="{% static 'images/logo_inverted.png' %}" class="logo">
+            <hr>
+            <div class="d-flex flex-row justify-content-between">
+            {% for section in page.get_sections %}
+                <a href="{% pageurl section %}" class="h5 text-primary">{{ section.title }}</a>
+            {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -68,7 +68,7 @@ class StaffIndexPage(Page):
         return (
             StaffPage.objects.live()
             .descendant_of(self)
-            .filter(terms__date_ended__isnull=True)
+            .filter(terms__position__isnull=False, terms__date_ended__isnull=True)
             .select_related("photo")
             .prefetch_related("terms__position")
             .distinct()

@@ -32,8 +32,12 @@
                 {% endif %}
                 {% if photo.image.photographer %}
                     <span class="small text-muted">
-                        <a href="{% pageurl photo.image.photographer %}">
-                            {{ photo.image.photographer }}</a>/<i>The Polytechnic</i>
+                        {% if photo.image.photographer.staff_page %}
+                            <a href="{% pageurl photo.image.photographer.staff_page %}">
+                            {{ photo.image.photographer.staff_page.name }}</a>/<i>The Polytechnic</i>
+                        {% else %}
+                            {{ photo.image.photographer.name }}
+                        {% endif %}
                     </span>
                 {% endif %}
                 </div>
@@ -45,7 +49,11 @@
         <span class="authors mr-1">
             By {% for author in authors %}
                 {% if forloop.last and authors|length > 1 %} and {% endif %}
-                <a class="author-name" href="{% pageurl author %}">{{ author }}</a>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                {% if author.staff_page %}
+                    <a class="author-name" href="{% pageurl author.staff_page %}">{{ author.staff_page.name }}</a>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                {% else %}
+                    <span class="author-name">{{ author.name }}</span>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                {% endif %}
             {% endfor %}
         </span>
         {% endif %}
@@ -90,10 +98,6 @@
 <div class="container">
     <hr>
     <div class="more">
-        <p>See more by
-        {% for author in authors %}
-            <a class="author-name" href="{% pageurl author %}">{{ author }}</a>
-        {% endfor %}</p>
         {% if page.kicker %}
             <p>See more articles about {{ page.kicker }}</p>
         {% endif %}

@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     "core",
     "home",
     "search",
-    "articles",
     "newsletter",
     "lights",
     "wagtailautocomplete",

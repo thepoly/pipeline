@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 
-from articles.models import MigrationInformation
+from core.models import MigrationInformation
 
 
 class MigrationRedirectMiddleware:

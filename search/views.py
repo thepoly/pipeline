@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from wagtail.search.models import Query
 
-from articles.models import ArticlePage
+from core.models import ArticlePage
 
 
 def search(request):

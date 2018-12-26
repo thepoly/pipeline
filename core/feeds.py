@@ -1,5 +1,5 @@
 from django.contrib.syndication.views import Feed
-from articles.models import ArticlePage
+from core.models import ArticlePage
 
 
 class RecentArticlesFeed(Feed):

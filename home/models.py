@@ -3,11 +3,11 @@ from wagtail.core.fields import StreamField
 from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.core import blocks
 
-from articles.models import ArticlePage, ArticlesIndexPage
+from core.models import ArticlePage, ArticlesIndexPage
 
 
 class ArticleBlock(blocks.StructBlock):
-    article = blocks.PageChooserBlock(target_model="articles.ArticlePage")
+    article = blocks.PageChooserBlock(target_model="core.ArticlePage")
     headline = blocks.RichTextBlock(
         help_text="Optional. Will override the article's headline.", required=False
     )

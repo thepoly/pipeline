@@ -10,14 +10,18 @@ from wagtail.core.rich_text import RichText
 import requests
 from requests.exceptions import RequestException
 
-from articles.models import (
+from core.models import (
     ArticlePage,
     ArticlesIndexPage,
     ArticleAuthorRelationship,
     Kicker,
     MigrationInformation,
+    StaffPage,
+    StaffIndexPage,
+    CustomImage,
+    Photo,
+    Contributor,
 )
-from core.models import StaffPage, StaffIndexPage, CustomImage, Photo
 
 
 class Command(BaseCommand):
@@ -36,8 +40,8 @@ class Command(BaseCommand):
         self.stdout.write("Importing...")
 
         self.wp_import("Opinion", 3)
-        # self.wp_import("News", 5)
-        # self.wp_import("Features", 4)
+        self.wp_import("News", 5)
+        self.wp_import("Features", 4)
 
         self.stdout.write("Done.")
 
@@ -123,29 +127,29 @@ class Command(BaseCommand):
         migration_info.save()
 
     def create_or_get_authors(self, authors):
-        staff = []
+        author_objects = []
         for author in authors.split(" and "):
-            splitted = author.split(" ")
-            if len(splitted) != 2:
-                print(splitted)
-                return staff
-            first_name = splitted[0]
-            last_name = splitted[1]
+            # splitted = author.split(" ")
+            # if len(splitted) != 2:
+            #     print(splitted)
+            #     return author_objects
+            # first_name = splitted[0]
+            # last_name = splitted[1]
 
             try:
-                staff_page = StaffPage.objects.filter(
-                    first_name=first_name, last_name=last_name
-                ).get()
-            except StaffPage.DoesNotExist:
-                staff_page = StaffPage()
-                staff_page.first_name = first_name
-                staff_page.last_name = last_name
-                staff_page.title = f"{first_name} {last_name}"
-                staff_page.slug = slugify(staff_page.title)
-                self.staff_index.add_child(instance=staff_page)
-                staff_page.save_revision().publish()
-            staff.append(staff_page)
-        return staff
+                contributor = Contributor.objects.filter(name=author).get()
+            except Contributor.DoesNotExist:
+                # staff_page = StaffPage()
+                # staff_page.first_name = first_name
+                # staff_page.last_name = last_name
+                # staff_page.title = f"{first_name} {last_name}"
+                # staff_page.slug = slugify(staff_page.title)
+                # self.staff_index.add_child(instance=staff_page)
+                # staff_page.save_revision().publish()
+                contributor = Contributor(name=author)
+                contributor.save()
+            author_objects.append(contributor)
+        return author_objects
 
     def create_or_get_author(self, author):
         authors = self.create_or_get_authors(author)
@@ -183,8 +187,8 @@ class Command(BaseCommand):
         image = CustomImage(file=ImageFile(BytesIO(r.content), name=name), title=name)
         if not photographer.startswith("Courtesy of "):
             photographer_name = photographer.split("/")[0]
-            staff = self.create_or_get_author(photographer_name)
-            image.photographer = staff
+            contributor = self.create_or_get_author(photographer_name)
+            image.photographer = contributor
         image.save()
 
         photo = Photo(image=image, caption=caption)

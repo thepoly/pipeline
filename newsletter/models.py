@@ -5,7 +5,7 @@ from wagtail.contrib.settings.models import BaseSetting, register_setting
 from wagtail.core import blocks
 from wagtail.core.fields import StreamField
 
-from articles.models import ArticlePage
+from core.models import ArticlePage
 
 
 class Subscription(models.Model):

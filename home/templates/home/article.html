@@ -5,7 +5,7 @@
         {% if article.featured_photo %}
             {% image article.featured_photo.image width-1200 as photo %}
             <a href="{% pageurl article %}">
-                <img class="img-fluid mb-4" src="{{ photo.url }}">
+                <img class="img-fluid mb-2 mb-md-3" src="{{ photo.url }}">
             </a>
         {% endif %}
         {% if article.kicker %}

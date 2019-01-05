@@ -313,7 +313,7 @@ class ArticlePage(Page):
                             )
                         )
             found_articles.sort(key=operator.itemgetter(1), reverse=True)
-            for i in range(min(5, len(found_articles))):
+            for i in range(min(4, len(found_articles))):
                 related_articles.append(found_articles[i][0])
         return related_articles
 

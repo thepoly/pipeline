@@ -3,6 +3,7 @@
 {% load wagtailcore_tags wagtailimages_tags rich_text %}
 
 {% block extra_head %}
+    <link rel="canonical" href="{{ page.full_url }}">
     {% for tag, val in page.get_meta_tags.items %}
         <meta property="{{tag}}" content="{{val}}">
     {% endfor %}

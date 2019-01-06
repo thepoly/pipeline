@@ -20,6 +20,7 @@
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="alternate" type="application/rss+xml" title="The Polytechnic" href="/feed/">
+        <link rel="icon" href="{% static 'images/lettermark.png' %}">
         <link rel="apple-touch-icon" href="{% static 'images/lettermark.png' %}">
         <link rel="mask-icon" href="{% static 'images/lettermark_nobg.svg' %}" color="#DA1E05">
 
@@ -67,6 +68,12 @@
         </section>
 
         <footer class="footer px-2 mt-4">
+            {% block footer_logo_block %}
+                <img src="{% static 'images/logo_inverted.png' %}" class="logo mb-3">
+            {% endblock %}
+            <p>
+                <span class="text-nowrap">Serving the Rensselaer community since 1885.</span>
+            </p>
             <p>
                 <span class="text-nowrap">&copy; {% now "Y" %} <i>The Rensselaer Polytechnic</i>.</span>
                 <span class="text-nowrap">Powered by <a href="https://github.com/thepoly/pipeline">Pipeline</a>.</span>

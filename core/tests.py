@@ -53,21 +53,6 @@ class RecentArticlesFeedTest(TestCase):
             datetime.strftime(page.get_published_date(), "%a, %d %b %Y %H:%M:%S %z"),
         )
 
-    def test_dump_cache_on_publish(self):
-        page = ArticlePage.objects.get()
-        page.headline = "Original headline"
-        page.save_revision().publish()
-        resp = self.client.get("/section/article-page/")
-        self.assertContains(resp, "Original headline")
-        self.assertNotContains(resp, "Updated headline")
-
-        page = ArticlePage.objects.get()
-        page.headline = "Updated headline"
-        page.save_revision().publish()
-        resp = self.client.get("/section/article-page/")
-        self.assertNotContains(resp, "Original headline")
-        self.assertContains(resp, "Updated headline")
-
 
 class ArticlePageTest(TestCase):
     def setUp(self):
@@ -85,6 +70,12 @@ class ArticlePageTest(TestCase):
         section_index.save()
         page.save_revision().publish()
 
+        # for some reason, first_published_at only gets set after we retrieve the page again?
+        page = ArticlePage.objects.get()
+
+        published = page.first_published_at
+        self.page_url = f"/section/{published.year}/{published.month:02d}/article-page/"
+
     def test_published_date(self):
         page = ArticlePage.objects.get()
         first_published = page.get_published_date()
@@ -100,15 +91,15 @@ class ArticlePageTest(TestCase):
         self.assertEqual(page.get_published_date(), first_published)
 
     def test_status_code(self):
-        resp = self.client.get("/section/article-page/")
+        resp = self.client.get(self.page_url)
         self.assertEqual(resp.status_code, 200)
 
     def test_template(self):
-        resp = self.client.get("/section/article-page/")
+        resp = self.client.get(self.page_url)
         self.assertTemplateUsed(resp, "core/article_page.html")
 
     def test_title(self):
-        resp = self.client.get("/section/article-page/")
+        resp = self.client.get(self.page_url)
         soup = BeautifulSoup(resp.content, "html.parser")
         self.assertEqual(soup.title.string.strip(), "Headline")
 
@@ -131,3 +122,18 @@ class ArticlePageTest(TestCase):
             a.get_first_chars(20),
         )
         self.assertEqual("Hi, RPI!", a.get_first_chars(5))
+
+    def test_dump_cache_on_publish(self):
+        page = ArticlePage.objects.get()
+        page.headline = "Original headline"
+        page.save_revision().publish()
+        resp = self.client.get(self.page_url)
+        self.assertContains(resp, "Original headline")
+        self.assertNotContains(resp, "Updated headline")
+
+        page = ArticlePage.objects.get()
+        page.headline = "Updated headline"
+        page.save_revision().publish()
+        resp = self.client.get(self.page_url)
+        self.assertNotContains(resp, "Original headline")
+        self.assertContains(resp, "Updated headline")

@@ -1,3 +1,4 @@
+import logging
 import operator
 
 from bs4 import BeautifulSoup
@@ -5,6 +6,8 @@ from django.core.paginator import Paginator
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
+from django.http import Http404
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import RichTextBlock, ListBlock
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page, Orderable
@@ -24,6 +27,9 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 from modelcluster.fields import ParentalKey
+
+
+logger = logging.getLogger("pipeline")
 
 
 class StaticPage(Page):
@@ -202,7 +208,7 @@ class Kicker(models.Model):
         return self.title
 
 
-class ArticlePage(Page):
+class ArticlePage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
     kicker = models.ForeignKey(Kicker, null=True, blank=True, on_delete=models.PROTECT)
@@ -258,6 +264,26 @@ class ArticlePage(Page):
 
         soup = BeautifulSoup(self.headline, "html.parser")
         self.title = soup.text
+
+    @route(r"^$")
+    def post_404(self, request):
+        """Return an HTTP 404 whenever the page is accessed directly.
+        
+        This is because it should instead by accessed by its date-based path,
+        i.e. `<year>/<month>/<slug/`."""
+        raise Http404
+
+    def set_url_path(self, parent):
+        """Make sure the page knows its own path. The published date might not be set,
+        so we have to take that into account and ignore it if so."""
+        date = self.first_published_at
+        if date is not None:
+            self.url_path = (
+                f"{parent.url_path}{date.year}/{date.month:02d}/{self.slug}/"
+            )
+        else:
+            self.url_path = f"{parent.url_path}{self.slug}/"
+        return self.url_path
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -366,8 +392,20 @@ class ArticlePage(Page):
         return tags
 
 
-class ArticlesIndexPage(Page):
+class ArticlesIndexPage(RoutablePageMixin, Page):
     subpage_types = ["ArticlePage"]
+
+    @route(r"^(\d{4})\/(\d{2})\/(.*)\/$")
+    def post_by_date(self, request, year, month, slug, *args, **kwargs):
+        try:
+            page = ArticlePage.objects.live().get(
+                slug=slug,
+                first_published_at__year=year,
+                first_published_at__month=month,
+            )
+        except ArticlePage.DoesNotExist:
+            raise Http404
+        return page.serve(request, *args, **kwargs)
 
     def get_articles(self):
         return (

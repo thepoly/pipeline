@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.modeladmin",
     "wagtail.contrib.postgres_search",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.routable_page",
     "wagtail.contrib.settings",
     "wagtail.embeds",
     "wagtail.sites",
@@ -170,14 +171,3 @@ WAGTAILIMAGES_IMAGE_MODEL = "core.CustomImage"
 
 # Miscellaneous
 INTERNAL_IPS = ["127.0.0.1"]
-
-# Caching
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-        "LOCATION": "cache",
-        "OPTIONS": {
-            "MAX_ENTRIES": 1000  # This is just a guess and should eventually be supported by metrics
-        },
-    }
-}

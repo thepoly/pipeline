@@ -36,6 +36,9 @@ LOGGING = {
 NPLUSONE_LOGGER = logging.getLogger("nplusone")
 NPLUSONE_LOG_LEVEL = logging.WARN
 
+# Caching. Use dummy cache in development
+CACHES = {"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"}}
+
 try:
     from .local import *
 except ImportError:

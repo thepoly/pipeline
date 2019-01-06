@@ -22,6 +22,17 @@ DATABASES = {
     }
 }
 
+# Caching
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache",
+        "OPTIONS": {
+            "MAX_ENTRIES": 1000  # This is just a guess and should eventually be supported by metrics
+        },
+    }
+}
+
 try:
     from .local import *
 except ImportError:

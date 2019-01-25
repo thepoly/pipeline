@@ -102,6 +102,21 @@ class ArticlePage(Page):
                     builder += line
                 return builder
 
+    def get_spotify_widget(self):
+        builder=""
+        for block in self.body:
+            if block.block_type == "spotify_widget":
+                soup = BeautifulSoup(str(block.value), "html.parser")
+                lines = soup.text.split("\n")
+                first = True
+                for line in lines:
+                    if not first:
+                        builder += " "
+                        first = False
+                    builder += line
+                return builder
+                return soup
+
     def get_related_articles(self):
         found_articles = []
         related_articles = []

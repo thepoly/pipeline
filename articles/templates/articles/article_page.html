@@ -26,7 +26,7 @@
        {% for block in page.body %}
             {% if block.block_type == 'spotify_widget' %}
                 <div class="col-md-4 col-md-offset-4" style="position:fixed; top:100px"><br>
-                	<iframe src="block.value" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                	<iframe src="{{ page.get_spotify_widget }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
             	</div>
             {% endif %}
         {% endfor %}
@@ -56,7 +56,9 @@
                 {% image block.value width-1200 as photo %}
                 <img src="{{ photo.url }}">
             {% else %}
-                {% include_block block %}
+                {% if block.block_type != 'spotify_widget' %}
+                    {% include_block block %}
+                {% endif %}
             {% endif %}
         {% endfor %}
     </div>

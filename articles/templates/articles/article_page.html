@@ -22,6 +22,13 @@
                         <iframe src="{{ page.get_spotify_widget }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                     </div>
                 {% endif %}
+                {% if block.block_type == 'youtube_widget' %}
+                    <div class="youtube item" style="position: -webkit-sticky; position: sticky;top:100px">
+                        <iframe id="ytplayer" type="text/html" width="320" height="180"
+                        src="{{ page.get_youtube_widget }}"
+                        frameborder="0" allowfullscreen></iframe>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
         <div class="col-md-auto">
@@ -59,7 +66,9 @@
                         <img src="{{ photo.url }}">
                     {% else %}
                         {% if block.block_type != 'spotify_widget' %}
-                            {% include_block block %}
+                            {% if block.block_type != 'youtube_widget'%}
+                                {% include_block block %}
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                 {% endfor %}

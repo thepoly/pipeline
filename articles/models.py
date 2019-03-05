@@ -32,6 +32,7 @@ class ArticlePage(Page):
             ("paragraph", RichTextBlock()),
             ("image", ImageChooserBlock()),
             ("spotify_widget", RichTextBlock()),
+            ("youtube_widget", RichTextBlock()),
         ]
     )
     summary = RichTextField(
@@ -112,6 +113,21 @@ class ArticlePage(Page):
         builder = ""
         for block in self.body:
             if block.block_type == "spotify_widget":
+                soup = BeautifulSoup(str(block.value), "html.parser")
+                lines = soup.text.split("\n")
+                first = True
+                for line in lines:
+                    if not first:
+                        builder += " "
+                        first = False
+                    builder += line
+                return builder
+                return soup
+
+    def get_youtube_widget(self):
+        builder = ""
+        for block in self.body:
+            if block.block_type == "youtube_widget":
                 soup = BeautifulSoup(str(block.value), "html.parser")
                 lines = soup.text.split("\n")
                 first = True

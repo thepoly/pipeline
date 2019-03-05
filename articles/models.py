@@ -27,7 +27,13 @@ class ArticlePage(Page):
     kicker = models.ForeignKey(
         "articles.Kicker", null=True, blank=True, on_delete=models.PROTECT
     )
-    body = StreamField([("paragraph", RichTextBlock()), ("image", ImageChooserBlock()), ("spotify_widget", RichTextBlock())])
+    body = StreamField(
+        [
+            ("paragraph", RichTextBlock()),
+            ("image", ImageChooserBlock()),
+            ("spotify_widget", RichTextBlock()),
+        ]
+    )
     summary = RichTextField(
         features=["italic"],
         null=True,
@@ -103,7 +109,7 @@ class ArticlePage(Page):
                 return builder
 
     def get_spotify_widget(self):
-        builder=""
+        builder = ""
         for block in self.body:
             if block.block_type == "spotify_widget":
                 soup = BeautifulSoup(str(block.value), "html.parser")

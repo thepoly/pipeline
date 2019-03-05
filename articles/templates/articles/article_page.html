@@ -12,6 +12,16 @@
 
 {% block content %}
 <article class="narrow">
+    <div class="col-md-4 col-md-offset-4" style="position:sticky;top:500px"><br>   
+    {% for block in page.body %}
+        {% if block.block_type == 'spotify_widget' %}
+            
+                <iframe src="{{ page.get_spotify_widget }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+           
+        {% endif %}
+    {% endfor %}
+    </div>
+
     <div class="container">
         
         {% if page.kicker %}
@@ -22,19 +32,18 @@
             <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext }}</h4>
         {% endif %}
     </div>
-    {% for block in page.body %}
-        {% if block.block_type == 'spotify_widget' %}
-            <div class="col-md-4 col-md-offset-4" style="position:fixed; top:100px"><br>
-                <iframe src="{{ page.get_spotify_widget }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-            </div>
-        {% endif %}
-    {% endfor %}
+    
+  
+    
+
+
     {% if page.featured_photo %}
         <div class="featured-photo mt-4 mb-4 text-center">
             {% image page.featured_photo.image width-1200 as photo %}
             <img class="" src="{{ photo.url }}">
         </div>
     {% endif %}
+    </div>
     <div class="container mb-4">
         {% if authors %}
         <span class="authors mr-1">

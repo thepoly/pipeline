@@ -2,7 +2,7 @@ from django.test import TestCase
 from wagtail.core.models import Page, Site
 from bs4 import BeautifulSoup
 
-from articles.models import ArticlePage
+from core.models import ArticlePage
 from .models import HomePage
 
 

@@ -4,10 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-wagtail = "~=2.2.1"
+wagtail = "~=2.4"
 django-debug-toolbar = "*"
 django-webpack-loader = "*"
-Django = "~=2.0.8"
+Django = "~=2.1"
 "beautifulsoup4" = "==4.6.0"
 django-prometheus = "*"
 gunicorn = "*"
@@ -15,6 +15,7 @@ gunicorn = "*"
 requests = "*"
 opencv-python = "*"
 wagtail-autocomplete = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 "flake8" = "*"

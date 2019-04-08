@@ -13,7 +13,7 @@
                 <span class="text-nowrap">{{ position.title }}{% if not forloop.last and person.get_active_positions|length > 2 %}, {% endif %}</span>
                 {% endfor %}</h4>
             <hr>
-            {% if page.biograph %}
+            {% if page.biography %}
                 {% include_block page.biography %}
             {% endif %}
         </div>

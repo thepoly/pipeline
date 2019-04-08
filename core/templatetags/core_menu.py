@@ -1,6 +1,6 @@
 from django import template
 
-from articles.models import ArticlesIndexPage
+from core.models import ArticlesIndexPage
 
 register = template.Library()
 

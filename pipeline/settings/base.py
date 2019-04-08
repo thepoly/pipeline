@@ -27,12 +27,15 @@ INSTALLED_APPS = [
     "core",
     "home",
     "search",
-    "articles",
+    "newsletter",
     "lights",
     "wagtailautocomplete",
     "wagtail.contrib.forms",
+    "wagtail.contrib.modeladmin",
     "wagtail.contrib.postgres_search",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.routable_page",
+    "wagtail.contrib.settings",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -53,10 +56,12 @@ INSTALLED_APPS = [
     "django.contrib.sitemaps",
     "webpack_loader",
     "django_prometheus",
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
+    "django.middleware.cache.UpdateCacheMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -66,6 +71,8 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "wagtail.core.middleware.SiteMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "core.middleware.MigrationRedirectMiddleware",
+    "django.middleware.cache.FetchFromCacheMiddleware",
     "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
@@ -163,5 +170,4 @@ WAGTAILSEARCH_BACKENDS = {
 WAGTAILIMAGES_IMAGE_MODEL = "core.CustomImage"
 
 # Miscellaneous
-
 INTERNAL_IPS = ["127.0.0.1"]

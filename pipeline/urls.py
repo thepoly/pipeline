@@ -9,6 +9,7 @@ from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_url
 from wagtail.contrib.sitemaps.views import sitemap
 
 from search import views as search_views
+from newsletter import urls as newsletter_urls
 from core.feeds import RecentArticlesFeed
 from lights import urls as lights_urls
 
@@ -19,6 +20,7 @@ urlpatterns = [
     url(r"^admin/", include(wagtailadmin_urls)),
     url(r"^documents/", include(wagtaildocs_urls)),
     url(r"^search/$", search_views.search, name="search"),
+    url(r"^newsletter/", include(newsletter_urls), name="newsletter"),
     url(r"^feed/$", RecentArticlesFeed()),
     url(r"^sitemap\.xml$", sitemap),
 ]

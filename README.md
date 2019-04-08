@@ -19,20 +19,27 @@ You can change Pipeline's settings to use SQLite instead of Postgres, but this i
 
 ## Getting started
 
-Pipeline is written in Python. It uses Sass and PostCSS on the frontend with webpack to glue them together. To
-run Pipeline for development:
+Pipeline is written in Python. It uses Sass and PostCSS on the frontend with webpack to glue them together.
+
+#### Note about Postgres
+
+Pipeline expects to be able to connect to a Postgres database named `pipeline`. To set this up on macOS:
+
+```
+brew install postgresql
+brew services start postgresql
+createdb pipeline
+```
 
 ### Installing
 
 ```
 git clone git@github.com:thepoly/pipeline.git
 cd pipeline
-pipenv install --dev
-brew install postgresql
 npm install
 npx wp --config webpack.development.config.js
-brew services start postgresql
-createdb pipeline //only on first run
+pipenv install --dev
+pipenv run python manage.py createcachetable
 ```
 
 ### Running

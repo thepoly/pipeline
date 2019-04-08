@@ -6,7 +6,7 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block header_block %}
-    <header class="pb-3 pb-md-5 pt-3 bg-gradient-primary">
+    <header class="pb-4 pb-md-5 pt-2 pt-md-3 bg-gradient-primary">
         <div class="container">
             <div class="flex-row no-gutters align-items-center">
                 <div class="col text-right mb-3 mb-md-0">
@@ -101,5 +101,18 @@
         </div>
     {% endfor %}
 
+    {% if page.get_sections %}
+        <div class="see-more">
+            <img src="{% static 'images/logo_inverted.png' %}" class="logo">
+            <hr>
+            <div class="d-flex flex-row justify-content-between">
+            {% for section in page.get_sections %}
+                <a href="{% pageurl section %}" class="h5 text-primary">{{ section.title }}</a>
+            {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
+
+{% block footer_logo_block %}{% endblock %}

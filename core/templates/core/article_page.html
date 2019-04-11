@@ -13,16 +13,17 @@
 
 {% block content %}
 <article class="narrow">
-    <div class="row">
-        <div class="col-md-3" style="display: flex; justify-content: space-around; align-items: flex-start;">  
-            {% for block in page.body %}
-                {% if block.block_type == 'spotify_widget' %}
-                    <div class="spotify item" style="position: -webkit-sticky; position: sticky;top:100px">
+    
+    <div class="container">
+        {% for block in page.body %}
+            {% if block.block_type == 'spotify_widget' %}
+                <div class="col-md-auto offset-md-11 d-none d-lg-block" style="padding-left:60px">  
+                    <div class="spotify item" style="position: fixed; top:100px">
                         <iframe src="{{ page.get_spotify_widget }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                     </div>
-                {% endif %}
-            {% endfor %}
-        </div>
+                </div>
+            {% endif %}
+        {% endfor %}
         <div class="col-md-auto">
             {% if page.kicker %}
                 <strong class="text-primary text-uppercase text-kicker">{{ page.kicker }}</strong>
@@ -72,6 +73,7 @@
             {{ page.get_published_date|date:"F j, Y" }}
         </a>
     </div>
+    
 
     <div class="container body">
         {% for block in page.body %}
@@ -98,6 +100,17 @@
                             </a>
                         </div>
                     {% endfor %}
+                </div>
+            {% elif block.block_type == 'youtube_widget' %}
+                <div class="youtube item">
+                    <iframe id="ytplayer" type="text/html" width="640" height="360"
+                        src="{{ page.get_youtube_widget }}"
+                        frameborder="0" allowfullscreen>
+                    </iframe>
+                </div>
+            {% elif block.block_type == 'spotify_one_song' %}
+                <div class="spotify one song item">
+                    <iframe src="{{ page.get_one_song }}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                 </div>
             {% elif block.block_type != 'spotify_widget' %}
                 {% include_block block %}

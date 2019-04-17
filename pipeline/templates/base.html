@@ -23,6 +23,15 @@
         <link rel="icon" href="{% static 'images/lettermark.png' %}">
         <link rel="apple-touch-icon" href="{% static 'images/lettermark.png' %}">
         <link rel="mask-icon" href="{% static 'images/lettermark_nobg.svg' %}" color="#DA1E05">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-76250947-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-76250947-1');
+        </script>
 
         {# Global stylesheet #}
         {% render_bundle 'main' 'css' attrs='data-turbolinks-track="reload"' %}

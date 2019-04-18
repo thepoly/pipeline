@@ -1,9 +1,11 @@
 FROM node:10 as node
 
-COPY . /app/
 WORKDIR /app
+COPY package.json package-lock.json ./
 RUN npm ci
-RUN npx webpack-command --config webpack.production.config.js
+
+COPY . .
+RUN npx webpack --config webpack.production.config.js --display errors-only
 
 FROM python:3.7 as python
 LABEL maintainer="tech@poly.rpi.edu"

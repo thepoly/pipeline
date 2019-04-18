@@ -2,10 +2,11 @@ FROM node:10 as node
 
 COPY . /app/
 WORKDIR /app
-RUN npm ci && npx webpack-command --config webpack.production.config.js
+RUN npm ci
+RUN npx webpack-command --config webpack.production.config.js
 
 FROM python:3.7 as python
-LABEL maintainer="web@poly.rpi.edu"
+LABEL maintainer="tech@poly.rpi.edu"
 
 ENV PYTHONUNBUFFERED 1
 ENV DJANGO_SETTINGS_MODULE pipeline.settings.production

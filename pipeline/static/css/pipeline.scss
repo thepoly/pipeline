@@ -189,7 +189,7 @@ ul.pagination {
 // CUSTOM
 
 @include media-breakpoint-up(md) {
-  .template-articlepage .narrow .container {
+  .template-articlepage .narrow {
     max-width: var(--breakpoint-sm);
   }
 }
@@ -216,6 +216,25 @@ ul.pagination {
   font-size: 1.1rem;
 }
 
+.template-articlepage .photo-gallery {
+  padding: 20px 0;
+}
+
+.template-articlepage .photo-gallery .photo img {
+  position: relative;
+  bottom: 0;
+}
+
+.template-articlepage .photo-gallery .photo a:hover {
+  cursor: pointer;
+}
+
+.template-articlepage .photo-gallery .photo:hover img {
+  box-shadow: 0 .15rem 1rem rgba(0, 0, 0, .2);
+  bottom: 2px;
+  transition: all 0.1s ease-out;
+}
+
 .template-articlepage .photo-gallery .large-photo {
   display: none;
   position: fixed;
@@ -228,7 +247,7 @@ ul.pagination {
 }
 
 .template-articlepage .photo-gallery .large-photo.large-photo--show {
-  display: flex;
+  display: block;
 }
 
 .template-articlepage .photo-gallery .large-photo .wrapper {

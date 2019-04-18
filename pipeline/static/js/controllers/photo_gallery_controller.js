@@ -36,8 +36,7 @@ export default class extends Controller {
 
     dismissPhoto(event) {
         this.largePhotoTarget.classList.toggle("large-photo--show");
-
-        this.largePhotoImgTarget.src = null;
+        this.largePhotoImgTarget.removeAttribute("src");
 
         // re-enable body scroll
         const body = document.getElementsByTagName('body')[0];

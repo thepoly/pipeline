@@ -149,7 +149,7 @@ class CustomImage(AbstractImage):
     def get_attribution_html(self):
         if self.photographer is None:
             return ""
-        return f"{self.photographer.first_name} {self.photographer.last_name}"
+        return self.photographer.name
 
 
 # Delete the source image file when an image is deleted
@@ -431,9 +431,6 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
 
 class ArticleAuthorRelationship(models.Model):
     article = ParentalKey(ArticlePage, related_name="authors", on_delete=models.CASCADE)
-    # author = models.ForeignKey(
-    #     "core.Author", related_name="articles", on_delete=models.PROTECT
-    # )
     author = models.ForeignKey(
         Contributor, related_name="articles", on_delete=models.PROTECT
     )

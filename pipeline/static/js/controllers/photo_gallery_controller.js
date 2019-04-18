@@ -3,16 +3,28 @@ import { Controller } from "stimulus"
 export default class extends Controller {
     static targets = ["photo", "largePhoto", "largePhotoImg", "largePhotoCaption", "largePhotoPhotographer"];
 
-    connect() {
-        console.log("hey");
+    connect() { }
+
+    // load in the photo that we hover over to speed things up
+    hoverPhoto(event) {
+        event.preventDefault();
+        this.preparePhoto(event.target);
     }
 
     showPhoto(event) {
         event.preventDefault();
-        console.log("showPhoto");
-        let index = this.photoTargets.indexOf(event.target);
+        this.preparePhoto(event.target);
+
+        this.largePhotoTarget.classList.toggle("large-photo--show");
+
+        // prevent body scrolling behind photo
+        const body = document.getElementsByTagName('body')[0];
+        body.classList.toggle('modal-open');
+    }
+
+    preparePhoto(target) {
+        const index = this.photoTargets.indexOf(target);
         this.data.set("index", index);
-        console.log(index);
 
         const largeSrc = event.target.getAttribute("data-large-src");
         const caption = event.target.getAttribute("data-caption");
@@ -20,12 +32,15 @@ export default class extends Controller {
         this.largePhotoImgTarget.src = event.target.getAttribute("data-large-src");
         this.largePhotoCaptionTarget.innerText = caption;
         this.largePhotoPhotographerTarget.innerText = photographer;
-
-        this.largePhotoTarget.classList.toggle("large-photo--show");
     }
 
     dismissPhoto(event) {
-        console.log("hi");
         this.largePhotoTarget.classList.toggle("large-photo--show");
+
+        this.largePhotoImgTarget.src = null;
+
+        // re-enable body scroll
+        const body = document.getElementsByTagName('body')[0];
+        body.classList.toggle('modal-open');
     }
 }

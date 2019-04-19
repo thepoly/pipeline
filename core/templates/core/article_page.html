@@ -14,15 +14,7 @@
 {% block content %}
 <article class="narrow">
     <div class="container">
-        {% for block in page.body %}
-            {% if block.block_type == 'spotify_widget' %}
-                <div class="col-md-auto offset-md-11 d-none d-lg-block" style="padding-left:60px">  
-                    <div class="spotify item" style="position: fixed; top:100px">
-                        <iframe src="{{ page.get_spotify_widget }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
+        
         <div class="col-md-auto">
             {% if page.kicker %}
                 <strong class="text-primary text-uppercase text-kicker">{{ page.kicker }}</strong>
@@ -31,6 +23,15 @@
             {% if page.subdeck %}
                 <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext_unwrapped }}</h4>
             {% endif %}
+        </div>
+        <div class="col-md-auto offset-md-11 d-none d-lg-block" style="padding-left:60px"> 
+            {% for block in page.body %}
+                {% if block.block_type == 'spotify_widget' %}
+                    <div class="spotify item" style="position: fixed; top:100px;">
+                        <iframe src="{{ page.get_spotify_widget }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
         {% if page.featured_photo %}
             <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
@@ -73,7 +74,6 @@
         </a>
     </div>
     
-
     <div class="container body">
         {% for block in page.body %}
             {% if block.block_type == 'image' %}

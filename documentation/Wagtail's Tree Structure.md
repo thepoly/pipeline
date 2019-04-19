@@ -11,5 +11,4 @@
 > Hopefully this layout helps describes how the pages are connected. This is important to understand because it defines how pages are added within Pipeline. This example includes just Features and News as sections. In reality, Homepage would also have branches of Ed-Op, Staff, and any other sections _The Polytechnic_ has.
 
 <img src="wagtailstructure.png"
-     alt="Wagtail diagram" 
-     height="500" width="300" />
+     alt="Wagtail diagram" />

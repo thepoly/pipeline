@@ -12,8 +12,8 @@
 {% block body_class %}template-articlepage{% endblock %}
 
 {% block content %}
-<article class="narrow">
-    <div class="container">
+<article>
+    <div class="container narrow">
         {% if page.kicker %}
             <strong class="text-primary text-uppercase text-kicker">{{ page.kicker }}</strong>
         {% endif %}
@@ -45,7 +45,7 @@
             {% endif %}
         </div>
     {% endif %}
-    <div class="container mb-4">
+    <div class="container narrow mb-4">
         {% if authors %}
         <span class="authors mr-1">
             By {% for author in authors %}
@@ -63,34 +63,42 @@
         </a>
     </div>
 
-    <div class="container body">
+    <div class="body">
         {% for block in page.body %}
             {% if block.block_type == 'image' %}
-                {% image block.value width-1200 as photo %}
-                <img src="{{ photo.url }}">
+                <div class="container">
+                    {% image block.value width-1200 as photo %}
+                    <img src="{{ photo.url }}">
+                </div>
             {% elif block.block_type == 'photo_gallery' %}
-                <div class="photo-gallery d-flex flex-row justify-content-center flex-wrap row no-gutters" data-controller="photo-gallery">
-                    <div class="large-photo flex-column justify-content-center" data-target="photo-gallery.largePhoto" data-action="click->photo-gallery#dismissPhoto">
+                <div class="photo-gallery" data-controller="photo-gallery">
+                    <div class="large-photo flex-column" data-target="photo-gallery.largePhoto" data-action="click->photo-gallery#dismissPhoto">
                         <div class="wrapper">
-                            <img data-target="photo-gallery.largePhotoImg">
+                            <div class="img-container">
+                                <img data-target="photo-gallery.largePhotoImg">
+                            </div>
                             <p>
-                                <span data-target="photo-gallery.largePhotoCaption">Hi there! This is a caption for the above photo.</span>
-                                <span data-target="photo-gallery.largePhotoPhotographer">Sidney Kochman/<i>The Polytechnic</i></span>
+                                <span data-target="photo-gallery.largePhotoCaption" class="text-dark"></span>
+                                <span data-target="photo-gallery.largePhotoPhotographer" class="small text-muted"></span>
                             </p>
                         </div>
                     </div>
+                    <div class="container d-flex flex-row justify-content-center flex-wrap">
                     {% for photo in block.value %}
-                        <div class="photo col-6">
+                        <div class="photo col-6 col-lg-4">
                             {% image photo.image fill-600x600 as small_photo %}
                             {% image photo.image max-2000x1500 as large_photo %}
-                            <a href="#" data-action="photo-gallery#showPhoto">
+                            <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">
                                 <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ photo.caption }}" data-photographer="{{ photo.image.get_attribution_html }}">
                             </a>
                         </div>
                     {% endfor %}
+                    </div>
                 </div>
             {% else %}
-                {% include_block block %}
+                <div class="container narrow">
+                    {% include_block block %}
+                </div>
             {% endif %}
         {% endfor %}
     </div>

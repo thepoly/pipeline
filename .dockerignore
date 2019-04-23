@@ -4,7 +4,9 @@
 !core
 !home
 !search
+!lights
 !manage.py
+!newsletter
 !package.json
 !package-lock.json
 !Pipfile

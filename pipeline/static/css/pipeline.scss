@@ -123,8 +123,39 @@ header a.search {
   padding-right: 0.6rem;
 }
 
-.nav-scroller .nav-link:first-child {
+.nav-scroller .nav-link.home-link {
+  padding: 0;
+  position: absolute;
+  top: 6px;
+  transition: all 0.1s ease-in-out;
+  opacity: 0;
+  width: 0;
+  img {
+    height: 25px;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 4px;
+  }
+}
+
+.nav-scroller.home-link--show .home-link {
+  opacity: 1;
+  width: auto;
+}
+
+.nav-scroller .nav-link-0 {
   padding-left: 0;
+  transition: padding-left, margin-left 0.1s ease-in-out;
+}
+
+.nav-scroller.home-link--show .nav-link-0 {
+  padding-left: 0.6rem;
+  margin-left: 30px;
+}
+@include media-breakpoint-up(sm) {
+  .nav-scroller.home-link--show .nav-link-0 {
+    margin-left: 50px;
+  }
 }
 
 .nav-scroller .nav-link:last-child {

@@ -1,6 +1,7 @@
 from django import template
 
 from core.models import ArticlesIndexPage
+from home.models import HomePage
 
 register = template.Library()
 
@@ -40,6 +41,7 @@ def top_menu(context, parent, calling_page=None):
         "calling_page": calling_page,
         "menuitems": menuitems,
         "divider_index": divider_index,
+        "is_home": isinstance(calling_page, HomePage),
         # required by the pageurl tag that we want to use within this template
         "request": context["request"],
     }

@@ -4,3 +4,4 @@
 /media/
 /webpack-stats.json
 /.vscode/
+.DS_Store

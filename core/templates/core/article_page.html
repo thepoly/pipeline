@@ -63,6 +63,14 @@
         </a>
     </div>
 
+    {% for block in page.body %}
+        {% if block.block_type == 'spotify_widget' %}
+            <div class="spotify">
+                <iframe src="{{ page.get_spotify_widget }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            </div>
+        {% endif %}
+    {% endfor %}
+
     <div class="body">
         {% for block in page.body %}
             {% if block.block_type == 'image' %}
@@ -95,7 +103,19 @@
                     {% endfor %}
                     </div>
                 </div>
-            {% else %}
+            {% elif block.block_type == 'youtube_widget' %}
+                <div class="container embed-responsive embed-responsive-16by9">
+                    <iframe type="text/html"
+                        class="embed-responsive-item"
+                        src="{{ page.get_youtube_widget }}"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            {% elif block.block_type == 'spotify_one_song' %}
+                <div class="container narrow embed-responsive embed-responsive-21by9">
+                    <iframe class="embed-responsive-item" src="{{ page.get_one_song }}" allowtransparency="true" allow="encrypted-media"></iframe>
+                </div>
+            {% elif block.block_type != 'spotify_widget' %}
                 <div class="container narrow">
                     {% include_block block %}
                 </div>

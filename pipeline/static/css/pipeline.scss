@@ -303,6 +303,18 @@ ul.pagination {
   flex: 0;
 }
 
+.template-articlepage .spotify {
+  position: relative;
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 16px;
+    @include media-breakpoint-down(lg) {
+      display: none;
+    }
+  }
+}
+
 .template-articlepage .related-articles {
   margin-top: 80px;
 }

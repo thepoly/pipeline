@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags rich_text %}
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text %}
 
 {% block extra_head %}
     <link rel="canonical" href="{{ page.full_url }}">
@@ -63,14 +63,6 @@
         </a>
     </div>
 
-    {% for block in page.body %}
-        {% if block.block_type == 'spotify_widget' %}
-            <div class="spotify">
-                <iframe src="{{ page.get_spotify_widget }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-            </div>
-        {% endif %}
-    {% endfor %}
-
     <div class="body">
         {% for block in page.body %}
             {% if block.block_type == 'image' %}
@@ -93,7 +85,7 @@
                     </div>
                     <div class="container d-flex flex-row justify-content-center flex-wrap">
                     {% for photo in block.value %}
-                        <div class="photo col-6 col-lg-4">
+                        <div class="photo col-6 col-lg-4 mb-0">
                             {% image photo.image fill-600x600 as small_photo %}
                             {% image photo.image max-2000x1500 as large_photo %}
                             <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">
@@ -103,19 +95,17 @@
                     {% endfor %}
                     </div>
                 </div>
-            {% elif block.block_type == 'youtube_widget' %}
-                <div class="container embed-responsive embed-responsive-16by9">
-                    <iframe type="text/html"
-                        class="embed-responsive-item"
-                        src="{{ page.get_youtube_widget }}"
-                        allowfullscreen>
-                    </iframe>
-                </div>
-            {% elif block.block_type == 'spotify_one_song' %}
-                <div class="container narrow embed-responsive embed-responsive-21by9">
-                    <iframe class="embed-responsive-item" src="{{ page.get_one_song }}" allowtransparency="true" allow="encrypted-media"></iframe>
-                </div>
-            {% elif block.block_type != 'spotify_widget' %}
+            {% elif block.block_type == 'embed' %}
+                {% if block.value.type == 'video' %}
+                    <div class="container-fluid embed video embed-responsive embed-responsive-16by9">
+                        {% embed block.value.embed.url %}
+                    </div>
+                {% else %}
+                    <div class="container embed narrow embed-responsive embed-responsive-21by9">
+                        {% embed block.value.embed.url %}
+                    </div>
+                {% endif %}
+            {% else %}
                 <div class="container narrow">
                     {% include_block block %}
                 </div>

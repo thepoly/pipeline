@@ -247,8 +247,12 @@ ul.pagination {
   font-size: 1.1rem;
 }
 
+.template-articlepage .body > div:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+
 .template-articlepage .photo-gallery {
-  padding: 20px 0;
+  padding: 0;
 }
 
 .template-articlepage .photo-gallery .photo img {
@@ -303,16 +307,14 @@ ul.pagination {
   flex: 0;
 }
 
-.template-articlepage .spotify {
-  position: relative;
-  iframe {
-    position: absolute;
-    top: 0;
-    left: 16px;
-    @include media-breakpoint-down(lg) {
-      display: none;
-    }
+.template-articlepage .embed {
+  iframe, object, embed {
+    @extend .embed-responsive-item;
   }
+}
+
+.template-articlepage .embed.video {
+  max-width: var(--breakpoint-lg); 
 }
 
 .template-articlepage .related-articles {

@@ -247,8 +247,12 @@ ul.pagination {
   font-size: 1.1rem;
 }
 
+.template-articlepage .body > div:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+
 .template-articlepage .photo-gallery {
-  padding: 20px 0;
+  padding: 0;
 }
 
 .template-articlepage .photo-gallery .photo img {
@@ -301,6 +305,16 @@ ul.pagination {
   font-size: 15px;
   margin: 4px 10px;
   flex: 0;
+}
+
+.template-articlepage .embed {
+  iframe, object, embed {
+    @extend .embed-responsive-item;
+  }
+}
+
+.template-articlepage .embed.video {
+  max-width: var(--breakpoint-lg);
 }
 
 .template-articlepage .related-articles {

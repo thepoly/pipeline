@@ -8,7 +8,13 @@ from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.http import Http404
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
-from wagtail.core.blocks import RichTextBlock, ListBlock
+from wagtail.core.blocks import (
+    RichTextBlock,
+    ListBlock,
+    StructBlock,
+    URLBlock,
+    StructValue,
+)
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page, Orderable
 from wagtail.admin.edit_handlers import (
@@ -18,6 +24,8 @@ from wagtail.admin.edit_handlers import (
     InlinePanel,
     PageChooserPanel,
 )
+from wagtail.embeds.embeds import get_embed
+from wagtail.embeds.blocks import EmbedBlock
 from wagtail.search import index
 from wagtail.snippets.blocks import SnippetChooserBlock
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
@@ -208,6 +216,21 @@ class Kicker(models.Model):
         return self.title
 
 
+class EmbeddedMediaValue(StructValue):
+    def type(self):
+        embed_url = self.get("embed").url
+        embed = get_embed(embed_url)
+        return embed.type
+
+
+class EmbeddedMediaBlock(StructBlock):
+    embed = EmbedBlock(help_text="URL to the content to embed.")
+
+    class Meta:
+        value_class = EmbeddedMediaValue
+        icon = "media"
+
+
 class ArticlePage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
@@ -216,7 +239,11 @@ class ArticlePage(RoutablePageMixin, Page):
         [
             ("paragraph", RichTextBlock()),
             ("image", ImageChooserBlock()),
-            ("photo_gallery", ListBlock(SnippetChooserBlock("core.Photo"))),
+            (
+                "photo_gallery",
+                ListBlock(SnippetChooserBlock("core.Photo"), icon="image"),
+            ),
+            ("embed", EmbeddedMediaBlock()),
         ]
     )
     summary = RichTextField(

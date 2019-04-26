@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags rich_text %}
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text %}
 
 {% block extra_head %}
     <link rel="canonical" href="{{ page.full_url }}">
@@ -85,7 +85,7 @@
                     </div>
                     <div class="container d-flex flex-row justify-content-center flex-wrap">
                     {% for photo in block.value %}
-                        <div class="photo col-6 col-lg-4">
+                        <div class="photo col-6 col-lg-4 mb-0">
                             {% image photo.image fill-600x600 as small_photo %}
                             {% image photo.image max-2000x1500 as large_photo %}
                             <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">
@@ -95,6 +95,16 @@
                     {% endfor %}
                     </div>
                 </div>
+            {% elif block.block_type == 'embed' %}
+                {% if block.value.type == 'video' %}
+                    <div class="container-fluid embed video embed-responsive embed-responsive-16by9">
+                        {% embed block.value.embed.url %}
+                    </div>
+                {% else %}
+                    <div class="container embed narrow embed-responsive embed-responsive-21by9">
+                        {% embed block.value.embed.url %}
+                    </div>
+                {% endif %}
             {% else %}
                 <div class="container narrow">
                     {% include_block block %}

@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.http import Http404
+from django.utils.functional import cached_property
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
     RichTextBlock,
@@ -74,7 +75,7 @@ class StaffPage(Page):
         FieldPanel("email_address"),
         FieldPanel("biography"),
         ImageChooserPanel("photo"),
-        InlinePanel("terms", label="Term", heading="Terms"),
+        InlinePanel("terms", label="Term", heading="Terms", min_num=0),
     ]
 
     search_fields = [index.SearchField("first_name"), index.SearchField("last_name")]
@@ -95,16 +96,13 @@ class StaffPage(Page):
             r.article for r in self.contributor.articles.select_related("article").all()
         ]
 
-    def get_current_positions(self):
-        return [
-            t.position
-            for t in self.terms.filter(date_ended__isnull=True).select_related(
-                "position"
-            )
-        ]
-
+    @cached_property
     def get_active_positions(self):
         return [term.position for term in self.terms.all() if term.date_ended is None]
+
+    @cached_property
+    def get_previous_terms(self):
+        return [term for term in self.terms.filter(date_ended__isnull=False)]
 
 
 class StaffIndexPage(Page):
@@ -297,7 +295,7 @@ class ArticlePage(RoutablePageMixin, Page):
         """Return an HTTP 404 whenever the page is accessed directly.
         
         This is because it should instead by accessed by its date-based path,
-        i.e. `<year>/<month>/<slug/`."""
+        i.e. `<year>/<month>/<slug>/`."""
         raise Http404
 
     def set_url_path(self, parent):
@@ -311,6 +309,10 @@ class ArticlePage(RoutablePageMixin, Page):
         else:
             self.url_path = f"{parent.url_path}{self.slug}/"
         return self.url_path
+
+    def serve_preview(self, request, mode_name):
+        request.is_preview = True
+        return self.serve(request)
 
     def get_context(self, request):
         context = super().get_context(request)

@@ -83,8 +83,8 @@ Many of the following features are partially complete, but this isn't indicated.
     - [ ] Section-specific layouts
     - [x] Editor previews
   - [x] Summaries
-  - [ ] Kickers
-    - [ ] Autocomplete
+  - [x] Kickers
+    - [x] Autocomplete
   - [x] Subdecks
   - [ ] Archive pages
   - [ ] WordPress importer
@@ -92,10 +92,10 @@ Many of the following features are partially complete, but this isn't indicated.
   - [x] Related to authors
 - [ ] Photos
   - [x] Uploads
-  - [ ] Captions
-  - [ ] Bylines
+  - [x] Captions
+  - [x] Bylines
   - [x] Multiple per article
-  - [ ] Galleries
+  - [x] Galleries
 - [ ] Syndication
   - [x] RSS feed
   - [x] Sitemap

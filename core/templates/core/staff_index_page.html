@@ -9,9 +9,9 @@
     <h1>Staff</h1>
     <div class="row">
         {% for person in page.get_active_staff %}
-            <div class="col-sm-6 col-md-4 text-center person">
+            <div class="col-6 col-md-4 col-lg-3 text-center person mb-3">
                 {% if person.photo %}
-                    {% image person.photo width-400 as photo %}
+                    {% image person.photo fill-400x400 as photo %}
                     <a href="{% pageurl person %}">
                         <img class="rounded mb-2" src="{{ photo.url }}">
                     </a>

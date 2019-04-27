@@ -5,31 +5,50 @@
 {% block body_class %}template-staffpage{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-md-8"><br>
+    <div class="d-flex">
+        <div class="flex-grow-1">
             <h1>{{ page.title }}</h1>
-            <h4>{% for position in person.get_active_positions %}
-                {% if forloop.last and person.get_active_positions|length > 1 %} and {% endif %}
-                <span class="text-nowrap">{{ position.title }}{% if not forloop.last and person.get_active_positions|length > 2 %}, {% endif %}</span>
-                {% endfor %}</h4>
-            <hr>
+            <h4>
+                {% for position in page.get_active_positions %}
+                    {% if forloop.last and page.get_active_positions|length > 1 %} and {% endif %}
+                    <span class="text-nowrap">{{ position.title }}{% if not forloop.last and person.get_active_positions|length > 2 %}, {% endif %}</span>
+                {% endfor %}
+            </h4>
+        </div>
+        {% if page.photo %}
+            <div class="photo">
+                {% image page.photo fill-200x200 as photo %}
+                <img class="rounded-circle" src="{{ photo.url }}">
+            </div>
+        {% endif %}
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4 order-md-2">
             {% if page.biography %}
-                {% include_block page.biography %}
+                {{ page.biography|richtext }}
             {% endif %}
-        </div>
-        <div class="col-md-4 col-md-offset-4"><br>
-            <h3>Contact Information</h3>
+
             {% if page.email_address %}
-            <p>{{page.title}} can be reached at <a href="mailto:{{ page.email_address }}">{{ page.email_address }}</a></p>
-            {% else %}
-            <p>Contact The Polytechnic at <a href="mailto:poly@rpi.edu">poly@rpi.edu</a>.</p>
+                <p>Email: <a href="mailto:{{ page.email_address }}">{{ page.email_address }}</a></p>
             {% endif %}
-       
+            
+            {% if page.get_previous_terms %}
+                <h5>Previous positions</h5>
+                <ul>
+                    {% for term in page.get_previous_terms %}
+                        <li>
+                            {{ term.position.title }}
+                            <small>{{ term.date_started|date:"F Y" }} to {{ term.date_ended|date:"F Y" }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
+        
         <div class="col-xs-12 col-md-8">
-            {% include "core/includes/articles_list.html" with articles=page.get_articles %}
+            {% include "core/includes/articles_list.html" with articles=page.get_articles show_dates=True only %}
         </div>
-        <div class="clearfix visible-xs-block"></div>
     </div>
 </div>
 {% endblock %}

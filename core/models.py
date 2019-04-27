@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.http import Http404
+from django.utils.functional import cached_property
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
     RichTextBlock,
@@ -74,7 +75,7 @@ class StaffPage(Page):
         FieldPanel("email_address"),
         FieldPanel("biography"),
         ImageChooserPanel("photo"),
-        InlinePanel("terms", label="Term", heading="Terms"),
+        InlinePanel("terms", label="Term", heading="Terms", min_num=0),
     ]
 
     search_fields = [index.SearchField("first_name"), index.SearchField("last_name")]
@@ -95,16 +96,13 @@ class StaffPage(Page):
             r.article for r in self.contributor.articles.select_related("article").all()
         ]
 
-    def get_current_positions(self):
-        return [
-            t.position
-            for t in self.terms.filter(date_ended__isnull=True).select_related(
-                "position"
-            )
-        ]
-
+    @cached_property
     def get_active_positions(self):
         return [term.position for term in self.terms.all() if term.date_ended is None]
+
+    @cached_property
+    def get_previous_terms(self):
+        return [term for term in self.terms.filter(date_ended__isnull=False)]
 
 
 class StaffIndexPage(Page):

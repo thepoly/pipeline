@@ -11,7 +11,7 @@
         {% for person in page.get_active_staff %}
             <div class="col-sm-6 col-md-4 text-center person">
                 {% if person.photo %}
-                    {% image person.photo width-400 as photo %}
+                    {% image person.photo fill-400x400 as photo %}
                     <a href="{% pageurl person %}">
                         <img class="rounded mb-2" src="{{ photo.url }}">
                     </a>

@@ -295,7 +295,7 @@ class ArticlePage(RoutablePageMixin, Page):
         """Return an HTTP 404 whenever the page is accessed directly.
         
         This is because it should instead by accessed by its date-based path,
-        i.e. `<year>/<month>/<slug/`."""
+        i.e. `<year>/<month>/<slug>/`."""
         raise Http404
 
     def set_url_path(self, parent):
@@ -309,6 +309,10 @@ class ArticlePage(RoutablePageMixin, Page):
         else:
             self.url_path = f"{parent.url_path}{self.slug}/"
         return self.url_path
+
+    def serve_preview(self, request, mode_name):
+        request.is_preview = True
+        return self.serve(request)
 
     def get_context(self, request):
         context = super().get_context(request)

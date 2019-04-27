@@ -47,7 +47,7 @@
         </div>
         
         <div class="col-xs-12 col-md-8">
-            {% include "core/includes/articles_list.html" with articles=page.get_articles %}
+            {% include "core/includes/articles_list.html" with articles=page.get_articles show_dates=True only %}
         </div>
     </div>
 </div>

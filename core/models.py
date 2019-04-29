@@ -254,10 +254,7 @@ class ArticlePage(RoutablePageMixin, Page):
         [
             ("paragraph", RichTextBlock()),
             ("photo", PhotoBlock()),
-            (
-                "photo_gallery",
-                ListBlock(SnippetChooserBlock("core.Photo"), icon="image"),
-            ),
+            ("photo_gallery", ListBlock(ImageChooserBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
         ]
     )
@@ -468,7 +465,7 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
             ArticlePage.objects.live()
             .descendant_of(self)
             .order_by("-go_live_at")
-            .select_related("featured_photo__image")
+            .prefetch_related("featured_image")
         )
 
     def get_context(self, request):
@@ -477,7 +474,7 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
             ArticlePage.objects.live()
             .descendant_of(self)
             .order_by("-go_live_at")
-            .select_related("featured_photo__image"),
+            .select_related("featured_image"),
             24,
         )
         page = request.GET.get("page")

@@ -239,16 +239,26 @@ ul.pagination {
   }
 }
 
-.template-articlepage .body img {
-  width: 100%;
-}
-
 .template-articlepage .body {
   font-size: 1.1rem;
 }
 
 .template-articlepage .body > div:not(:last-child) {
   margin-bottom: 1.5rem;
+}
+
+.template-articlepage .photo img {
+  width: 100%;
+  max-width: var(--breakpoint-md);
+}
+
+.template-articlepage .photo .meta {
+  font-size: 0.9rem;
+}
+@include media-breakpoint-up(md) {
+  .template-articlepage .photo .meta {
+    max-width: var(--breakpoint-sm);
+  }
 }
 
 .template-articlepage .photo-gallery {

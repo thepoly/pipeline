@@ -236,6 +236,14 @@ class EmbeddedMediaBlock(StructBlock):
         icon = "media"
 
 
+class PhotoBlock(StructBlock):
+    image = ImageChooserBlock()
+    caption = RichTextBlock()
+
+    class Meta:
+        icon = "image"
+
+
 class ArticlePage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
@@ -243,7 +251,7 @@ class ArticlePage(RoutablePageMixin, Page):
     body = StreamField(
         [
             ("paragraph", RichTextBlock()),
-            ("image", ImageChooserBlock()),
+            ("photo", PhotoBlock()),
             (
                 "photo_gallery",
                 ListBlock(SnippetChooserBlock("core.Photo"), icon="image"),

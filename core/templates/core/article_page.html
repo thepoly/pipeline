@@ -65,10 +65,28 @@
 
     <div class="body">
         {% for block in page.body %}
-            {% if block.block_type == 'image' %}
-                <div class="container">
-                    {% image block.value width-1200 as photo %}
-                    <img src="{{ photo.url }}">
+            {% if block.block_type == 'photo' %}
+                <div class="photo d-flex flex-column align-items-center">
+                    {% image block.value.image width-1200 as photo %}
+                    <img class="" src="{{ photo.url }}">
+                    {% if block.value.caption or photo.image.photographer %}
+                        <div class="meta container mt-1">
+                        {% if block.value.caption %}
+                            <span class="caption text-dark">{{ block.value.caption.source|richtext_unwrapped }}</span>
+                        {% endif %}
+                        {% if photo.image.photographer %}
+                            <span class="small text-muted">
+                                {% if photo.image.photographer.staff_page %}
+                                    <a href="{% pageurl photo.image.photographer.staff_page %}">
+                                        {{ photo.image.photographer.staff_page.name }}
+                                    </a>
+                                {% else %}
+                                    {{ photo.image.photographer.name }}
+                                {% endif %}
+                            </span>
+                        {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
             {% elif block.block_type == 'photo_gallery' %}
                 <div class="photo-gallery" data-controller="photo-gallery">

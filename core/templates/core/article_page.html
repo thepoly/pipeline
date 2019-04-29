@@ -22,14 +22,14 @@
             <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext_unwrapped }}</h4>
         {% endif %}
     </div>
-    {% if page.featured_photo %}
+    {% if page.featured_image %}
         <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
-            {% image page.featured_photo.image width-1200 as photo %}
+            {% image page.featured_image width-1200 as photo %}
             <img class="" src="{{ photo.url }}">
-            {% if page.featured_photo.caption or photo.image.photographer %}
+            {% if page.featured_caption or photo.image.photographer %}
                 <div class="meta container mt-1 mb-2">
-                {% if page.featured_photo.caption %}
-                    <span class="caption text-dark">{{ page.featured_photo.caption|richtext_unwrapped }}</span>
+                {% if page.featured_caption %}
+                    <span class="caption text-dark">{{ page.featured_caption|richtext_unwrapped }}</span>
                 {% endif %}
                 {% if photo.image.photographer %}
                     <span class="small text-muted">
@@ -85,8 +85,7 @@
                             <span class="small text-muted">
                                 {% if photo.image.photographer.staff_page %}
                                     <a href="{% pageurl photo.image.photographer.staff_page %}">
-                                        {{ photo.image.photographer.staff_page.name }}
-                                    </a>
+                                        {{ photo.image.photographer.staff_page.name }}</a>/<i>The Polytechnic</i>
                                 {% else %}
                                     {{ photo.image.photographer.name }}
                                 {% endif %}

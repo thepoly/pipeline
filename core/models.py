@@ -278,6 +278,10 @@ class ArticlePage(RoutablePageMixin, Page):
         on_delete=models.PROTECT,
         help_text="Shown at the top of the article and on the home page.",
     )
+    featured_image = models.ForeignKey(
+        CustomImage, null=True, blank=True, on_delete=models.PROTECT
+    )
+    featured_caption = RichTextField(features=["bold", "italic"], blank=True, null=True)
 
     content_panels = [
         MultiFieldPanel(
@@ -288,6 +292,8 @@ class ArticlePage(RoutablePageMixin, Page):
                 AutocompletePanel("kicker", page_type="core.Kicker"),
                 InlinePanel("authors", label="Author"),
                 SnippetChooserPanel("featured_photo"),
+                ImageChooserPanel("featured_image"),
+                FieldPanel("featured_caption"),
             ],
             heading="Metadata",
             classname="collapsible",

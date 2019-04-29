@@ -11,24 +11,76 @@ import wagtail.snippets.blocks
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0008_auto_20190429_1807'),
-    ]
+    dependencies = [("core", "0008_auto_20190429_1807")]
 
     operations = [
         migrations.AddField(
-            model_name='articlepage',
-            name='featured_caption',
+            model_name="articlepage",
+            name="featured_caption",
             field=wagtail.core.fields.RichTextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='articlepage',
-            name='featured_image',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='core.CustomImage'),
+            model_name="articlepage",
+            name="featured_image",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="core.CustomImage",
+            ),
         ),
         migrations.AlterField(
-            model_name='articlepage',
-            name='body',
-            field=wagtail.core.fields.StreamField([('paragraph', wagtail.core.blocks.RichTextBlock()), ('photo', wagtail.core.blocks.StructBlock([('image', wagtail.images.blocks.ImageChooserBlock()), ('caption', wagtail.core.blocks.RichTextBlock(features=['bold', 'italic'], required=False)), ('size', wagtail.core.blocks.ChoiceBlock(choices=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], help_text='Width of image in article.'))])), ('photo_gallery', wagtail.core.blocks.ListBlock(wagtail.snippets.blocks.SnippetChooserBlock('core.Photo'), icon='image')), ('embed', wagtail.core.blocks.StructBlock([('embed', wagtail.embeds.blocks.EmbedBlock(help_text='URL to the content to embed.'))]))]),
+            model_name="articlepage",
+            name="body",
+            field=wagtail.core.fields.StreamField(
+                [
+                    ("paragraph", wagtail.core.blocks.RichTextBlock()),
+                    (
+                        "photo",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                ("image", wagtail.images.blocks.ImageChooserBlock()),
+                                (
+                                    "caption",
+                                    wagtail.core.blocks.RichTextBlock(
+                                        features=["bold", "italic"], required=False
+                                    ),
+                                ),
+                                (
+                                    "size",
+                                    wagtail.core.blocks.ChoiceBlock(
+                                        choices=[
+                                            ("small", "Small"),
+                                            ("medium", "Medium"),
+                                            ("large", "Large"),
+                                        ],
+                                        help_text="Width of image in article.",
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        "photo_gallery",
+                        wagtail.core.blocks.ListBlock(
+                            wagtail.snippets.blocks.SnippetChooserBlock("core.Photo"),
+                            icon="image",
+                        ),
+                    ),
+                    (
+                        "embed",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "embed",
+                                    wagtail.embeds.blocks.EmbedBlock(
+                                        help_text="URL to the content to embed."
+                                    ),
+                                )
+                            ]
+                        ),
+                    ),
+                ]
+            ),
         ),
     ]

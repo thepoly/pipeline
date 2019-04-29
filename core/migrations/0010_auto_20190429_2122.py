@@ -6,18 +6,19 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0009_auto_20190429_1920'),
-    ]
+    dependencies = [("core", "0009_auto_20190429_1920")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='articlepage',
-            name='featured_photo',
-        ),
+        migrations.RemoveField(model_name="articlepage", name="featured_photo"),
         migrations.AlterField(
-            model_name='articlepage',
-            name='featured_image',
-            field=models.ForeignKey(blank=True, help_text='Shown at the top of the article and on the home page.', null=True, on_delete=django.db.models.deletion.PROTECT, to='core.CustomImage'),
+            model_name="articlepage",
+            name="featured_image",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Shown at the top of the article and on the home page.",
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="core.CustomImage",
+            ),
         ),
     ]

@@ -66,8 +66,15 @@
     <div class="body">
         {% for block in page.body %}
             {% if block.block_type == 'photo' %}
-                <div class="photo d-flex flex-column align-items-center">
-                    {% image block.value.image width-1200 as photo %}
+                <div class="photo-block d-flex flex-column align-items-center {{ block.value.size }}">
+                    {% if block.value.size == 'small' %}
+                        {% image block.value.image width-1000 as photo %}
+                    {% elif block.value.size == 'medium' %}
+                        {% image block.value.image width-1400 as photo %}
+                    {% else %}
+                        {% image block.value.image width-2000 as photo %}
+                    {% endif %}
+
                     <img class="" src="{{ photo.url }}">
                     {% if block.value.caption or photo.image.photographer %}
                         <div class="meta container mt-1">

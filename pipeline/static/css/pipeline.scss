@@ -247,16 +247,25 @@ ul.pagination {
   margin-bottom: 1.5rem;
 }
 
-.template-articlepage .photo img {
+.template-articlepage .photo-block img {
   width: 100%;
-  max-width: var(--breakpoint-md);
 }
 
-.template-articlepage .photo .meta {
+.template-articlepage .photo-block.small img {
+  max-width: var(--breakpoint-sm);
+}
+.template-articlepage .photo-block.medium img {
+  max-width: var(--breakpoint-md);
+}
+.template-articlepage .photo-block.large img {
+  max-width: var(--breakpoint-xl);
+}
+
+.template-articlepage .photo-block .meta {
   font-size: 0.9rem;
 }
 @include media-breakpoint-up(md) {
-  .template-articlepage .photo .meta {
+  .template-articlepage .photo-block .meta {
     max-width: var(--breakpoint-sm);
   }
 }
@@ -266,6 +275,7 @@ ul.pagination {
 }
 
 .template-articlepage .photo-gallery .photo img {
+  width: 100%;
   position: relative;
   bottom: 0;
 }
@@ -303,6 +313,7 @@ ul.pagination {
 }
 
 .template-articlepage .photo-gallery .large-photo img {
+  width: 100%;
   max-height: 100%;
   object-fit: contain;
 }

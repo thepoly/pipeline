@@ -15,6 +15,7 @@ from wagtail.core.blocks import (
     StructBlock,
     URLBlock,
     StructValue,
+    ChoiceBlock,
 )
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page, Orderable
@@ -238,7 +239,12 @@ class EmbeddedMediaBlock(StructBlock):
 
 class PhotoBlock(StructBlock):
     image = ImageChooserBlock()
-    caption = RichTextBlock()
+    caption = RichTextBlock(features=["bold", "italic"], required=False)
+    size = ChoiceBlock(
+        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
+        default="medium",
+        help_text="Width of image in article.",
+    )
 
     class Meta:
         icon = "image"

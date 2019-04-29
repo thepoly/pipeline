@@ -207,19 +207,6 @@ def rendition_delete(sender, instance, **kwargs):
 
 
 @register_snippet
-class Photo(models.Model):
-    image = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.PROTECT
-    )
-    caption = RichTextField(blank=True, null=True)
-
-    panels = [ImageChooserPanel("image"), FieldPanel("caption")]
-
-    def __str__(self):
-        return self.image.title
-
-
-@register_snippet
 class Kicker(models.Model):
     title = models.CharField(max_length=255)
 

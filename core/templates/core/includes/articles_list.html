@@ -23,8 +23,9 @@
             {% if show_authors or show_dates %}
                 <div class="mb-2">
                     {% if show_authors %}
+                        {% with article.get_authors as authors %}
                         <span class="authors mr-1">
-                            By {% for author in article.get_authors %}
+                            By {% for author in authors %}
                                 {% if forloop.last and authors|length > 1 %} and {% endif %}
                                 {% if author.staff_page %}
                                     <a class="author-name" href="{% pageurl author.staff_page %}">{{ author.staff_page.name }}</a>{% if not forloop.last and authors|length > 2 %}, {% endif %}
@@ -33,6 +34,7 @@
                                 {% endif %}
                             {% endfor %}
                         </span>
+                        {% endwith %}
                     {% endif %}
 
                     {% if show_dates %}

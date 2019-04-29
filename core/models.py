@@ -118,6 +118,13 @@ class StaffIndexPage(Page):
             .distinct()
         )
 
+    def get_previous_staff(self):
+        return (
+            StaffPage.objects.live()
+            .descendant_of(self)
+            .exclude(terms__date_ended__isnull=True, terms__position__isnull=False)
+        )
+
 
 @register_snippet
 class Position(models.Model):

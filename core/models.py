@@ -36,7 +36,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
 from wagtailautocomplete.edit_handlers import AutocompletePanel
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 
 
 logger = logging.getLogger("pipeline")
@@ -52,6 +52,15 @@ class StaticPage(Page):
 class Contributor(models.Model):
     name = models.CharField(max_length=255, null=True)
     staff_page = models.OneToOneField("StaffPage", on_delete=models.PROTECT, null=True)
+
+    autocomplete_search_field = "name"
+
+    def autocomplete_label(self):
+        return self.name
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(name=value)
 
     def get_articles(self):
         return [r.article for r in self.articles.select_related("article").all()]
@@ -271,15 +280,12 @@ class ArticlePage(RoutablePageMixin, Page):
         blank=True,
         help_text="Displayed on the home page or other places to provide a taste of what the article is about.",
     )
-    featured_photo = models.ForeignKey(
-        "core.Photo",
+    featured_image = models.ForeignKey(
+        CustomImage,
         null=True,
         blank=True,
         on_delete=models.PROTECT,
         help_text="Shown at the top of the article and on the home page.",
-    )
-    featured_image = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.PROTECT
     )
     featured_caption = RichTextField(features=["bold", "italic"], blank=True, null=True)
 
@@ -289,9 +295,14 @@ class ArticlePage(RoutablePageMixin, Page):
         ),
         MultiFieldPanel(
             [
-                AutocompletePanel("kicker", page_type="core.Kicker"),
-                InlinePanel("authors", label="Author"),
-                SnippetChooserPanel("featured_photo"),
+                AutocompletePanel("kicker", target_model="core.Kicker"),
+                InlinePanel(
+                    "authors",
+                    panels=[
+                        AutocompletePanel("author", target_model="core.Contributor")
+                    ],
+                    label="Author",
+                ),
                 ImageChooserPanel("featured_image"),
                 FieldPanel("featured_caption"),
             ],
@@ -310,6 +321,8 @@ class ArticlePage(RoutablePageMixin, Page):
         index.RelatedFields("kicker", [index.SearchField("title")]),
         index.SearchField("get_author_names"),
     ]
+
+    subpage_types = []
 
     def clean(self):
         super().clean()
@@ -431,9 +444,9 @@ class ArticlePage(RoutablePageMixin, Page):
                 tags["twitter:description"] = first_paragraph
 
         # image
-        if self.featured_photo is not None:
+        if self.featured_image is not None:
             # pylint: disable=E1101
-            rendition = self.featured_photo.image.get_rendition("fill-600x400")
+            rendition = self.featured_image.get_rendition("fill-600x400")
             rendition_url = self.get_site().root_url + rendition.url
             tags["og:image"] = rendition_url
             tags["twitter:image"] = rendition_url

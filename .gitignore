@@ -1,7 +1,8 @@
 /*.sqlite3
+/media/
 /node_modules/
 /pipeline/static/webpack_bundles/
-/media/
+/static/
 /webpack-stats.json
 /.vscode/
 .DS_Store

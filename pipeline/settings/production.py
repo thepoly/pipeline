@@ -11,15 +11,28 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", "poly.rpi.edu"]
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "pipeline",
-        "HOST": "postgres",
-        "PORT": "5432",
-        "USER": "pipeline",
-        "PASSWORD": "pipeline",
-    }
+DATABASES["default"]["CONN_MAX_AGE"] = 600
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "django.server": {
+            "()": "django.utils.log.ServerFormatter",
+            "format": "[{server_time}] {message}",
+            "style": "{",
+        }
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "INFO",
+            "formatter": "django.server",
+        }
+    },
+    "loggers": {
+        "django": {"level": "INFO", "handlers": ["console"], "propagate": False}
+    },
 }
 
 # Caching

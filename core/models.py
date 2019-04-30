@@ -9,6 +9,7 @@ from django.dispatch import receiver
 from django.http import Http404
 from django.utils.functional import cached_property
 from django.utils.html import format_html
+from django.utils.text import slugify
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
     RichTextBlock,
@@ -269,7 +270,8 @@ class ArticlePage(RoutablePageMixin, Page):
             ("photo", PhotoBlock()),
             ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
-        ]
+        ],
+        blank=True,
     )
     summary = RichTextField(
         features=["italic"],
@@ -292,7 +294,6 @@ class ArticlePage(RoutablePageMixin, Page):
         ),
         MultiFieldPanel(
             [
-                AutocompletePanel("kicker", target_model="core.Kicker"),
                 InlinePanel(
                     "authors",
                     panels=[
@@ -300,6 +301,7 @@ class ArticlePage(RoutablePageMixin, Page):
                     ],
                     label="Author",
                 ),
+                AutocompletePanel("kicker", target_model="core.Kicker"),
                 ImageChooserPanel("featured_image"),
                 FieldPanel("featured_caption"),
             ],

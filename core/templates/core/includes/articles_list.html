@@ -3,9 +3,9 @@
 <div class="row">
     {% for article in articles %}
     <div class="col-12 mb-5 row no-gutters">
-        {% if article.featured_photo %}
+        {% if article.featured_image %}
             <div class="col-12 col-md-4 pr-md-3">
-                {% image article.featured_photo.image width-800 as photo %}
+                {% image article.featured_image width-800 as photo %}
                 <a href="{% pageurl article %}">
                     <img class="img-fluid mb-2 mb-md-0" src="{{ photo.url }}">
                 </a>

@@ -8,6 +8,7 @@ from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.http import Http404
 from django.utils.functional import cached_property
+from django.utils.html import format_html
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
     RichTextBlock,
@@ -15,6 +16,7 @@ from wagtail.core.blocks import (
     StructBlock,
     URLBlock,
     StructValue,
+    ChoiceBlock,
 )
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page, Orderable
@@ -35,7 +37,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
 from wagtailautocomplete.edit_handlers import AutocompletePanel
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 
 
 logger = logging.getLogger("pipeline")
@@ -51,6 +53,15 @@ class StaticPage(Page):
 class Contributor(models.Model):
     name = models.CharField(max_length=255, null=True)
     staff_page = models.OneToOneField("StaffPage", on_delete=models.PROTECT, null=True)
+
+    autocomplete_search_field = "name"
+
+    def autocomplete_label(self):
+        return self.name
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(name=value)
 
     def get_articles(self):
         return [r.article for r in self.articles.select_related("article").all()]
@@ -162,6 +173,13 @@ class CustomImage(AbstractImage):
     def get_attribution_html(self):
         if self.photographer is None:
             return ""
+
+        if self.photographer.staff_page:
+            sp = self.photographer.staff_page
+            return format_html(
+                '<a href="{}">{}</a>/<i>The Polytechnic</i>', sp.url, sp.name
+            )
+
         return self.photographer.name
 
 
@@ -197,19 +215,6 @@ def rendition_delete(sender, instance, **kwargs):
 
 
 @register_snippet
-class Photo(models.Model):
-    image = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.PROTECT
-    )
-    caption = RichTextField(blank=True, null=True)
-
-    panels = [ImageChooserPanel("image"), FieldPanel("caption")]
-
-    def __str__(self):
-        return self.image.title
-
-
-@register_snippet
 class Kicker(models.Model):
     title = models.CharField(max_length=255)
 
@@ -236,6 +241,24 @@ class EmbeddedMediaBlock(StructBlock):
         icon = "media"
 
 
+class PhotoBlock(StructBlock):
+    image = ImageChooserBlock()
+    caption = RichTextBlock(features=["italic"], required=False)
+    size = ChoiceBlock(
+        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
+        default="medium",
+        help_text="Width of image in article.",
+    )
+
+    class Meta:
+        icon = "image"
+
+
+class GalleryPhotoBlock(StructBlock):
+    image = ImageChooserBlock()
+    caption = RichTextBlock(features=["italic"], required=False)
+
+
 class ArticlePage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
@@ -243,11 +266,8 @@ class ArticlePage(RoutablePageMixin, Page):
     body = StreamField(
         [
             ("paragraph", RichTextBlock()),
-            ("image", ImageChooserBlock()),
-            (
-                "photo_gallery",
-                ListBlock(SnippetChooserBlock("core.Photo"), icon="image"),
-            ),
+            ("photo", PhotoBlock()),
+            ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
         ]
     )
@@ -257,13 +277,14 @@ class ArticlePage(RoutablePageMixin, Page):
         blank=True,
         help_text="Displayed on the home page or other places to provide a taste of what the article is about.",
     )
-    featured_photo = models.ForeignKey(
-        "core.Photo",
+    featured_image = models.ForeignKey(
+        CustomImage,
         null=True,
         blank=True,
         on_delete=models.PROTECT,
         help_text="Shown at the top of the article and on the home page.",
     )
+    featured_caption = RichTextField(features=["italic"], blank=True, null=True)
 
     content_panels = [
         MultiFieldPanel(
@@ -271,9 +292,16 @@ class ArticlePage(RoutablePageMixin, Page):
         ),
         MultiFieldPanel(
             [
-                AutocompletePanel("kicker", page_type="core.Kicker"),
-                InlinePanel("authors", label="Author"),
-                SnippetChooserPanel("featured_photo"),
+                AutocompletePanel("kicker", target_model="core.Kicker"),
+                InlinePanel(
+                    "authors",
+                    panels=[
+                        AutocompletePanel("author", target_model="core.Contributor")
+                    ],
+                    label="Author",
+                ),
+                ImageChooserPanel("featured_image"),
+                FieldPanel("featured_caption"),
             ],
             heading="Metadata",
             classname="collapsible",
@@ -290,6 +318,8 @@ class ArticlePage(RoutablePageMixin, Page):
         index.RelatedFields("kicker", [index.SearchField("title")]),
         index.SearchField("get_author_names"),
     ]
+
+    subpage_types = []
 
     def clean(self):
         super().clean()
@@ -335,24 +365,26 @@ class ArticlePage(RoutablePageMixin, Page):
     def get_published_date(self):
         return self.go_live_at or self.first_published_at
 
-    def get_text(self):
+    def get_text_html(self):
+        """Get the HTML that represents paragraphs within the article as a string."""
         builder = ""
         for block in self.body:
             if block.block_type == "paragraph":
-                soup = BeautifulSoup(str(block.value), "html.parser")
-                lines = soup.text.split("\n")
-                first = True
-                for line in lines:
-                    if not first:
-                        builder += " "
-                        first = False
-                    builder += line
-                return builder
+                builder += str(block.value)
+        return builder
+
+    def get_plain_text(self):
+        builder = ""
+        soup = BeautifulSoup(self.get_text_html(), "html.parser")
+        for para in soup.findAll("p"):
+            builder += para.text
+            builder += " "
+        return builder[:-1]
 
     def get_related_articles(self):
         found_articles = []
         related_articles = []
-        current_article_text = self.get_text()
+        current_article_text = self.get_plain_text()
         if current_article_text is not None:
             current_article_words = set(current_article_text.split(" "))
             authors = self.get_authors()
@@ -360,7 +392,7 @@ class ArticlePage(RoutablePageMixin, Page):
                 articles = author.get_articles()
                 for article in articles:
                     if article.headline != self.headline:
-                        text_to_match = article.get_text()
+                        text_to_match = article.get_plain_text()
                         article_words = set(text_to_match.split(" "))
                         found_articles.append(
                             (
@@ -384,13 +416,18 @@ class ArticlePage(RoutablePageMixin, Page):
         a string out of it until we have at least n characters.
         If this isn't possible, then return None."""
 
-        builder = ""
-        soup = BeautifulSoup(str(self.body), "html.parser")
-        lines = soup.text.split("\n")
-        for line in lines:
-            builder += line + " "
-            if len(builder) > n:
-                return builder[:-1]
+        text = self.get_plain_text()
+        if len(text) < n:
+            return None
+
+        punctuation = {".", "!"}
+        for i in range(n, len(text)):
+            if text[i] in punctuation:
+                if i + 1 == len(text):
+                    return text
+                elif text[i + 1] == " ":
+                    return text[: i + 1]
+
         return None
 
     def get_meta_tags(self):
@@ -405,15 +442,15 @@ class ArticlePage(RoutablePageMixin, Page):
             tags["og:description"] = self.summary
             tags["twitter:description"] = self.summary
         else:
-            first_paragraph = self.get_first_chars()
-            if first_paragraph is not None:
-                tags["og:description"] = first_paragraph
-                tags["twitter:description"] = first_paragraph
+            first_chars = self.get_first_chars()
+            if first_chars is not None:
+                tags["og:description"] = first_chars
+                tags["twitter:description"] = first_chars
 
         # image
-        if self.featured_photo is not None:
+        if self.featured_image is not None:
             # pylint: disable=E1101
-            rendition = self.featured_photo.image.get_rendition("fill-600x400")
+            rendition = self.featured_image.get_rendition("fill-600x400")
             rendition_url = self.get_site().root_url + rendition.url
             tags["og:image"] = rendition_url
             tags["twitter:image"] = rendition_url
@@ -448,7 +485,7 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
             ArticlePage.objects.live()
             .descendant_of(self)
             .order_by("-go_live_at")
-            .select_related("featured_photo__image")
+            .prefetch_related("featured_image")
         )
 
     def get_context(self, request):
@@ -457,7 +494,7 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
             ArticlePage.objects.live()
             .descendant_of(self)
             .order_by("-go_live_at")
-            .select_related("featured_photo__image"),
+            .select_related("featured_image"),
             24,
         )
         page = request.GET.get("page")

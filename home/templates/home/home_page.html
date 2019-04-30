@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags rich_text %}
 
 {% block title_block %}{{ request.site.site_name }}{% endblock %}
 
@@ -37,13 +37,13 @@
                         {% endif %}
                         <h1 class="display-4 mb-3">
                             <a class="text-dark" href="{% pageurl block.value.column.article %}">
-                                {{ block.value.column.article.specific.headline|richtext }}
+                                {{ block.value.column.article.specific.headline|richtext_unwrapped }}
                             </a>
                         </h1>
                         <div class="lead d-none d-lg-block">{{ block.value.column.article.specific.summary|richtext }}</div>
                     </div>
                     <div class="col-lg-5">
-                        {% image block.value.column.article.featured_photo.image width-1200 as photo %}
+                        {% image block.value.column.article.featured_image width-1200 as photo %}
                         <a href="{% pageurl block.value.column.article %}">
                             <img class="img-fluid mb-3" src="{{ photo.url }}">
                         </a>

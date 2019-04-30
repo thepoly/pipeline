@@ -22,23 +22,18 @@
             <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext_unwrapped }}</h4>
         {% endif %}
     </div>
-    {% if page.featured_photo %}
+    {% if page.featured_image %}
         <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
-            {% image page.featured_photo.image width-1200 as photo %}
+            {% image page.featured_image width-1200 as photo %}
             <img class="" src="{{ photo.url }}">
-            {% if page.featured_photo.caption or photo.image.photographer %}
+            {% if page.featured_caption or photo.image.photographer %}
                 <div class="meta container mt-1 mb-2">
-                {% if page.featured_photo.caption %}
-                    <span class="caption text-dark">{{ page.featured_photo.caption|richtext_unwrapped }}</span>
+                {% if page.featured_caption %}
+                    <span class="caption text-dark">{{ page.featured_caption|richtext_unwrapped }}</span>
                 {% endif %}
                 {% if photo.image.photographer %}
                     <span class="small text-muted">
-                        {% if photo.image.photographer.staff_page %}
-                            <a href="{% pageurl photo.image.photographer.staff_page %}">
-                            {{ photo.image.photographer.staff_page.name }}</a>/<i>The Polytechnic</i>
-                        {% else %}
-                            {{ photo.image.photographer.name }}
-                        {% endif %}
+                        {{ photo.image.get_attribution_html }}
                     </span>
                 {% endif %}
                 </div>
@@ -65,16 +60,35 @@
 
     <div class="body">
         {% for block in page.body %}
-            {% if block.block_type == 'image' %}
-                <div class="container">
-                    {% image block.value width-1200 as photo %}
-                    <img src="{{ photo.url }}">
+            {% if block.block_type == 'photo' %}
+                <div class="photo-block d-flex flex-column align-items-center {{ block.value.size }}">
+                    {% if block.value.size == 'small' %}
+                        {% image block.value.image width-1000 as photo %}
+                    {% elif block.value.size == 'medium' %}
+                        {% image block.value.image width-1400 as photo %}
+                    {% else %}
+                        {% image block.value.image width-2000 as photo %}
+                    {% endif %}
+
+                    <img class="" src="{{ photo.url }}">
+                    {% if block.value.caption or photo.image.photographer %}
+                        <div class="meta container mt-1">
+                        {% if block.value.caption %}
+                            <span class="caption text-dark">{{ block.value.caption.source|richtext_unwrapped }}</span>
+                        {% endif %}
+                        {% if photo.image.photographer %}
+                            <span class="small text-muted">
+                                {{ photo.image.get_attribution_html }}
+                            </span>
+                        {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
             {% elif block.block_type == 'photo_gallery' %}
                 <div class="photo-gallery" data-controller="photo-gallery">
                     <div class="large-photo flex-column" data-target="photo-gallery.largePhoto" data-action="click->photo-gallery#dismissPhoto">
                         <div class="wrapper">
-                            <div class="img-container">
+                            <div class="img-container d-flex align-items-center justify-content-center">
                                 <img data-target="photo-gallery.largePhotoImg">
                             </div>
                             <p>
@@ -83,13 +97,13 @@
                             </p>
                         </div>
                     </div>
-                    <div class="container d-flex flex-row justify-content-center flex-wrap">
-                    {% for photo in block.value %}
-                        <div class="photo col-6 col-lg-4 mb-0">
-                            {% image photo.image fill-600x600 as small_photo %}
-                            {% image photo.image max-2000x1500 as large_photo %}
+                    <div class="container d-flex flex-row justify-content-center flex-wrap mb-n4">
+                    {% for gallery_photo in block.value %}
+                        <div class="photo col-6 col-lg-4 mb-4">
+                            {% image gallery_photo.image fill-600x600 as small_photo %}
+                            {% image gallery_photo.image max-2000x1500 as large_photo %}
                             <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">
-                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ photo.caption }}" data-photographer="{{ photo.image.get_attribution_html }}">
+                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ gallery_photo.caption.source|richtext_unwrapped }}" data-photographer='{{ gallery_photo.image.get_attribution_html }}'>
                             </a>
                         </div>
                     {% endfor %}
@@ -120,8 +134,8 @@
     <div class="row">
     {% for article in page.get_related_articles %}
         <a href="{% pageurl article %}" class="related-article col-6 col-md-4 col-lg-3 flex-column align-items-start {% if forloop.counter > 3 %}d-none d-lg-flex{% elif forloop.counter > 2 %}d-none d-md-flex{% else %}d-flex{% endif %}">
-            {% if article.featured_photo %}
-                {% image article.featured_photo.image width-1200 as photo %}
+            {% if article.featured_image %}
+                {% image article.featured_image width-1200 as photo %}
                 <img class="img-fluid mb-3" src="{{ photo.url }}">
             {% endif %}
             {% if article.kicker %}

@@ -352,24 +352,26 @@ class ArticlePage(RoutablePageMixin, Page):
     def get_published_date(self):
         return self.go_live_at or self.first_published_at
 
-    def get_text(self):
+    def get_text_html(self):
+        """Get the HTML that represents paragraphs within the article as a string."""
         builder = ""
         for block in self.body:
             if block.block_type == "paragraph":
-                soup = BeautifulSoup(str(block.value), "html.parser")
-                lines = soup.text.split("\n")
-                first = True
-                for line in lines:
-                    if not first:
-                        builder += " "
-                        first = False
-                    builder += line
-                return builder
+                builder += str(block.value)
+        return builder
+
+    def get_plain_text(self):
+        builder = ""
+        soup = BeautifulSoup(self.get_text_html(), "html.parser")
+        for para in soup.findAll("p"):
+            builder += para.text
+            builder += " "
+        return builder[:-1]
 
     def get_related_articles(self):
         found_articles = []
         related_articles = []
-        current_article_text = self.get_text()
+        current_article_text = self.get_plain_text()
         if current_article_text is not None:
             current_article_words = set(current_article_text.split(" "))
             authors = self.get_authors()
@@ -377,7 +379,7 @@ class ArticlePage(RoutablePageMixin, Page):
                 articles = author.get_articles()
                 for article in articles:
                     if article.headline != self.headline:
-                        text_to_match = article.get_text()
+                        text_to_match = article.get_plain_text()
                         article_words = set(text_to_match.split(" "))
                         found_articles.append(
                             (
@@ -401,13 +403,19 @@ class ArticlePage(RoutablePageMixin, Page):
         a string out of it until we have at least n characters.
         If this isn't possible, then return None."""
 
-        builder = ""
-        soup = BeautifulSoup(str(self.body), "html.parser")
-        lines = soup.text.split("\n")
-        for line in lines:
-            builder += line + " "
-            if len(builder) > n:
-                return builder[:-1]
+        text = self.get_plain_text()
+        if len(text) < n:
+            return None
+
+        punctuation = {".", "!"}
+        for i in range(n, len(text)):
+            if text[i] in punctuation:
+                if i + 1 == len(text):
+                    return text
+                elif text[i + 1] == " ":
+                    return text[: i + 1]
+                # print(text[i:], end="")
+
         return None
 
     def get_meta_tags(self):
@@ -422,10 +430,10 @@ class ArticlePage(RoutablePageMixin, Page):
             tags["og:description"] = self.summary
             tags["twitter:description"] = self.summary
         else:
-            first_paragraph = self.get_first_chars()
-            if first_paragraph is not None:
-                tags["og:description"] = first_paragraph
-                tags["twitter:description"] = first_paragraph
+            first_chars = self.get_first_chars()
+            if first_chars is not None:
+                tags["og:description"] = first_chars
+                tags["twitter:description"] = first_chars
 
         # image
         if self.featured_image is not None:

@@ -123,6 +123,41 @@ class ArticlePageTest(TestCase):
         )
         self.assertEqual("Hi, RPI!", a.get_first_chars(5))
 
+    def test_first_chars_no_linebreaks(self):
+        test_body = "<p>Hi, RPI!</p><p>Today, I’d like to discuss a topic we’ve covered extensively in our MBA program, which I feel is applicable and pertinent to all group dynamics: handling conflict with constructive criticism.</p>"
+        a = ArticlePage()
+        a.body = [("paragraph", RichText(test_body))]
+
+        self.assertEqual(
+            "Hi, RPI! Today, I’d like to discuss a topic we’ve covered extensively in our MBA program, which I feel is applicable and pertinent to all group dynamics: handling conflict with constructive criticism.",
+            a.get_first_chars(20),
+        )
+        self.assertEqual("Hi, RPI!", a.get_first_chars(5))
+
+    def test_first_chars_multiple_blocks(self):
+        a = ArticlePage()
+        a.body = [
+            ("paragraph", RichText("<p>Hi, RPI!</p>")),
+            (
+                "paragraph",
+                RichText(
+                    "<p>Today, I’d like to discuss a topic we’ve covered extensively in our MBA program, which I feel is applicable and pertinent to all group dynamics: handling conflict with constructive criticism.</p>"
+                ),
+            ),
+        ]
+
+        self.assertEqual(
+            "Hi, RPI! Today, I’d like to discuss a topic we’ve covered extensively in our MBA program, which I feel is applicable and pertinent to all group dynamics: handling conflict with constructive criticism.",
+            a.get_first_chars(20),
+        )
+        self.assertEqual("Hi, RPI!", a.get_first_chars(5))
+
+    def test_first_chars_impossible(self):
+        a = ArticlePage()
+        a.body = [("paragraph", RichText("<p>Hi, RPI!</p>"))]
+
+        self.assertEqual(None, a.get_first_chars(20))
+
     def test_dump_cache_on_publish(self):
         page = ArticlePage.objects.get()
         page.headline = "Original headline"

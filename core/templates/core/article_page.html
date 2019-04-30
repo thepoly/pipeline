@@ -108,12 +108,12 @@
                         </div>
                     </div>
                     <div class="container d-flex flex-row justify-content-center flex-wrap">
-                    {% for photo in block.value %}
+                    {% for gallery_photo in block.value %}
                         <div class="photo col-6 col-lg-4 mb-0">
-                            {% image photo.image fill-600x600 as small_photo %}
-                            {% image photo.image max-2000x1500 as large_photo %}
+                            {% image gallery_photo.image fill-600x600 as small_photo %}
+                            {% image gallery_photo.image max-2000x1500 as large_photo %}
                             <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">
-                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ photo.caption }}" data-photographer="{{ photo.image.get_attribution_html }}">
+                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ gallery_photo.caption.source|richtext_unwrapped }}" data-photographer="{{ gallery_photo.image.get_attribution_html }}">
                             </a>
                         </div>
                     {% endfor %}

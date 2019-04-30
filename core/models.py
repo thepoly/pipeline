@@ -235,7 +235,7 @@ class EmbeddedMediaBlock(StructBlock):
 
 class PhotoBlock(StructBlock):
     image = ImageChooserBlock()
-    caption = RichTextBlock(features=["bold", "italic"], required=False)
+    caption = RichTextBlock(features=["italic"], required=False)
     size = ChoiceBlock(
         choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
         default="medium",
@@ -246,6 +246,11 @@ class PhotoBlock(StructBlock):
         icon = "image"
 
 
+class GalleryPhotoBlock(StructBlock):
+    image = ImageChooserBlock()
+    caption = RichTextBlock(features=["italic"], required=False)
+
+
 class ArticlePage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
@@ -254,7 +259,7 @@ class ArticlePage(RoutablePageMixin, Page):
         [
             ("paragraph", RichTextBlock()),
             ("photo", PhotoBlock()),
-            ("photo_gallery", ListBlock(ImageChooserBlock(), icon="image")),
+            ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
         ]
     )
@@ -271,7 +276,7 @@ class ArticlePage(RoutablePageMixin, Page):
         on_delete=models.PROTECT,
         help_text="Shown at the top of the article and on the home page.",
     )
-    featured_caption = RichTextField(features=["bold", "italic"], blank=True, null=True)
+    featured_caption = RichTextField(features=["italic"], blank=True, null=True)
 
     content_panels = [
         MultiFieldPanel(
@@ -414,7 +419,6 @@ class ArticlePage(RoutablePageMixin, Page):
                     return text
                 elif text[i + 1] == " ":
                     return text[: i + 1]
-                # print(text[i:], end="")
 
         return None
 

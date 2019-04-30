@@ -45,7 +45,7 @@ logger = logging.getLogger("pipeline")
 
 
 class StaticPage(Page):
-    body = RichTextField()
+    body = RichTextField(blank=True, null=True)
 
     content_panels = Page.content_panels + [FieldPanel("body")]
 

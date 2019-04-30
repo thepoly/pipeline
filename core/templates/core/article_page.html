@@ -33,12 +33,7 @@
                 {% endif %}
                 {% if photo.image.photographer %}
                     <span class="small text-muted">
-                        {% if photo.image.photographer.staff_page %}
-                            <a href="{% pageurl photo.image.photographer.staff_page %}">
-                            {{ photo.image.photographer.staff_page.name }}</a>/<i>The Polytechnic</i>
-                        {% else %}
-                            {{ photo.image.photographer.name }}
-                        {% endif %}
+                        {{ photo.image.get_attribution_html|safe }}
                     </span>
                 {% endif %}
                 </div>
@@ -83,12 +78,7 @@
                         {% endif %}
                         {% if photo.image.photographer %}
                             <span class="small text-muted">
-                                {% if photo.image.photographer.staff_page %}
-                                    <a href="{% pageurl photo.image.photographer.staff_page %}">
-                                        {{ photo.image.photographer.staff_page.name }}</a>/<i>The Polytechnic</i>
-                                {% else %}
-                                    {{ photo.image.photographer.name }}
-                                {% endif %}
+                                {{ photo.image.get_attribution_html|safe }}
                             </span>
                         {% endif %}
                         </div>

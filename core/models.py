@@ -172,6 +172,11 @@ class CustomImage(AbstractImage):
     def get_attribution_html(self):
         if self.photographer is None:
             return ""
+
+        if self.photographer.staff_page:
+            sp = self.photographer.staff_page
+            return f'<a href="{sp.url}">{sp.name}</a>/<i>The Polytechnic</i>'
+
         return self.photographer.name
 
 

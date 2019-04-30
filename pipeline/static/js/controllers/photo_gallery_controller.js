@@ -30,8 +30,8 @@ export default class extends Controller {
         const caption = event.target.getAttribute("data-caption");
         const photographer = event.target.getAttribute("data-photographer");
         this.largePhotoImgTarget.src = event.target.getAttribute("data-large-src");
-        this.largePhotoCaptionTarget.innerText = caption;
-        this.largePhotoPhotographerTarget.innerText = photographer;
+        this.largePhotoCaptionTarget.innerHTML = caption;
+        this.largePhotoPhotographerTarget.innerHTML = photographer;
     }
 
     dismissPhoto(event) {

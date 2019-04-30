@@ -98,7 +98,7 @@
                 <div class="photo-gallery" data-controller="photo-gallery">
                     <div class="large-photo flex-column" data-target="photo-gallery.largePhoto" data-action="click->photo-gallery#dismissPhoto">
                         <div class="wrapper">
-                            <div class="img-container">
+                            <div class="img-container d-flex align-items-center justify-content-center">
                                 <img data-target="photo-gallery.largePhotoImg">
                             </div>
                             <p>
@@ -107,9 +107,9 @@
                             </p>
                         </div>
                     </div>
-                    <div class="container d-flex flex-row justify-content-center flex-wrap">
+                    <div class="container d-flex flex-row justify-content-center flex-wrap mb-n4">
                     {% for gallery_photo in block.value %}
-                        <div class="photo col-6 col-lg-4 mb-0">
+                        <div class="photo col-6 col-lg-4 mb-4">
                             {% image gallery_photo.image fill-600x600 as small_photo %}
                             {% image gallery_photo.image max-2000x1500 as large_photo %}
                             <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">

@@ -3,7 +3,17 @@
 {% block body_class %}template-404{% endblock %}
 
 {% block content %}
+<div class="container">
     <h1>Page not found</h1>
+    <p>Maybe searching would help?</p>
 
-    <h2>Sorry, this page could not be found.</h2>
+    <form class="my-5" action="{% url 'search' %}" method="get">
+        <div class="input-group">
+            <input type="text" placeholder="Search..." class="form-control form-control-lg" name="query">
+            <div class="input-group-append">
+                <input type="submit" value="Search" class="form-control form-control-lg btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}

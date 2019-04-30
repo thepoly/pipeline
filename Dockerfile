@@ -25,6 +25,5 @@ COPY --from=node /app/pipeline/static/webpack_bundles/ /app/pipeline/static/webp
 COPY --from=node /app/webpack-stats.json /app/
 COPY ./start.sh start.sh
 
-USER pipeline:pipeline
 EXPOSE 8000
 CMD ["./start.sh"]

@@ -9,4 +9,4 @@ if [ ! -f ./.build ]; then
 fi
 
 # cd  // Change to our Django project
-exec gunicorn pipeline.wsgi:application --bind 0.0.0.0:8000 --workers 3
+exec gunicorn pipeline.wsgi:application --bind 0.0.0.0:8000 --workers 3 --user pipeline --group pipeline

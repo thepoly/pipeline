@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.http import Http404
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.html import format_html
 from django.utils.text import slugify
@@ -340,13 +341,8 @@ class ArticlePage(RoutablePageMixin, Page):
     def set_url_path(self, parent):
         """Make sure the page knows its own path. The published date might not be set,
         so we have to take that into account and ignore it if so."""
-        date = self.first_published_at
-        if date is not None:
-            self.url_path = (
-                f"{parent.url_path}{date.year}/{date.month:02d}/{self.slug}/"
-            )
-        else:
-            self.url_path = f"{parent.url_path}{self.slug}/"
+        date = self.get_published_date() or timezone.now()
+        self.url_path = f"{parent.url_path}{date.year}/{date.month:02d}/{self.slug}/"
         return self.url_path
 
     def serve_preview(self, request, mode_name):
@@ -365,7 +361,11 @@ class ArticlePage(RoutablePageMixin, Page):
         return [f"{a.first_name} {a.last_name}" for a in self.get_authors()]
 
     def get_published_date(self):
-        return self.go_live_at or self.first_published_at
+        return (
+            self.go_live_at
+            or self.first_published_at
+            or getattr(self.get_latest_revision(), "created_at", None)
+        )
 
     def get_text_html(self):
         """Get the HTML that represents paragraphs within the article as a string."""

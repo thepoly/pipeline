@@ -33,7 +33,7 @@
                 {% endif %}
                 {% if photo.image.photographer %}
                     <span class="small text-muted">
-                        {{ photo.image.get_attribution_html|safe }}
+                        {{ photo.image.get_attribution_html }}
                     </span>
                 {% endif %}
                 </div>
@@ -78,7 +78,7 @@
                         {% endif %}
                         {% if photo.image.photographer %}
                             <span class="small text-muted">
-                                {{ photo.image.get_attribution_html|safe }}
+                                {{ photo.image.get_attribution_html }}
                             </span>
                         {% endif %}
                         </div>
@@ -103,7 +103,7 @@
                             {% image gallery_photo.image fill-600x600 as small_photo %}
                             {% image gallery_photo.image max-2000x1500 as large_photo %}
                             <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">
-                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ gallery_photo.caption.source|richtext_unwrapped }}" data-photographer="{{ gallery_photo.image.get_attribution_html }}">
+                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ gallery_photo.caption.source|richtext_unwrapped }}" data-photographer='{{ gallery_photo.image.get_attribution_html }}'>
                             </a>
                         </div>
                     {% endfor %}

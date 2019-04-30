@@ -8,6 +8,7 @@ from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.http import Http404
 from django.utils.functional import cached_property
+from django.utils.html import format_html
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
     RichTextBlock,
@@ -175,7 +176,9 @@ class CustomImage(AbstractImage):
 
         if self.photographer.staff_page:
             sp = self.photographer.staff_page
-            return f'<a href="{sp.url}">{sp.name}</a>/<i>The Polytechnic</i>'
+            return format_html(
+                '<a href="{}">{}</a>/<i>The Polytechnic</i>', sp.url, sp.name
+            )
 
         return self.photographer.name
 

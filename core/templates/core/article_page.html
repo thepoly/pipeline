@@ -48,7 +48,7 @@
                 {% if author.staff_page %}
                     <a class="author-name" href="{% pageurl author.staff_page %}">{{ author.staff_page.name }}</a>{% if not forloop.last and authors|length > 2 %}, {% endif %}
                 {% else %}
-                    <span class="author-name">{{ author.name }}</span>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                    <span class="author-name">{% firstof author.rich_name|richtext_unwrapped author.name %}</span>{% if not forloop.last and authors|length > 2 %}, {% endif %}
                 {% endif %}
             {% endfor %}
         </span>

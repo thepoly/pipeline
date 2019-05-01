@@ -2,6 +2,7 @@ from io import BytesIO
 from os import path
 from urllib.parse import urlparse
 
+from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand
 from django.core.files.images import ImageFile
 from django.db import transaction
@@ -53,7 +54,7 @@ class Command(BaseCommand):
             exit(1)
 
         r = requests.get(
-            "https://poly.rpi.edu/wp-json/wp/v2/posts?per_page=10",
+            "https://poly.rpi.edu/wp-json/wp/v2/posts?per_page=50",
             {"categories": wp_category_id},
         )
         j = r.json()
@@ -136,8 +137,11 @@ class Command(BaseCommand):
             # first_name = splitted[0]
             # last_name = splitted[1]
 
+            soup = BeautifulSoup(author, "html.parser")
+            name = soup.text
+
             try:
-                contributor = Contributor.objects.filter(name=author).get()
+                contributor = Contributor.objects.filter(name=name).get()
             except Contributor.DoesNotExist:
                 # staff_page = StaffPage()
                 # staff_page.first_name = first_name
@@ -146,7 +150,7 @@ class Command(BaseCommand):
                 # staff_page.slug = slugify(staff_page.title)
                 # self.staff_index.add_child(instance=staff_page)
                 # staff_page.save_revision().publish()
-                contributor = Contributor(name=author)
+                contributor = Contributor(name=name, rich_name=author)
                 contributor.save()
             author_objects.append(contributor)
         return author_objects

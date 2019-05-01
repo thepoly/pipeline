@@ -52,9 +52,13 @@ class StaticPage(Page):
 
 
 @register_snippet
-class Contributor(models.Model):
-    name = models.CharField(max_length=255, null=True)
-    staff_page = models.OneToOneField("StaffPage", on_delete=models.PROTECT, null=True)
+class Contributor(index.Indexed, models.Model):
+    name = models.CharField(max_length=255)
+    rich_name = RichTextField(
+        features=["italic"], max_length=255, null=True, blank=True
+    )
+
+    search_fields = [index.SearchField("name", partial_match=True)]
 
     autocomplete_search_field = "name"
 
@@ -69,7 +73,7 @@ class Contributor(models.Model):
         return [r.article for r in self.articles.select_related("article").all()]
 
     def __str__(self):
-        return self.name or self.staff_page.name
+        return self.name
 
 
 class StaffPage(Page):
@@ -80,6 +84,9 @@ class StaffPage(Page):
         "CustomImage", null=True, blank=True, on_delete=models.PROTECT
     )
     email_address = models.EmailField(null=True, blank=True)
+    contributor = models.OneToOneField(
+        Contributor, on_delete=models.PROTECT, null=True, blank=True
+    )
 
     content_panels = [
         MultiFieldPanel(
@@ -89,6 +96,7 @@ class StaffPage(Page):
         FieldPanel("biography"),
         ImageChooserPanel("photo"),
         InlinePanel("terms", label="Term", heading="Terms", min_num=0),
+        SnippetChooserPanel("contributor"),
     ]
 
     search_fields = [index.SearchField("first_name"), index.SearchField("last_name")]
@@ -319,7 +327,7 @@ class ArticlePage(RoutablePageMixin, Page):
         index.SearchField("body"),
         index.SearchField("summary"),
         index.RelatedFields("kicker", [index.SearchField("title")]),
-        index.SearchField("get_author_names"),
+        index.SearchField("get_author_names", partial_match=True),
     ]
 
     subpage_types = []

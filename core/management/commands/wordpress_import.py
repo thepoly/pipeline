@@ -61,7 +61,7 @@ class Command(BaseCommand):
         for post in j:
             if not self.can_import(post):
                 title = post["title"]["rendered"]
-                self.stdout.write(f'Skipping "{title}"')
+                self.stderr.write(f'Skipping "{title}"')
                 continue
 
             self.stdout.write(self.style.SUCCESS(post["title"]["rendered"]))
@@ -91,7 +91,7 @@ class Command(BaseCommand):
 
     def update_article(self, article, post):
         article.subdeck = post["meta"]["Subdeck"]
-        article.body = [("paragraph", RichText(post["content"]["rendered"]))]
+        article.body = self.body_to_stream(post["content"]["rendered"])
         article.go_live_at = post["date"] + "Z"
         article.first_published_at = post["date"] + "Z"
 
@@ -126,6 +126,35 @@ class Command(BaseCommand):
         migration_info.article = article
         migration_info.link = post["link"][len("https://poly.rpi.edu") :]
         migration_info.save()
+
+    def body_to_stream(self, body):
+        soup = BeautifulSoup(body, "html.parser")
+        parsed_body = ""
+        stream = []
+        for el in soup:
+            if el.name == "div" and el.get("class") == ["wc-gallery"]:
+                # dump existing parsed body into stream
+                if len(parsed_body) > 0:
+                    stream.append(("paragraph", RichText(parsed_body)))
+                    parsed_body = ""
+
+                gallery_photos = []
+                for item in el.find_all(class_="gallery-item"):
+                    url = item.find("a").get("href")
+                    caption = item.parent.find(class_="gallery-caption")
+                    if caption is None:
+                        self.stderr.write("unable to determine photographer in gallery")
+                        continue
+                    photographer = str(caption.p)[3:-4].strip()
+                    image = self.get_or_create_image(url, photographer)
+
+                    gallery_photos.append({"image": image})
+
+                stream.append(("photo_gallery", gallery_photos))
+            else:
+                parsed_body += str(el)
+
+        return stream + [("paragraph", RichText(parsed_body))]
 
     def create_or_get_authors(self, authors):
         author_objects = []
@@ -200,3 +229,32 @@ class Command(BaseCommand):
 
         article.featured_image = image
         article.featured_caption = caption
+
+    def get_or_create_image(self, photo_url, photographer):
+        if not photo_url.startswith("https://poly.rpi.edu"):
+            photo_url = "https://poly.rpi.edu" + photo_url
+
+        req = requests.Request("GET", photo_url)
+        prepared = req.prepare()
+
+        name = path.basename(urlparse(prepared.url).path)
+        try:
+            image = CustomImage.objects.get(title=name)
+        except CustomImage.DoesNotExist:
+            s = requests.Session()
+            try:
+                r = s.send(prepared)
+            except RequestException as e:
+                self.stderr.write(f"Unable to get photo from URL '{photo_url}'.")
+                raise (e)
+
+            image = CustomImage(
+                file=ImageFile(BytesIO(r.content), name=name), title=name
+            )
+            if not photographer.startswith("Courtesy of "):
+                photographer_name = photographer.split("/")[0]
+                contributor = self.create_or_get_author(photographer_name)
+                image.photographer = contributor
+            image.save()
+
+        return image

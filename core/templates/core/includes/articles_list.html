@@ -3,16 +3,7 @@
 <div class="row">
     {% for article in articles %}
     <div class="col-12 mb-5 row no-gutters">
-        {% if article.featured_image %}
-            <div class="col-12 col-md-4 pr-md-3">
-                {% image article.featured_image width-800 as photo %}
-                <a href="{% pageurl article %}">
-                    <img class="img-fluid mb-2 mb-md-0" src="{{ photo.url }}">
-                </a>
-            </div>
-        {% endif %}
-
-        <div class="col d-flex flex-column align-items-start">
+        <div class="col d-flex flex-column align-items-start order-2 order-md-1">
             {% if article.kicker %}
                 <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
             {% endif %}
@@ -53,6 +44,15 @@
                 {% endif %}
             </div>
         </div>
+
+        {% if article.featured_image %}
+            <div class="col-12 col-md-4 pl-md-3 order-1 order-md-2">
+                {% image article.featured_image fill-800x800 as photo %}
+                <a href="{% pageurl article %}">
+                    <img class="img-fluid mb-2 mb-md-0" src="{{ photo.url }}">
+                </a>
+            </div>
+        {% endif %}
     </div>
     {% empty %}
     <div class="col-12">

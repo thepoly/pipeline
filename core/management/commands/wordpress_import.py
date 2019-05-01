@@ -19,7 +19,6 @@ from core.models import (
     StaffPage,
     StaffIndexPage,
     CustomImage,
-    Photo,
     Contributor,
 )
 
@@ -93,6 +92,7 @@ class Command(BaseCommand):
         article.subdeck = post["meta"]["Subdeck"]
         article.body = [("paragraph", RichText(post["content"]["rendered"]))]
         article.go_live_at = post["date"] + "Z"
+        article.first_published_at = post["date"] + "Z"
 
         for author in self.create_or_get_authors(post["meta"]["AuthorName"]):
             try:
@@ -110,7 +110,7 @@ class Command(BaseCommand):
         if post["meta"]["Photo"]:
             self.attach_featured_photo(
                 article,
-                "https://poly.rpi.edu" + post["meta"]["Photo"],
+                post["meta"]["Photo"],
                 post["meta"]["PhotoCaption"],
                 post["meta"]["PhotoByline"],
             )
@@ -169,11 +169,14 @@ class Command(BaseCommand):
         return kicker
 
     def attach_featured_photo(self, article, photo_url, caption, photographer):
+        if not photo_url.startswith("https://poly.rpi.edu"):
+            photo_url = "https://poly.rpi.edu" + photo_url
+
         req = requests.Request("GET", photo_url)
         prepared = req.prepare()
 
         name = path.basename(urlparse(prepared.url).path)
-        if article.featured_photo and article.featured_photo.image.title == name:
+        if article.featured_image and article.featured_image.title == name:
             # already grabbed this one
             return
 
@@ -191,7 +194,5 @@ class Command(BaseCommand):
             image.photographer = contributor
         image.save()
 
-        photo = Photo(image=image, caption=caption)
-        photo.save()
-
-        article.featured_photo = photo
+        article.featured_image = image
+        article.featured_caption = RichText(caption)

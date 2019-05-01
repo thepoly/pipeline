@@ -487,18 +487,12 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
             ArticlePage.objects.live()
             .descendant_of(self)
             .order_by("-go_live_at")
-            .prefetch_related("featured_image")
+            .select_related("kicker", "featured_image")
         )
 
     def get_context(self, request):
         context = super().get_context(request)
-        paginator = Paginator(
-            ArticlePage.objects.live()
-            .descendant_of(self)
-            .order_by("-go_live_at")
-            .select_related("featured_image"),
-            24,
-        )
+        paginator = Paginator(self.get_articles(), 24)
         page = request.GET.get("page")
         context["articles"] = paginator.get_page(page)
         return context

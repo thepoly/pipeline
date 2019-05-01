@@ -358,7 +358,7 @@ class ArticlePage(RoutablePageMixin, Page):
         return [r.author for r in self.authors.select_related("author")]
 
     def get_author_names(self):
-        return [f"{a.first_name} {a.last_name}" for a in self.get_authors()]
+        return [a.name for a in self.get_authors()]
 
     def get_published_date(self):
         return (

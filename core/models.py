@@ -85,7 +85,11 @@ class StaffPage(Page):
     )
     email_address = models.EmailField(null=True, blank=True)
     contributor = models.OneToOneField(
-        Contributor, on_delete=models.PROTECT, null=True, blank=True
+        Contributor,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="staff_page",
     )
 
     content_panels = [

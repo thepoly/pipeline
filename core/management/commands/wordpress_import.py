@@ -199,4 +199,4 @@ class Command(BaseCommand):
         image.save()
 
         article.featured_image = image
-        article.featured_caption = RichText(caption)
+        article.featured_caption = caption

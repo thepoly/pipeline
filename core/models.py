@@ -117,9 +117,12 @@ class StaffPage(Page):
         self.title = f"{self.first_name} {self.last_name}"
 
     def get_articles(self):
-        return [
-            r.article for r in self.contributor.articles.select_related("article").all()
-        ]
+        return (
+            ArticlePage.objects.live()
+            .filter(authors__author=self.contributor)
+            .order_by("-first_published_at")
+            .all()
+        )
 
     @cached_property
     def get_active_positions(self):

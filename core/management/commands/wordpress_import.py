@@ -152,7 +152,7 @@ class Command(BaseCommand):
 
                 stream.append(("photo_gallery", gallery_photos))
             else:
-                if el.string is not None and len(el.string.strip()) > 0:
+                if hasattr(el, "stripped_strings") and any(el.stripped_strings):
                     parsed_body += str(el)
 
         return stream + [("paragraph", RichText(parsed_body))]

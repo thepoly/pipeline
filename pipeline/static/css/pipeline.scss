@@ -219,6 +219,10 @@ ul.pagination {
 
 // CUSTOM
 
+.template-articlepage article {
+  margin-bottom: 80px;
+}
+
 @include media-breakpoint-up(md) {
   .template-articlepage .narrow {
     max-width: var(--breakpoint-sm);
@@ -336,10 +340,6 @@ ul.pagination {
 
 .template-articlepage .embed.video {
   max-width: var(--breakpoint-lg);
-}
-
-.template-articlepage .related-articles {
-  margin-top: 80px;
 }
 
 .template-homepage .header-logo img {

@@ -128,22 +128,24 @@
     </div>
 </article>
 
-<div class="container related-articles">
-    <h4>Related articles</h4>
-    <hr>
-    <div class="row">
-    {% for article in page.get_related_articles %}
-        <a href="{% pageurl article %}" class="related-article col-6 col-md-4 col-lg-3 flex-column align-items-start {% if forloop.counter > 3 %}d-none d-lg-flex{% elif forloop.counter > 2 %}d-none d-md-flex{% else %}d-flex{% endif %}">
-            {% if article.featured_image %}
-                {% image article.featured_image width-1200 as photo %}
-                <img class="img-fluid mb-3" src="{{ photo.url }}">
-            {% endif %}
-            {% if article.kicker %}
-                <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
-            {% endif %}
-            <h3 class="mb-2 headline text-dark">{{ article.headline|richtext_unwrapped }}</h3>
-        </a>
-    {% endfor %}
+{% if page.get_related_articles %}
+    <div class="container related-articles">
+        <h4>Related articles</h4>
+        <hr>
+        <div class="row">
+        {% for article in page.get_related_articles %}
+            <a href="{% pageurl article %}" class="related-article col-6 col-md-4 col-lg-3 flex-column align-items-start {% if forloop.counter > 3 %}d-none d-lg-flex{% elif forloop.counter > 2 %}d-none d-md-flex{% else %}d-flex{% endif %}">
+                {% if article.featured_image %}
+                    {% image article.featured_image width-1200 as photo %}
+                    <img class="img-fluid mb-3" src="{{ photo.url }}">
+                {% endif %}
+                {% if article.kicker %}
+                    <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
+                {% endif %}
+                <h3 class="mb-2 headline text-dark">{{ article.headline|richtext_unwrapped }}</h3>
+            </a>
+        {% endfor %}
+        </div>
     </div>
-</div>
+{% endif %}
 {% endblock %}

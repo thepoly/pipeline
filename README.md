@@ -70,7 +70,7 @@ Pipeline will be available at port 8000 on localhost.
 
 ### Standards
 
-Make sure you format your code with [Black](https://github.com/ambv/black) and use [Flake8](http://flake8.pycqa.org/en/latest/) to find problems. Compliance will soon be enforced on push.
+Make sure you format your code with [Black](https://github.com/python/black) and use [Flake8](http://flake8.pycqa.org/en/latest/) to find problems.
 
 ## Status
 
@@ -117,11 +117,12 @@ Many of the following features are partially complete, but this isn't indicated.
   - [x] Email addresses on staff pages
 - [ ] Users
   - [x] Basic publish permission level
-  - [ ] Fine grained permissions
-  - [ ] Google Apps authentication
+  - [x] Fine grained permissions
+  - [ ] G Suite authentication
 - [ ] Search
   - [x] Basic headline search
-  - [ ] Search all fields of articles
+  - [x] Search all fields of articles
+  - [ ] Search non-article pages
 - [ ] Instrumentation
   - [x] Basic Prometheus metrics
   - [ ] DB metrics

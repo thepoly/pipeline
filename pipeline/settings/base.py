@@ -160,7 +160,7 @@ WAGTAIL_SITE_NAME = "Pipeline"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = "http://example.com"
+BASE_URL = "https://poly.rpi.edu"
 
 # Search
 WAGTAILSEARCH_BACKENDS = {
@@ -168,6 +168,11 @@ WAGTAILSEARCH_BACKENDS = {
 }
 
 WAGTAILIMAGES_IMAGE_MODEL = "core.CustomImage"
+WAGTAILIMAGES_MAX_UPLOAD_SIZE = 30 * 1024 * 1024  # i.e. 30MB
+
+WAGTAIL_PASSWORD_RESET_ENABLED = False
 
 # Miscellaneous
 INTERNAL_IPS = ["127.0.0.1"]
+
+DEFAULT_FROM_EMAIL = "Pipeline <pipeline@poly.rpi.edu>"

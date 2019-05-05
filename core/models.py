@@ -7,8 +7,10 @@ from django.db import models
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.http import Http404
+from django.utils import timezone
 from django.utils.functional import cached_property
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
+from django.utils.text import slugify
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
     RichTextBlock,
@@ -44,15 +46,19 @@ logger = logging.getLogger("pipeline")
 
 
 class StaticPage(Page):
-    body = RichTextField()
+    body = RichTextField(blank=True, null=True)
 
     content_panels = Page.content_panels + [FieldPanel("body")]
 
 
 @register_snippet
-class Contributor(models.Model):
-    name = models.CharField(max_length=255, null=True)
-    staff_page = models.OneToOneField("StaffPage", on_delete=models.PROTECT, null=True)
+class Contributor(index.Indexed, models.Model):
+    name = models.CharField(max_length=255)
+    rich_name = RichTextField(
+        features=["italic"], max_length=255, null=True, blank=True
+    )
+
+    search_fields = [index.SearchField("name", partial_match=True)]
 
     autocomplete_search_field = "name"
 
@@ -67,7 +73,7 @@ class Contributor(models.Model):
         return [r.article for r in self.articles.select_related("article").all()]
 
     def __str__(self):
-        return self.name or self.staff_page.name
+        return self.name
 
 
 class StaffPage(Page):
@@ -78,6 +84,13 @@ class StaffPage(Page):
         "CustomImage", null=True, blank=True, on_delete=models.PROTECT
     )
     email_address = models.EmailField(null=True, blank=True)
+    contributor = models.OneToOneField(
+        Contributor,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="staff_page",
+    )
 
     content_panels = [
         MultiFieldPanel(
@@ -87,6 +100,7 @@ class StaffPage(Page):
         FieldPanel("biography"),
         ImageChooserPanel("photo"),
         InlinePanel("terms", label="Term", heading="Terms", min_num=0),
+        SnippetChooserPanel("contributor"),
     ]
 
     search_fields = [index.SearchField("first_name"), index.SearchField("last_name")]
@@ -103,9 +117,45 @@ class StaffPage(Page):
         self.title = f"{self.first_name} {self.last_name}"
 
     def get_articles(self):
-        return [
-            r.article for r in self.contributor.articles.select_related("article").all()
-        ]
+        return (
+            ArticlePage.objects.live()
+            .filter(authors__author=self.contributor)
+            .order_by("-first_published_at")
+            .all()
+        )
+
+    def get_positions_html(self):
+        terms = self.current_terms
+        builder = ""
+        for i, term in enumerate(terms):
+            if i == len(terms) - 1 and len(terms) > 1:
+                builder += " and "
+
+            position_prefix = ""
+            if term.acting:
+                if i == 0:
+                    position_prefix += "Acting "
+                else:
+                    position_prefix += "acting "
+            elif term.de_facto:
+                if i == 0:
+                    position_prefix += "<i>De facto</i> "
+                else:
+                    position_prefix += "<i>de facto</i> "
+
+            builder += format_html(
+                '{}<span class="text-nowrap">{}</span>',
+                mark_safe(position_prefix),
+                term.position.title,
+            )
+
+            if i < len(terms) - 1 and len(terms) > 2:
+                builder += ", "
+        return mark_safe(builder)
+
+    @cached_property
+    def current_terms(self):
+        return [term for term in self.terms.filter(date_ended__isnull=True)]
 
     @cached_property
     def get_active_positions(self):
@@ -153,6 +203,8 @@ class Term(Orderable, models.Model):
     person = ParentalKey(StaffPage, on_delete=models.PROTECT, related_name="terms")
     date_started = models.DateField()
     date_ended = models.DateField(blank=True, null=True)
+    acting = models.BooleanField(default=False)
+    de_facto = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.position.title} ({self.date_started}—{self.date_ended or "now"})'
@@ -269,7 +321,8 @@ class ArticlePage(RoutablePageMixin, Page):
             ("photo", PhotoBlock()),
             ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
-        ]
+        ],
+        blank=True,
     )
     summary = RichTextField(
         features=["italic"],
@@ -292,7 +345,6 @@ class ArticlePage(RoutablePageMixin, Page):
         ),
         MultiFieldPanel(
             [
-                AutocompletePanel("kicker", target_model="core.Kicker"),
                 InlinePanel(
                     "authors",
                     panels=[
@@ -300,6 +352,7 @@ class ArticlePage(RoutablePageMixin, Page):
                     ],
                     label="Author",
                 ),
+                AutocompletePanel("kicker", target_model="core.Kicker"),
                 ImageChooserPanel("featured_image"),
                 FieldPanel("featured_caption"),
             ],
@@ -316,7 +369,7 @@ class ArticlePage(RoutablePageMixin, Page):
         index.SearchField("body"),
         index.SearchField("summary"),
         index.RelatedFields("kicker", [index.SearchField("title")]),
-        index.SearchField("get_author_names"),
+        index.SearchField("get_author_names", partial_match=True),
     ]
 
     subpage_types = []
@@ -338,13 +391,8 @@ class ArticlePage(RoutablePageMixin, Page):
     def set_url_path(self, parent):
         """Make sure the page knows its own path. The published date might not be set,
         so we have to take that into account and ignore it if so."""
-        date = self.first_published_at
-        if date is not None:
-            self.url_path = (
-                f"{parent.url_path}{date.year}/{date.month:02d}/{self.slug}/"
-            )
-        else:
-            self.url_path = f"{parent.url_path}{self.slug}/"
+        date = self.get_published_date() or timezone.now()
+        self.url_path = f"{parent.url_path}{date.year}/{date.month:02d}/{self.slug}/"
         return self.url_path
 
     def serve_preview(self, request, mode_name):
@@ -360,10 +408,14 @@ class ArticlePage(RoutablePageMixin, Page):
         return [r.author for r in self.authors.select_related("author")]
 
     def get_author_names(self):
-        return [f"{a.first_name} {a.last_name}" for a in self.get_authors()]
+        return [a.name for a in self.get_authors()]
 
     def get_published_date(self):
-        return self.go_live_at or self.first_published_at
+        return (
+            self.go_live_at
+            or self.first_published_at
+            or getattr(self.get_latest_revision(), "created_at", None)
+        )
 
     def get_text_html(self):
         """Get the HTML that represents paragraphs within the article as a string."""
@@ -485,18 +537,12 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
             ArticlePage.objects.live()
             .descendant_of(self)
             .order_by("-go_live_at")
-            .prefetch_related("featured_image")
+            .select_related("kicker", "featured_image")
         )
 
     def get_context(self, request):
         context = super().get_context(request)
-        paginator = Paginator(
-            ArticlePage.objects.live()
-            .descendant_of(self)
-            .order_by("-go_live_at")
-            .select_related("featured_image"),
-            24,
-        )
+        paginator = Paginator(self.get_articles(), 24)
         page = request.GET.get("page")
         context["articles"] = paginator.get_page(page)
         return context

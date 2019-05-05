@@ -9,10 +9,7 @@
         <div class="flex-grow-1">
             <h1>{{ page.title }}</h1>
             <h4>
-                {% for position in page.get_active_positions %}
-                    {% if forloop.last and page.get_active_positions|length > 1 %} and {% endif %}
-                    <span class="text-nowrap">{{ position.title }}{% if not forloop.last and person.get_active_positions|length > 2 %}, {% endif %}</span>
-                {% endfor %}
+                {{ page.get_positions_html }}
             </h4>
         </div>
         {% if page.photo %}
@@ -38,6 +35,8 @@
                 <ul>
                     {% for term in page.get_previous_terms %}
                         <li>
+                            {% if term.acting %}Acting
+                            {% elif term.de_facto %}<i>De facto</i>{% endif %}
                             {{ term.position.title }}
                             <small>{{ term.date_started|date:"F Y" }} to {{ term.date_ended|date:"F Y" }}</small>
                         </li>

@@ -6,6 +6,8 @@
                 <a class="home-link nav-link flex-grow-0" href="{% pageurl request.site.root_page %}">
                     <img src="{% static 'images/lettermark.png' %}" alt="The Polytechnic">
                 </a>
+            {% else %}
+                <span></span>
             {% endif %}
             {% for menuitem in menuitems %}
                 <a class="text-muted flex-grow-0 nav-link nav-link-{{ forloop.counter0 }}{% if menuitem.active %} active{% endif %}" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
@@ -13,6 +15,7 @@
                     <div class="divider flex-grow-0"></div>
                 {% endif %}
             {% endfor %}
+            <span></span>
         </nav>
     </div>
 </div>

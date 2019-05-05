@@ -61,7 +61,18 @@ module.exports = {
       {
         test: /\.(js|ts)$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        use: [{
+          loader: "babel-loader",
+          options: {
+            "presets": [
+              "@babel/preset-env",
+              "@babel/preset-typescript"
+            ],
+            "plugins": [
+              "@babel/proposal-class-properties"
+            ]
+          }
+        }],
       }
     ]
   }

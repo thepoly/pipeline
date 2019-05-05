@@ -9,7 +9,7 @@ from django.dispatch import receiver
 from django.http import Http404
 from django.utils import timezone
 from django.utils.functional import cached_property
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 from django.utils.text import slugify
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
@@ -124,6 +124,39 @@ class StaffPage(Page):
             .all()
         )
 
+    def get_positions_html(self):
+        terms = self.current_terms
+        builder = ""
+        for i, term in enumerate(terms):
+            if i == len(terms) - 1 and len(terms) > 1:
+                builder += " and "
+
+            position_prefix = ""
+            if term.acting:
+                if i == 0:
+                    position_prefix += "Acting "
+                else:
+                    position_prefix += "acting "
+            elif term.de_facto:
+                if i == 0:
+                    position_prefix += "<i>De facto</i> "
+                else:
+                    position_prefix += "<i>de facto</i> "
+
+            builder += format_html(
+                '{}<span class="text-nowrap">{}</span>',
+                mark_safe(position_prefix),
+                term.position.title,
+            )
+
+            if i < len(terms) - 1 and len(terms) > 2:
+                builder += ", "
+        return mark_safe(builder)
+
+    @cached_property
+    def current_terms(self):
+        return [term for term in self.terms.filter(date_ended__isnull=True)]
+
     @cached_property
     def get_active_positions(self):
         return [term.position for term in self.terms.all() if term.date_ended is None]
@@ -170,6 +203,8 @@ class Term(Orderable, models.Model):
     person = ParentalKey(StaffPage, on_delete=models.PROTECT, related_name="terms")
     date_started = models.DateField()
     date_ended = models.DateField(blank=True, null=True)
+    acting = models.BooleanField(default=False)
+    de_facto = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.position.title} ({self.date_started}—{self.date_ended or "now"})'

@@ -20,10 +20,7 @@
                     <a href="{% pageurl person %}">{{ person.title }}</a>
                 </h3>
                 <p>
-                {% for position in person.get_active_positions %}
-                    {% if forloop.last and person.get_active_positions|length > 1 %} and {% endif %}
-                    <span class="text-nowrap">{{ position.title }}{% if not forloop.last and person.get_active_positions|length > 2 %}, {% endif %}</span>
-                {% endfor %}
+                    {{ person.get_positions_html }}
                 </p>
             </div>
         {% endfor %}

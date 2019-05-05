@@ -25,7 +25,7 @@ install:
     
 before_script:
   - pipenv check
-  - pipenv run python manage.py makemigrations --check
+  - pipenv run python manage.py makemigrations --check --dry-run
   - black . --check --exclude node_modules/
   - flake8 --exclude node_modules/ || true
   - psql -c 'create database pipeline;' -U postgres

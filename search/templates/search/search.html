@@ -9,7 +9,7 @@
 <div class="container">
     <form class="my-5" action="{% url 'search' %}" method="get">
         <div class="input-group input-group-lg">
-            <input type="text" placeholder="Search..." class="form-control" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+            <input type="text" placeholder="Search..." class="form-control" name="query" autofocus{% if search_query %} value="{{ search_query }}"{% endif %}>
             <div class="input-group-append">
                 <input type="submit" value="Search" class="input-group-btn form-control form-control-lg btn btn-primary">
             </div>

@@ -112,6 +112,12 @@ class StaffPage(Page):
     def name(self):
         return self.title
 
+    @cached_property
+    def is_active(self):
+        return self.terms.filter(
+            date_ended__isnull=True, position__isnull=False
+        ).exists()
+
     def clean(self):
         super().clean()
         self.title = f"{self.first_name} {self.last_name}"

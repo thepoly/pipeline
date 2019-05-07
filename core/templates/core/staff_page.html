@@ -26,7 +26,7 @@
                 {{ page.biography|richtext }}
             {% endif %}
 
-            {% if page.email_address %}
+            {% if page.email_address and page.is_active %}
                 <p>Email: <a href="mailto:{{ page.email_address }}">{{ page.email_address }}</a></p>
             {% endif %}
             

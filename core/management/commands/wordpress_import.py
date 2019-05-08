@@ -1,3 +1,4 @@
+import datetime
 from io import BytesIO
 from os import path
 import logging
@@ -41,12 +42,22 @@ class Command(BaseCommand):
             self.stderr.write("Staff index page does not exist in Pipeline.")
             exit(1)
 
+    def add_arguments(self, parser):
+        parser.add_argument("since_year", type=int)
+        parser.add_argument("until_year", type=int)
+
     def handle(self, *args, **options):
-        self.stdout.write("Importing...")
+        self.since_year = options["since_year"]
+        self.until_year = options["until_year"]
+
+        self.stdout.write(
+            f"Importing articles published between {self.since_year} and {self.until_year}..."
+        )
 
         self.wp_import("Opinion", 3)
         self.wp_import("News", 5)
         self.wp_import("Features", 4)
+        self.wp_import("Sports", 6)
 
         self.stdout.write("Done.")
 
@@ -58,16 +69,34 @@ class Command(BaseCommand):
             self.stderr.write(f"{section_name} section does not exist in Pipeline.")
             exit(1)
 
-        r = requests.get(
-            "https://poly.rpi.edu/wp-json/wp/v2/posts?per_page=50",
-            {"categories": wp_category_id},
-        )
-        j = r.json()
-        for post in j:
+        # collect posts from intermediate years
+        posts = []
+        page = 1
+        while True:
+            r = requests.get(
+                "https://poly.rpi.edu/wp-json/wp/v2/posts",
+                {"categories": wp_category_id, "per_page": 50, "page": page},
+            )
+            j = r.json()
+            done = False
+            for post in j:
+                published = datetime.datetime.fromisoformat(post["date"])
+                if published.year < self.since_year:
+                    done = True
+                    break
+                elif published.year > self.until_year:
+                    continue
+                posts.append(post)
+            if done:
+                break
+            page += 1
+
+        # handle posts
+        for post in posts:
             if not self.can_import(post):
                 title = post["title"]["rendered"]
                 self.stderr.write(f'Skipping "{title}"')
-                continue
+                raise Exception()
 
             self.stdout.write(self.style.SUCCESS(post["title"]["rendered"]))
 
@@ -149,7 +178,7 @@ class Command(BaseCommand):
                     caption = item.parent.find(class_="gallery-caption")
                     if caption is None:
                         self.stderr.write("unable to determine photographer in gallery")
-                        continue
+                        raise Exception()
                     photographer = str(caption.p)[3:-4].strip()
                     image = self.get_or_create_image(url, photographer)
 
@@ -173,7 +202,7 @@ class Command(BaseCommand):
             # last_name = splitted[1]
 
             soup = BeautifulSoup(author, "html.parser")
-            name = re.sub("\s{2,}", " ", soup.text).strip()
+            name = re.sub(r"\s{2,}", " ", soup.text).strip()
 
             try:
                 contributor = Contributor.objects.filter(name=name).get()
@@ -194,7 +223,7 @@ class Command(BaseCommand):
         authors = self.create_or_get_authors(author)
         if len(authors) != 1:
             self.stderr.write(f"{author} could not be added as photographer.")
-            return None
+            raise Exception()
         return authors[0]
 
     def create_or_get_kicker(self, kicker_text):

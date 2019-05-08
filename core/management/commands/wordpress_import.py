@@ -1,5 +1,7 @@
 from io import BytesIO
 from os import path
+import logging
+import re
 from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
@@ -29,6 +31,9 @@ class Command(BaseCommand):
 
     def __init__(self):
         super().__init__()
+
+        logging.getLogger("pipeline").setLevel(logging.WARN)
+
         # get staff page
         try:
             self.staff_index = StaffIndexPage.objects.get()
@@ -168,7 +173,7 @@ class Command(BaseCommand):
             # last_name = splitted[1]
 
             soup = BeautifulSoup(author, "html.parser")
-            name = soup.text
+            name = re.sub("\s{2,}", " ", soup.text)
 
             try:
                 contributor = Contributor.objects.filter(name=name).get()

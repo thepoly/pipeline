@@ -31,9 +31,9 @@
                 {% if page.featured_caption %}
                     <span class="caption text-dark">{{ page.featured_caption|richtext_unwrapped }}</span>
                 {% endif %}
-                {% if photo.image.photographer %}
+                {% if page.featured_image.photographer %}
                     <span class="small text-muted">
-                        {{ photo.image.get_attribution_html }}
+                        {{ page.featured_image.get_attribution_html }}
                     </span>
                 {% endif %}
                 </div>

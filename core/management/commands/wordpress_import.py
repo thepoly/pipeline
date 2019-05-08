@@ -173,7 +173,7 @@ class Command(BaseCommand):
             # last_name = splitted[1]
 
             soup = BeautifulSoup(author, "html.parser")
-            name = re.sub("\s{2,}", " ", soup.text)
+            name = re.sub("\s{2,}", " ", soup.text).strip()
 
             try:
                 contributor = Contributor.objects.filter(name=name).get()

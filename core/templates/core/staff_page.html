@@ -14,7 +14,7 @@
         </div>
         {% if page.photo %}
             <div class="photo pl-3">
-                {% image page.photo fill-200x200 as photo %}
+                {% image page.photo fill-200x200-c50 as photo %}
                 <img class="rounded-circle" src="{{ photo.url }}">
             </div>
         {% endif %}

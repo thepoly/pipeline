@@ -93,12 +93,7 @@ class Command(BaseCommand):
 
         # handle posts
         for post in posts:
-            if not self.can_import(post):
-                title = post["title"]["rendered"]
-                self.stderr.write(f'Skipping "{title}"')
-                raise Exception()
-
-            self.stdout.write(self.style.SUCCESS(post["title"]["rendered"]))
+            self.stdout.write(post["title"]["rendered"])
 
             if ArticlePage.objects.filter(slug=post["slug"]).count():
                 article = ArticlePage.objects.get(slug=post["slug"])
@@ -107,13 +102,6 @@ class Command(BaseCommand):
                 self.create_article(section, post)
 
         section.save_revision().publish()
-
-    def can_import(self, post):
-        author_name = post["meta"]["AuthorName"]
-        if ", " in author_name in author_name:
-            return False
-
-        return True
 
     def create_article(self, section, post):
         article = ArticlePage()
@@ -193,7 +181,36 @@ class Command(BaseCommand):
 
     def create_or_get_authors(self, authors):
         author_objects = []
-        for author in authors.split(" and "):
+
+        if authors.count(" and ") > 1:
+            raise ValueError("too many ands in authors string")
+
+        names_to_process = []
+
+        splitted = authors.split(" and ")
+        if "," in splitted[-1]:
+            # titles follow names, e.g. "Brookelyn Parslow, Senior Reporter and John Stotz, Staff Reporter"
+            # each name is associated with a title, i.e. pairs of "name, title"
+            c_split = [b for a in splitted for b in a.split(", ")]
+            if len(c_split) % 2 != 0:
+                # not even, so something is weird
+                raise ValueError("unexpected number of author names and titles")
+
+            name = ""
+            for name in c_split[::2]:
+                names_to_process.append(name)
+        elif len(splitted) == 2 and "," in splitted[0]:
+            names_to_process += splitted[0].split(", ")
+
+            # remove trailing Oxford comma if it's there
+            if names_to_process[-1][-1] == ",":
+                names_to_process[-1] = names_to_process[-1][:-1]
+
+            names_to_process += splitted[1].split(", ")
+        else:
+            names_to_process += splitted
+
+        for author in names_to_process:
             # splitted = author.split(" ")
             # if len(splitted) != 2:
             #     print(splitted)
@@ -202,6 +219,8 @@ class Command(BaseCommand):
             # last_name = splitted[1]
 
             soup = BeautifulSoup(author, "html.parser")
+
+            # replace runs of whitespace with one space
             name = re.sub(r"\s{2,}", " ", soup.text).strip()
 
             try:

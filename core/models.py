@@ -504,7 +504,7 @@ class ArticlePage(RoutablePageMixin, Page):
         # image
         if self.featured_image is not None:
             # pylint: disable=E1101
-            rendition = self.featured_image.get_rendition("fill-600x400")
+            rendition = self.featured_image.get_rendition("min-1200x1200")
             rendition_url = self.get_site().root_url + rendition.url
             tags["og:image"] = rendition_url
             tags["twitter:image"] = rendition_url

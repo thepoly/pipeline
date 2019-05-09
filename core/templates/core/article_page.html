@@ -32,7 +32,7 @@
                     <span class="caption text-dark">{{ page.featured_caption|richtext_unwrapped }}</span>
                 {% endif %}
                 {% if page.featured_image.photographer %}
-                    <span class="small text-muted">
+                    <span class="small text-muted text-nowrap">
                         {{ page.featured_image.get_attribution_html }}
                     </span>
                 {% endif %}
@@ -53,7 +53,7 @@
             {% endfor %}
         </span>
         {% endif %}
-        <a class="text-muted small published-date" href="{% pageurl page %}">
+        <a class="text-muted small published-date text-nowrap" href="{% pageurl page %}">
             {{ page.get_published_date|date:"F j, Y" }}
         </a>
     </div>

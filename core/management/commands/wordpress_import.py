@@ -1,5 +1,8 @@
+import datetime
 from io import BytesIO
 from os import path
+import logging
+import re
 from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
@@ -29,6 +32,9 @@ class Command(BaseCommand):
 
     def __init__(self):
         super().__init__()
+
+        logging.getLogger("pipeline").setLevel(logging.WARN)
+
         # get staff page
         try:
             self.staff_index = StaffIndexPage.objects.get()
@@ -36,12 +42,22 @@ class Command(BaseCommand):
             self.stderr.write("Staff index page does not exist in Pipeline.")
             exit(1)
 
+    def add_arguments(self, parser):
+        parser.add_argument("since_year", type=int)
+        parser.add_argument("until_year", type=int)
+
     def handle(self, *args, **options):
-        self.stdout.write("Importing...")
+        self.since_year = options["since_year"]
+        self.until_year = options["until_year"]
+
+        self.stdout.write(
+            f"Importing articles published between {self.since_year} and {self.until_year}..."
+        )
 
         self.wp_import("Opinion", 3)
         self.wp_import("News", 5)
         self.wp_import("Features", 4)
+        self.wp_import("Sports", 6)
 
         self.stdout.write("Done.")
 
@@ -53,18 +69,31 @@ class Command(BaseCommand):
             self.stderr.write(f"{section_name} section does not exist in Pipeline.")
             exit(1)
 
-        r = requests.get(
-            "https://poly.rpi.edu/wp-json/wp/v2/posts?per_page=50",
-            {"categories": wp_category_id},
-        )
-        j = r.json()
-        for post in j:
-            if not self.can_import(post):
-                title = post["title"]["rendered"]
-                self.stderr.write(f'Skipping "{title}"')
-                continue
+        # collect posts from intermediate years
+        posts = []
+        page = 1
+        while True:
+            r = requests.get(
+                "https://poly.rpi.edu/wp-json/wp/v2/posts",
+                {"categories": wp_category_id, "per_page": 50, "page": page},
+            )
+            j = r.json()
+            done = False
+            for post in j:
+                published = datetime.datetime.fromisoformat(post["date"])
+                if published.year < self.since_year:
+                    done = True
+                    break
+                elif published.year > self.until_year:
+                    continue
+                posts.append(post)
+            if done:
+                break
+            page += 1
 
-            self.stdout.write(self.style.SUCCESS(post["title"]["rendered"]))
+        # handle posts
+        for post in posts:
+            self.stdout.write(post["title"]["rendered"])
 
             if ArticlePage.objects.filter(slug=post["slug"]).count():
                 article = ArticlePage.objects.get(slug=post["slug"])
@@ -73,13 +102,6 @@ class Command(BaseCommand):
                 self.create_article(section, post)
 
         section.save_revision().publish()
-
-    def can_import(self, post):
-        author_name = post["meta"]["AuthorName"]
-        if ", " in author_name in author_name:
-            return False
-
-        return True
 
     def create_article(self, section, post):
         article = ArticlePage()
@@ -144,7 +166,7 @@ class Command(BaseCommand):
                     caption = item.parent.find(class_="gallery-caption")
                     if caption is None:
                         self.stderr.write("unable to determine photographer in gallery")
-                        continue
+                        raise Exception()
                     photographer = str(caption.p)[3:-4].strip()
                     image = self.get_or_create_image(url, photographer)
 
@@ -159,7 +181,36 @@ class Command(BaseCommand):
 
     def create_or_get_authors(self, authors):
         author_objects = []
-        for author in authors.split(" and "):
+
+        if authors.count(" and ") > 1:
+            raise ValueError("too many ands in authors string")
+
+        names_to_process = []
+
+        splitted = authors.split(" and ")
+        if "," in splitted[-1]:
+            # titles follow names, e.g. "Brookelyn Parslow, Senior Reporter and John Stotz, Staff Reporter"
+            # each name is associated with a title, i.e. pairs of "name, title"
+            c_split = [b for a in splitted for b in a.split(", ")]
+            if len(c_split) % 2 != 0:
+                # not even, so something is weird
+                raise ValueError("unexpected number of author names and titles")
+
+            name = ""
+            for name in c_split[::2]:
+                names_to_process.append(name)
+        elif len(splitted) == 2 and "," in splitted[0]:
+            names_to_process += splitted[0].split(", ")
+
+            # remove trailing Oxford comma if it's there
+            if names_to_process[-1][-1] == ",":
+                names_to_process[-1] = names_to_process[-1][:-1]
+
+            names_to_process += splitted[1].split(", ")
+        else:
+            names_to_process += splitted
+
+        for author in names_to_process:
             # splitted = author.split(" ")
             # if len(splitted) != 2:
             #     print(splitted)
@@ -168,7 +219,9 @@ class Command(BaseCommand):
             # last_name = splitted[1]
 
             soup = BeautifulSoup(author, "html.parser")
-            name = soup.text
+
+            # replace runs of whitespace with one space
+            name = re.sub(r"\s{2,}", " ", soup.text).strip()
 
             try:
                 contributor = Contributor.objects.filter(name=name).get()
@@ -189,7 +242,7 @@ class Command(BaseCommand):
         authors = self.create_or_get_authors(author)
         if len(authors) != 1:
             self.stderr.write(f"{author} could not be added as photographer.")
-            return None
+            raise Exception()
         return authors[0]
 
     def create_or_get_kicker(self, kicker_text):

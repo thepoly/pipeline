@@ -149,14 +149,10 @@ class StaffPage(Page):
                 else:
                     position_prefix += "<i>de facto</i> "
 
-            builder += format_html(
-                '{}<span class="text-nowrap">{}</span>',
-                mark_safe(position_prefix),
-                term.position.title,
-            )
-
+            builder += mark_safe(position_prefix) + term.position.title
             if i < len(terms) - 1 and len(terms) > 2:
                 builder += ", "
+
         return mark_safe(builder)
 
     @cached_property
@@ -232,7 +228,7 @@ class CustomImage(AbstractImage):
         if self.photographer is None:
             return ""
 
-        if self.photographer.staff_page:
+        if hasattr(self.photographer, "staff_page"):
             sp = self.photographer.staff_page
             return format_html(
                 '<a href="{}">{}</a>/<i>The Polytechnic</i>', sp.url, sp.name

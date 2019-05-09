@@ -167,6 +167,7 @@ WAGTAILSEARCH_BACKENDS = {
     "default": {"BACKEND": "wagtail.contrib.postgres_search.backend"}
 }
 
+WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = True
 WAGTAILIMAGES_IMAGE_MODEL = "core.CustomImage"
 WAGTAILIMAGES_MAX_UPLOAD_SIZE = 30 * 1024 * 1024  # i.e. 30MB
 

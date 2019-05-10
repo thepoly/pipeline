@@ -222,6 +222,12 @@ header a.search {
   width: 160px;
 }
 
+.footer .bottom-menu {
+  @include media-breakpoint-up(md) {
+    max-width: var(--breakpoint-sm);
+  }
+}
+
 .text-kicker {
   font-family: 'Raleway', sans-serif;
   font-weight: 700;

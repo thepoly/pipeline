@@ -127,9 +127,14 @@ header a.search {
   padding-left: 0.6rem;
   padding-right: 0.6rem;
   transition: color 0.1s ease-in-out;
-  &:hover{
+  &:hover {
     @extend .text-dark;
   }
+}
+
+.nav-scroller .nav-link.active {
+  font-weight: bold;
+  @extend .text-dark;
 }
 
 .nav-scroller .nav-link.home-link {
@@ -174,10 +179,6 @@ header a.search {
   @include media-breakpoint-down(xs) {
     padding-right: 0.6rem;
   }
-}
-
-.nav-scroller .nav-link.active {
-  font-weight: bold;
 }
 
 .nav-scroller .divider {

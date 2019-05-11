@@ -544,7 +544,7 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
         return (
             ArticlePage.objects.live()
             .descendant_of(self)
-            .order_by("-go_live_at")
+            .order_by("-first_published_at")
             .select_related("kicker", "featured_image")
         )
 

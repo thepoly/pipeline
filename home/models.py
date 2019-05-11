@@ -62,7 +62,7 @@ class RecentArticlesValue(blocks.StructValue):
         return (
             a
             for a in ArticlePage.objects.live()
-            .order_by("-go_live_at")
+            .order_by("-first_published_at")
             .exclude(pk__in=pks)
             .prefetch_related("featured_image", "kicker")[: self["num_articles"]]
         )

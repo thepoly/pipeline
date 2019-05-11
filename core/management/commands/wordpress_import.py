@@ -308,10 +308,13 @@ class Command(BaseCommand):
             image = CustomImage(
                 file=ImageFile(BytesIO(r.content), name=name), title=name
             )
-            if not photographer.startswith("Courtesy of "):
-                photographer_name = photographer.split("/")[0]
-                contributor = self.create_or_get_author(photographer_name)
-                image.photographer = contributor
+            if len(photographer.stripped()) > 0:
+                if not photographer.startswith("Courtesy of "):
+                    photographer_name = photographer.split("/")[0]
+                    contributor = self.create_or_get_author(photographer_name)
+                    image.photographer = contributor
+                else:
+                    raise ValueError("can't handle courtesy of photographer")
             image.save()
 
         return image

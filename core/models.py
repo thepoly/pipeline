@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from django.apps import apps
 from django.core.paginator import Paginator
 from django.db import models
+from django.db.models import F
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.http import Http404
@@ -189,6 +190,7 @@ class StaffIndexPage(Page):
             StaffPage.objects.live()
             .descendant_of(self)
             .exclude(terms__date_ended__isnull=True, terms__position__isnull=False)
+            .order_by(F("terms__date_ended").desc(nulls_last=True))
         )
 
 

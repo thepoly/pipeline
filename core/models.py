@@ -209,7 +209,7 @@ class Term(Orderable, models.Model):
         Position, on_delete=models.PROTECT, related_name="terms"
     )
     person = ParentalKey(StaffPage, on_delete=models.PROTECT, related_name="terms")
-    date_started = models.DateField()
+    date_started = models.DateField(blank=True, null=True)
     date_ended = models.DateField(blank=True, null=True)
     acting = models.BooleanField(default=False)
     de_facto = models.BooleanField(default=False)

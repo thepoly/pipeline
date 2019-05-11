@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailroutablepage_tags %}
+
+{% block body_class %}template-archivespage{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-3">Archives</h1>
+    {{ page.body|richtext }}
+
+    {% regroup page.get_months by year as dates %}
+    {% for year, months in dates reversed %}
+        <h3>{{ year }}</h3>
+        <div class="d-flex flex-wrap mb-3">
+            {% for month in months %}
+                <a class="px-2" href="{% routablepageurl page 'by_year_month' year month|date:'m' %}">{{ month|date:"F" }}</a>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

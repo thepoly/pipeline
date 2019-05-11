@@ -5,6 +5,8 @@ echo Starting Gunicorn.
 if [ ! -f ./.build ]; then
   echo "Collecting static files..."
   python manage.py collectstatic --noinput
+  echo "Running migrations..."
+  python manage.py migrate --noinput
   date > ./.build
 fi
 

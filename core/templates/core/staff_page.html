@@ -38,7 +38,9 @@
                             {% if term.acting %}Acting
                             {% elif term.de_facto %}<i>De facto</i>{% endif %}
                             {{ term.position.title }}
-                            <small>{{ term.date_started|date:"F Y" }} to {{ term.date_ended|date:"F Y" }}</small>
+                            {% if term.date_started %}
+                                <small>{{ term.date_started|date:"F Y" }} to {{ term.date_ended|date:"F Y" }}</small>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>

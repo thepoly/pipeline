@@ -126,6 +126,15 @@ header a.search {
   flex-basis: auto;
   padding-left: 0.6rem;
   padding-right: 0.6rem;
+  transition: color 0.1s ease-in-out;
+  &:hover {
+    @extend .text-dark;
+  }
+}
+
+.nav-scroller .nav-link.active {
+  font-weight: bold;
+  @extend .text-dark;
 }
 
 .nav-scroller .nav-link.home-link {
@@ -172,10 +181,6 @@ header a.search {
   }
 }
 
-.nav-scroller .nav-link.active {
-  font-weight: bold;
-}
-
 .nav-scroller .divider {
   margin-top: 0.25rem;
   height: 1.5rem;
@@ -216,6 +221,12 @@ header a.search {
 
 .footer .logo {
   width: 160px;
+}
+
+.footer .bottom-menu {
+  @include media-breakpoint-up(md) {
+    max-width: var(--breakpoint-sm);
+  }
 }
 
 .text-kicker {

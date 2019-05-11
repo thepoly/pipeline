@@ -1,12 +1,16 @@
+import datetime
 import logging
 import operator
 
 from bs4 import BeautifulSoup
+from django.apps import apps
 from django.core.paginator import Paginator
 from django.db import models
+from django.db.models import F, Max
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.http import Http404
+from django.shortcuts import render
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.html import format_html, mark_safe
@@ -186,6 +190,8 @@ class StaffIndexPage(Page):
             StaffPage.objects.live()
             .descendant_of(self)
             .exclude(terms__date_ended__isnull=True, terms__position__isnull=False)
+            .annotate(latest_term_ended=Max("terms__date_ended"))
+            .order_by(F("latest_term_ended").desc(nulls_last=True))
         )
 
 
@@ -203,7 +209,7 @@ class Term(Orderable, models.Model):
         Position, on_delete=models.PROTECT, related_name="terms"
     )
     person = ParentalKey(StaffPage, on_delete=models.PROTECT, related_name="terms")
-    date_started = models.DateField()
+    date_started = models.DateField(blank=True, null=True)
     date_ended = models.DateField(blank=True, null=True)
     acting = models.BooleanField(default=False)
     de_facto = models.BooleanField(default=False)
@@ -538,7 +544,7 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
         return (
             ArticlePage.objects.live()
             .descendant_of(self)
-            .order_by("-go_live_at")
+            .order_by("-first_published_at")
             .select_related("kicker", "featured_image")
         )
 
@@ -560,6 +566,34 @@ class ArticleAuthorRelationship(models.Model):
 
     class Meta:
         unique_together = [("article", "author")]
+
+
+class ArchivesPage(RoutablePageMixin, Page):
+    body = RichTextField(blank=True, null=True)
+    content_panels = Page.content_panels + [FieldPanel("body")]
+    subpage_types = []
+
+    @route(r"(\d{4})/(\d{2})/$")
+    def by_year_month(self, request, year, month, *args, **kwargs):
+        articles = (
+            ArticlePage.objects.filter(
+                first_published_at__year=year, first_published_at__month=month
+            )
+            .order_by("-first_published_at")
+            .select_related("kicker", "featured_image")
+        )
+
+        if len(articles) == 0:
+            raise Http404
+
+        date = datetime.datetime(int(year), int(month), 1)
+        context = super().get_context(request)
+        context["articles"] = articles
+        context["date"] = date
+        return render(request, "core/archives_page_list.html", context)
+
+    def get_months(self):
+        return ArticlePage.objects.live().dates("first_published_at", "month")
 
 
 class MigrationInformation(models.Model):

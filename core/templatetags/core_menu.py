@@ -1,6 +1,6 @@
 from django import template
 
-from core.models import ArticlesIndexPage
+from core.models import ArticlesIndexPage, ArticlePage, StaffPage
 from home.models import HomePage
 
 register = template.Library()
@@ -45,3 +45,20 @@ def top_menu(context, parent, calling_page=None):
         # required by the pageurl tag that we want to use within this template
         "request": context["request"],
     }
+
+
+@register.inclusion_tag("core/tags/bottom_menu.html")
+def bottom_menu():
+    try:
+        home = HomePage.objects.get()
+    except HomePage.DoesNotExist:
+        return {"pages": []}
+
+    pages = (
+        home.get_descendants()
+        .live()
+        .public()
+        .not_type((ArticlePage, StaffPage))
+        .order_by("title")
+    )
+    return {"pages": pages}

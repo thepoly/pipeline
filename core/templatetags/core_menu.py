@@ -47,9 +47,13 @@ def top_menu(context, parent, calling_page=None):
     }
 
 
-@register.inclusion_tag("core/tags/bottom_menu.html", takes_context=True)
-def bottom_menu(context):
-    home = HomePage.objects.get()
+@register.inclusion_tag("core/tags/bottom_menu.html")
+def bottom_menu():
+    try:
+        home = HomePage.objects.get()
+    except HomePage.DoesNotExist:
+        return {"pages": []}
+
     pages = (
         home.get_descendants()
         .live()
@@ -57,4 +61,4 @@ def bottom_menu(context):
         .not_type((ArticlePage, StaffPage))
         .order_by("title")
     )
-    return {"pages": pages, "request": context["request"]}
+    return {"pages": pages}

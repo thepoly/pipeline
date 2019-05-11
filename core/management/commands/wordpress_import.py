@@ -182,6 +182,9 @@ class Command(BaseCommand):
     def create_or_get_authors(self, authors):
         author_objects = []
 
+        if len(authors.strip()) == 0:
+            raise ValueError("author string empty")
+
         if authors.count(" and ") > 1:
             raise ValueError("too many ands in authors string")
 

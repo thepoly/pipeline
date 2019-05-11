@@ -7,6 +7,8 @@
 {% block content %}
 <div class="container">
     <h1 class="mb-3">Archives</h1>
+    {{ page.body|richtext }}
+
     {% regroup page.get_months by year as dates %}
     {% for year, months in dates reversed %}
         <h3>{{ year }}</h3>

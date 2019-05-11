@@ -569,6 +569,8 @@ class ArticleAuthorRelationship(models.Model):
 
 
 class ArchivesPage(RoutablePageMixin, Page):
+    body = RichTextField(blank=True, null=True)
+    content_panels = Page.content_panels + [FieldPanel("body")]
     subpage_types = []
 
     @route(r"(\d{4})/(\d{2})/$")

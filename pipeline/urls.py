@@ -10,7 +10,7 @@ from wagtail.contrib.sitemaps.views import sitemap
 
 from search import views as search_views
 from newsletter import urls as newsletter_urls
-from core.feeds import RecentArticlesFeed
+from core.feeds import RecentArticlesFeed, NewsArticlesFeed
 from lights import urls as lights_urls
 
 urlpatterns = [
@@ -22,6 +22,8 @@ urlpatterns = [
     url(r"^search/$", search_views.search, name="search"),
     url(r"^newsletter/", include(newsletter_urls), name="newsletter"),
     url(r"^feed/$", RecentArticlesFeed()),
+    #have to manually add each section
+    url(r"^feed/(?P<section>features|news|sports|opinion)/", NewsArticlesFeed()),
     url(r"^sitemap\.xml$", sitemap),
 ]
 

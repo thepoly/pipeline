@@ -25,7 +25,10 @@
     {% if page.featured_image %}
         <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
             {% image page.featured_image width-1200 as photo %}
-            <img class="" src="{{ photo.url }}">
+            <div class="img-container">
+                <img class="" src="{{ photo.url }}">
+
+            </div>
             {% if page.featured_caption or photo.image.photographer %}
                 <div class="meta container mt-1 mb-2">
                 {% if page.featured_caption %}

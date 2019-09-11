@@ -47,7 +47,7 @@
 
         {% if article.featured_image %}
             <div class="col-12 col-md-4 pl-md-3 order-1 order-md-2">
-                {% image article.featured_image fill-800x800 as photo %}
+                {% image article.featured_image fill-800x800-c100 as photo %}
                 <a href="{% pageurl article %}">
                     <img class="img-fluid mb-2 mb-md-0" src="{{ photo.url }}">
                 </a>

@@ -35,7 +35,9 @@ LOGGING = {
 }
 
 DATABASES = {
-    "default": dj_database_url.config(default="postgresql://postgres:postgres@127.0.0.1:5432/postgres")
+    "default": dj_database_url.config(
+        default="postgresql://postgres:postgres@127.0.0.1:5432/postgres"
+    )
 }
 
 

@@ -1,6 +1,7 @@
 import logging
 
 from .base import *
+import dj_database_url
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,6 +33,11 @@ LOGGING = {
         "pipeline": {"handlers": ["console"], "level": "DEBUG"},
     },
 }
+
+DATABASES = {
+    "default": dj_database_url.config(default="postgresql://postgres:postgres@127.0.0.1:5432/pq")
+}
+
 
 NPLUSONE_LOGGER = logging.getLogger("nplusone")
 NPLUSONE_LOG_LEVEL = logging.WARN

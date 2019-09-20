@@ -31,7 +31,7 @@ brew services start postgresql
 createdb pipeline
 ```
 
-The default dev database, defined in `settings/dev.py` uses the following postgres url: `postgresql://postgres:postgres@127.0.0.1:5432/postgres` make sure that your database is configured to these settings. The pipeline database must exist, and the user `postgres` must exist with password `postgres`. Read more about postgres urls [here](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING).
+The default dev database, defined in `settings/dev.py` uses the following postgres url: `postgresql://postgres:postgres@127.0.0.1:5432/pipeline` make sure that your database is configured to these settings. The pipeline database must exist, and the user `postgres` must exist with password `postgres`. Read more about postgres urls [here](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING).
 
 Read about creating a user [here](https://www.postgresql.org/docs/10/role-attributes.html). You will probably want postgres to be a superuser.
 

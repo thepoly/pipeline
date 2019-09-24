@@ -109,7 +109,7 @@ class StaffPage(Page):
 
     search_fields = [index.SearchField("first_name"), index.SearchField("last_name")]
 
-    parent_page_types = ["StaffIndexPage", "ArticlesIndexPage"]
+    parent_page_types = ["StaffIndexPage"]
     subpage_types = []
 
     @property
@@ -540,7 +540,7 @@ class ArticlePage(RoutablePageMixin, Page):
 
 
 class ArticlesIndexPage(RoutablePageMixin, Page):
-    subpage_types = ["ArticlePage", "StaffPage"]
+    subpage_types = ["ArticlePage"]
 
     @route(r"^(\d{4})\/(\d{2})\/(.*)\/$")
     def post_by_date(self, request, year, month, slug, *args, **kwargs):

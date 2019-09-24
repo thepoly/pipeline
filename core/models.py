@@ -109,7 +109,7 @@ class StaffPage(Page):
 
     search_fields = [index.SearchField("first_name"), index.SearchField("last_name")]
 
-    parent_page_types = ["StaffIndexPage"]
+    parent_page_types = ["StaffIndexPage", "ArticlesIndexPage"]
     subpage_types = []
 
     @property
@@ -524,9 +524,169 @@ class ArticlePage(RoutablePageMixin, Page):
 
         return tags
 
+class AdPage (RoutablePageMixin, Page):
+    headline = RichTextField(features=["italic"])
+    subdeck = RichTextField(features=["italic"], null=True, blank=True)
+    kicker = models.ForeignKey(Kicker, null=True, blank=True, on_delete=models.PROTECT)
+    body = StreamField(
+        [
+            ("paragraph", RichTextBlock()),
+            ("photo", PhotoBlock()),
+            ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
+            ("embed", EmbeddedMediaBlock()),
+        ],
+        blank=True,
+    )
+    summary = RichTextField(
+        features=["italic"],
+        null=True,
+        blank=True,
+        help_text="Displayed on the home page or other places to provide a taste of what the article is about.",
+    )
+    featured_image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        help_text="Shown at the top of the article and on the home page.",
+    )
+    featured_caption = RichTextField(features=["italic"], blank=True, null=True)
+
+    content_panels = [
+        MultiFieldPanel(
+            [FieldPanel("headline", classname="title"), FieldPanel("subdeck")]
+        ),
+
+        FieldPanel("summary"),
+        StreamFieldPanel("body"),
+    ]
+
+    search_fields = Page.search_fields + [
+        index.SearchField("headline"),
+        index.SearchField("subdeck"),
+        index.SearchField("body"),
+        index.SearchField("summary"),
+        index.RelatedFields("kicker", [index.SearchField("title")]),
+    ]
+
+    subpage_types = []
+
+    def clean(self):
+        super().clean()
+
+        soup = BeautifulSoup(self.headline, "html.parser")
+        self.title = soup.text
+
+    @route(r"^$")
+    def post_404(self, request):
+        """Return an HTTP 404 whenever the page is accessed directly.
+        
+        This is because it should instead by accessed by its date-based path,
+        i.e. `<year>/<month>/<slug>/`."""
+        raise Http404
+
+    def set_url_path(self, parent):
+        """Make sure the page knows its own path. The published date might not be set,
+        so we have to take that into account and ignore it if so."""
+        date = self.get_published_date() or timezone.now()
+        self.url_path = f"{parent.url_path}{date.year}/{date.month:02d}/{self.slug}/"
+        return self.url_path
+
+    def serve_preview(self, request, mode_name):
+        request.is_preview = True
+        return self.serve(request)
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context["authors"] = self.get_authors()
+        return context
+
+    def get_authors(self):
+        return 'ads'
+
+    def get_author_names(self):
+        return [a.name for a in self.get_authors()]
+
+    def get_published_date(self):
+        return (
+            self.go_live_at
+            or self.first_published_at
+            or getattr(self.get_latest_revision(), "created_at", None)
+        )
+
+    def get_text_html(self):
+        """Get the HTML that represents paragraphs within the article as a string."""
+        builder = ""
+        for block in self.body:
+            if block.block_type == "paragraph":
+                builder += str(block.value)
+        return builder
+
+    def get_plain_text(self):
+        builder = ""
+        soup = BeautifulSoup(self.get_text_html(), "html.parser")
+        for para in soup.findAll("p"):
+            builder += para.text
+            builder += " "
+        return builder[:-1]
+
+
+    def get_first_chars(self, n=100):
+        """Convert the body to HTML, extract the text, and then build
+        a string out of it until we have at least n characters.
+        If this isn't possible, then return None."""
+
+        text = self.get_plain_text()
+        if len(text) < n:
+            return None
+
+        punctuation = {".", "!"}
+        for i in range(n, len(text)):
+            if text[i] in punctuation:
+                if i + 1 == len(text):
+                    return text
+                elif text[i + 1] == " ":
+                    return text[: i + 1]
+
+        return None
+
+    def get_meta_tags(self):
+        tags = {}
+        tags["og:type"] = "article"
+        tags["og:title"] = self.title
+        tags["og:url"] = self.full_url
+        tags["og:site_name"] = self.get_site().site_name
+
+        # description: either the article's summary or first paragraph
+        if self.summary is not None:
+            tags["og:description"] = self.summary
+            tags["twitter:description"] = self.summary
+        else:
+            first_chars = self.get_first_chars()
+            if first_chars is not None:
+                tags["og:description"] = first_chars
+                tags["twitter:description"] = first_chars
+
+        # image
+        if self.featured_image is not None:
+            # pylint: disable=E1101
+            rendition = self.featured_image.get_rendition("min-1200x1200")
+            rendition_url = self.get_site().root_url + rendition.url
+            tags["og:image"] = rendition_url
+            tags["twitter:image"] = rendition_url
+
+        tags["twitter:site"] = "@rpipoly"
+        tags["twitter:title"] = self.title
+        if "twitter:description" in tags and "twitter:image" in tags:
+            tags["twitter:card"] = "summary_large_image"
+        else:
+            tags["twitter:card"] = "summary"
+
+        return tags
+
 
 class ArticlesIndexPage(RoutablePageMixin, Page):
-    subpage_types = ["ArticlePage"]
+    subpage_types = ["ArticlePage", "StaffPage", "AdPage"]
 
     @route(r"^(\d{4})\/(\d{2})\/(.*)\/$")
     def post_by_date(self, request, year, month, slug, *args, **kwargs):

@@ -56,6 +56,29 @@
                         <div class="lead">{{ block.value.column.article.specific.summary|richtext }}</div>
                     </div>
                 </div>
+            {% elif block.block_type == "one_ad_column" %}
+                <div class="featured border-md-bottom pb-1 mb-5 mb-md-0 d-lg-flex">
+                    <div class="col-lg-7">
+                        {% if block.value.column.article.specific.kicker %}
+                            <strong class="text-primary text-uppercase text-kicker">THIS IS AN AD</strong>
+                        {% endif %}
+                        <h1 class="display-4 mb-3">
+                            <a class="text-dark" href="{% pageurl block.value.column.article %}">
+                                {{ block.value.column.article.specific.headline|richtext_unwrapped }}
+                            </a>
+                        </h1>
+                        <div class="lead d-none d-lg-block">{{ block.value.column.article.specific.summary|richtext }}</div>
+                    </div>
+                    <div class="col-lg-5">
+                        {% image block.value.column.article.featured_image width-1200 as photo %}
+                        <a href="{% pageurl block.value.column.article %}">
+                            <img class="img-fluid mb-3" src="{{ photo.url }}">
+                        </a>
+                    </div>
+                    <div class="col-lg-7 d-lg-none">
+                        <div class="lead">{{ block.value.column.article.specific.summary|richtext }}</div>
+                    </div>
+                </div>
             {% elif block.block_type == "two_columns" %}
                 <div class="
                     {% if block.value.emphasize_column == 'left' %}

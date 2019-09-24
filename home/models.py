@@ -17,9 +17,26 @@ class ArticleBlock(blocks.StructBlock):
     class Meta:
         template = "home/article_block.html"
 
+class AdBlock(blocks.StructBlock):
+    article = blocks.PageChooserBlock(target_model="core.AdPage")
+    headline = blocks.RichTextBlock(
+        help_text="Optional. Will override the article's headline.", required=False
+    )
+    # TODO: add a photo override block
+    # TODO: add a "hide photo" block
+
+    class Meta:
+        template = "home/article_block.html"
+
 
 class OneColumnBlock(blocks.StructBlock):
     column = ArticleBlock()
+
+    def article_pks(self):
+        return set(self.column.value.pk)  # pylint: disable=E1101
+
+class OneColumnAdBlock(blocks.StructBlock):
+    column = AdBlock()
 
     def article_pks(self):
         return set(self.column.value.pk)  # pylint: disable=E1101
@@ -84,6 +101,7 @@ class HomePage(Page):
     featured_articles = StreamField(
         [
             ("one_column", OneColumnBlock()),
+            ("one_ad_column", OneColumnAdBlock()),
             ("two_columns", TwoColumnBlock()),
             ("three_columns", ThreeColumnBlock()),
             ("recent_articles", RecentArticlesBlock()),
@@ -97,6 +115,8 @@ class HomePage(Page):
         pks = set()
         for block in self.featured_articles:  # pylint: disable=E1133
             if block.block_type == "one_column":
+                pks.add(block.value["column"]["article"].pk)
+            elif block.block_type == "one_ad_column":
                 pks.add(block.value["column"]["article"].pk)
             elif block.block_type == "two_columns":
                 pks.add(block.value["left_column"]["article"].pk)

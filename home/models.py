@@ -3,7 +3,7 @@ from wagtail.core.fields import StreamField
 from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.core import blocks
 
-from core.models import ArticlePage, ArticlesIndexPage
+from core.models import ArticlePage, ArticlesIndexPage, AdBlock
 
 
 class ArticleBlock(blocks.StructBlock):
@@ -17,18 +17,6 @@ class ArticleBlock(blocks.StructBlock):
     class Meta:
         template = "home/article_block.html"
 
-class AdBlock(blocks.StructBlock):
-    article = blocks.PageChooserBlock(target_model="core.AdPage")
-    headline = blocks.RichTextBlock(
-        help_text="Optional. Will override the article's headline.", required=False
-    )
-    # TODO: add a photo override block
-    # TODO: add a "hide photo" block
-
-    class Meta:
-        template = "home/article_block.html"
-
-
 class OneColumnBlock(blocks.StructBlock):
     column = ArticleBlock()
 
@@ -37,9 +25,6 @@ class OneColumnBlock(blocks.StructBlock):
 
 class OneColumnAdBlock(blocks.StructBlock):
     column = AdBlock()
-
-    def article_pks(self):
-        return set(self.column.value.pk)  # pylint: disable=E1101
 
 
 class TwoColumnBlock(blocks.StructBlock):
@@ -101,7 +86,7 @@ class HomePage(Page):
     featured_articles = StreamField(
         [
             ("one_column", OneColumnBlock()),
-            ("one_ad_column", OneColumnAdBlock()),
+            ("one_ad_column", AdBlock()),
             ("two_columns", TwoColumnBlock()),
             ("three_columns", ThreeColumnBlock()),
             ("recent_articles", RecentArticlesBlock()),
@@ -115,8 +100,6 @@ class HomePage(Page):
         pks = set()
         for block in self.featured_articles:  # pylint: disable=E1133
             if block.block_type == "one_column":
-                pks.add(block.value["column"]["article"].pk)
-            elif block.block_type == "one_ad_column":
                 pks.add(block.value["column"]["article"].pk)
             elif block.block_type == "two_columns":
                 pks.add(block.value["left_column"]["article"].pk)

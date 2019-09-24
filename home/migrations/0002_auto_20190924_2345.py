@@ -8,14 +8,210 @@ import wagtail.images.blocks
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('home', '0001_initial'),
-    ]
+    dependencies = [("home", "0001_initial")]
 
     operations = [
         migrations.AlterField(
-            model_name='homepage',
-            name='featured_articles',
-            field=wagtail.core.fields.StreamField([('one_column', wagtail.core.blocks.StructBlock([('column', wagtail.core.blocks.StructBlock([('article', wagtail.core.blocks.PageChooserBlock(page_type=['core.ArticlePage'])), ('headline', wagtail.core.blocks.RichTextBlock(help_text="Optional. Will override the article's headline.", required=False))]))])), ('one_ad_column', wagtail.core.blocks.StructBlock([('image', wagtail.images.blocks.ImageChooserBlock()), ('caption', wagtail.core.blocks.RichTextBlock(features=['italic'], required=False)), ('link', wagtail.core.blocks.URLBlock(label='target', required='false')), ('size', wagtail.core.blocks.ChoiceBlock(choices=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], help_text='Width of image in ad.'))])), ('two_columns', wagtail.core.blocks.StructBlock([('left_column', wagtail.core.blocks.StructBlock([('article', wagtail.core.blocks.PageChooserBlock(page_type=['core.ArticlePage'])), ('headline', wagtail.core.blocks.RichTextBlock(help_text="Optional. Will override the article's headline.", required=False))])), ('right_column', wagtail.core.blocks.StructBlock([('article', wagtail.core.blocks.PageChooserBlock(page_type=['core.ArticlePage'])), ('headline', wagtail.core.blocks.RichTextBlock(help_text="Optional. Will override the article's headline.", required=False))])), ('emphasize_column', wagtail.core.blocks.ChoiceBlock(choices=[('left', 'Left'), ('right', 'Right')], help_text='Which article, if either, should appear larger.', required=False))])), ('three_columns', wagtail.core.blocks.StructBlock([('left_column', wagtail.core.blocks.StructBlock([('article', wagtail.core.blocks.PageChooserBlock(page_type=['core.ArticlePage'])), ('headline', wagtail.core.blocks.RichTextBlock(help_text="Optional. Will override the article's headline.", required=False))])), ('middle_column', wagtail.core.blocks.StructBlock([('article', wagtail.core.blocks.PageChooserBlock(page_type=['core.ArticlePage'])), ('headline', wagtail.core.blocks.RichTextBlock(help_text="Optional. Will override the article's headline.", required=False))])), ('right_column', wagtail.core.blocks.StructBlock([('article', wagtail.core.blocks.PageChooserBlock(page_type=['core.ArticlePage'])), ('headline', wagtail.core.blocks.RichTextBlock(help_text="Optional. Will override the article's headline.", required=False))]))])), ('recent_articles', wagtail.core.blocks.StructBlock([('num_articles', wagtail.core.blocks.IntegerBlock(help_text='Number of recent articles to display.', label='Number of articles'))]))], null=True),
-        ),
+            model_name="homepage",
+            name="featured_articles",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "one_column",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "column",
+                                    wagtail.core.blocks.StructBlock(
+                                        [
+                                            (
+                                                "article",
+                                                wagtail.core.blocks.PageChooserBlock(
+                                                    page_type=["core.ArticlePage"]
+                                                ),
+                                            ),
+                                            (
+                                                "headline",
+                                                wagtail.core.blocks.RichTextBlock(
+                                                    help_text="Optional. Will override the article's headline.",
+                                                    required=False,
+                                                ),
+                                            ),
+                                        ]
+                                    ),
+                                )
+                            ]
+                        ),
+                    ),
+                    (
+                        "one_ad_column",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                ("image", wagtail.images.blocks.ImageChooserBlock()),
+                                (
+                                    "caption",
+                                    wagtail.core.blocks.RichTextBlock(
+                                        features=["italic"], required=False
+                                    ),
+                                ),
+                                (
+                                    "link",
+                                    wagtail.core.blocks.URLBlock(
+                                        label="target", required="false"
+                                    ),
+                                ),
+                                (
+                                    "size",
+                                    wagtail.core.blocks.ChoiceBlock(
+                                        choices=[
+                                            ("small", "Small"),
+                                            ("medium", "Medium"),
+                                            ("large", "Large"),
+                                        ],
+                                        help_text="Width of image in ad.",
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        "two_columns",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "left_column",
+                                    wagtail.core.blocks.StructBlock(
+                                        [
+                                            (
+                                                "article",
+                                                wagtail.core.blocks.PageChooserBlock(
+                                                    page_type=["core.ArticlePage"]
+                                                ),
+                                            ),
+                                            (
+                                                "headline",
+                                                wagtail.core.blocks.RichTextBlock(
+                                                    help_text="Optional. Will override the article's headline.",
+                                                    required=False,
+                                                ),
+                                            ),
+                                        ]
+                                    ),
+                                ),
+                                (
+                                    "right_column",
+                                    wagtail.core.blocks.StructBlock(
+                                        [
+                                            (
+                                                "article",
+                                                wagtail.core.blocks.PageChooserBlock(
+                                                    page_type=["core.ArticlePage"]
+                                                ),
+                                            ),
+                                            (
+                                                "headline",
+                                                wagtail.core.blocks.RichTextBlock(
+                                                    help_text="Optional. Will override the article's headline.",
+                                                    required=False,
+                                                ),
+                                            ),
+                                        ]
+                                    ),
+                                ),
+                                (
+                                    "emphasize_column",
+                                    wagtail.core.blocks.ChoiceBlock(
+                                        choices=[("left", "Left"), ("right", "Right")],
+                                        help_text="Which article, if either, should appear larger.",
+                                        required=False,
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        "three_columns",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "left_column",
+                                    wagtail.core.blocks.StructBlock(
+                                        [
+                                            (
+                                                "article",
+                                                wagtail.core.blocks.PageChooserBlock(
+                                                    page_type=["core.ArticlePage"]
+                                                ),
+                                            ),
+                                            (
+                                                "headline",
+                                                wagtail.core.blocks.RichTextBlock(
+                                                    help_text="Optional. Will override the article's headline.",
+                                                    required=False,
+                                                ),
+                                            ),
+                                        ]
+                                    ),
+                                ),
+                                (
+                                    "middle_column",
+                                    wagtail.core.blocks.StructBlock(
+                                        [
+                                            (
+                                                "article",
+                                                wagtail.core.blocks.PageChooserBlock(
+                                                    page_type=["core.ArticlePage"]
+                                                ),
+                                            ),
+                                            (
+                                                "headline",
+                                                wagtail.core.blocks.RichTextBlock(
+                                                    help_text="Optional. Will override the article's headline.",
+                                                    required=False,
+                                                ),
+                                            ),
+                                        ]
+                                    ),
+                                ),
+                                (
+                                    "right_column",
+                                    wagtail.core.blocks.StructBlock(
+                                        [
+                                            (
+                                                "article",
+                                                wagtail.core.blocks.PageChooserBlock(
+                                                    page_type=["core.ArticlePage"]
+                                                ),
+                                            ),
+                                            (
+                                                "headline",
+                                                wagtail.core.blocks.RichTextBlock(
+                                                    help_text="Optional. Will override the article's headline.",
+                                                    required=False,
+                                                ),
+                                            ),
+                                        ]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        "recent_articles",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "num_articles",
+                                    wagtail.core.blocks.IntegerBlock(
+                                        help_text="Number of recent articles to display.",
+                                        label="Number of articles",
+                                    ),
+                                )
+                            ]
+                        ),
+                    ),
+                ],
+                null=True,
+            ),
+        )
     ]

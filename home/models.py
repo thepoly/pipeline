@@ -17,11 +17,13 @@ class ArticleBlock(blocks.StructBlock):
     class Meta:
         template = "home/article_block.html"
 
+
 class OneColumnBlock(blocks.StructBlock):
     column = ArticleBlock()
 
     def article_pks(self):
         return set(self.column.value.pk)  # pylint: disable=E1101
+
 
 class OneColumnAdBlock(blocks.StructBlock):
     column = AdBlock()

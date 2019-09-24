@@ -313,10 +313,11 @@ class PhotoBlock(StructBlock):
     class Meta:
         icon = "image"
 
+
 class AdBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)
-    link = URLBlock(label = "target", required="false")
+    link = URLBlock(label="target", required="false")
     size = ChoiceBlock(
         choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
         default="medium",
@@ -537,7 +538,8 @@ class ArticlePage(RoutablePageMixin, Page):
 
         return tags
 
-class AdPage (RoutablePageMixin, Page):
+
+class AdPage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
     kicker = models.ForeignKey(Kicker, null=True, blank=True, on_delete=models.PROTECT)
@@ -569,7 +571,6 @@ class AdPage (RoutablePageMixin, Page):
         MultiFieldPanel(
             [FieldPanel("headline", classname="title"), FieldPanel("subdeck")]
         ),
-
         FieldPanel("summary"),
         StreamFieldPanel("body"),
     ]
@@ -615,7 +616,7 @@ class AdPage (RoutablePageMixin, Page):
         return context
 
     def get_authors(self):
-        return 'ads'
+        return "ads"
 
     def get_author_names(self):
         return [a.name for a in self.get_authors()]
@@ -642,7 +643,6 @@ class AdPage (RoutablePageMixin, Page):
             builder += para.text
             builder += " "
         return builder[:-1]
-
 
     def get_first_chars(self, n=100):
         """Convert the body to HTML, extract the text, and then build

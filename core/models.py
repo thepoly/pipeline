@@ -316,13 +316,7 @@ class PhotoBlock(StructBlock):
 
 class AdBlock(StructBlock):
     image = ImageChooserBlock()
-    caption = RichTextBlock(features=["italic"], required=False)
-    link = URLBlock(label="target", required="false")
-    size = ChoiceBlock(
-        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
-        default="medium",
-        help_text="Width of image in ad.",
-    )
+    link = URLBlock(label="target", required=False)
 
     class Meta:
         icon = "image"

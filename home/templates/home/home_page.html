@@ -62,9 +62,13 @@
                         <strong class="text-primary text-uppercase text-kicker">ADVERTISEMENT</strong>
                         {% image block.value.image width-1200 height-400 as photo %}
                         <div class="align-items-center">
+                            {% if block.value.link != "" %}
                             <a href="{{ block.value.link }}">
+                            {% endif %}
                                 <img class="img-fluid mb-3" src="{{photo.url}}">
+                            {% if block.value.link != "" %}
                             </a>
+                            {% endif %}                            
                         </div>
                     </div>
                 </div>

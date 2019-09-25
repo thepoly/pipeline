@@ -315,7 +315,7 @@ class PhotoBlock(StructBlock):
 
 
 class AdBlock(StructBlock):
-    image = ImageChooserBlock()
+    image = ImageChooserBlock(help_text="Image should be 22:7")
     link = URLBlock(label="target", required=False)
 
     class Meta:

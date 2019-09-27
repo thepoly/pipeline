@@ -6,3 +6,5 @@
 /webpack-stats.json
 /.vscode/
 .DS_Store
+/pipeline-env/
+**/__pycache__/**

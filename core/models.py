@@ -321,6 +321,9 @@ class AdBlock(StructBlock):
     class Meta:
         icon = "image"
 
+class MarqueeBlock(StructBlock):
+    body=RichTextBlock(required=True)
+
 
 class GalleryPhotoBlock(StructBlock):
     image = ImageChooserBlock()

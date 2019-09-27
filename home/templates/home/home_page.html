@@ -33,7 +33,11 @@
 <div class="container">
     {% for block in page.featured_articles %}
         <div class="row mb-md-4">
-            {% if block.block_type == "one_column" %}
+            {% if block.block_type == "marquee_banner" %}
+                <div class="border w-100 ">
+                    <marquee><strong>{{block.value.body}}</strong></marquee>
+                </div>
+            {% elif block.block_type == "one_column" %}
                 <div class="featured border-md-bottom pb-1 mb-5 mb-md-0 d-lg-flex">
                     <div class="col-lg-7">
                         {% if block.value.column.article.specific.kicker %}

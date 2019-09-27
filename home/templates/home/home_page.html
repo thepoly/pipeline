@@ -56,6 +56,22 @@
                         <div class="lead">{{ block.value.column.article.specific.summary|richtext }}</div>
                     </div>
                 </div>
+            {% elif block.block_type == "one_ad_column" %}
+                <div class="featured border-md-bottom pb-1 mb-5 mb-md-0 d-lg-flex">
+                    <div class="col-lg-12">
+                        <strong class="text-primary text-uppercase text-kicker">ADVERTISEMENT</strong>
+                        {% image block.value.image width-1200 height-400 as photo %}
+                        <div class="align-items-center">
+                            {% if block.value.link != "" %}
+                            <a href="{{ block.value.link }}">
+                            {% endif %}
+                                <img class="img-fluid mb-3" src="{{photo.url}}">
+                            {% if block.value.link != "" %}
+                            </a>
+                            {% endif %}                            
+                        </div>
+                    </div>
+                </div>
             {% elif block.block_type == "two_columns" %}
                 <div class="
                     {% if block.value.emphasize_column == 'left' %}

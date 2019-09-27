@@ -314,6 +314,14 @@ class PhotoBlock(StructBlock):
         icon = "image"
 
 
+class AdBlock(StructBlock):
+    image = ImageChooserBlock(help_text="Image should be 22:7")
+    link = URLBlock(label="target", required=False)
+
+    class Meta:
+        icon = "image"
+
+
 class GalleryPhotoBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)

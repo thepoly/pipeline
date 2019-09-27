@@ -3,7 +3,7 @@ from wagtail.core.fields import StreamField
 from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.core import blocks
 
-from core.models import ArticlePage, ArticlesIndexPage
+from core.models import ArticlePage, ArticlesIndexPage, AdBlock
 
 
 class ArticleBlock(blocks.StructBlock):
@@ -23,6 +23,10 @@ class OneColumnBlock(blocks.StructBlock):
 
     def article_pks(self):
         return set(self.column.value.pk)  # pylint: disable=E1101
+
+
+class OneColumnAdBlock(blocks.StructBlock):
+    column = AdBlock()
 
 
 class TwoColumnBlock(blocks.StructBlock):
@@ -84,6 +88,7 @@ class HomePage(Page):
     featured_articles = StreamField(
         [
             ("one_column", OneColumnBlock()),
+            ("one_ad_column", AdBlock()),
             ("two_columns", TwoColumnBlock()),
             ("three_columns", ThreeColumnBlock()),
             ("recent_articles", RecentArticlesBlock()),

@@ -33,13 +33,27 @@ export default class extends Controller {
         this.largePhotoCaptionTarget.innerHTML = caption;
         this.largePhotoPhotographerTarget.innerHTML = photographer;
     }
-
     dismissPhoto(event) {
+    
         this.largePhotoTarget.classList.toggle("large-photo--show");
         this.largePhotoImgTarget.removeAttribute("src");
 
         // re-enable body scroll
         const body = document.getElementsByTagName('body')[0];
         body.classList.toggle('modal-open');
+
+    
+    }
+    dismissPhoto_kb(event) {
+        if (event.keyCode == 27) {
+        
+            this.largePhotoTarget.classList.toggle("large-photo--show");
+            this.largePhotoImgTarget.removeAttribute("src");
+
+            // re-enable body scroll
+            const body = document.getElementsByTagName('body')[0];
+            body.classList.toggle('modal-open');
+    
+        }
     }
 }

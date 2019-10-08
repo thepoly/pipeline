@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i|Playfair+Display:400,400i,700,700i,900,900i|Raleway:500,500i,600,600i,700,700i');
-
-$theme-colors: (
-  "primary": #DA1E05,
-);
+@import "_theme_colors"
 
 $enable-gradients: true;
 
@@ -45,6 +42,47 @@ $font-family-base: 'Lora', serif;
 // @import "~bootstrap/scss/carousel";
 @import "~bootstrap/scss/utilities";
 // @import "~bootstrap/scss/print";
+
+$themes: (
+        default: (
+                //logo: url("../images/brand/logo_vertical.svg"),
+                bg: $bg--light,
+                //card-bg: $bg--card--light,
+                text: $text--light,
+                //text-secondary: $text--2--light,
+                //link: $brand--blue--light,
+                //hover: $hover--light,
+                border: $border--light
+        ),
+        dark: (
+                //logo: url("../images/brand/logo_vertical--invert.svg"),
+                bg: bg--dark,
+                //card-bg: $bg--card--dark,
+                text: $text--dark,
+                //text-secondary: $text--2--dark,
+                //link: $brand--blue--dark,
+                //hover: $hover--dark,
+                border: $border--dark
+        ),
+);
+
+@mixin themed() {
+  @each $theme, $map in $themes {
+    .theme--#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function t($key) {
+  @return map-get($theme-map, $key);
+}
 
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {

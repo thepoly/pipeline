@@ -1,0 +1,1 @@
+This folder is for the poly lights that currently don't exist. Currently, these files don't effect the site in anyway. They are being left in the repo in the event that new lights are hung.

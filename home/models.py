@@ -6,6 +6,7 @@ from wagtail.core import blocks
 from core.models import ArticlePage, ArticlesIndexPage, AdBlock, MarqueeBlock
 
 
+
 class ArticleBlock(blocks.StructBlock):
     article = blocks.PageChooserBlock(target_model="core.ArticlePage")
     headline = blocks.RichTextBlock(

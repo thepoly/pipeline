@@ -323,6 +323,12 @@ class AdBlock(StructBlock):
 
 class MarqueeBlock(StructBlock):
     body=RichTextBlock(required=True)
+    banner_type = ChoiceBlock(
+        choices=[("moves", "Rotating")],    # can add stationary later
+        default="moves",
+        help_text="Determines whether the marquee banner is stationary or rotating. Only rotating works right now.",
+        required=True
+    )
 
 
 class GalleryPhotoBlock(StructBlock):

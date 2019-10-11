@@ -8,17 +8,21 @@ $text: 'text';
 //$hover: 'hover';
 //$logo: 'logo';
 $border: 'border';
+$footer: 'footer' ;
 
 
 //Light mode theme variable definitions
 $bg--light: #FFFFFF;
 $text--light: #000000;
-// $border--light: #????;
+$border--light: #dee2e6;
 $pipeline-red--light: #DA1E05;
+$ft--light: #e5e5e5;
+
 
 //Dark mode theme variable definitions
 $bg--dark: #403C3B;
 $text--dark: ##C9C3C2;
-$border--dark: #A1A1A1;
+$border--dark: #6c757d;
 $pipeline-red--dark: #c9311d;
+$ft--dark: #4f4f4f; //footer
 

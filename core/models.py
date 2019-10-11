@@ -171,7 +171,12 @@ class StaffPage(Page):
     def get_previous_terms(self):
         return [term for term in self.terms.filter(date_ended__isnull=False)]
 
+class MapPage(Page):
+  def __str__(self):
+     return "thing"
 
+        
+        
 class StaffIndexPage(Page):
     subpage_types = ["StaffPage"]
 

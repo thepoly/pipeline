@@ -6,13 +6,6 @@
 /webpack-stats.json
 /.vscode/
 .DS_Store
-<<<<<<< HEAD
 /pipeline-env/
 **/__pycache__/**
-=======
-<<<<<<< HEAD
-/pipeline-env/
-**/__pycache__/**
-=======
->>>>>>> parent of 9f5f8aa... Improve readme, requirements, provide other installation options. (#108)
->>>>>>> fix-reqs
+

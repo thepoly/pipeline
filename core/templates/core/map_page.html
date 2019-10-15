@@ -17,6 +17,7 @@
         height: 400px;  /* The height is 400 pixels */
         width: 100%;  /* The width is the width of the web page */
        }
+
     </style>
   </head>
   <body>
@@ -26,13 +27,27 @@
     <script>
 // Initialize and add the map
 function initMap() {
-  // The location of Uluru
-  var uluru = {lat: -25.344, lng: 131.036};
-  // The map, centered at Uluru
+  var customMapType = new google.maps.StyledMapType([
+      {
+        elementType: 'labels',
+        stylers: [{visibility: 'off'}]
+      },{
+        featureType: "road",
+        stylers: [{visibility: 'on'}]
+      }
+    ], {
+      name: 'Custom Style'
+  });
+  var customMapTypeId = 'custom_style';
+  // The location of Troy
+  var Troy = {lat: 42.728, lng: -73.691};
+  // The map, centered at Troy
   var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 4, center: uluru});
-  // The marker, positioned at Uluru
-  var marker = new google.maps.Marker({position: uluru, map: map});
+      document.getElementById('map'), {zoom: 15, center: Troy});
+  // The marker, positioned at Troy
+  //var marker = new google.maps.Marker({position: uluru, map: map});
+  map.mapTypes.set(customMapTypeId, customMapType);
+  map.setMapTypeId(customMapTypeId);
 }
     </script>
     <!--Load the API from the specified URL
@@ -46,6 +61,6 @@ function initMap() {
   </body>
 </html>
 
-    
+
 </div>
 {% endblock %}

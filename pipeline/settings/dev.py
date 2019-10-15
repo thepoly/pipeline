@@ -1,7 +1,6 @@
 import logging
 
 from .base import *
-import dj_database_url
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,6 +32,7 @@ LOGGING = {
         "pipeline": {"handlers": ["console"], "level": "DEBUG"},
     },
 }
+
 
 DATABASES = {
     "default": dj_database_url.config(

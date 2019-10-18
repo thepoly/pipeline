@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i|Playfair+Display:400,400i,700,700i,900,900i|Raleway:500,500i,600,600i,700,700i');
-
-$theme-colors: (
-  "primary": #DA1E05,
-);
+@import "_theme_colors";
 
 $enable-gradients: true;
 
@@ -46,28 +43,76 @@ $font-family-base: 'Lora', serif;
 @import "~bootstrap/scss/utilities";
 // @import "~bootstrap/scss/print";
 
+$themes: (
+  default: (
+    //logo: url("../images/brand/logo_vertical.svg"),
+    bg: $bg--light,
+    //card-bg: $bg--card--light,
+    text: $text--light,
+    //text-secondary: $text--2--light,
+    //link: $brand--blue--light,
+    //hover: $hover--light,
+    border: $border--light,
+    footerbd: ftborder--light,
+    footer: $ft--light,
+    poly: $poly--light
+  ),
+  dark: (
+    //logo: url("../images/brand/logo_vertical--invert.svg"),
+    bg: bg--dark,
+    //card-bg: $bg--card--dark,
+    text: $text--dark,
+    //text-secondary: $text--2--dark,
+    //link: $brand--blue--dark,
+    //hover: $hover--dark,
+    border: $border--dark,
+    footerbd: ftborder--dark,
+    footer: ft--dark,
+    poly: $poly--dark
+  )
+);
+
+@mixin themed() {
+  @each $theme, $map in $themes {
+    .theme--#{$theme} {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function t($key) {
+  @return map-get($theme-map, $key);
+}
+
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    @include themed(){
+      .border#{$infix}-top {      border-top: $border-width solid t($border) ; }
+      .border#{$infix}-right {    border-right: $border-width solid t($border) ; }
+      .border#{$infix}-bottom {   border-bottom: $border-width solid t($border) ; }
+      .border#{$infix}-left {     border-left: $border-width solid t($border) ; }
 
-    .border#{$infix}-top {      border-top: $border-width solid $border-color ; }
-    .border#{$infix}-right {    border-right: $border-width solid $border-color ; }
-    .border#{$infix}-bottom {   border-bottom: $border-width solid $border-color ; }
-    .border#{$infix}-left {     border-left: $border-width solid $border-color ; }
+      .border#{$infix}-top-0 {    border-top: 0 !important; }
+      .border#{$infix}-right-0 {  border-right: 0 !important; }
+      .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
+      .border#{$infix}-left-0 {   border-left: 0 !important; }
 
-    .border#{$infix}-top-0 {    border-top: 0 !important; }
-    .border#{$infix}-right-0 {  border-right: 0 !important; }
-    .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
-    .border#{$infix}-left-0 {   border-left: 0 !important; }
+      .border#{$infix}-x {
+        border-left: $border-width solid t($border) ;
+        border-right: $border-width solid t($border) ;
+      }
 
-    .border#{$infix}-x {
-      border-left: $border-width solid $border-color ;
-      border-right: $border-width solid $border-color ;
-    }
-
-    .border#{$infix}-y {
-      border-top: $border-width solid $border-color ;
-      border-bottom: $border-width solid $border-color ;
+      .border#{$infix}-y {
+        border-top: $border-width solid t($border) ;
+        border-bottom: $border-width solid t($border) ;
+      }
     }
   }
 }
@@ -186,7 +231,9 @@ header a.search {
   height: 1.5rem;
   flex-grow: 2;
   padding: 0.5px;
-  background-color: $border-color;
+  @include themed(){
+    background-color: t($border);
+  }
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
@@ -200,18 +247,21 @@ header a.search {
 @media (min-width: 768px) {
   .h-md-250 { height: 250px; }
 }
+@include themed(){
+  .border-top { border-top: 1px solid t($footerbd); }
 
-.border-top { border-top: 1px solid #e5e5e5; }
-.border-bottom { border-bottom: 1px solid #e5e5e5; }
-
+  .border-bottom { border-bottom: 1px solid t($footerbd); }
+}
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
 .footer {
   padding: 2.5rem 0;
   color: #666;
   text-align: center;
-  background-color: #f6f6f6;
-  border-top: .05rem solid #e5e5e5;
+  @include themed(){
+    background-color: t($footer);
+    border-top: .05rem solid (t($footerbd));
+  }
   font-size: 0.9rem;
 }
 
@@ -328,7 +378,9 @@ ul.pagination {
   left: 0;
   height: 100%;
   width: 100%;
-  background: $body-bg;
+  @include themed(){
+   background: t($bg);
+  }
   z-index: $zindex-modal;
 }
 
@@ -387,7 +439,9 @@ ul.pagination {
 }
 
 .template-homepage .bg-featured-gradient {
-  background-image: linear-gradient(141deg, theme-color-level("primary", 1) 0, theme-color-level("primary", -4) 71%, theme-color-level("primary", -5) 100%);
+  @include themed(){
+    background-image: linear-gradient(141deg, t($poly) 0, t($poly) 71%, t($poly) 100%);
+  }
 }
 
 .template-homepage .featured .summary p {

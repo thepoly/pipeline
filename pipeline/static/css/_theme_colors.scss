@@ -1,0 +1,31 @@
+
+//Shortcuts for readability in pipeline.scss
+$bg: 'bg';
+//$card-bg: 'card-bg';
+$text: 'text';
+//$text-secondary: 'text-secondary';
+//$link: 'link';
+//$hover: 'hover';
+//$logo: 'logo';
+$border: 'border';
+$footer: 'footer' ;
+$footerbd: 'footerbd';
+$poly: 'poly';
+
+
+//Light mode theme variable definitions
+$bg--light: #FFFFFF;
+$text--light: #000000;
+$border--light: #dee2e6;
+$poly--light: #DA1E05;
+$ftborder--light: #e5e5e5;
+$ft--light: #f6f6f6;
+
+
+//Dark mode theme variable definitions
+$bg--dark: #403C3B;
+$text--dark: #C9C3C2;
+$border--dark: #6c757d;
+$poly--dark: #c9311d;
+$ftborder--dark: #e5e5e5;
+$ft--dark: #4f4f4f; //footer

@@ -23,6 +23,7 @@ from wagtail.core.blocks import (
     URLBlock,
     StructValue,
     ChoiceBlock,
+    IntegerBlock,
 )
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page, Orderable
@@ -336,6 +337,30 @@ class GalleryPhotoBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)
 
+class UnionEvent(StructBlock):
+    title=RichTextBlock(required=True, default="")
+    body=RichTextBlock(required=True, default="")
+    date_month=IntegerBlock(required=True)
+    date_day=IntegerBlock(required=True)
+    date_year=IntegerBlock(required=True)
+
+    def get_date(self):
+        return datetime.datetime(self["date_year"], self["date_month"], self["date_day"])
+    #date=models.DateField("Date of the Event", default="")
+
+    def get_title():
+        return title
+
+    def get_body():
+        return body
+
+class UnionTimeline(Page):
+    events=StreamField(
+        [("event", UnionEvent())]
+    )
+
+    content_panels = Page.content_panels + [StreamFieldPanel("events")]
+        
 
 class ArticlePage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])

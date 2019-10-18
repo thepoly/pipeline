@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-staffindexpage{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-3">Union Events Timeline</h1>
+    <div class="row">
+        {% for block in page.events %}
+            <div>
+               {{block.value.title}}
+            </div>
+            <div>
+               "this is the date: "{{block.get_date}}
+            </div>
+            <div>
+               {{block.value.body}}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

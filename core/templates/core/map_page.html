@@ -46,6 +46,14 @@ function initMap() {
       document.getElementById('map'), {zoom: 15, center: Troy});
   // The marker, positioned at Troy
   //var marker = new google.maps.Marker({position: uluru, map: map});
+  var marker = new google.maps.Marker({
+    position: Troy,
+    title:"The city of Troy"
+});
+
+  // To add the marker to the map, call setMap();
+  
+  marker.setMap(map);
   map.mapTypes.set(customMapTypeId, customMapType);
   map.setMapTypeId(customMapTypeId);
 }

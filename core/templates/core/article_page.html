@@ -89,7 +89,7 @@
                     {% endif %}
                 </div>
             {% elif block.block_type == 'photo_gallery' %}
-            <div class="photo-gallery container d-flex flex-row justify-content-center flex-wrap mb-n4">
+            <div class="photo-gallery container d-flex flex-row justify-content-center flex-wrap">
 
                 {% for gallery_photo in block.value %}
                     <div class="photo col-6 col-lg-4 mb-4">
@@ -103,7 +103,6 @@
                         </a>
                     </div>
                 {% endfor %}
-            </div>
 
             <script src="{% static '/js/lightbox.js' %}"></script>
             <script>
@@ -117,6 +116,7 @@
                 });
             </script>
 
+            </div>
             {% elif block.block_type == 'embed' %}
                 {% if block.value.type == 'video' %}
                     <div class="container-fluid embed video embed-responsive embed-responsive-16by9">

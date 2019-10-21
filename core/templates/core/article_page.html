@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text %}
+{% load static%}
 
 {% block extra_head %}
     <link rel="canonical" href="{{ page.full_url }}">
@@ -88,32 +89,34 @@
                     {% endif %}
                 </div>
             {% elif block.block_type == 'photo_gallery' %}
-                <div class="photo-gallery" data-controller="photo-gallery">
-                    <div class="large-photo flex-column" data-target="photo-gallery.largePhoto" data-action="click->photo-gallery#dismissPhoto keydown@window->photo-gallery#dismissPhoto_kb">
-                        <div class="wrapper">
-                            <div class="img-container d-flex align-items-center justify-content-center">
-                                <img data-target="photo-gallery.largePhotoImg">
-                            </div>
-                            <p>
-                                <span data-target="photo-gallery.largePhotoCaption" class="text-dark"></span>
-                                <span data-target="photo-gallery.largePhotoPhotographer" class="small text-muted"></span>
-                            </p>
-                        </div>
+            <div class="photo-gallery container d-flex flex-row justify-content-center flex-wrap mb-n4">
+
+                {% for gallery_photo in block.value %}
+                    <div class="photo col-6 col-lg-4 mb-4">
+
+                        {% image gallery_photo.image fill-600x600 as small_photo %}
+                        {% image gallery_photo.image max-2000x1500 as large_photo %}
+
+                        <a class="" href="{{ large_photo.url }}" data-lightbox="example-set"
+                            data-title='{{ gallery_photo.caption.source|richtext_unwrapped }} {{ gallery_photo.image.get_attribution_html }}'>
+                            <img class="example-image" src="{{ small_photo.url }}" alt="test" />
+                        </a>
                     </div>
-                    <div class="container d-flex flex-row justify-content-center flex-wrap mb-n4">
-                    {% for gallery_photo in block.value %}
-                        <div class="photo col-6 col-lg-4 mb-4">
-                            {% image gallery_photo.image fill-600x600 as small_photo %}
-                            {% image gallery_photo.image max-2000x1500 as large_photo %}
-                            <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">
-                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" 
-                                    data-large-src="{{ large_photo.url }}" data-caption="{{ gallery_photo.caption.source|richtext_unwrapped }}" 
-                                    data-photographer='{{ gallery_photo.image.get_attribution_html }}'>
-                            </a>
-                        </div>
-                    {% endfor %}
-                    </div>
-                </div>
+                {% endfor %}
+            </div>
+
+            <script src="{% static '/js/lightbox.js' %}"></script>
+            <script>
+                lightbox.option({
+                    'imageFadeDuration': 0,
+                    'fadeDuration': 0,
+                    'showImageNumberLabel': 0,
+                    'resizeDuration': 10, //this cannot be less or else it will send the user to the top of the page
+                    'wrapAround': true,
+                    'disableScrolling': true
+                });
+            </script>
+
             {% elif block.block_type == 'embed' %}
                 {% if block.value.type == 'video' %}
                     <div class="container-fluid embed video embed-responsive embed-responsive-16by9">
@@ -130,6 +133,7 @@
                 </div>
             {% endif %}
         {% endfor %}
+
     </div>
 </article>
 

@@ -27,8 +27,9 @@
         <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
             {% image page.featured_image width-1200 as photo %}
             <div class="img-container">
-                <img class="" src="{{ photo.url }}">
-
+                        <a class="" href="{{ photo.url }}" data-lightbox="featured">
+                            <img class="image" src="{{ photo.url }}"/>
+                        </a>
             </div>
             {% if page.featured_caption or photo.image.photographer %}
                 <div class="meta container mt-1 mb-2">

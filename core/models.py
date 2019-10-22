@@ -237,7 +237,7 @@ class CustomImage(AbstractImage):
         if hasattr(self.photographer, "staff_page"):
             sp = self.photographer.staff_page
             return format_html(
-                '<a href="{}">{}</a>/<i>The Polytechnic</i>', sp.url, sp.name
+                '<a href="{}">{}</a><i>/The Polytechnic</i>', sp.url, sp.name
             )
 
         return self.photographer.name

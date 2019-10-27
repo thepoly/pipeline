@@ -74,7 +74,12 @@ class Contributor(index.Indexed, models.Model):
         return kls.objects.create(name=value)
 
     def get_articles(self):
-        return [r.article for r in self.articles.select_related("article").all()]
+        return (
+            ArticlePage.objects.live()
+            .filter(authors__author=self)
+            .order_by("-first_published_at")
+            .all()
+        )
 
     def __str__(self):
         return self.name

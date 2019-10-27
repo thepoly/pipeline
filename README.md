@@ -72,6 +72,11 @@ Pipeline will be available at port 8000 on localhost.
 
 Make sure you format your code with [Black](https://github.com/python/black) and use [Flake8](http://flake8.pycqa.org/en/latest/) to find problems.
 
+### How to make changes to styling
+
+With your terminal/command prompt running ```python manage.py runserver```, open another at the project folder location and run ```npm run watch```.
+Now you can edit styles at pipeline/pipeline/static/css/pipeline.scss
+
 ## Status
 
 Many of the following features are partially complete, but this isn't indicated. Talk to Sid if you need to know where something is right now.

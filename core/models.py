@@ -74,7 +74,12 @@ class Contributor(index.Indexed, models.Model):
         return kls.objects.create(name=value)
 
     def get_articles(self):
-        return [r.article for r in self.articles.select_related("article").all()]
+        return (
+            ArticlePage.objects.live()
+            .filter(authors__author=self)
+            .order_by("-first_published_at")
+            .all()
+        )
 
     def __str__(self):
         return self.name
@@ -456,9 +461,11 @@ class ArticlePage(RoutablePageMixin, Page):
         if current_article_text is not None:
             current_article_words = set(current_article_text.split(" "))
             authors = self.get_authors()
+            print(authors)
             for author in authors:
                 articles = author.get_articles()
                 for article in articles:
+                    print(article.get_published_date())
                     if article.headline != self.headline:
                         text_to_match = article.get_plain_text()
                         article_words = set(text_to_match.split(" "))

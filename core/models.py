@@ -461,11 +461,9 @@ class ArticlePage(RoutablePageMixin, Page):
         if current_article_text is not None:
             current_article_words = set(current_article_text.split(" "))
             authors = self.get_authors()
-            print(authors)
             for author in authors:
                 articles = author.get_articles()
                 for article in articles:
-                    print(article.get_published_date())
                     if article.headline != self.headline:
                         text_to_match = article.get_plain_text()
                         article_words = set(text_to_match.split(" "))

@@ -74,7 +74,12 @@ class Contributor(index.Indexed, models.Model):
         return kls.objects.create(name=value)
 
     def get_articles(self):
-        return [r.article for r in self.articles.select_related("article").all()]
+        return (
+            ArticlePage.objects.live()
+            .filter(authors__author=self)
+            .order_by("-first_published_at")
+            .all()
+        )
 
     def __str__(self):
         return self.name
@@ -408,7 +413,7 @@ class ArticlePage(RoutablePageMixin, Page):
     @route(r"^$")
     def post_404(self, request):
         """Return an HTTP 404 whenever the page is accessed directly.
-        
+
         This is because it should instead by accessed by its date-based path,
         i.e. `<year>/<month>/<slug>/`."""
         raise Http404
@@ -516,8 +521,9 @@ class ArticlePage(RoutablePageMixin, Page):
 
         # description: either the article's summary or first paragraph
         if self.summary is not None:
-            tags["og:description"] = self.summary
-            tags["twitter:description"] = self.summary
+            soup = BeautifulSoup(self.summary, "html.parser")
+            tags["og:description"] = soup.get_text()
+            tags["twitter:description"] = soup.get_text()
         else:
             first_chars = self.get_first_chars()
             if first_chars is not None:

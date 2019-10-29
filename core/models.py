@@ -341,9 +341,7 @@ class UnionEvent(StructBlock):
     title=RichTextBlock(required=True, default="")
     date=RichTextBlock(required=True, default="")
     body=RichTextBlock(required=True, default="")
-    #date_month=IntegerBlock(required=True)
-    #date_day=IntegerBlock(required=True)
-    #date_year=IntegerBlock(required=True)
+    featured_image = ImageChooserBlock(required=False)
 
 class UnionTimeline(Page):
     events=StreamField(

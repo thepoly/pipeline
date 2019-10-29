@@ -5,20 +5,86 @@
 {% block body_class %}template-staffindexpage{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1 class="mb-3">Union Events Timeline</h1>
-    <div class="row">
+<style> 
+ul.timeline {
+    list-style-type: none;
+    position: relative;
+}
+ul.timeline:before {
+    content: ' ';
+    background: #d4d9df;
+    display: inline-block;
+    position: absolute;
+    left: 29px;
+    width: 2px;
+    height: 100%;
+    z-index: 400;
+}
+ul.timeline > li {
+    margin: 20px 0;
+    padding-left: 20px;
+}
+ul.timeline > li:before {
+    content: ' ';
+    background: white;
+    display: inline-block;
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid #DA1E05;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+    z-index: 400;
+}
+
+ul.timeline > li:after {
+    content: ' ';
+    background: #d4d9df;
+    display: inline-block;
+    position: absolute;
+    left: 29px;
+    width: 100%;
+    height: 2px;
+    z-index: 400;
+}
+
+</style>
+
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h1>Union Events Timeline</h1>
+      <ul class="timeline">
         {% for block in page.events %}
-            <div>
-               {{block.value.title}}
+        <li>
+          <div>
+            <div class="row">
+              <div class="col">
+                <strong>{{ block.value.title }}</strong>
+              </div>
+              <div class="col float-right">
+                <strong>{{ block.value.date }}</strong>
+              </div>
             </div>
-            <div>
-               {{block.value.date}}
-            </div>
-            <div>
-               {{block.value.body}}
-            </div>
+            <div class="row">
+              <div class="col-12 col-md-8">
+                <p>{{ block.value.body }}</p>
+              </div>
+              <div class="col-6 col-md-4 align-self-center" style="height: 150px">
+                {% if block.value.featured_image %}
+                  <div class="featured-photo">
+                    {% image block.value.featured_image width-200 as photo %}
+                    <div class="img-container">
+                      <img class="" src="{{ photo.url }}">
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+          </div>
+        </li>
         {% endfor %}
+      </ul>
     </div>
+  </div>
 </div>
 {% endblock %}

@@ -48,6 +48,11 @@ ul.timeline > li:after {
     z-index: 400;
 }
 
+.imageContainer > img:hover {
+  width: 500px;
+  height: 200px;
+}
+
 </style>
 
 <div class="container mt-5 mb-5">
@@ -59,10 +64,10 @@ ul.timeline > li:after {
         <li>
           <div>
             <div class="row">
-              <div class="col">
+              <div class="col-12 col-md-8">
                 <strong>{{ block.value.title }}</strong>
               </div>
-              <div class="col float-right">
+              <div class="col-6 col-md-4 float-right">
                 <strong>{{ block.value.date }}</strong>
               </div>
             </div>
@@ -72,12 +77,26 @@ ul.timeline > li:after {
               </div>
               <div class="col-6 col-md-4 align-self-center" style="height: 150px">
                 {% if block.value.featured_image %}
-                  <div class="featured-photo">
-                    {% image block.value.featured_image width-200 as photo %}
-                    <div class="img-container">
-                      <img class="" src="{{ photo.url }}">
+
+                  <div class="photo-gallery" data-controller="photo-gallery">
+                    <div class="large-photo flex-column" data-target="photo-gallery.largePhoto" data-action="click->photo-gallery#dismissPhoto">
+                        <div class="wrapper">
+                            <div class="img-container d-flex align-items-center justify-content-center">
+                                <img data-target="photo-gallery.largePhotoImg">
+                            </div>
+                            <p>
+                                <span data-target="photo-gallery.largePhotoPhotographer" class="small text-muted"></span>
+                            </p>
+                        </div>
                     </div>
+                    <div class="photo">      
+                    {% image block.value.featured_image width-200 as photo %}
+                    {% image block.value.featured_image max-2000x1500 as large_photo %}
+                    <a data-action="expand-photo#showPhoto mouseover->expand-photo#hoverPhoto">
+                        <img class="" src="{{ photo.url }}" data-target="expand-photo.photo" data-large-src="{{ large_photo.url }}" data-photographer='{{ block.value.featured_image.get_attribution_html }}'>
+                    </a>
                   </div>
+        
                 {% endif %}
               </div>
           </div>

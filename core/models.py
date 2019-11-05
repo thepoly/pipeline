@@ -543,6 +543,7 @@ class SportsArticlePage(ArticlePage):
     page_type = "sports"
 
 class OpinionArticlePage(ArticlePage):
+    template = "core/opinion_article_page.html"
     page_type = "opinion"
     author_image = models.ForeignKey(
         CustomImage,

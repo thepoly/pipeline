@@ -1,0 +1,25 @@
+{% extends "article_page.html" %}
+<!-- so this template is not being looked at when rendering an opinion article page. help -->
+{% if page.author_image %}
+        <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
+            {% image page.author_image width-1200 as photo %}
+            <div class="img-container">
+                <img class="" src="{{ photo.url }}">
+
+            </div>
+            {% if page.featured_caption or photo.image.photographer %}
+                <div class="meta container mt-1 mb-2">
+                {% if page.featured_caption %}
+                    <span class="caption text-dark">{{ page.featured_caption|richtext_unwrapped }}</span>
+                {% endif %}
+                {% if page.author_image.photographer %}
+                    <span class="small text-muted text-nowrap">
+                        {{ page.author_image.get_attribution_html }}
+                    </span>
+                {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+    	<div> fuck </div>
+{% endif %}

@@ -171,12 +171,26 @@ class StaffPage(Page):
     def get_previous_terms(self):
         return [term for term in self.terms.filter(date_ended__isnull=False)]
 
-class MapPage(Page):
-  def __str__(self):
-     return "thing"
+class Location(StructBlock):
+    name = RichTextBlock(required = True, default ="")
+    address = RichTextBlock(required = True, default ="")
+    description = RichTextBlock(required = True, default ="")
 
+
+class MapPage(Page):
+    places = StreamField([("Locations", Location())])
+
+    content_panels = Page.content_panels + [StreamFieldPanel("places")]
+
+    def get_context(self, request):
+        context = super().get_context(request)
         
-        
+
+
+        return context
+
+
+
 class StaffIndexPage(Page):
     subpage_types = ["StaffPage"]
 
@@ -404,7 +418,7 @@ class ArticlePage(RoutablePageMixin, Page):
     @route(r"^$")
     def post_404(self, request):
         """Return an HTTP 404 whenever the page is accessed directly.
-        
+
         This is because it should instead by accessed by its date-based path,
         i.e. `<year>/<month>/<slug>/`."""
         raise Http404

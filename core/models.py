@@ -532,9 +532,31 @@ class ArticlePage(RoutablePageMixin, Page):
 
         return tags
 
+class NewsArticlePage(ArticlePage):
+    page_type = "news"
+
+class FeaturesArticlePage(ArticlePage):
+    page_type = "features"
+    # features section page could have a “what’s happening on campus” sidebar timeline
+
+class SportsArticlePage(ArticlePage):
+    page_type = "sports"
+
+class OpinionArticlePage(ArticlePage):
+    page_type = "opinion"
+    author_image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT
+    )
+    content_panels = ArticlePage.content_panels + [ImageChooserPanel("author_image")]
+
+
 
 class ArticlesIndexPage(RoutablePageMixin, Page):
-    subpage_types = ["ArticlePage"]
+    
+    subpage_types = ["ArticlePage", "NewsArticlePage", "OpinionArticlePage", "SportsArticlePage", "FeaturesArticlePage"]
 
     @route(r"^(\d{4})\/(\d{2})\/(.*)\/$")
     def post_by_date(self, request, year, month, slug, *args, **kwargs):
@@ -549,6 +571,7 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
         return page.serve(request, *args, **kwargs)
 
     def get_articles(self):
+        # loop through subpage_types for listing articles
         return (
             ArticlePage.objects.live()
             .descendant_of(self)

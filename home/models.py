@@ -3,8 +3,7 @@ from wagtail.core.fields import StreamField
 from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.core import blocks
 
-from core.models import ArticlePage, ArticlesIndexPage, AdBlock
-
+from core.models import ArticlePage, ArticlesIndexPage, AdBlock, StaffIndexPage, ArchivesPage, StaticPage
 
 class ArticleBlock(blocks.StructBlock):
     article = blocks.PageChooserBlock(target_model="core.ArticlePage")
@@ -85,6 +84,7 @@ class RecentArticlesBlock(blocks.StructBlock):
 
 
 class HomePage(Page):
+    subpage_types = [ArticlesIndexPage, StaffIndexPage, ArchivesPage, StaticPage]
     featured_articles = StreamField(
         [
             ("one_column", OneColumnBlock()),

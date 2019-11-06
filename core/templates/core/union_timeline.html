@@ -50,9 +50,9 @@ ul.timeline > li:after {
 
 .thumbnail:hover {
     position:relative;
-    top:-300px;
-    left:-600px;
-    width:1000px;
+    top: 25%;
+    left: 0%;
+    width:500px;
     height:auto;
     display:block;
     z-index:999;
@@ -80,7 +80,8 @@ ul.timeline > li:after {
               <div class="col-6 col-md-4 align-self-center" style="height: 250px">
                 {% if block.value.featured_image %}
                     <div class="photo">      
-                    {% image block.value.featured_image width-300 as photo %}
+                    {% image block.value.featured_image width-400 as photo %}
+                    {% image block.value.featured_image width-500 as big_photo %}
                       <img class="thumbnail" src="{{ photo.url }}">
               
                   </div>

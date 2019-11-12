@@ -250,10 +250,17 @@ ul.pagination {
   }
 }
 
-
-.template-articlepage .featured-photo img {
-  height: auto;
-  width: 768px;
+@include media-breakpoint-up(sm) {
+  .template-articlepage .featured-photo img {
+    height: auto;
+    width: 768px;
+  }
+}
+@include media-breakpoint-down(sm) {
+  .template-articlepage .featured-photo img {
+    height: auto;
+    width: 100%;
+  }
 }
 
 .img-container{

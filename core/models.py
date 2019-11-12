@@ -328,6 +328,7 @@ class GalleryPhotoBlock(StructBlock):
 
 
 class ArticlePage(RoutablePageMixin, Page):
+    template = "core/article_page.html"
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
     kicker = models.ForeignKey(Kicker, null=True, blank=True, on_delete=models.PROTECT)

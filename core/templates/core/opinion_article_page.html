@@ -1,8 +1,40 @@
-{% extends "article_page.html" %}
-<!-- so this template is not being looked at when rendering an opinion article page. help -->
-{% if page.author_image %}
-        <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
-            {% image page.author_image width-1200 as photo %}
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text %}
+{% block extra_head %}
+    <link rel="canonical" href="{{ page.full_url }}">
+    {% for tag, val in page.get_meta_tags.items %}
+        <meta property="{{tag}}" content="{{val}}">
+    {% endfor %}
+{% endblock %}
+
+{% block body_class %}template-opinionarticlepage{% endblock %}
+
+{% block content %}
+
+<article>
+    <div class="container narrow">
+        {% if page.kicker %}
+            <strong class="text-primary text-uppercase text-kicker">{{ page.kicker }}</strong>
+        {% endif %}
+        <h1 class="article-headline mb-3">{{ page.headline|richtext_unwrapped }}</h1>
+        {% if page.subdeck %}
+            <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext_unwrapped }}</h4>
+        {% endif %}
+    </div>
+    {% if page.author_image %}
+        
+        {% image page.author_image width-1200 as photo %}
+        <div class="img-container">
+            <img class="rounded-circle  author-photo"  src="{{ photo.url }}">
+
+        </div>
+
+        
+    {% endif %}
+    {% if page.featured_image %}
+        <div class="featured-photo mt-4 flex-column align-items-center">
+            {% image page.featured_image width-1200 as photo %}
             <div class="img-container">
                 <img class="" src="{{ photo.url }}">
 
@@ -12,14 +44,142 @@
                 {% if page.featured_caption %}
                     <span class="caption text-dark">{{ page.featured_caption|richtext_unwrapped }}</span>
                 {% endif %}
-                {% if page.author_image.photographer %}
+                {% if page.featured_image.photographer %}
                     <span class="small text-muted text-nowrap">
-                        {{ page.author_image.get_attribution_html }}
+                        {{ page.featured_image.get_attribution_html }}
                     </span>
                 {% endif %}
                 </div>
             {% endif %}
         </div>
-    {% else %}
-    	<div> fuck </div>
+    {% endif %}
+    <div class="container narrow mb-4">
+        {% if authors %}
+        <span class="authors mr-1">
+            By {% for author in authors %}
+                {% if forloop.last and authors|length > 1 %} and {% endif %}
+                {% if author.staff_page %}
+                    <a class="author-name" href="{% pageurl author.staff_page %}">{{ author.staff_page.name }}</a>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                {% else %}
+                    <span class="author-name">{% firstof author.rich_name|richtext_unwrapped author.name %}</span>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                {% endif %}
+            {% endfor %}
+        </span>
+        {% endif %}
+        <a class="text-muted small published-date text-nowrap" href="{% pageurl page %}">
+            {{ page.get_published_date|date:"F j, Y" }}
+        </a>
+    </div>
+
+    <div class="body">
+        {% for block in page.body %}
+            {% if block.block_type == 'photo' %}
+                <div class="photo-block d-flex flex-column align-items-center {{ block.value.size }}">
+                    {% if block.value.size == 'small' %}
+                        {% image block.value.image width-1000 as photo %}
+                    {% elif block.value.size == 'medium' %}
+                        {% image block.value.image width-1400 as photo %}
+                    {% else %}
+                        {% image block.value.image width-2000 as photo %}
+                    {% endif %}
+
+                    <img class="" src="{{ photo.url }}">
+                    {% if block.value.caption or photo.image.photographer %}
+                        <div class="meta container mt-1">
+                        {% if block.value.caption %}
+                            <span class="caption text-dark">{{ block.value.caption.source|richtext_unwrapped }}</span>
+                        {% endif %}
+                        {% if photo.image.photographer %}
+                            <span class="small text-muted">
+                                {{ photo.image.get_attribution_html }}
+                            </span>
+                        {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% elif block.block_type == 'photo_gallery' %}
+                <div class="photo-gallery" data-controller="photo-gallery">
+                    <div class="large-photo flex-column" data-target="photo-gallery.largePhoto" data-action="click->photo-gallery#dismissPhoto">
+                        <div class="wrapper">
+                            <div class="img-container d-flex align-items-center justify-content-center">
+                                <img data-target="photo-gallery.largePhotoImg">
+                            </div>
+                            <p>
+                                <span data-target="photo-gallery.largePhotoCaption" class="text-dark"></span>
+                                <span data-target="photo-gallery.largePhotoPhotographer" class="small text-muted"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="container d-flex flex-row justify-content-center flex-wrap mb-n4">
+                    {% for gallery_photo in block.value %}
+                        <div class="photo col-6 col-lg-4 mb-4">
+                            {% image gallery_photo.image fill-600x600 as small_photo %}
+                            {% image gallery_photo.image max-2000x1500 as large_photo %}
+                            <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">
+                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ gallery_photo.caption.source|richtext_unwrapped }}" data-photographer='{{ gallery_photo.image.get_attribution_html }}'>
+                            </a>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            {% elif block.block_type == 'embed' %}
+                {% if block.value.type == 'video' %}
+                    <div class="container-fluid embed video embed-responsive embed-responsive-16by9">
+                        {% embed block.value.embed.url %}
+                    </div>
+                {% else %}
+                    <div class="container embed narrow embed-responsive embed-responsive-21by9">
+                        {% embed block.value.embed.url %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="container narrow">
+                    {% include_block block %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</article>
+
+{% if page.get_related_articles %}
+    <div class="container related-articles">
+        <h4>Related articles</h4>
+        <hr>
+        <div class="row">
+        {% for article in page.get_related_articles %}
+            <a href="{% pageurl article %}" class="related-article col col-sm-6 col-md-4 col-lg-3 flex-column align-items-start mb-4 mb-sm-0 {% if forloop.counter > 3 %}d-none d-lg-flex{% elif forloop.counter > 2 %}d-none d-md-flex{% else %}d-flex{% endif %}">
+                {% if article.featured_image %}
+                    {% image article.featured_image width-1200 as photo %}
+                    <img class="img-fluid mb-3" src="{{ photo.url }}">
+                {% endif %}
+                {% if article.kicker %}
+                    <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
+                {% endif %}
+                <h3 class="mb-2 headline text-dark">{{ article.headline|richtext_unwrapped }}</h3>
+            </a>
+        {% endfor %}
+        </div>
+    </div>
 {% endif %}
+{% endblock %}
+
+<!-- 
+
+
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text %}
+
+{% block content2 %}
+    {% if page.author_image %}
+        <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
+            {% image page.author_image width-1200 as photo %}
+            <div class="img-container">
+                <img class="" src="{{ photo.url }}">
+
+            </div>
+
+        </div>
+    {% endif %}
+    {{ block.super }}
+ 
+{% endblock %}
+ -->

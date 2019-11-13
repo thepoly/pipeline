@@ -2,7 +2,7 @@
 
 {% load wagtailcore_tags wagtailimages_tags %}
 
-{% block body_class %}template-staffindexpage{% endblock %}
+{% block body_class %}template-uniontimeline{% endblock %}
 
 {% block content %}
 <style> 
@@ -49,7 +49,7 @@ ul.timeline > li:after {
 }
 
 .thumbnail:hover {
-    position:relative;
+    position:sticky;
     top: 25%;
     left: 0%;
     width:500px;
@@ -58,11 +58,27 @@ ul.timeline > li:after {
     z-index:999;
 }
 
+.limit {
+  max-height:500px;
+  overflow:hidden;
+  position:relative;
+}
+
+.something {
+  position: sticky;
+  top: 25%;
+}
+
 </style>
 
 <div class="container mt-5 mb-5">
   <div class="row">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-auto limit something">
+      <div class="border">
+      Definitions
+      </div>
+    </div>
+    <div class="col-md-6 offset-md-2">
       <h1>Union Events Timeline</h1>
       <ul class="timeline">
         {% for block in page.events %}

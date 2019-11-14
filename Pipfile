@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-wagtail = "~=2.6"
-django-debug-toolbar = {git = "https://github.com/jazzband/django-debug-toolbar.git", editable = true, ref = "b650a33bb02651903540d726704a9143c73eda0a"}
+wagtail = "~=2.7"
+django-debug-toolbar = {git = "https://github.com/jazzband/django-debug-toolbar.git",editable = true,ref = "b650a33bb02651903540d726704a9143c73eda0a"}
 django-webpack-loader = "*"
 Django = "~=2.2"
 "beautifulsoup4" = "==4.6.0"
@@ -19,6 +19,7 @@ django-widget-tweaks = "*"
 dj-database-url = "*"
 whitenoise = "*"
 asgiref="*"
+nplusone = "*"
 
 [dev-packages]
 "flake8" = "*"

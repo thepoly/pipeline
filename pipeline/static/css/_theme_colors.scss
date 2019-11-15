@@ -1,16 +1,4 @@
 
-//Shortcuts for readability in pipeline.scss
-$bg: 'bg';
-//$card-bg: 'card-bg';
-$text: 'text';
-//$text-secondary: 'text-secondary';
-//$link: 'link';
-//$hover: 'hover';
-//$logo: 'logo';
-$border: 'border';
-$footer: 'footer' ;
-$footerbd: 'footerbd';
-$poly: 'poly';
 
 
 //Light mode theme variable definitions
@@ -21,11 +9,31 @@ $poly--light: #DA1E05;
 $ftborder--light: #e5e5e5;
 $ft--light: #f6f6f6;
 
-
-//Dark mode theme variable definitions
-$bg--dark: #403C3B;
 $text--dark: #C9C3C2;
 $border--dark: #6c757d;
 $poly--dark: #c9311d;
 $ftborder--dark: #e5e5e5;
 $ft--dark: #4f4f4f; //footer
+
+.theme-light {
+    --color-bg: #FFFFFF;
+    --color-text: #000000;
+    --color-text-second: yellow;
+    --color-border: #fd6f53;
+    --color-footer: #dee2e6;
+    --color-ftborder: #e5e5e5;
+    --color--ft: #f6f6f6;
+    $primary: #000000;
+    $link-color: #000000;
+  }
+  .theme-dark {
+    --color-bg: yellow;
+    --color-text: #C9C3C2;
+    --color-text-second: #yellow;
+    --color-border: #6c757d;
+    --color-footer: #ffffff;
+    --color-ftborder: #e5e5e5;
+    --color-ft: #4f4f4f;
+    $primary: #C9C3C2;
+    $link-color: #C9C3C2;
+  }

@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i|Playfair+Display:400,400i,700,700i,900,900i|Raleway:500,500i,600,600i,700,700i');
 @import "_theme_colors";
 
+$theme-colors: (
+  "primary": #DA1E05,
+);
+
+
 $enable-gradients: true;
 
 $font-family-base: 'Lora', serif;
@@ -8,7 +13,8 @@ $font-family-base: 'Lora', serif;
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
-
+@import "bootswatch/bootswatch";
+@import "bootswatch/themes/variables";
 // Optional
 @import "~bootstrap/scss/root";
 @import "~bootstrap/scss/reboot";
@@ -43,77 +49,28 @@ $font-family-base: 'Lora', serif;
 @import "~bootstrap/scss/utilities";
 // @import "~bootstrap/scss/print";
 
-$themes: (
-  default: (
-    //logo: url("../images/brand/logo_vertical.svg"),
-    bg: $bg--light,
-    //card-bg: $bg--card--light,
-    text: $text--light,
-    //text-secondary: $text--2--light,
-    //link: $brand--blue--light,
-    //hover: $hover--light,
-    border: $border--light,
-    footerbd: ftborder--light,
-    footer: $ft--light,
-    poly: $poly--light
-  ),
-  dark: (
-    //logo: url("../images/brand/logo_vertical--invert.svg"),
-    bg: bg--dark,
-    //card-bg: $bg--card--dark,
-    text: $text--dark,
-    //text-secondary: $text--2--dark,
-    //link: $brand--blue--dark,
-    //hover: $hover--dark,
-    border: $border--dark,
-    footerbd: ftborder--dark,
-    footer: ft--dark,
-    poly: $poly--dark
-  )
-);
-
-@mixin themed() {
-  @each $theme, $map in $themes {
-    .theme--#{$theme} {
-      $theme-map: () !global;
-      @each $key, $submap in $map {
-        $value: map-get(map-get($themes, $theme), '#{$key}');
-        $theme-map: map-merge($theme-map, ($key: $value)) !global;
-      }
-      @content;
-      $theme-map: null !global;
-    }
-  }
-}
-
-@function t($key) {
-  @return map-get($theme-map, $key);
-}
-
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-    @include themed(){
-      .border#{$infix}-top {      border-top: $border-width solid t($border) ; }
-      .border#{$infix}-right {    border-right: $border-width solid t($border) ; }
-      .border#{$infix}-bottom {   border-bottom: $border-width solid t($border) ; }
-      .border#{$infix}-left {     border-left: $border-width solid t($border) ; }
+  .border#{$infix}-top {      border-top: $border-width solid var(--color-border) ; }
+  .border#{$infix}-right {    border-right: $border-width solid var(--color-border) ; }
+  .border#{$infix}-bottom {   border-bottom: $border-width solid var(--color-border) ; }
+  .border#{$infix}-left {     border-left: $border-width solid var(--color-border) ; }
 
-      .border#{$infix}-top-0 {    border-top: 0 !important; }
-      .border#{$infix}-right-0 {  border-right: 0 !important; }
-      .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
-      .border#{$infix}-left-0 {   border-left: 0 !important; }
+  .border#{$infix}-top-0 {    border-top: 0 !important; }
+  .border#{$infix}-right-0 {  border-right: 0 !important; }
+  .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
+  .border#{$infix}-left-0 {   border-left: 0 !important; }
 
-      .border#{$infix}-x {
-        border-left: $border-width solid t($border) ;
-        border-right: $border-width solid t($border) ;
-      }
+  .border#{$infix}-x {
+    border-left: $border-width solid var(--color-border) ;
+    border-right: $border-width solid var(--color-border) ;
+  }
 
-      .border#{$infix}-y {
-        border-top: $border-width solid t($border) ;
-        border-bottom: $border-width solid t($border) ;
-      }
-    }
+  .border#{$infix}-y {
+    border-top: $border-width solid var(--color-border) ;
+    border-bottom: $border-width solid var(--color-border) ;
+  }
   }
 }
 
@@ -231,9 +188,8 @@ header a.search {
   height: 1.5rem;
   flex-grow: 2;
   padding: 0.5px;
-  @include themed(){
-    background-color: t($border);
-  }
+  background-color: var(--color-border);
+
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
@@ -247,21 +203,19 @@ header a.search {
 @media (min-width: 768px) {
   .h-md-250 { height: 250px; }
 }
-@include themed(){
-  .border-top { border-top: 1px solid t($footerbd); }
 
-  .border-bottom { border-bottom: 1px solid t($footerbd); }
-}
+.border-top { border-top: 1px solid var(--color-ftborder) ; }
+
+.border-bottom { border-bottom: 1px solid var(--color-ftborder) ; }
+
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
 .footer {
   padding: 2.5rem 0;
   color: #666;
   text-align: center;
-  @include themed(){
-    background-color: t($footer);
-    border-top: .05rem solid (t($footerbd));
-  }
+  background-color: var(--color-ft);
+  border-top: .05rem solid var(--color-ftborder);
   font-size: 0.9rem;
 }
 
@@ -378,9 +332,8 @@ ul.pagination {
   left: 0;
   height: 100%;
   width: 100%;
-  @include themed(){
-   background: t($bg);
-  }
+  background: yellow;
+
   z-index: $zindex-modal;
 }
 
@@ -439,10 +392,9 @@ ul.pagination {
 }
 
 .template-homepage .bg-featured-gradient {
-  @include themed(){
-    background-image: linear-gradient(141deg, t($poly) 0, t($poly) 71%, t($poly) 100%);
-  }
+  background-image: linear-gradient(141deg, theme-color-level("primary", 1) 0, theme-color-level("primary", -4) 71%, theme-color-level("primary", -5) 100%);;
 }
+
 
 .template-homepage .featured .summary p {
   margin-bottom: 0;

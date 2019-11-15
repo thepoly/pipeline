@@ -1,0 +1,953 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ge",
+				"getDependency2"
+			],
+			[
+				"dep",
+				"dependency2"
+			],
+			[
+				"get",
+				"getResult"
+			],
+			[
+				"In",
+				"Instruction"
+			],
+			[
+				"usa",
+				"usage"
+			],
+			[
+				"usage",
+				"usage"
+			],
+			[
+				"set",
+				"setSize"
+			],
+			[
+				"ca",
+				"cacheSets"
+			],
+			[
+				"id",
+				"idx_start"
+			],
+			[
+				"idx",
+				"idx_start"
+			],
+			[
+				"ma",
+				"math.h\tstandard header"
+			],
+			[
+				"cha",
+				"cacheSets"
+			],
+			[
+				"cach",
+				"cacheSets"
+			],
+			[
+				"sta",
+				"stall_cycle"
+			],
+			[
+				"str",
+				"strcmp"
+			],
+			[
+				"c",
+				"curr_clock"
+			],
+			[
+				"n",
+				"num"
+			],
+			[
+				"add",
+				"added_instructions"
+			],
+			[
+				"in",
+				"input"
+			],
+			[
+				"pr",
+				"printf\tprintf …"
+			],
+			[
+				"msb",
+				"msbindex"
+			],
+			[
+				"lsb",
+				"lsbindex"
+			],
+			[
+				"pop",
+				"pop_lsb_bit"
+			],
+			[
+				"push",
+				"push_lsb_bit"
+			],
+			[
+				"bit",
+				"bitbucket"
+			],
+			[
+				"is",
+				"is_div"
+			],
+			[
+				"temp",
+				"temp1"
+			],
+			[
+				"tmep",
+				"temp0"
+			],
+			[
+				"S",
+				"S1"
+			],
+			[
+				"out",
+				"Out2"
+			],
+			[
+				"o",
+				"Out1"
+			],
+			[
+				"ou",
+				"Out0"
+			],
+			[
+				"Ou",
+				"Out3"
+			],
+			[
+				"O",
+				"Out1"
+			],
+			[
+				"de",
+				"decoder"
+			],
+			[
+				"an",
+				"and_gate"
+			],
+			[
+				"print",
+				"print_end"
+			],
+			[
+				"pri",
+				"print_body"
+			],
+			[
+				"new",
+				"newline"
+			],
+			[
+				"l_",
+				"l_brckt"
+			],
+			[
+				"rea",
+				"read_loop"
+			],
+			[
+				"read",
+				"read_end"
+			],
+			[
+				"r",
+				"r_brckt"
+			],
+			[
+				"L",
+				"L2_end"
+			],
+			[
+				"s",
+				"syscall"
+			],
+			[
+				"loo",
+				"loop2"
+			],
+			[
+				"loop",
+				"loop1_end"
+			],
+			[
+				"read_inner",
+				"read_inner_end"
+			],
+			[
+				"inn",
+				"inner_loop"
+			],
+			[
+				"mu",
+				"mul_loop"
+			],
+			[
+				"l",
+				"l_brckt"
+			],
+			[
+				"t",
+				"t0"
+			],
+			[
+				"car",
+				"carry_in"
+			],
+			[
+				"carry",
+				"carry_in"
+			],
+			[
+				"var",
+				"var_counter"
+			],
+			[
+				"i",
+				"index"
+			],
+			[
+				"tem",
+				"temp_counter"
+			],
+			[
+				"inc",
+				"include"
+			],
+			[
+				"va",
+				"var_counter"
+			],
+			[
+				"sub",
+				"subtract"
+			],
+			[
+				"PR",
+				"print_matrix"
+			],
+			[
+				"re",
+				"result"
+			],
+			[
+				"E",
+				"EXIT_FAILURE"
+			],
+			[
+				"te",
+				"temp2"
+			],
+			[
+				"f",
+				"fprintf\tfprintf …"
+			],
+			[
+				"fib",
+				"fibSeq"
+			],
+			[
+				"fi",
+				"fibSeq"
+			],
+			[
+				"m",
+				"math.h\tstandard header"
+			],
+			[
+				"st",
+				"stdio.h\tstandard header"
+			],
+			[
+				"delete",
+				"deleteAll"
+			],
+			[
+				"ad",
+				"addRope"
+			],
+			[
+				"up",
+				"update_position"
+			],
+			[
+				"dist",
+				"distance"
+			],
+			[
+				"di",
+				"distance"
+			],
+			[
+				"ha",
+				"has_left_child"
+			],
+			[
+				"g",
+				"get_left_child"
+			],
+			[
+				"has",
+				"has_right_child"
+			],
+			[
+				"child",
+				"child_dex"
+			],
+			[
+				"se",
+				"setValue"
+			],
+			[
+				"chil",
+				"child_dex"
+			],
+			[
+				"ch",
+				"child_dex"
+			],
+			[
+				"ind",
+				"index_parent"
+			],
+			[
+				"back",
+				"backpointers"
+			],
+			[
+				"R",
+				"RightAngle"
+			],
+			[
+				"p",
+				"point_list"
+			],
+			[
+				"poi",
+				"point_list"
+			],
+			[
+				"point",
+				"point_list"
+			],
+			[
+				"pu",
+				"public"
+			],
+			[
+				"P",
+				"Polygon"
+			],
+			[
+				"po",
+				"point_list"
+			],
+			[
+				"poin",
+				"point_list"
+			],
+			[
+				"min",
+				"min_b"
+			],
+			[
+				"im",
+				"image1Map"
+			],
+			[
+				"getM",
+				"getMax"
+			],
+			[
+				"bo",
+				"BoundingBox"
+			],
+			[
+				"ima",
+				"image1Map"
+			],
+			[
+				"b",
+				"bbox_b"
+			],
+			[
+				"bb",
+				"bbox_a"
+			],
+			[
+				"max",
+				"max_y_a"
+			],
+			[
+				"G",
+				"getHash"
+			],
+			[
+				"tal",
+				"table_size"
+			],
+			[
+				"tabl",
+				"table_size"
+			],
+			[
+				"ta",
+				"table_size"
+			],
+			[
+				"un",
+				"unordered_set"
+			],
+			[
+				"I",
+				"Image"
+			],
+			[
+				"B",
+				"BoundingBox"
+			],
+			[
+				"whi",
+				"which_color"
+			],
+			[
+				"b_",
+				"b_width"
+			],
+			[
+				"h",
+				"height"
+			],
+			[
+				"off",
+				"offset_b"
+			],
+			[
+				"of",
+				"offset_a"
+			],
+			[
+				"type",
+				"typename"
+			],
+			[
+				"ke",
+				"KeyType"
+			],
+			[
+				"it",
+				"iterator"
+			],
+			[
+				"lis",
+				"hash_list_itr"
+			],
+			[
+				"val",
+				"value_root"
+			],
+			[
+				"key",
+				"key_root"
+			],
+			[
+				"ro",
+				"root_parent"
+			],
+			[
+				"bdm",
+				"bdmap"
+			],
+			[
+				"bd",
+				"bdmap3"
+			],
+			[
+				"mak",
+				"make_pair"
+			],
+			[
+				"bi",
+				"bidirectional_map"
+			],
+			[
+				"co",
+				"copy_tree"
+			],
+			[
+				"link",
+				"linked"
+			],
+			[
+				"ri",
+				"right_child"
+			],
+			[
+				"le",
+				"left_child"
+			],
+			[
+				"pa",
+				"parent"
+			],
+			[
+				"ol",
+				"old_root"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "node_modules/bootstrap/scss/_functions.scss",
+			"settings":
+			{
+				"buffer_size": 2719,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "pipeline/static/css/pipeline.scss",
+			"settings":
+			{
+				"buffer_size": 8873,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "pipeline/static/css/bootswatch/_bootswatch.scss",
+			"settings":
+			{
+				"buffer_size": 4043,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/search/templates/search/search.html",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/home/templates/home/home_page.html",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/pipeline/static/js/pipeline.js",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/pipeline/static/css/_theme_colors.scss",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/pipeline/static/css/pipeline.scss",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/core/templates/core/tags/top_menu.html",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/core/templates/wagtailadmin/base.html",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/core/templates/wagtailadmin/home.html",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/lights/templates/lights/index.html",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/core/templates/core/article_page.html",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/documentation/Understanding Photos.md",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/documentation/Wagtail's Tree Structure.md",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/documentation/Starting a new article.md",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/documentation/Introduction.md",
+		"/C/Program Files/PostgreSQL/11/data/pg_hba.conf",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/package.json",
+		"/C/Users/Lyle Tingle/Desktop/test.php",
+		"/C/Users/Lyle Tingle/Twitch/Minecraft/Instances/SkyFactory 4/saves/Backup--take 2--2019-04-28--16-52/advancements/5d1c5737-fe1b-48fe-9fed-457212a33c59.json",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/documentation/Understanding Staff pages.md",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/node_modules/node-sass/src/libsass/src/color_maps.cpp",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/node_modules/postcss-colormin/node_modules/color/package.json",
+		"/C/Users/Lyle Tingle/rcos-pipeline/pipeline/webpack-stats.json",
+		"/C/Users/Lyle Tingle/Twitch/Minecraft/Instances/SkyFactory 4/saves/Backup--take 2--2019-04-28--16-52/stats/5d1c5737-fe1b-48fe-9fed-457212a33c59.json",
+		"/C/Users/Lyle Tingle/Twitch/Minecraft/Instances/SkyFactory 4/saves/Backup--take 2--2019-04-28--16-52/data/advancementbook.dat",
+		"/C/Users/Lyle Tingle/Twitch/Minecraft/Instances/SkyFactory 4/saves/Backup--take 2--2019-04-28--16-52/playerdata/5d1c5737-fe1b-48fe-9fed-457212a33c59.dat",
+		"/C/Users/Lyle Tingle/Twitch/Minecraft/Instances/SkyFactory 4/config/MatterOverdrive/MatterOverdrive.cfg",
+		"/C/Users/Lyle Tingle/Twitch/Minecraft/Instances/SkyFactory 4/saves/Backup--take 2--2019-04-28--16-52/playerdata/gamestages/5d1c5737-fe1b-48fe-9fed-457212a33c59.dat",
+		"/C/Users/Lyle Tingle/Twitch/Minecraft/Instances/SkyFactory 4/saves/Backup--take 2--2019-04-28--16-52/DIM28885/data/villages_DIM_28885.dat",
+		"/C/Users/Lyle Tingle/Twitch/Minecraft/Instances/SkyFactory 4/config/endercrop.cfg",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/project/CompOrgFinalProject/Instruction.cpp",
+		"/C/Users/Lyle Tingle/Twitch/Minecraft/Instances/SkyFactory 4/config/cyclicmagic.cfg",
+		"/C/Users/Lyle Tingle/Twitch/Minecraft/Instances/SkyFactory 4/config/compactmachines3/settings.cfg",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw10/image.h",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw6/board.cpp",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw10/priority_queue.h",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/project/p1.cpp",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw6/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab9/lab9.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab11/lab11.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/hw5/hw5.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw9/visualization.h",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw9/visualization.cpp",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw9/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab10/lab10.s",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/hw4/fo_real_tho.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/hw5/ex01.s",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/hw4/hw4_real.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/hw4/hw4.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/hw4/hw4.s",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab8/lab08.c",
+		"/C/Program Files (x86)/Steam/steamapps/common/Stardew Valley/Mods/ArtifactSystemFixed/config.json",
+		"/C/Users/Lyle Tingle/Downloads/Patches.rar",
+		"/C/Users/Lyle Tingle/Downloads/Documents.rar",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/hw3/hw3.s",
+		"/C/Program Files (x86)/Steam/steamapps/common/Stardew Valley/Mods/ExtendedMinecart/config.json",
+		"/C/Program Files (x86)/Steam/steamapps/common/Stardew Valley/Mods/BiggerBackpack/manifest.json",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/hw1/hw1.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab6/ch3.s",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab6/bit.s",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab5/lab5.s",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/hw2/hw2.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab7/ch1.s",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab7/ch2.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab5/ch2.s",
+		"/C/Program Files (x86)/Steam/steamapps/common/Stardew Valley/Mods/DeepWoodsMod/config.json",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab5/ch3.s",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab3/lab3.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab4/ch3.s",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab4/helloworld.s",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw5/grid.h",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw3/tetris.cpp",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw3/tetris.h",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab1/lab1.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab2/lab2.c",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab3/lab03-data.dat",
+		"/C/Users/Lyle Tingle/Desktop/class code/Comp Org/lab3/book-1984.txt",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw4/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw4/student.h",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw2/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw3/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/class code/DataStructures/hw10/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/class code/help/liz_hw1.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab14/main_smart_pointers.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw10/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab14/ds_smart_pointers.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab14/stop/stop_and_copy.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab14/stop/stop_and_copy.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab14/stop/main_stop_and_copy.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab14/stop_and_copy.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab14/stop_and_copy.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab14/main_stop_and_copy.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw10/priority_queue.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw10/image.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw10/image.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab13/utilities.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab13/simple.txt",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab13/polygons.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab13/simple_main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw9/image.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw9/image.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw9/cout_hashtable.txt",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab11/ch3.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab11/ds_hashset.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab11/test_ds_hashset.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab10/ds_set.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw5/grid.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw8/bidirectional_map.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw8/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/test3_notes.txt",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw7/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw6/board.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw6/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/compare1.txt",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw6/board.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab7/start.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab7/simple.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab6/dslist.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw4/student.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/grid.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw4/student.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw4/school.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw4/school.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/hw4/main.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab2/time.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab3/rectangle.cpp",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab4/vec.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab3/Point2D.h",
+		"/C/Users/Lyle Tingle/Desktop/DataStructures/lab2/time.h"
+	],
+	"find":
+	{
+		"height": 22.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"compa",
+			"wing",
+			"wi",
+			"Prestige",
+			"age_ex",
+			"harvester"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "node_modules/bootstrap/scss/_functions.scss",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2719,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 630.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "pipeline/static/css/pipeline.scss",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8873,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "pipeline/static/css/bootswatch/_bootswatch.scss",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4043,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 22.0
+	},
+	"input":
+	{
+		"height": 35.2
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "start.sublime-project",
+	"replace":
+	{
+		"height": 40.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 196.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

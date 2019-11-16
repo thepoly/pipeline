@@ -541,11 +541,11 @@ class ArticlePage(RoutablePageMixin, Page):
         else:
             tags["og:image"] = (
                 self.get_site().root_url
-                + "{% static 'images/minimal_logo_tag_padding.png' %}"
+                + "/static/images/minimal_logo_tag_padding.png"
             )
             tags["twitter:image"] = (
                 self.get_site().root_url
-                + "{% static 'images/minimal_logo_tag_padding.png' %}"
+                + "static/images/minimal_logo_tag_padding.png"
             )
 
         tags["twitter:site"] = "@rpipoly"

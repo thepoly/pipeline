@@ -27,7 +27,8 @@
         <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
             {% image page.featured_image width-1200 as photo %}
             <div class="img-container">
-                <a class="" href="{{ photo.url }}" data-lightbox="photos">
+                <a class="" href="{{ photo.url }}" data-lightbox="featured"
+                                        data-title='{{ page.featured_caption|richtext_unwrapped }} {{ page.featured_image.get_attribution_html }}'>
                     <img class="image" src="{{ photo.url }}"/>
                 </a>
             </div>
@@ -75,7 +76,10 @@
                         {% image block.value.image width-2000 as photo %}
                     {% endif %}
 
-                    <a class="" href="{{ photo.url }}" data-lightbox="photos">
+                    <a class="" href="{{ photo.url }}" data-lightbox={{block.id}}
+                    data-title='{{ block.value.caption.source|richtext_unwrapped }} {{ photo.image.get_attribution_html }}'>
+
+                    
                         <img class="image" src="{{ photo.url }}"/>
                     </a>
                     {% if block.value.caption or photo.image.photographer %}
@@ -93,14 +97,14 @@
                 </div>
             {% elif block.block_type == 'photo_gallery' %}
             <div class="photo-gallery container d-flex flex-row justify-content-center flex-wrap">
-
                 {% for gallery_photo in block.value %}
                     <div class="photo col-6 col-lg-4 mb-4">
 
                         {% image gallery_photo.image fill-600x600 as small_photo %}
                         {% image gallery_photo.image max-2000x1500 as large_photo %}
 
-                        <a class="" href="{{ large_photo.url }}" data-lightbox="photos" data-title='{{ gallery_photo.caption.source|richtext_unwrapped }} {{ gallery_photo.image.get_attribution_html }}'>
+                        <a class="" href="{{ large_photo.url }}" data-lightbox={{block.id}} 
+                        data-title='{{ gallery_photo.caption.source|richtext_unwrapped }} {{ gallery_photo.image.get_attribution_html }}'>
                             <img class="gallery" src="{{ small_photo.url }}"/>
                         </a>
                     </div>
@@ -125,16 +129,6 @@
 
     </div>
     <script src="{% static '/js/lightbox.js' %}"></script>
-    <script>
-        lightbox.option({
-            'imageFadeDuration': 0,
-            'fadeDuration': 0,
-            'showImageNumberLabel': 0,
-            'resizeDuration': 10, //this cannot be less or else it will send the user to the top of the page
-            'wrapAround': true,
-            'disableScrolling': true
-        });
-    </script>
 </article>
 
 {% if page.get_related_articles %}

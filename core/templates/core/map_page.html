@@ -32,6 +32,47 @@
 
     <script>
 
+      function similarity(s1, s2) {
+        var longer = s1;
+        var shorter = s2;
+        if (s1.length < s2.length) {
+          longer = s2;
+          shorter = s1;
+        }
+        var longerLength = longer.length;
+        if (longerLength == 0) {
+          return 1.0;
+        }
+        return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+      }
+
+      function editDistance(s1, s2) {
+          s1 = s1.toLowerCase();
+          s2 = s2.toLowerCase();
+
+          var costs = new Array();
+          for (var i = 0; i <= s1.length; i++) {
+            var lastValue = i;
+            for (var j = 0; j <= s2.length; j++) {
+              if (i == 0)
+                costs[j] = j;
+              else {
+                if (j > 0) {
+                  var newValue = costs[j - 1];
+                  if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                    newValue = Math.min(Math.min(newValue, lastValue),
+                      costs[j]) + 1;
+                  costs[j - 1] = lastValue;
+                  lastValue = newValue;
+                }
+              }
+            }
+            if (i > 0)
+              costs[s2.length] = lastValue;
+          }
+          return costs[s2.length];
+        }
+
       // Get values for map locations
       window.names = [
       {% for Location in page.places %}
@@ -86,20 +127,36 @@
 
       // create markers per address
       for(i=0;i<window.parsedaddresses.length;i++){
-
+        console.log(window.parsedaddresses[i]);
+        console.log(i);
         geocoder.geocode( { 'address': window.parsedaddresses[i]}, function(results, status) {
 
         if (status == google.maps.GeocoderStatus.OK) {
 
+
+
             var latitude = results[0].geometry.location.lat();
             var longitude = results[0].geometry.location.lng();
+            console.log(results[0].formatted_address);
 
             var marker = new google.maps.Marker({
               position: {lat:latitude, lng:longitude},
               title:"A marker"
             });
 
-            var contentString = window.descriptions.shift();
+
+
+            var max_value = 0;
+            var max_index = 0;
+            for(j = 0 ;j<window.parsedaddresses.length;j++){
+
+              if(similarity(window.parsedaddresses[j],results[0].formatted_address)> max_value){
+                max_value = similarity(window.parsedaddresses[j],results[0].formatted_address);
+                max_index = j;
+              }
+            }
+
+            var contentString = window.descriptions[max_index];
 
 
             var infowindow = new google.maps.InfoWindow({
@@ -111,13 +168,12 @@
             });
 
             marker.setMap(map);
+            console.log(contentString);
 
 
             }
         });
 
-        // The marker, positioned at Troy
-        //var marker = new google.maps.Marker({position: uluru, map: map});
 
 
 

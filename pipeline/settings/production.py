@@ -31,7 +31,8 @@ LOGGING = {
         }
     },
     "loggers": {
-        "django": {"level": "INFO", "handlers": ["console"], "propagate": False}
+        "pipeline": {"handlers": ["console"], "level": "DEBUG"},
+        "django": {"level": "INFO", "handlers": ["console"], "propagate": False},
     },
 }
 

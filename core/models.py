@@ -74,7 +74,12 @@ class Contributor(index.Indexed, models.Model):
         return kls.objects.create(name=value)
 
     def get_articles(self):
-        return [r.article for r in self.articles.select_related("article").all()]
+        return (
+            ArticlePage.objects.live()
+            .filter(authors__author=self)
+            .order_by("-first_published_at")
+            .all()
+        )
 
     def __str__(self):
         return self.name
@@ -341,6 +346,16 @@ class AdBlock(StructBlock):
         icon = "image"
 
 
+class MarqueeBlock(StructBlock):
+    body = RichTextBlock(required=True)
+    banner_type = ChoiceBlock(
+        choices=[("moves", "Rotating")],  # can add stationary later
+        default="moves",
+        help_text="Determines whether the marquee banner is stationary or rotating. Only rotating works right now.",
+        required=True,
+    )
+
+
 class GalleryPhotoBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)
@@ -526,8 +541,9 @@ class ArticlePage(RoutablePageMixin, Page):
 
         # description: either the article's summary or first paragraph
         if self.summary is not None:
-            tags["og:description"] = self.summary
-            tags["twitter:description"] = self.summary
+            soup = BeautifulSoup(self.summary, "html.parser")
+            tags["og:description"] = soup.get_text()
+            tags["twitter:description"] = soup.get_text()
         else:
             first_chars = self.get_first_chars()
             if first_chars is not None:
@@ -541,6 +557,15 @@ class ArticlePage(RoutablePageMixin, Page):
             rendition_url = self.get_site().root_url + rendition.url
             tags["og:image"] = rendition_url
             tags["twitter:image"] = rendition_url
+        else:
+            tags["og:image"] = (
+                self.get_site().root_url
+                + "{% static 'images/minimal_logo_tag_padding.png' %}"
+            )
+            tags["twitter:image"] = (
+                self.get_site().root_url
+                + "{% static 'images/minimal_logo_tag_padding.png' %}"
+            )
 
         tags["twitter:site"] = "@rpipoly"
         tags["twitter:title"] = self.title

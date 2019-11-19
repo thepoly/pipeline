@@ -411,7 +411,10 @@ class ArticlePage(RoutablePageMixin, Page):
         date = self.get_published_date() or timezone.now()
         self.url_path = f"{parent.url_path}{date.year}/{date.month:02d}/{self.slug}/"
         return self.url_path
-
+    def serve(self, request, *args, **kwargs):
+        pageType = self.get_context(request)['page'].specific
+        return pageType.serve(request)
+ 
     def serve_preview(self, request, mode_name):
         request.is_preview = True
         return self.serve(request)
@@ -545,6 +548,8 @@ class SportsArticlePage(ArticlePage):
 
 class OpinionArticlePage(ArticlePage):
     template = "core/opinion_article_page.html"
+    parent_page_types = ['core.ArticlePage']
+    content_panels = ArticlePage.content_panels + [ImageChooserPanel("author_image")]
     page_type = "opinion"
     author_image = models.ForeignKey(
         CustomImage,
@@ -552,9 +557,12 @@ class OpinionArticlePage(ArticlePage):
         blank=True,
         on_delete=models.PROTECT
     )
-    content_panels = ArticlePage.content_panels + [ImageChooserPanel("author_image")]
-
-
+    def serve(self, request, *args, **kwargs):
+        return render(request, self.template, self.get_context(request))
+    
+    def serve_preview(self, request, mode_name):
+        request.is_preview = True
+        return self.serve(request)
 
 class ArticlesIndexPage(RoutablePageMixin, Page):
     

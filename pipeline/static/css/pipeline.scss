@@ -244,6 +244,15 @@ ul.pagination {
   margin-bottom: 80px;
 }
 
+.author-photo {
+  object-fit: cover;
+  float:left;
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  margin:1em;
+}
+
 @include media-breakpoint-up(md) {
   .template-articlepage .narrow {
     max-width: var(--breakpoint-sm);

@@ -2,7 +2,8 @@ from wagtail.core.models import Page
 from wagtail.core.fields import StreamField
 from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.core import blocks
-from core.models import ArticlePage, ArticlesIndexPage, AdBlock, StaffIndexPage, ArchivesPage, StaticPage
+
+from core.models import ArticlePage, ArticlesIndexPage, AdBlock, StaffIndexPage, ArchivesPage, StaticPage, MarqueeBlock
 
 class ArticleBlock(blocks.StructBlock):
     article = blocks.PageChooserBlock(target_model="core.ArticlePage")

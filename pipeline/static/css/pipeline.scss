@@ -334,14 +334,17 @@ ul.pagination {
     max-width: var(--breakpoint-lg);
   }
 }
+.author_bio_with_image{
+  margin-top:1em;
+}
 
 .author-photo {
   object-fit: cover;
-  float:left;
   border-radius: 50%;
   height: 100px;
   width: 100px;
-  margin:1em;
+  margin-right:1em;
+  float:left;
 }
 
 @include media-breakpoint-up(md) {

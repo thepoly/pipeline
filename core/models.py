@@ -574,13 +574,19 @@ class SportsArticlePage(ArticlePage):
 class OpinionArticlePage(ArticlePage):
     template = "core/opinion_article_page.html"
     parent_page_types = ['core.ArticlePage']
-    content_panels = ArticlePage.content_panels + [ImageChooserPanel("author_image")]
+    content_panels = ArticlePage.content_panels + [ImageChooserPanel("author_image"), FieldPanel("author_bio")]
     page_type = "opinion"
     author_image = models.ForeignKey(
         CustomImage,
         null=True,
         blank=True,
         on_delete=models.PROTECT
+    )
+    author_bio = RichTextField(
+        features=["italic"],
+        null=True,
+        blank=True,
+        help_text="Displayed on the home page or other places to provide a taste of what the article is about.",
     )
     def serve(self, request, *args, **kwargs):
         return render(request, self.template, self.get_context(request))

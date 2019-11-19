@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load templates wagtailcore_tags static %}
 
 {% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text %}
 {% block extra_head %}
@@ -59,14 +58,25 @@
             {% endfor %}
         </span>
         {% endif %}
+        
         <a class="text-muted small published-date text-nowrap" href="{% pageurl page %}">
             {{ page.get_published_date|date:"F j, Y" }}
         </a>
+        <div class = "author_bio_with_image">
+            {% if page.author_image %}
+                {% image page.author_image width-1200 as photo %}
+                    <img class="author-photo"  src="{{ photo.url }}">
+            {% endif %}
+            {% if page.author_bio %}
+                {{page.author_bio|richtext}}
+            {% endif %}
+        </div>
+        <hr/>
     </div>
 
-    <div class="body"> 
-        {% with False as authorImageSet %}     
-       
+
+
+    <div class="body">        
         {% for block in page.body %}
             {% if block.block_type == 'photo' %}
                 <div class="photo-block d-flex flex-column align-items-center {{ block.value.size }}">
@@ -127,23 +137,12 @@
                         {% embed block.value.embed.url %}
                     </div>
                 {% endif %}
-            {%elif block.block_type == 'paragraph'%}
-                  
-                <div class="container narrow">
-                    {% if page.author_image and authorImageSet == False %}
-                        {% image page.author_image width-1200 as photo %}
-                            <img class="author-photo"  src="{{ photo.url }}">
-                         {% update_variable True as authorImageSet %}
-                    {% endif %}
-                    {% include_block block %}
-                </div>
             {% else %}
                 <div class="container narrow">
                     {% include_block block %}
                 </div>
             {% endif %}
         {% endfor %}
-        {% endwith %}
     </div>
 </article>
 

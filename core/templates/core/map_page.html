@@ -6,7 +6,9 @@
 
 {% block content %}
 <div class="container">
-    <h1>{{ page.title }}</h1>
+    <!-- {% for Location in page.places %}
+        <strong id ="places" class="text-primary text-uppercase text-kicker">{{ Location.value.name }}</strong>
+    {% endfor %} -->
     <hr class="pb-3">
 
     <html>
@@ -14,87 +16,123 @@
     <style>
        /* Set the size of the div element that contains the map */
       #map {
-        height: 400px;  /* The height is 400 pixels */
+        height: 525px;  /* The height is 400 pixels */
         width: 100%;  /* The width is the width of the web page */
        }
 
     </style>
   </head>
   <body>
-    {% for Location in page.places %}
-        <strong id ="places" class="text-primary text-uppercase text-kicker">{{ page.places }}</strong>
-    {% endfor %}
+
 
 
     <h3>Map Demo</h3>
     <!--The div element for the map -->
     <div id="map"></div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
     <script>
-      $.getJSON("Map_information.json", function(json) {
-    console.log(json); // this will show the info in firebug console
-    alert(json);
-});
 
-// Initialize and add the map
-function initMap() {
-  var customMapType = new google.maps.StyledMapType([
-      {
-        elementType: 'labels',
-        stylers: [{visibility: 'off'}]
-      },{
-        featureType: "road",
-        stylers: [{visibility: 'on'}]
+      // Get values for map locations
+      window.names = [
+      {% for Location in page.places %}
+          `{{Location.value.name}}`,
+      {% endfor %}
+      ]
+      window.addresses = [
+      {% for Location in page.places %}
+          `{{Location.value.address}}`,
+      {% endfor %}
+      ]
+      window.descriptions = [
+      {% for Location in page.places %}
+          `{{Location.value.description}}`,
+      {% endfor %}
+      ]
+
+      // Parse addresses
+      window.parsedaddresses = []
+      for(i = 0; i< window.addresses.length;i++){
+        var addressString = window.addresses[i];
+        var index = addressString.search("p");
+        var index2 = addressString.search("/p");
+        var addressString = addressString.slice(index + 2,index2-1);
+        window.parsedaddresses.push(addressString);
       }
-    ], {
-      name: 'Custom Style'
-  });
-  var customMapTypeId = 'custom_style';
-  // The location of Troy
-  var Troy = {lat: 42.728, lng: -73.691};
-  // The map, centered at Troy
-  var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 15, center: Troy});
-  // The marker, positioned at Troy
-  //var marker = new google.maps.Marker({position: uluru, map: map});
-  var marker = new google.maps.Marker({
-    position: Troy,
-    title:"The city of Troy"
-  });
 
-  var contentString = '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-      '<div id="bodyContent">'+
-      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-      'sandstone rock formation in the southern part of the '+
-      'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-      'south west of the nearest large town, Alice Springs; 450&#160;km '+
-      '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-      'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-      'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-      'Aboriginal people of the area. It has many springs, waterholes, '+
-      'rock caves and ancient paintings. Uluru is listed as a World '+
-      'Heritage Site.</p>'+
-      '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-      'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-      '(last visited June 22, 2009).</p>'+
-      '</div>'+
-      '</div>';
-  var infowindow = new google.maps.InfoWindow({
-    content: contentString
-  });
-  marker.addListener('click', function() {
-    infowindow.open(map, marker);
-  });
+      // Initialize and add the map
+      function initMap() {
+        var customMapType = new google.maps.StyledMapType([
+            {
+              elementType: 'labels',
+              stylers: [{visibility: 'off'}]
+            },{
+              featureType: "road",
+              stylers: [{visibility: 'on'}]
+            }
+          ], {
+            name: 'Custom Style'
+        });
 
 
-  // To add the marker to the map, call setMap();
+      var customMapTypeId = 'custom_style';
+      // The location of Troy
+      var Troy = {lat: 42.728, lng: -73.691};
+      // The map, centered at Troy
+      var map = new google.maps.Map(
+          document.getElementById('map'), {zoom: 16, center: Troy});
 
-  marker.setMap(map);
-  map.mapTypes.set(customMapTypeId, customMapType);
-  map.setMapTypeId(customMapTypeId);
+      // Get Lat and Long from addresses
+      var geocoder = new google.maps.Geocoder();
+
+      // create markers per address
+      for(i=0;i<window.parsedaddresses.length;i++){
+
+        geocoder.geocode( { 'address': window.parsedaddresses[i]}, function(results, status) {
+
+        if (status == google.maps.GeocoderStatus.OK) {
+
+            var latitude = results[0].geometry.location.lat();
+            var longitude = results[0].geometry.location.lng();
+
+            var marker = new google.maps.Marker({
+              position: {lat:latitude, lng:longitude},
+              title:"A marker"
+            });
+
+            var contentString = window.descriptions.shift();
+
+
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+
+            marker.addListener('click', function() {
+              infowindow.open(map, marker);
+            });
+
+            marker.setMap(map);
+
+
+            }
+        });
+
+        // The marker, positioned at Troy
+        //var marker = new google.maps.Marker({position: uluru, map: map});
+
+
+
+
+
+
+
+
+
+      // To add the marker to the map, call setMap();
+
+
+    }
+    map.mapTypes.set(customMapTypeId, customMapType);
+    map.setMapTypeId(customMapTypeId);
 }
     </script>
     <!--Load the API from the specified URL

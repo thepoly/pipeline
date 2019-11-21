@@ -263,18 +263,18 @@ ul.pagination {
     img {
       width: 100%;
     }
+    .small img {
+      max-width: var(--breakpoint-sm);
+    }
+    .medium img {
+      max-width: var(--breakpoint-md);
+    }
+    .large img {
+      max-width: var(--breakpoint-xl);
+    }
     .meta {
       font-size: 0.9rem;
     }
-  }
-  .small img {
-    max-width: var(--breakpoint-sm);
-  }
-  .medium img {
-    max-width: var(--breakpoint-md);
-  }
-  .large img {
-    max-width: var(--breakpoint-xl);
   }
   .photo-gallery {
     padding: 0;

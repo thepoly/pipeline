@@ -28,7 +28,7 @@
             {% image page.featured_image width-1200 as photo %}
             <div class="img-container">
                 <a class="" href="{{ photo.url }}" data-lightbox="featured"
-                                        data-title='{{ page.featured_caption|richtext_unwrapped }} {{ page.featured_image.get_attribution_html }}'>
+                                        data-title='{{ page.featured_caption|richtext_unwrapped }} {{ page.featured_image.get_attribution_html_caption }}'>
                     <img class="image" src="{{ photo.url }}"/>
                 </a>
             </div>
@@ -77,7 +77,7 @@
                     {% endif %}
 
                     <a class="" href="{{ photo.url }}" data-lightbox={{block.id}}
-                    data-title='{{ block.value.caption.source|richtext_unwrapped }} {{ photo.image.get_attribution_html }}'>
+                    data-title='{{ block.value.caption.source|richtext_unwrapped }} {{ photo.image.get_attribution_html_caption }}'>
 
                     
                         <img class="image" src="{{ photo.url }}"/>
@@ -89,7 +89,7 @@
                         {% endif %}
                         {% if photo.image.photographer %}
                             <span class="small text-muted">
-                                {{ photo.image.get_attribution_html }}
+                                {{ photo.image.get_attribution_html_caption }}
                             </span>
                         {% endif %}
                         </div>
@@ -104,7 +104,7 @@
                         {% image gallery_photo.image max-2000x1500 as large_photo %}
 
                         <a class="" href="{{ large_photo.url }}" data-lightbox={{block.id}} 
-                        data-title='{{ gallery_photo.caption.source|richtext_unwrapped }} {{ gallery_photo.image.get_attribution_html }}'>
+                        data-title='{{ gallery_photo.caption.source|richtext_unwrapped }} {{ gallery_photo.image.get_attribution_html_caption }}'>
                             <img class="gallery" src="{{ small_photo.url }}"/>
                         </a>
                     </div>

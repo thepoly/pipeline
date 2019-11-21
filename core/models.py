@@ -242,7 +242,19 @@ class CustomImage(AbstractImage):
         if hasattr(self.photographer, "staff_page"):
             sp = self.photographer.staff_page
             return format_html(
-                '<a href="{}">{}</a><i>/The Polytechnic</i>', sp.url, sp.name
+                '<a href="{}">{}</a>/<i>The Polytechnic</i>', sp.url, sp.name
+            )
+
+        return self.photographer.name
+    
+    def get_attribution_html_caption(self):
+        if self.photographer is None:
+            return ""
+
+        if hasattr(self.photographer, "staff_page"):
+            sp = self.photographer.staff_page
+            return format_html(
+                '<p class="small text-muted text-nowrap"><a href="{}">{}</a>/<i>The Polytechnic</i></p>', sp.url, sp.name
             )
 
         return self.photographer.name

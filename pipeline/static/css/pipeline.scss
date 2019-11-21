@@ -637,6 +637,8 @@ body.lb-disable-scrolling {
     color: #ccc
 }
 
+
+
 .lb-data .lb-details {
     width: 85%;
     float: left;
@@ -650,17 +652,6 @@ body.lb-disable-scrolling {
   font-size: 0.9rem;
 }
 
-.lb-data .lb-caption a {
-    @extend .small;
-    @extend .text-nowrap;
-    color: #da1e05
-}
-
-.lb-data .lb-caption i {
-  @extend .small;
-  @extend .text-muted;
-  @extend .text-nowrap;
-}
 
 .lb-data .lb-number {
     display: block;

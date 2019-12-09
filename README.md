@@ -79,7 +79,7 @@ Now you can edit styles at pipeline/pipeline/static/css/pipeline.scss
 
 ## Status
 
-Many of the following features are partially complete, but this isn't indicated. Talk to Sid if you need to know where something is right now.
+Many of the following features are partially complete, but this isn't indicated. Look at the Issues page if you need to know what is being worked on.
 
 - [ ] Articles
   - [x] Index pages

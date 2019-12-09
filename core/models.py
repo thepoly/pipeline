@@ -559,12 +559,10 @@ class ArticlePage(RoutablePageMixin, Page):
             tags["twitter:image"] = rendition_url
         else:
             tags["og:image"] = (
-                self.get_site().root_url
-                + "{% static 'images/minimal_logo_tag_padding.png' %}"
+                self.get_site().root_url + "/static/images/minimal_logo_tag_padding.png"
             )
             tags["twitter:image"] = (
-                self.get_site().root_url
-                + "{% static 'images/minimal_logo_tag_padding.png' %}"
+                self.get_site().root_url + "static/images/minimal_logo_tag_padding.png"
             )
 
         tags["twitter:site"] = "@rpipoly"

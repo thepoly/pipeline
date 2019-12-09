@@ -82,7 +82,7 @@ $themes: (
     //text-secondary: $text--2--light,
     //link: $brand--blue--light,
     //hover: $hover--light,
-    border: $border--light,
+    border: $border-color,
     footer: $ft--light
   ),
   dark: (
@@ -98,7 +98,7 @@ $themes: (
   ),
 );
 
-@mixin themify($themes: $themes) {
+@mixin themed() {
   @each $theme, $map in $themes {
 
     .theme-#{$theme} & {
@@ -122,25 +122,27 @@ $themes: (
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    @include themed(){
 
-    .border#{$infix}-top {      border-top: $border-width solid $border-color ; }
-    .border#{$infix}-right {    border-right: $border-width solid $border-color ; }
-    .border#{$infix}-bottom {   border-bottom: $border-width solid $border-color ; }
-    .border#{$infix}-left {     border-left: $border-width solid $border-color ; }
+      .border#{$infix}-top {      border-top: $border-width solid t($border-color) ; }
+      .border#{$infix}-right {    border-right: $border-width solid t($border-color) ; }
+      .border#{$infix}-bottom {   border-bottom: $border-width solid t($border-color) ; }
+      .border#{$infix}-left {     border-left: $border-width solid t($border-color) ; }
 
-    .border#{$infix}-top-0 {    border-top: 0 !important; }
-    .border#{$infix}-right-0 {  border-right: 0 !important; }
-    .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
-    .border#{$infix}-left-0 {   border-left: 0 !important; }
+      .border#{$infix}-top-0 {    border-top: 0 !important; }
+      .border#{$infix}-right-0 {  border-right: 0 !important; }
+      .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
+      .border#{$infix}-left-0 {   border-left: 0 !important; }
 
-    .border#{$infix}-x {
-      border-left: $border-width solid $border-color ;
-      border-right: $border-width solid $border-color ;
-    }
+      .border#{$infix}-x {
+        border-left: $border-width solid t($border-color) ;
+        border-right: $border-width solid t($border-color) ;
+      }
 
-    .border#{$infix}-y {
-      border-top: $border-width solid $border-color ;
-      border-bottom: $border-width solid $border-color ;
+      .border#{$infix}-y {
+        border-top: $border-width solid t($border-color) ;
+        border-bottom: $border-width solid t($border-color) ;
+      }
     }
   }
 }
@@ -259,9 +261,11 @@ header a.search {
   height: 1.5rem;
   flex-grow: 2;
   padding: 0.5px;
-  background-color: $border-color;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  @include themed(){
+    background-color: $border-color;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
 }
 
 .flex-auto {
@@ -274,18 +278,21 @@ header a.search {
   .h-md-250 { height: 250px; }
 }
 
-.border-top { border-top: 1px solid #e5e5e5; }
-.border-bottom { border-bottom: 1px solid #e5e5e5; }
-
+@include themed(){
+.border-top { border-top: 1px solid t($border-color) }
+.border-bottom { border-bottom: 1px solid t($border-color) }
+}
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
 .footer {
-  padding: 2.5rem 0;
-  color: #666;
-  text-align: center;
-  background-color: #f6f6f6;
-  border-top: .05rem solid #e5e5e5;
-  font-size: 0.9rem;
+  @include themed(){
+    padding: 2.5rem 0;
+    color: #666;
+    text-align: center;
+    background-color: #f6f6f6;
+    border-top: .05rem solid t($border-color)
+    font-size: 0.9rem;
+  }
 }
 
 .footer p:last-child {

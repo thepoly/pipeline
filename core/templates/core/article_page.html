@@ -122,6 +122,22 @@
                         {% embed block.value.embed.url %}
                     </div>
                 {% endif %}
+        
+            {% elif block.block_type == 'form' %}
+                <div class="form d-flex flex-column align-items-center">
+                        {{ page.intro|richtext }}
+                <form action="{% pageurl page %}" method="POST" width = 600>
+                    {% csrf_token %}
+                    <label for="data">
+                        <span>Tell us what you think:</span>
+                        <br>
+                        <input id="data" type="text" name="data">
+                        <abbr title="required" aria-label="required">*</abbr>
+                    {{ form.as_p }}
+                    <br>
+                    <input type="submit" value="Submit">
+                    </form>
+                    </div>
             {% else %}
                 <div class="container narrow">
                     {% include_block block %}
@@ -129,6 +145,19 @@
             {% endif %}
         {% endfor %}
     </div>
+        <div class="form d-flex flex-column align-items-center">
+                        {{ page.intro|richtext }}
+                <form action="{% pageurl page %}" method="POST" width = 600>
+                    {% csrf_token %}
+                    <label for="data">
+                        <span>Tell us what you think:</span>
+                        <br>
+                        <input id="data" type="text" name="data">
+                    {{ form.as_model }}
+                    <br>
+                    <input type="submit" value="Submit">
+                    </form>
+                    </div>
 </article>
 
 {% if page.get_related_articles %}

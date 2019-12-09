@@ -46,6 +46,77 @@ $font-family-base: 'Lora', serif;
 @import "~bootstrap/scss/utilities";
 // @import "~bootstrap/scss/print";
 
+$bg: 'bg';
+//$card-bg: 'card-bg';
+$text: 'text';
+//$text-secondary: 'text-secondary';
+//$link: 'link';
+//$hover: 'hover';
+//$logo: 'logo';
+$border: 'border';
+$footer: 'footer' ;
+
+
+//Light mode theme variable definitions
+$bg--light: #FFFFFF;
+$text--light: #000000;
+$border--light: #dee2e6;
+$pipeline-red--light: #DA1E05;
+$ft--light: #e5e5e5;
+
+
+//Dark mode theme variable definitions
+$bg--dark: #403C3B;
+$text--dark: ##C9C3C2;
+$border--dark: #6c757d;
+$pipeline-red--dark: #c9311d;
+$ft--dark: #4f4f4f; //footer
+
+
+$themes: (
+  default: (
+    //logo: url("../images/brand/logo_vertical.svg"),
+    bg: $bg--light,
+    //card-bg: $bg--card--light,
+    text: $text--light,
+    //text-secondary: $text--2--light,
+    //link: $brand--blue--light,
+    //hover: $hover--light,
+    border: $border--light,
+    footer: $ft--light
+  ),
+  dark: (
+    //logo: url("../images/brand/logo_vertical--invert.svg"),
+    bg: bg--dark,
+    //card-bg: $bg--card--dark,
+    text: $text--dark,
+    //text-secondary: $text--2--dark,
+    //link: $brand--blue--dark,
+    //hover: $hover--dark,
+    border: $border--dark,
+    footer: ft--dark
+  ),
+);
+
+@mixin themed() {
+  @each $theme, $map in $themes {
+    .theme--#{$theme} {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function t($key) {
+  @return map-get($theme-map, $key);
+}
+
+
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);

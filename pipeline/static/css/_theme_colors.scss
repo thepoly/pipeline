@@ -1,0 +1,64 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+//Light mode theme variable definitions
+$bg--light: #FFFFFF;
+$text--light: #000000;
+$border--light: #dee2e6;
+$pipeline-red--light: #DA1E05;
+$ft--light: #e5e5e5;
+
+
+//Dark mode theme variable definitions
+$bg--dark: #403C3B;
+$text--dark: #C9C3C2;
+$border--dark: #6c757d;
+$pipeline-red--dark: #c9311d;
+$ft--dark: #4f4f4f; //footer
+
+
+$themes: (
+  light: (
+    primary:    #DA1E05,
+    secondary:  $secondary,
+    success:    $success,
+    info:       $info,
+    warning:    $warning,
+    danger:     $danger,
+    light:      $light,
+    dark:       $dark,
+    border:     $gray-300
+  ),
+  dark: (
+    primary:    #c81b04,
+    secondary:  #C9C3C2,
+    success:    $success,
+    info:       $info,
+    warning:    $warning,
+    danger:     $danger,
+    light:      $light,
+    dark:       $dark,
+    border:     #6c757d
+  ),
+);
+
+@mixin themed() {
+  @each $theme, $map in $themes {
+
+    .theme-#{$theme} {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+
+      @content;
+      $theme-map: null !global;
+    }
+
+  }
+}
+
+@function t($key) {
+  @return map-get($theme-map, $key);
+}

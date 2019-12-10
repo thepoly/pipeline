@@ -1,16 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i|Playfair+Display:400,400i,700,700i,900,900i|Raleway:500,500i,600,600i,700,700i');
-
-$theme-colors: (
-  "primary": #DA1E05,
-);
-
+@import "_theme_colors";
 $enable-gradients: true;
 
 $font-family-base: 'Lora', serif;
-
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
 
 // Optional
 @import "~bootstrap/scss/root";
@@ -46,88 +38,29 @@ $font-family-base: 'Lora', serif;
 @import "~bootstrap/scss/utilities";
 // @import "~bootstrap/scss/print";
 
-$bg: 'bg';
-//$card-bg: 'card-bg';
-$text: 'text';
-//$text-secondary: 'text-secondary';
-//$link: 'link';
-//$hover: 'hover';
-//$logo: 'logo';
-$border: 'border';
-$footer: 'footer' ;
-
-
-//Light mode theme variable definitions
-$bg--light: #FFFFFF;
-$text--light: #000000;
-$border--light: #dee2e6;
-$pipeline-red--light: #DA1E05;
-$ft--light: #e5e5e5;
-
-
-//Dark mode theme variable definitions
-$bg--dark: #403C3B;
-$text--dark: ##C9C3C2;
-$border--dark: #6c757d;
-$pipeline-red--dark: #c9311d;
-$ft--dark: #4f4f4f; //footer
-
-
-$themes: (
-  default: (
-    //logo: url("../images/brand/logo_vertical.svg"),
-    bg: $bg--light,
-    //card-bg: $bg--card--light,
-    text: $text--light,
-    //text-secondary: $text--2--light,
-    //link: $brand--blue--light,
-    //hover: $hover--light,
-    border: $border-color,
-    footer: $ft--light
-  ),
-  dark: (
-    //logo: url("../images/brand/logo_vertical--invert.svg"),
-    bg: bg--dark,
-    //card-bg: $bg--card--dark,
-    text: $text--dark,
-    //text-secondary: $text--2--dark,
-    //link: $brand--blue--dark,
-    //hover: $hover--dark,
-    border: $border--dark,
-    footer: ft--dark
-  ),
-);
-
-@mixin themed() {
-  @each $theme, $map in $themes {
-
-    .theme-#{$theme} & {
-      $theme-map: () !global;
-      @each $key, $submap in $map {
-        $value: map-get(map-get($themes, $theme), '#{$key}');
-        $theme-map: map-merge($theme-map, ($key: $value)) !global;
-      }
-
-      @content;
-      $theme-map: null !global;
-    }
-
-  }
+@include themed(){
+    $theme-colors: (
+      "primary": t('primary'),
+      "secondary":  t('secondary'),
+        "success":    t('$success'),
+        "info":       t('info'),
+        "warning":    t('warning'),
+        "danger":     t('danger'),
+        "light":      t('light'),
+        "dark":       t('dark')
+    );
+    $border-color: t('border')
 }
-@function t($key) {
-  @return map-get($theme-map, $key);
-}
-
 
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
     @include themed(){
 
-      .border#{$infix}-top {      border-top: $border-width solid t($border-color) ; }
-      .border#{$infix}-right {    border-right: $border-width solid t($border-color) ; }
-      .border#{$infix}-bottom {   border-bottom: $border-width solid t($border-color) ; }
-      .border#{$infix}-left {     border-left: $border-width solid t($border-color) ; }
+      .border#{$infix}-top {      border-top: $border-width solid t('border') ; }
+      .border#{$infix}-right {    border-right: $border-width solid t('border') ; }
+      .border#{$infix}-bottom {   border-bottom: $border-width solid t('border') ; }
+      .border#{$infix}-left {     border-left: $border-width solid t('border') ; }
 
       .border#{$infix}-top-0 {    border-top: 0 !important; }
       .border#{$infix}-right-0 {  border-right: 0 !important; }
@@ -135,13 +68,13 @@ $themes: (
       .border#{$infix}-left-0 {   border-left: 0 !important; }
 
       .border#{$infix}-x {
-        border-left: $border-width solid t($border-color) ;
-        border-right: $border-width solid t($border-color) ;
+        border-left: $border-width solid t('border') ;
+        border-right: $border-width solid t('border') ;
       }
 
       .border#{$infix}-y {
-        border-top: $border-width solid t($border-color) ;
-        border-bottom: $border-width solid t($border-color) ;
+        border-top: $border-width solid t('border') ;
+        border-bottom: $border-width solid t('border') ;
       }
     }
   }
@@ -262,7 +195,7 @@ header a.search {
   flex-grow: 2;
   padding: 0.5px;
   @include themed(){
-    background-color: $border-color;
+    background-color: t('border');
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }
@@ -279,8 +212,8 @@ header a.search {
 }
 
 @include themed(){
-.border-top { border-top: 1px solid t($border-color) }
-.border-bottom { border-bottom: 1px solid t($border-color) }
+.border-top { border-top: 1px solid t('border') }
+.border-bottom { border-bottom: 1px solid t('border') }
 }
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
@@ -290,7 +223,7 @@ header a.search {
     color: #666;
     text-align: center;
     background-color: #f6f6f6;
-    border-top: .05rem solid t($border-color)
+    border-top: .05rem solid t('border');
     font-size: 0.9rem;
   }
 }

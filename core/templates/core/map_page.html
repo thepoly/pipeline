@@ -24,12 +24,8 @@
   </head>
   <body>
 
-
-
-
     <!--The div element for the map -->
     <div id="map"></div>
-
     <script>
 
       // Get values for map locations
@@ -83,7 +79,6 @@
             name: 'Custom Style'
         });
 
-
       var customMapTypeId = 'custom_style';
       // The location of Troy
       var Troy = {lat: 42.728, lng: -73.691};
@@ -108,44 +103,13 @@
         });
 
         marker.setMap(map);
-
-
-
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      // To add the marker to the map, call setMap();
-
-
-
     map.mapTypes.set(customMapTypeId, customMapType);
     map.setMapTypeId(customMapTypeId);
 }
     </script>
-    <!--Load the API from the specified URL
-    * The async attribute allows the browser to render the page while the API loads
-    * The key parameter will contain your own API key (which is not needed for this tutorial)
-    * The callback parameter executes the initMap() function
-    -->
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2QD1ngZzv0QjZhylFw0T4_22hzOMjx34&callback=initMap">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2QD1ngZzv0QjZhylFw0T4_22hzOMjx34&callback=initMap">
     </script>
   </body>
 </html>

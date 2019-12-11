@@ -26,62 +26,21 @@
 
 
 
-    <h3>Map Demo</h3>
+
     <!--The div element for the map -->
     <div id="map"></div>
 
     <script>
 
-      function similarity(s1, s2) {
-        var longer = s1;
-        var shorter = s2;
-        if (s1.length < s2.length) {
-          longer = s2;
-          shorter = s1;
-        }
-        var longerLength = longer.length;
-        if (longerLength == 0) {
-          return 1.0;
-        }
-        return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
-      }
-
-      function editDistance(s1, s2) {
-          s1 = s1.toLowerCase();
-          s2 = s2.toLowerCase();
-
-          var costs = new Array();
-          for (var i = 0; i <= s1.length; i++) {
-            var lastValue = i;
-            for (var j = 0; j <= s2.length; j++) {
-              if (i == 0)
-                costs[j] = j;
-              else {
-                if (j > 0) {
-                  var newValue = costs[j - 1];
-                  if (s1.charAt(i - 1) != s2.charAt(j - 1))
-                    newValue = Math.min(Math.min(newValue, lastValue),
-                      costs[j]) + 1;
-                  costs[j - 1] = lastValue;
-                  lastValue = newValue;
-                }
-              }
-            }
-            if (i > 0)
-              costs[s2.length] = lastValue;
-          }
-          return costs[s2.length];
-        }
-
       // Get values for map locations
-      window.names = [
+      window.latitude = [
       {% for Location in page.places %}
-          `{{Location.value.name}}`,
+          `{{Location.value.latitude}}`,
       {% endfor %}
       ]
-      window.addresses = [
+      window.longitude = [
       {% for Location in page.places %}
-          `{{Location.value.address}}`,
+          `{{Location.value.longitude}}`,
       {% endfor %}
       ]
       window.descriptions = [
@@ -90,14 +49,24 @@
       {% endfor %}
       ]
 
-      // Parse addresses
-      window.parsedaddresses = []
-      for(i = 0; i< window.addresses.length;i++){
-        var addressString = window.addresses[i];
-        var index = addressString.search("p");
+      // Parse longitude
+      window.parsedlongitudes = []
+      for(i = 0; i< window.longitude.length;i++){
+        var addressString = window.longitude[i];
+        var index = addressString.search("<p>");
         var index2 = addressString.search("/p");
-        var addressString = addressString.slice(index + 2,index2-1);
-        window.parsedaddresses.push(addressString);
+        var addressString = addressString.slice(index + 3,index2-1);
+        window.parsedlongitudes.push(addressString);
+      }
+
+      // Parse latitude
+      window.parsedlatitudes = []
+      for(i = 0; i< window.latitude.length;i++){
+        var addressString = window.latitude[i];
+        var index = addressString.search("<p>");
+        var index2 = addressString.search("</p>");
+        var addressString = addressString.slice(index + 3,index2-1);
+        window.parsedlatitudes.push(addressString);
       }
 
       // Initialize and add the map
@@ -122,57 +91,36 @@
       var map = new google.maps.Map(
           document.getElementById('map'), {zoom: 16, center: Troy});
 
-      // Get Lat and Long from addresses
-      var geocoder = new google.maps.Geocoder();
-
-      // create markers per address
-      for(i=0;i<window.parsedaddresses.length;i++){
-        console.log(window.parsedaddresses[i]);
-        console.log(i);
-        geocoder.geocode( { 'address': window.parsedaddresses[i]}, function(results, status) {
-
-        if (status == google.maps.GeocoderStatus.OK) {
-
-
-
-            var latitude = results[0].geometry.location.lat();
-            var longitude = results[0].geometry.location.lng();
-            console.log(results[0].formatted_address);
-
-            var marker = new google.maps.Marker({
-              position: {lat:latitude, lng:longitude},
-              title:"A marker"
-            });
-
-
-
-            var max_value = 0;
-            var max_index = 0;
-            for(j = 0 ;j<window.parsedaddresses.length;j++){
-
-              if(similarity(window.parsedaddresses[j],results[0].formatted_address)> max_value){
-                max_value = similarity(window.parsedaddresses[j],results[0].formatted_address);
-                max_index = j;
-              }
-            }
-
-            var contentString = window.descriptions[max_index];
-
-
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-            });
-
-            marker.addListener('click', function() {
-              infowindow.open(map, marker);
-            });
-
-            marker.setMap(map);
-            console.log(contentString);
-
-
-            }
+      //create markers per address
+      for(i=0;i<window.parsedlongitudes.length;i++){
+        var marker = new google.maps.Marker({
+          position: {lat:parseFloat(window.parsedlatitudes[i]), lng:parseFloat(window.parsedlongitudes[i])},
+          title:"A marker"
         });
+        var contentString = window.descriptions[i];
+
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+
+        marker.setMap(map);
+
+
+
+      }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -186,7 +134,7 @@
       // To add the marker to the map, call setMap();
 
 
-    }
+
     map.mapTypes.set(customMapTypeId, customMapType);
     map.setMapTypeId(customMapTypeId);
 }

@@ -177,8 +177,8 @@ class StaffPage(Page):
         return [term for term in self.terms.filter(date_ended__isnull=False)]
 
 class Location(StructBlock):
-    name = RichTextBlock(required = True, default ="")
-    address = RichTextBlock(required = True, default ="")
+    latitude = RichTextBlock(required = True, default ="")
+    longitude = RichTextBlock(required = True, default ="")
     description = RichTextBlock(required = True, default ="")
 
 
@@ -189,7 +189,7 @@ class MapPage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        
+
 
 
         return context

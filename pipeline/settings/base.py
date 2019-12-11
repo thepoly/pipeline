@@ -104,7 +104,7 @@ WSGI_APPLICATION = "pipeline.wsgi.application"
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    "default": dj_database_url.config(default="postgresql://postgres:gav228@/pipeline")
+    "default": dj_database_url.config(default="postgres://127.0.0.1:5432/pipeline")
 }
 
 

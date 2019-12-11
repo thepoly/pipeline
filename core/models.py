@@ -14,25 +14,29 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django import forms
-#from blog.models import Comment
+
+# from blog.models import Comment
 from django.utils.html import format_html, mark_safe
 from django.utils.text import slugify
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import (
-    FieldPanel, FieldRowPanel,
-    InlinePanel, MultiFieldPanel
+    FieldPanel,
+    FieldRowPanel,
+    InlinePanel,
+    MultiFieldPanel,
 )
 
 from django.contrib import admin
 from django import template
-#from myapp.models import MyCustomSettings
+
+# from myapp.models import MyCustomSettings
 
 register = template.Library()
-#from .models import Post, Comment
+# from .models import Post, Comment
 
-#admin.site.register(Post)
-#admin.site.register(Comment)
+# admin.site.register(Post)
+# admin.site.register(Comment)
 
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.core.blocks import (
@@ -336,42 +340,49 @@ class PhotoBlock(StructBlock):
 class GalleryPhotoBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)
-    
+
+
 class FormField(AbstractFormField):
-    page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
-    
+    page = ParentalKey("FormPage", on_delete=models.CASCADE, related_name="form_fields")
+
+
 class BaseField:
     def get_options(self, block_value):
         return {
-            'label': block_value.get('label'),
-            'help_text': block_value.get('help_text'),
-            'required': block_value.get('required'),
-            'initial': block_value.get('default_value')
+            "label": block_value.get("label"),
+            "help_text": block_value.get("help_text"),
+            "required": block_value.get("required"),
+            "initial": block_value.get("default_value"),
         }
-    
-    
+
+
 class FormPage(AbstractEmailForm):
     template = "core/article_page.html"
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
     content_panels = AbstractEmailForm.content_panels + [
-        FieldPanel('intro', classname="full"),
-        InlinePanel('form_fields', label="Form fields"),
-        FieldPanel('thank_you_text', classname="full"),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('from_address', classname="col6"),
-                FieldPanel('to_address', classname="col6"),
-            ]),
-            FieldPanel('subject'),
-        ], "Email"),
+        FieldPanel("intro", classname="full"),
+        InlinePanel("form_fields", label="Form fields"),
+        FieldPanel("thank_you_text", classname="full"),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("from_address", classname="col6"),
+                        FieldPanel("to_address", classname="col6"),
+                    ]
+                ),
+                FieldPanel("subject"),
+            ],
+            "Email",
+        ),
     ]
-    
-    
-#class NameForm(forms.Form):
- #   set_name = 'Comment'
-  #  your_text = forms.CharField(label='Comment', max_length=100)
-'''
+
+
+# class NameForm(forms.Form):
+#   set_name = 'Comment'
+#  your_text = forms.CharField(label='Comment', max_length=100)
+"""
     class NameForm(forms.ModelForm):
     class Meta:
             model = Comment
@@ -386,8 +397,8 @@ class NameForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('name',)
-'''
-'''
+"""
+"""
 class Comment(models.Model):
     post = models.ForeignKey('blog.Post', on_delete=models.CASCADE, related_name='comments')
     author = models.CharField(max_length=200)
@@ -401,31 +412,40 @@ def approve(self):
 
 def __str__(self):
     return self.text
-'''
+"""
+
 
 class NameForm(forms.Form):
-    your_name = forms.CharField(label='Your name', max_length=100)
+    your_name = forms.CharField(label="Your name", max_length=100)
     content_panels = AbstractEmailForm.content_panels + [
-        FieldPanel('intro', classname="full"),
-        InlinePanel('form_fields', label="Form fields"),
-        FieldPanel('thank_you_text', classname="full"),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('from_address', classname="col6"),
-                FieldPanel('to_address', classname="col6"),
-            ]),
-            FieldPanel('subject'),
-        ], "Email"),
+        FieldPanel("intro", classname="full"),
+        InlinePanel("form_fields", label="Form fields"),
+        FieldPanel("thank_you_text", classname="full"),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("from_address", classname="col6"),
+                        FieldPanel("to_address", classname="col6"),
+                    ]
+                ),
+                FieldPanel("subject"),
+            ],
+            "Email",
+        ),
     ]
-    
+
+
 class ContactForm(forms.Form):
     subject = forms.CharField(max_length=100)
     message = forms.CharField(widget=forms.Textarea)
     sender = forms.EmailField()
     cc_myself = forms.BooleanField(required=False)
-    
+
+
 class CustomTextField(forms.Form):
     field_class = forms.CharField(max_length=100)
+
 
 # Look at this section for form implementation.
 class ArticlePage(RoutablePageMixin, Page):
@@ -438,7 +458,7 @@ class ArticlePage(RoutablePageMixin, Page):
             ("photo", PhotoBlock()),
             ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
-            #("form", FormBlock()),
+            # ("form", FormBlock()),
         ],
         blank=True,
     )
@@ -456,12 +476,9 @@ class ArticlePage(RoutablePageMixin, Page):
         help_text="Shown at the top of the article and on the home page.",
     )
     featured_caption = RichTextField(features=["italic"], blank=True, null=True)
-    
+
     Forms = models.ForeignKey(
-        FormField,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
+        FormField, null=True, blank=True, on_delete=models.SET_NULL,
     )
     content_panels = [
         MultiFieldPanel(
@@ -486,10 +503,9 @@ class ArticlePage(RoutablePageMixin, Page):
         FieldPanel("summary"),
         StreamFieldPanel("body"),
         FieldPanel("Forms"),
-        #PageChooserPanel('feedback_form_page', ['base.FormPage']),
-        
+        # PageChooserPanel('feedback_form_page', ['base.FormPage']),
     ]
-    
+
     search_fields = Page.search_fields + [
         index.SearchField("headline"),
         index.SearchField("subdeck"),

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-
+{% load cache %}
+{% cache 60 page request.is_preview %}
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-staffindexpage{% endblock %}
@@ -38,3 +39,4 @@
     </div>
 </div>
 {% endblock %}
+{% endcache %}

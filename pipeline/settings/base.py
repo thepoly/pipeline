@@ -65,7 +65,6 @@ MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    "django.middleware.cache.UpdateCacheMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -75,7 +74,6 @@ MIDDLEWARE = [
     "wagtail.core.middleware.SiteMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "core.middleware.MigrationRedirectMiddleware",
-    "django.middleware.cache.FetchFromCacheMiddleware",
     "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 

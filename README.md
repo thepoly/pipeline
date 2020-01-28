@@ -31,18 +31,24 @@ brew services start postgresql
 createdb pipeline
 ```
 
-### Installing
+The default dev database, defined in `settings/dev.py` uses the following postgres url: `postgresql://postgres:postgres@127.0.0.1:5432/pipeline` make sure that your database is configured to these settings. The pipeline database must exist, and the user `postgres` must exist with password `postgres`. Read more about postgres urls [here](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING).
+
+Read about creating a user [here](https://www.postgresql.org/docs/10/role-attributes.html). You will probably want postgres to be a superuser.
+
+### Installing with pipenv
 
 ```
-git clone git@github.com:thepoly/pipeline.git
+git clone https://github.com/thepoly/pipeline.git
 cd pipeline
 npm install
-npx wp --config webpack.development.config.js
+npx webpack --config webpack.development.config.js
 pipenv install --dev
 pipenv run python manage.py createcachetable
 ```
 
-### Running
+If you have issues with `pipenv`, you should use `virtualenv`. Installation varies by dev environment.
+
+#### Running with pipenv
 
 ```
 pipenv shell
@@ -52,6 +58,28 @@ python manage.py runserver
 ```
 
 If you have issues with the database, ensure that Postgres is running and you have created a database named `pipeline`.
+
+### Installing with virtualenv
+
+```bash
+git clone https://github.com/thepoly/pipeline.git
+cd pipeline
+npm install
+npx webpack --config webpack.development.config.js
+virtualenv pipeline-env # Enter the virtual environment
+source pipeline-env/bin/activate
+pip install -r requirements.txt
+python manage.py createcachetable
+```
+
+#### Running with virtualenv 
+
+```sh
+source pipeline-env/bin/activate # If not in the enviroment
+python manage.py migrate # run migrations
+python manage.py createsuperuser
+python manage.py runserver
+```
 
 #### Docker
 
@@ -72,14 +100,9 @@ Pipeline will be available at port 8000 on localhost.
 
 Make sure you format your code with [Black](https://github.com/python/black) and use [Flake8](http://flake8.pycqa.org/en/latest/) to find problems.
 
-### How to make changes to styling
-
-With your terminal/command prompt running ```python manage.py runserver```, open another at the project folder location and run ```npm run watch```.
-Now you can edit styles at pipeline/pipeline/static/css/pipeline.scss
-
 ## Status
 
-Many of the following features are partially complete, but this isn't indicated. Look at the Issues page if you need to know what is being worked on.
+Many of the following features are partially complete, but this isn't indicated. Talk to Sid if you need to know where something is right now.
 
 - [ ] Articles
   - [x] Index pages

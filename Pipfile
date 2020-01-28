@@ -7,7 +7,7 @@ name = "pypi"
 wagtail = "==2.7.1"
 django-debug-toolbar = {git = "https://github.com/jazzband/django-debug-toolbar.git", editable = true, ref = "b650a33bb02651903540d726704a9143c73eda0a"}
 django-webpack-loader = "*"
-Django = "~=2.2"
+Django = "~=2.2.5"
 "beautifulsoup4" = "==4.6.0"
 django-prometheus = "*"
 gunicorn = "*"

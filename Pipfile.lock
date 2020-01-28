@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ca46be2b826df35ad2baf942bc69d77e6833d98d03bef17986b9442f44cb6877"
+            "sha256": "4b1cf63793d96bddd16d75390e5aceca639b6d4109b3903ccba7aefdd4030012"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -81,11 +81,11 @@
         },
         "django-prometheus": {
             "hashes": [
-                "sha256:f0657d4b887309086b71b55f6aa4a95f967b35fe115128b501f95422c423b12c",
-                "sha256:f645016ae5270ac2025a70788cd2bd636244a0c5705b323cc086994bf828181e"
+                "sha256:306332698f1650a01bc3512710fcee6163a2ed91947f21dbf0e76b1b61df0063",
+                "sha256:685c38ddf5ca5e04535e9c767d5a76da9acc1eca74f7a3b72e661e8f3c14ec61"
             ],
             "index": "pypi",
-            "version": "==2.0.0.dev124"
+            "version": "==2.1.0.dev4"
         },
         "django-taggit": {
             "hashes": [
@@ -334,10 +334,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:a8a318824cc77d1fd4b2bec2ded92646630d7fe8619497b142c84a9e6f5a7293",
-                "sha256:f3c5fd51747d450d4dcf6f923c81f78f811aab8205fda64b0aba34a4e48b0745"
+                "sha256:2f3db8b19923a873b3e5256dc9c2dedfa883e33d87c690d9c7913e1f40673cdc",
+                "sha256:87716c2d2a7121198ebcb7ce7cccf6ce5e9ba539041cfbaeecfb641dc0bf6acc"
             ],
-            "version": "==1.25.7"
+            "version": "==1.25.8"
         },
         "wagtail": {
             "hashes": [

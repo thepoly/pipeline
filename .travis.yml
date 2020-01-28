@@ -19,7 +19,7 @@ before_install:
   - npm install -g npm@"^6.4.0"
 
 install:
-  - pipenv install
+  - pipenv install --dev
   - npm ci
   - npx webpack --config webpack.development.config.js
     

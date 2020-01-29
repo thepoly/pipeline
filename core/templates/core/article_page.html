@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text %}
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text cache %}
+{% cache 60 page request.is_preview %}
 
 {% block extra_head %}
     <link rel="canonical" href="{{ page.full_url }}">
@@ -152,3 +153,5 @@
     </div>
 {% endif %}
 {% endblock %}
+{% endcache %}
+

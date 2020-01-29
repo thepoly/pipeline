@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "13fc7cb652c507a382f5f564a56eadb730b6908a0ec9b8adef1572b085ff4c00"
+            "sha256": "7567cf0bb3e9fb5be215534c24c53cff18495c0206c6cf4e491c621356f01188"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -68,9 +68,12 @@
             "version": "==2.2.9"
         },
         "django-debug-toolbar": {
-            "editable": true,
-            "git": "https://github.com/jazzband/django-debug-toolbar.git",
-            "ref": "b650a33bb02651903540d726704a9143c73eda0a"
+            "hashes": [
+                "sha256:24c157bc6c0e1648e0a6587511ecb1b007a00a354ce716950bff2de12693e7a8",
+                "sha256:77cfba1d6e91b9bc3d36dc7dc74a9bb80be351948db5f880f2562a0cbf20b6c5"
+            ],
+            "index": "pypi",
+            "version": "==2.1"
         },
         "django-modelcluster": {
             "hashes": [

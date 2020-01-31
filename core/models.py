@@ -15,6 +15,8 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.html import format_html, mark_safe
 from django.utils.text import slugify
+from wagtail.core import blocks
+
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
     RichTextBlock,
@@ -198,6 +200,103 @@ class StaffIndexPage(Page):
             .annotate(latest_term_ended=Max("terms__date_ended"))
             .order_by(F("latest_term_ended").desc(nulls_last=True))
         )
+
+@register_snippet
+class Election(index.Indexed, models.Model):
+    name = models.CharField(max_length=255)
+    election_site_id = models.IntegerField(default=-1)
+    autocomplete_search_field = "name"
+    
+    def autocomplete_label(self):
+        return self.name
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(name=value)
+
+    def __str__(self):
+        return self.name
+
+class OfficesOrderable(Orderable):
+    """This allows us to select one or more blog authors from Snippets."""
+ 
+    page = ParentalKey("core.CandidatePage", related_name='offices_in')
+    office = models.ForeignKey(
+        "core.Office",
+        on_delete=models.CASCADE,
+    )
+ 
+    panels = [
+    	# Use a SnippetChooserPanel because blog.BlogAuthor is registered as a snippet
+        SnippetChooserPanel("office"),
+    ]
+
+@register_snippet
+class Office(index.Indexed, models.Model):
+    name = models.CharField(max_length=255)
+    req_nominations = models.IntegerField()
+    elections_site_id = models.IntegerField()
+    election_in = models.ForeignKey(
+        Election, on_delete=models.PROTECT
+    )
+    
+    search_fields = [index.SearchField("name", partial_match=True)]
+    autocomplete_search_field = "name"
+
+    def autocomplete_label(self):
+        return self.name
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(name=value)
+
+    def __str__(self):
+        return self.name
+
+@register_snippet
+class Candidate(index.Indexed, models.Model):
+    name = models.CharField(max_length=255)
+    rcs_id = models.CharField(max_length=255)
+    election_in = models.ForeignKey(
+        Election, on_delete=models.PROTECT
+    )
+    
+
+    rich_name = RichTextField(
+        features=["italic"], max_length=255, null=True, blank=True
+    )
+
+    bio = RichTextField(
+        features=["italic"], max_length=3000, null=True, blank=True
+    )
+
+    image = ImageChooserBlock()
+
+    search_fields = [index.SearchField("name", partial_match=True)]
+    autocomplete_search_field = "name"
+
+    def autocomplete_label(self):
+        return self.name
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(name=value)
+
+    # def get_articles(self):
+    #     return (
+    #         ArticlePage.objects.live()
+    #         .filter(authors__author=self)
+    #         .order_by("-first_published_at")
+    #         .all()
+    #     )
+
+    def __str__(self):
+        return self.name
+    
+class CandidateBlock(StructBlock):
+    image = ImageChooserBlock()
+    caption = RichTextBlock(features=["italic"], required=False)
+
 
 
 @register_snippet
@@ -633,3 +732,119 @@ class MigrationInformation(models.Model):
     article = models.OneToOneField(ArticlePage, on_delete=models.CASCADE)
     link = models.URLField(db_index=True)
     guid = models.CharField(max_length=255, primary_key=True)
+
+
+## ELECTION PAGES
+
+# TODO: Support adding articles and ads alongside candidate page
+
+# class ArticleBlock(blocks.StructBlock):
+#     article = blocks.PageChooserBlock(target_model="core.ArticlePage")
+#     headline = blocks.RichTextBlock(
+#         help_text="Optional. Will override the article's headline.", required=False
+#     )
+#     # TODO: add a photo override block
+#     # TODO: add a "hide photo" block
+
+#     class Meta:
+#         template = "home/article_block.html"
+
+# class CandidateBlock(blocks.StructBlock):
+#     article = blocks.PageChooserBlock(target_model="core.CandidatePage")
+
+#     class Meta:
+#         template = "core/candidate_block.html"
+
+# class CandidateBlock(blocks.StructBlock):
+#     article = blocks.PageChooserBlock(target_model="core.ArticlePage")
+#     headline = blocks.RichTextBlock(
+#         help_text="Optional. Will override the article's headline.", required=False
+#     )
+#     # TODO: add a photo override block
+#     # TODO: add a "hide photo" block
+
+#     class Meta:
+#         template = "home/article_block.html"
+
+
+# class OneColumnBlock(blocks.StructBlock):
+#     column = ArticleBlock()
+
+#     def article_pks(self):
+#         return set(self.column.value.pk)  # pylint: disable=E1101
+
+# class TwoColumnBlock(blocks.StructBlock):
+#     left_column = ArticleBlock()
+#     right_column = ArticleBlock()
+#     emphasize_column = blocks.ChoiceBlock(
+#         choices=[("left", "Left"), ("right", "Right")],
+#         required=False,
+#         help_text="Which article, if either, should appear larger.",
+#     )
+
+#     def article_pks(self):
+#         # pylint: disable=E1101
+#         return set(self.left_column.value.pk, self.right_column.value.pk)
+
+class ElectionIndexPage(Page):
+    subpage_types = ["CandidatePage"]
+
+    electionID = models.ForeignKey(
+        Election, null=False, on_delete=models.PROTECT
+    )
+    def get_candidates(self):
+        return (
+            CandidatePage.objects.live()
+            .descendant_of(self)
+        )
+
+    content_panels = [
+        AutocompletePanel("electionID", target_model="core.Election"),
+    ]
+
+class CandidatePage(Page):
+    parent_page_types = ["ElectionIndexPage"]
+    candidate = models.ForeignKey(
+        Candidate, null=False, on_delete=models.PROTECT
+    )
+
+    nominations = models.IntegerField()
+    content_panels = Page.content_panels + [
+        AutocompletePanel("candidate", target_model="core.Candidate"),
+        MultiFieldPanel(
+            [
+                InlinePanel("offices_in", label="offices")
+            ],
+            heading="Offices"
+        ),
+        FieldPanel('nominations')
+    ]
+
+    def get_candidate(self):
+        return self.candidate
+
+    def get_offices(self):
+        return [r.office for r in self.offices_in.select_related("office")]
+    
+
+# class HomePage(Page):
+
+
+#     content_panels = Page.content_panels + [StreamFieldPanel("featured_articles")]
+
+#     def article_pks(self):
+#         pks = set()
+#         for block in self.featured_articles:  # pylint: disable=E1133
+#             if block.block_type == "one_column":
+#                 pks.add(block.value["column"]["article"].pk)
+#             elif block.block_type == "two_columns":
+#                 pks.add(block.value["left_column"]["article"].pk)
+#                 pks.add(block.value["right_column"]["article"].pk)
+#             elif block.block_type == "three_columns":
+#                 pks.add(block.value["left_column"]["article"].pk)
+#                 pks.add(block.value["middle_column"]["article"].pk)
+#                 pks.add(block.value["right_column"]["article"].pk)
+#         return pks
+
+#     def get_sections(self):
+#         return list(ArticlesIndexPage.objects.live().descendant_of(self))

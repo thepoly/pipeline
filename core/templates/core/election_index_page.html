@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load cache %}
+{% cache 60 page request.is_preview %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-electionindexpage{% endblock %}
+
+{% block content %}
+<div class="container election_page">
+    <h1 class="mb-3">{{page.title}}</h1>
+    {{page.electionID.name}}
+    <div class="elections-grid">
+        {% for candidate in page.get_candidates %}
+        <div class="card">
+            <div class="card-image">
+                <img src="https://via.placeholder.com/300" />
+            </div>
+            <div class="card-content">
+                <p class="card-title">
+                    {% if candidate.candidate %}
+                        {{candidate.candidate.name}}
+                    {% endif %}
+                </p>
+                <div class="offices">
+                    {% for office in candidate.get_offices %}
+                        <p class="office">{{office}}</p>
+                    {% endfor %}
+                    <div class="card-progress">
+                        <p>100/200</p>
+                        <div class="inner-progress"></div>
+                    </div>
+                    {% for office in candidate.get_offices %}
+                    <p class="office">Grand Marshall</p>
+                    {% endfor %}
+                    <div class="card-progress">
+                        <p>200/200</p>
+                        <div class="inner-progress green" style="width:100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    </div>
+</div>
+{% endblock %}
+{% endcache %}

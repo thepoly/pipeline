@@ -27,8 +27,10 @@
         <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
             {% image page.featured_image width-1200 as photo %}
             <div class="img-container">
-                <img class="" src="{{ photo.url }}">
-
+                <a class="" href="{{ photo.url }}" data-lightbox="featured"
+                                        data-title='{{ page.featured_caption|richtext_unwrapped }} {{ page.featured_image.get_attribution_html_caption }}'>
+                    <img class="image" src="{{ photo.url }}"/>
+                </a>
             </div>
             {% if page.featured_caption or photo.image.photographer %}
                 <div class="meta container mt-1 mb-2">
@@ -74,7 +76,12 @@
                         {% image block.value.image width-2000 as photo %}
                     {% endif %}
 
-                    <img class="" src="{{ photo.url }}">
+                    <a class="" href="{{ photo.url }}" data-lightbox={{block.id}}
+                    data-title='{{ block.value.caption.source|richtext_unwrapped }} {{ photo.image.get_attribution_html_caption }}'>
+
+                    
+                        <img class="image" src="{{ photo.url }}"/>
+                    </a>
                     {% if block.value.caption or photo.image.photographer %}
                         <div class="meta container mt-1">
                         {% if block.value.caption %}
@@ -89,30 +96,20 @@
                     {% endif %}
                 </div>
             {% elif block.block_type == 'photo_gallery' %}
-                <div class="photo-gallery" data-controller="photo-gallery">
-                    <div class="large-photo flex-column" data-target="photo-gallery.largePhoto" data-action="click->photo-gallery#dismissPhoto">
-                        <div class="wrapper">
-                            <div class="img-container d-flex align-items-center justify-content-center">
-                                <img data-target="photo-gallery.largePhotoImg">
-                            </div>
-                            <p>
-                                <span data-target="photo-gallery.largePhotoCaption" class="text-dark"></span>
-                                <span data-target="photo-gallery.largePhotoPhotographer" class="small text-muted"></span>
-                            </p>
-                        </div>
+            <div class="photo-gallery container d-flex flex-row justify-content-center flex-wrap">
+                {% for gallery_photo in block.value %}
+                    <div class="photo col-6 col-lg-4 mb-4">
+
+                        {% image gallery_photo.image fill-600x600 as small_photo %}
+                        {% image gallery_photo.image max-2000x1500 as large_photo %}
+
+                        <a class="" href="{{ large_photo.url }}" data-lightbox={{block.id}} 
+                        data-title='{{ gallery_photo.caption.source|richtext_unwrapped }} {{ gallery_photo.image.get_attribution_html_caption }}'>
+                            <img class="gallery" src="{{ small_photo.url }}"/>
+                        </a>
                     </div>
-                    <div class="container d-flex flex-row justify-content-center flex-wrap mb-n4">
-                    {% for gallery_photo in block.value %}
-                        <div class="photo col-6 col-lg-4 mb-4">
-                            {% image gallery_photo.image fill-600x600 as small_photo %}
-                            {% image gallery_photo.image max-2000x1500 as large_photo %}
-                            <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">
-                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ gallery_photo.caption.source|richtext_unwrapped }}" data-photographer='{{ gallery_photo.image.get_attribution_html }}'>
-                            </a>
-                        </div>
-                    {% endfor %}
-                    </div>
-                </div>
+                {% endfor %}
+            </div>
             {% elif block.block_type == 'embed' %}
                 {% if block.value.type == 'video' %}
                     <div class="container-fluid embed video embed-responsive embed-responsive-16by9">
@@ -129,7 +126,9 @@
                 </div>
             {% endif %}
         {% endfor %}
+
     </div>
+    
 </article>
 
 {% if page.get_related_articles %}

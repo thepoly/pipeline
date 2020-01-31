@@ -8,4 +8,14 @@
 .DS_Store
 /pipeline-env/
 **/__pycache__/**
+<<<<<<< HEAD
+pipeline\.code-workspace
+\.build
+Pipeline Session\.sql
+run
+.gitignore
+=======
 
+>>>>>>> stylingDocumentation
+
+\.idea/

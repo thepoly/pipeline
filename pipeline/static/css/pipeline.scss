@@ -420,3 +420,21 @@ ul.pagination {
 .template-staffpage .photo img {
   width: 100px;
 }
+
+#lightboxOverlay { position: fixed !important; top: 0; left: 0; height: 100% !important; width: 100% !important; }
+#lightbox { position: fixed !important; top: 50% !important; transform: translateY(-50%); }
+
+.lb-data .lb-caption {
+  font-size: 1.1rem !important;
+  color: #343a40 !important;
+  font-weight: normal !important;
+}
+
+.lightboxOverlay {
+  background-color: #fff !important;
+  filter: alpha(Opacity=90) !important;
+  opacity: 0.9 !important;
+}
+.lb-data .lb-caption a {
+  color: #da1e05 !important;
+}

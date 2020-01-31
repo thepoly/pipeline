@@ -9,6 +9,7 @@ module.exports = {
   entry: [
     './pipeline/static/js/pipeline.js',
     './pipeline/static/css/pipeline.scss',
+    './node_modules/lightbox2/src/css/lightbox.css',
   ],
   output: {
     path: path.resolve('./pipeline/static/webpack_bundles/'),
@@ -34,7 +35,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(scss)$/,
+        test: /\.(css|scss)$/,
         use: [
           'style-loader',
           {

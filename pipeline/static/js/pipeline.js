@@ -16,3 +16,14 @@ document.addEventListener("turbolinks:load", (event) => {
         ga('send', 'pageview');
     }
 });
+
+//lightbox2
+import * as lightbox from "lightbox2";
+lightbox.option({
+        'imageFadeDuration': 0,
+        'fadeDuration': 0,
+        'showImageNumberLabel': 0,
+        'resizeDuration': 10, //this cannot be less or else it will send the user to the top of the page
+        'wrapAround': true,
+        'disableScrolling': true
+});

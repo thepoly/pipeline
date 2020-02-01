@@ -217,81 +217,6 @@ class Election(index.Indexed, models.Model):
     def __str__(self):
         return self.name
 
-class OfficesOrderable(Orderable):
-    """This allows us to select one or more blog authors from Snippets."""
- 
-    page = ParentalKey("core.CandidatePage", related_name='offices_in')
-    office = models.ForeignKey(
-        "core.Office",
-        on_delete=models.CASCADE,
-    )
- 
-    panels = [
-    	# Use a SnippetChooserPanel because blog.BlogAuthor is registered as a snippet
-        SnippetChooserPanel("office"),
-    ]
-
-@register_snippet
-class Office(index.Indexed, models.Model):
-    name = models.CharField(max_length=255)
-    req_nominations = models.IntegerField()
-    elections_site_id = models.IntegerField()
-    election_in = models.ForeignKey(
-        Election, on_delete=models.PROTECT
-    )
-    
-    search_fields = [index.SearchField("name", partial_match=True)]
-    autocomplete_search_field = "name"
-
-    def autocomplete_label(self):
-        return self.name
-
-    @classmethod
-    def autocomplete_create(kls: type, value: str):
-        return kls.objects.create(name=value)
-
-    def __str__(self):
-        return self.name
-
-@register_snippet
-class Candidate(index.Indexed, models.Model):
-    name = models.CharField(max_length=255)
-    rcs_id = models.CharField(max_length=255)
-    election_in = models.ForeignKey(
-        Election, on_delete=models.PROTECT
-    )
-    
-
-    rich_name = RichTextField(
-        features=["italic"], max_length=255, null=True, blank=True
-    )
-
-    bio = RichTextField(
-        features=["italic"], max_length=3000, null=True, blank=True
-    )
-
-    image = ImageChooserBlock()
-
-    search_fields = [index.SearchField("name", partial_match=True)]
-    autocomplete_search_field = "name"
-
-    def autocomplete_label(self):
-        return self.name
-
-    @classmethod
-    def autocomplete_create(kls: type, value: str):
-        return kls.objects.create(name=value)
-
-    # def get_articles(self):
-    #     return (
-    #         ArticlePage.objects.live()
-    #         .filter(authors__author=self)
-    #         .order_by("-first_published_at")
-    #         .all()
-    #     )
-
-    def __str__(self):
-        return self.name
     
 class CandidateBlock(StructBlock):
     image = ImageChooserBlock()
@@ -788,43 +713,151 @@ class MigrationInformation(models.Model):
 
 class ElectionIndexPage(Page):
     subpage_types = ["CandidatePage"]
-
-    electionID = models.ForeignKey(
-        Election, null=False, on_delete=models.PROTECT
-    )
+    electionName = models.CharField(max_length=255)
+    electionID = models.IntegerField()
     def get_candidates(self):
         return (
             CandidatePage.objects.live()
             .descendant_of(self)
-        )
+        ) 
 
     content_panels = [
-        AutocompletePanel("electionID", target_model="core.Election"),
-    ]
-
-class CandidatePage(Page):
-    parent_page_types = ["ElectionIndexPage"]
-    candidate = models.ForeignKey(
-        Candidate, null=False, on_delete=models.PROTECT
-    )
-
-    nominations = models.IntegerField()
-    content_panels = Page.content_panels + [
-        AutocompletePanel("candidate", target_model="core.Candidate"),
+        FieldPanel("electionID"),
+        FieldPanel("electionName"),
         MultiFieldPanel(
             [
-                InlinePanel("offices_in", label="offices")
+                InlinePanel("election_offices", label="offices")
             ],
             heading="Offices"
         ),
-        FieldPanel('nominations')
     ]
 
-    def get_candidate(self):
-        return self.candidate
+class OfficesOrderable(Orderable):
+    """This allows us to select one or more blog authors from Snippets."""
+ 
+    electionPage = ParentalKey("core.ElectionIndexPage", related_name='election_offices')
+    office = models.ForeignKey(
+        "core.Office",
+        on_delete=models.CASCADE,
+    )
+ 
+    panels = [
+    	# Use a SnippetChooserPanel because blog.BlogAuthor is registered as a snippet
+        SnippetChooserPanel("office"),
+    ]
+
+
+
+@register_snippet
+class Office(index.Indexed, models.Model):
+    name = models.CharField(max_length=255)
+    req_nominations = models.IntegerField()
+    elections_site_id = models.IntegerField()
+    election_in = models.ForeignKey(
+        Election, on_delete=models.PROTECT
+    )
+    
+    search_fields = [index.SearchField("name", partial_match=True)]
+    autocomplete_search_field = "name"
+
+    def autocomplete_label(self):
+        return self.name
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(name=value)
+
+    def __str__(self):
+        return self.name
+
+@register_snippet
+class NomCount(index.Indexed, models.Model):
+    count = models.IntegerField(default=0)
+    office = models.ForeignKey(
+        Office, on_delete=models.PROTECT
+    )
+    def __str__(self):
+        return self.office.name + '-' + str(self.count)
+    
+class NomCountOrderable(Orderable):
+    page = ParentalKey("core.CandidatePage", related_name='nom_counts')
+    office = models.ForeignKey(
+        Office, on_delete=models.PROTECT
+    )
+    count = models.IntegerField(default=0)
+ 
+    panels = [
+    	# Use a SnippetChooserPanel because blog.BlogAuthor is registered as a snippet
+        SnippetChooserPanel("office"),
+        FieldPanel('count')
+    ]
+
+@register_snippet
+class Candidate(index.Indexed, models.Model):
+    
+    election_in = models.ForeignKey(
+        Election, on_delete=models.PROTECT
+    )
+    
+
+    rich_name = RichTextField(
+        features=["italic"], max_length=255, null=True, blank=True
+    )
+
+    search_fields = [index.SearchField("name", partial_match=True)]
+    autocomplete_search_field = "name"
+
+    def autocomplete_label(self):
+        return self.name
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(name=value)
+
+    # def get_articles(self):
+    #     return (
+    #         ArticlePage.objects.live()
+    #         .filter(authors__author=self)
+    #         .order_by("-first_published_at")
+    #         .all()
+    #     )
+
+    def __str__(self):
+        return self.name
+        
+class CandidatePage(RoutablePageMixin,Page):
+    parent_page_types = ["ElectionIndexPage"]
+    name = models.CharField(max_length=255)
+    rcs_id = models.CharField(max_length=255)
+    election_site_id = models.IntegerField()
+    bio = RichTextField(
+        features=["italic"], max_length=3000, null=True, blank=True
+    )
+    image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        help_text="Candidate image",
+    )
+    content_panels = Page.content_panels + [
+        FieldPanel('name'),
+        FieldPanel('rcs_id'),
+        FieldPanel('election_site_id'),
+        FieldPanel('bio'),
+        ImageChooserPanel('image'),
+        MultiFieldPanel(
+            [
+                InlinePanel("nom_counts", label="nom counts")
+            ],
+            heading="Nom Counts"
+        ),
+    ]
 
     def get_offices(self):
         return [r.office for r in self.offices_in.select_related("office")]
+    def get_nom_counts(self):
+        return [r for r in self.nom_counts.select_related("office")]
     
 
 # class HomePage(Page):

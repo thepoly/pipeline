@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load cache %}
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text cache %}
 {% cache 60 page request.is_preview %}
-{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-electionindexpage{% endblock %}
 
@@ -13,32 +13,27 @@
         {% for candidate in page.get_candidates %}
         <div class="card">
             <div class="card-image">
-                <img src="https://via.placeholder.com/300" />
+                {% image candidate.image fill-300x300 as photo %}
+                    <img class="" src="{{ photo.url }}">
             </div>
             <div class="card-content">
-                <p class="card-title">
-                    {% if candidate.candidate %}
-                        {{candidate.candidate.name}}
+                <a class="card-title" href="{% pageurl candidate %}">
+                    {% if candidate %}
+                        {{candidate.title}}
                     {% endif %}
-                </p>
+                </a>
                 <div class="offices">
-                    {% for office in candidate.get_offices %}
-                        <p class="office">{{office}}</p>
+                    {% for nc in candidate.get_nom_counts %}
+                        <p class="office">{{nc.office}}</p>
+                        <div class="card-progress">
+                            <p>{{nc.count}}/{{nc.office.req_nominations}}</p>
+                            <div style="width: {{nc.count}}/{{nc.office.req_nominations}}%" class="inner-progress"></div>
+                        </div>
                     {% endfor %}
-                    <div class="card-progress">
-                        <p>100/200</p>
-                        <div class="inner-progress"></div>
-                    </div>
-                    {% for office in candidate.get_offices %}
-                    <p class="office">Grand Marshall</p>
-                    {% endfor %}
-                    <div class="card-progress">
-                        <p>200/200</p>
-                        <div class="inner-progress green" style="width:100%;"></div>
-                    </div>
                 </div>
-            </div>
+            </div>    
         </div>
+        
     {% endfor %}
 
     </div>

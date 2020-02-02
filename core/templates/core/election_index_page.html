@@ -9,34 +9,42 @@
 <div class="container election_page">
     <h1 class="mb-3">{{page.title}}</h1>
     {{page.electionID.name}}
-    <div class="elections-grid">
-        {% for candidate in page.get_candidates %}
-        <div class="card">
-            <div class="card-image">
-                {% image candidate.image fill-300x300 as photo %}
-                    <img class="" src="{{ photo.url }}">
-            </div>
-            <div class="card-content">
-                <a class="card-title" href="{% pageurl candidate %}">
-                    {% if candidate %}
-                        {{candidate.title}}
-                    {% endif %}
-                </a>
-                <div class="offices">
-                    {% for nc in candidate.get_nom_counts %}
-                        <p class="office">{{nc.office}}</p>
-                        <div class="card-progress">
-                            <p>{{nc.count}}/{{nc.office.req_nominations}}</p>
-                            <div style="width: {{nc.count}}/{{nc.office.req_nominations}}%" class="inner-progress"></div>
+    {% for block in page.panels %}
+        {% if block.block_type == "three_cards" %}
+        <h2>{{block.value.cards.office}}</h2>
+
+            <div class="elections-grid">
+                {% for candidate in page.get_candidates %}
+                    {% if block.value.cards.office.name in candidate.get_office_names %}
+                    <div class="card">
+                        <div class="card-image">
+                            {% image candidate.image fill-300x300 as photo %}
+                                <img class="" src="{{ photo.url }}">
                         </div>
-                    {% endfor %}
-                </div>
-            </div>    
-        </div>
-        
+                        <div class="card-content">
+                            <a class="card-title" href="{% pageurl candidate %}">
+                                {% if candidate %}
+                                    {{candidate.title}}
+                                {% endif %}
+                            </a>
+                            <div class="offices">
+                                {% for nc in candidate.get_nom_counts %}
+                                    <p class="office">{{nc.office}}</p>
+                                    <div class="card-progress">
+                                        <p>{{nc.count}}/{{nc.office.req_nominations}}</p>
+                                        <div style="width: {{nc.count}}/{{nc.office.req_nominations}}%" class="inner-progress"></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>    
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        {% endif %}
     {% endfor %}
 
-    </div>
 </div>
 {% endblock %}
 {% endcache %}

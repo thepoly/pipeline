@@ -715,9 +715,6 @@ class MigrationInformation(models.Model):
 class OfficesOrderable(Orderable):
     """This allows us to select one or more blog authors from Snippets."""
 
-    electionPage = ParentalKey(
-        "core.ElectionIndexPage", related_name="election_offices"
-    )
     office = models.ForeignKey("core.Office", on_delete=models.CASCADE)
 
     panels = [
@@ -729,7 +726,6 @@ class OfficesOrderable(Orderable):
 @register_snippet
 class Office(index.Indexed, models.Model):
     name = models.CharField(max_length=255)
-    req_nominations = models.IntegerField()
     elections_site_id = models.IntegerField()
     election_in = models.ForeignKey(Election, on_delete=models.PROTECT)
 
@@ -760,12 +756,15 @@ class NomCountOrderable(Orderable):
     page = ParentalKey("core.CandidatePage", related_name="nom_counts")
     office = models.ForeignKey(Office, on_delete=models.PROTECT)
     count = models.IntegerField(default=0)
-
+    required = models.IntegerField(default=100)
     panels = [
         # Use a SnippetChooserPanel because blog.BlogAuthor is registered as a snippet
         SnippetChooserPanel("office"),
         FieldPanel("count"),
+        FieldPanel("required"),
     ]
+    def get_percent(self):
+        return min(int(100 * (self.count / self.required)),100)
 
     def __str__(self):
         return self.office.name
@@ -797,43 +796,8 @@ class ElectionIndexPage(Page):
     content_panels = [
         StreamFieldPanel("panels"),
         FieldPanel("electionID"),
-        FieldPanel("electionName"),
-        MultiFieldPanel(
-            [InlinePanel("election_offices", label="offices")], heading="Offices"
-        ),
+        FieldPanel("electionName")
     ]
-
-
-# @register_snippet
-# class Candidate(index.Indexed, models.Model):
-
-#     election_in = models.ForeignKey(Election, on_delete=models.PROTECT)
-
-#     rich_name = RichTextField(
-#         features=["italic"], max_length=255, null=True, blank=True
-#     )
-
-#     search_fields = [index.SearchField("name", partial_match=True)]
-#     autocomplete_search_field = "name"
-
-#     def autocomplete_label(self):
-#         return self.name
-
-#     @classmethod
-#     def autocomplete_create(kls: type, value: str):
-#         return kls.objects.create(name=value)
-
-#     # def get_articles(self):
-#     #     return (
-#     #         ArticlePage.objects.live()
-#     #         .filter(authors__author=self)
-#     #         .order_by("-first_published_at")
-#     #         .all()
-#     #     )
-
-#     def __str__(self):
-#         return self.name
-
 
 class CandidatePage(RoutablePageMixin, Page):
     parent_page_types = ["ElectionIndexPage"]
@@ -875,25 +839,3 @@ class CandidatePage(RoutablePageMixin, Page):
                 return true
         return false
 
-
-# class HomePage(Page):
-
-
-#     content_panels = Page.content_panels + [StreamFieldPanel("featured_articles")]
-
-#     def article_pks(self):
-#         pks = set()
-#         for block in self.featured_articles:  # pylint: disable=E1133
-#             if block.block_type == "one_column":
-#                 pks.add(block.value["column"]["article"].pk)
-#             elif block.block_type == "two_columns":
-#                 pks.add(block.value["left_column"]["article"].pk)
-#                 pks.add(block.value["right_column"]["article"].pk)
-#             elif block.block_type == "three_columns":
-#                 pks.add(block.value["left_column"]["article"].pk)
-#                 pks.add(block.value["middle_column"]["article"].pk)
-#                 pks.add(block.value["right_column"]["article"].pk)
-#         return pks
-
-#     def get_sections(self):
-#         return list(ArticlesIndexPage.objects.live().descendant_of(self))

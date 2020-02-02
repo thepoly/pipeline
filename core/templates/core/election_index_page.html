@@ -29,11 +29,13 @@
                             </a>
                             <div class="offices">
                                 {% for nc in candidate.get_nom_counts %}
+                                {% if block.value.cards.office.name == nc.office.name %}
                                     <p class="office">{{nc.office}}</p>
                                     <div class="card-progress">
                                         <p>{{nc.count}}/{{nc.office.req_nominations}}</p>
                                         <div style="width: calc({{ nc.count }}% / {{nc.office.req_nominations}}%)" class="inner-progress"></div>
                                     </div>
+                                {% endif %}
                                 {% endfor %}
                             </div>
                         </div>    

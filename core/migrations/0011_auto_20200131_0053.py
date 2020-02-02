@@ -5,22 +5,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0010_auto_20200131_0051'),
-    ]
+    dependencies = [("core", "0010_auto_20200131_0051")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='candidate',
-            name='runningFor',
-        ),
+        migrations.RemoveField(model_name="candidate", name="runningFor"),
         migrations.AddField(
-            model_name='office',
-            name='elections_site_id',
+            model_name="office",
+            name="elections_site_id",
             field=models.IntegerField(default=10),
             preserve_default=False,
         ),
-        migrations.DeleteModel(
-            name='RunningFor',
-        ),
+        migrations.DeleteModel(name="RunningFor"),
     ]

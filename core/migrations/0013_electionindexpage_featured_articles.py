@@ -7,14 +7,70 @@ import wagtail.core.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0012_auto_20200131_0237'),
-    ]
+    dependencies = [("core", "0012_auto_20200131_0237")]
 
     operations = [
         migrations.AddField(
-            model_name='electionindexpage',
-            name='featured_articles',
-            field=wagtail.core.fields.StreamField([('one_column_candidate', wagtail.core.blocks.StructBlock([('column', wagtail.core.blocks.StructBlock([('article', wagtail.core.blocks.PageChooserBlock(page_type=['core.ArticlePage'])), ('headline', wagtail.core.blocks.RichTextBlock(help_text="Optional. Will override the article's headline.", required=False))]))])), ('one_column_article', wagtail.core.blocks.StructBlock([('column', wagtail.core.blocks.StructBlock([('article', wagtail.core.blocks.PageChooserBlock(page_type=['core.ArticlePage'])), ('headline', wagtail.core.blocks.RichTextBlock(help_text="Optional. Will override the article's headline.", required=False))]))]))], null=True),
-        ),
+            model_name="electionindexpage",
+            name="featured_articles",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "one_column_candidate",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "column",
+                                    wagtail.core.blocks.StructBlock(
+                                        [
+                                            (
+                                                "article",
+                                                wagtail.core.blocks.PageChooserBlock(
+                                                    page_type=["core.ArticlePage"]
+                                                ),
+                                            ),
+                                            (
+                                                "headline",
+                                                wagtail.core.blocks.RichTextBlock(
+                                                    help_text="Optional. Will override the article's headline.",
+                                                    required=False,
+                                                ),
+                                            ),
+                                        ]
+                                    ),
+                                )
+                            ]
+                        ),
+                    ),
+                    (
+                        "one_column_article",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "column",
+                                    wagtail.core.blocks.StructBlock(
+                                        [
+                                            (
+                                                "article",
+                                                wagtail.core.blocks.PageChooserBlock(
+                                                    page_type=["core.ArticlePage"]
+                                                ),
+                                            ),
+                                            (
+                                                "headline",
+                                                wagtail.core.blocks.RichTextBlock(
+                                                    help_text="Optional. Will override the article's headline.",
+                                                    required=False,
+                                                ),
+                                            ),
+                                        ]
+                                    ),
+                                )
+                            ]
+                        ),
+                    ),
+                ],
+                null=True,
+            ),
+        )
     ]

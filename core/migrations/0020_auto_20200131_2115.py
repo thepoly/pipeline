@@ -7,53 +7,47 @@ import wagtail.core.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0019_auto_20200131_2107'),
-    ]
+    dependencies = [("core", "0019_auto_20200131_2107")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='candidate',
-            name='bio',
-        ),
-        migrations.RemoveField(
-            model_name='candidate',
-            name='name',
-        ),
-        migrations.RemoveField(
-            model_name='candidate',
-            name='rcs_id',
-        ),
-        migrations.RemoveField(
-            model_name='candidatepage',
-            name='candidate',
+        migrations.RemoveField(model_name="candidate", name="bio"),
+        migrations.RemoveField(model_name="candidate", name="name"),
+        migrations.RemoveField(model_name="candidate", name="rcs_id"),
+        migrations.RemoveField(model_name="candidatepage", name="candidate"),
+        migrations.AddField(
+            model_name="candidatepage",
+            name="bio",
+            field=wagtail.core.fields.RichTextField(
+                blank=True, max_length=3000, null=True
+            ),
         ),
         migrations.AddField(
-            model_name='candidatepage',
-            name='bio',
-            field=wagtail.core.fields.RichTextField(blank=True, max_length=3000, null=True),
-        ),
-        migrations.AddField(
-            model_name='candidatepage',
-            name='election_site_id',
+            model_name="candidatepage",
+            name="election_site_id",
             field=models.IntegerField(default=1),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='candidatepage',
-            name='image',
-            field=models.ForeignKey(blank=True, help_text='Candidate image', null=True, on_delete=django.db.models.deletion.PROTECT, to='core.CustomImage'),
+            model_name="candidatepage",
+            name="image",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Candidate image",
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="core.CustomImage",
+            ),
         ),
         migrations.AddField(
-            model_name='candidatepage',
-            name='name',
-            field=models.CharField(default='Joey', max_length=255),
+            model_name="candidatepage",
+            name="name",
+            field=models.CharField(default="Joey", max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='candidatepage',
-            name='rcs_id',
-            field=models.CharField(default='lyonj4', max_length=255),
+            model_name="candidatepage",
+            name="rcs_id",
+            field=models.CharField(default="lyonj4", max_length=255),
             preserve_default=False,
         ),
     ]

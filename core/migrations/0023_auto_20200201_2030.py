@@ -6,24 +6,21 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0022_auto_20200131_2247'),
-    ]
+    dependencies = [("core", "0022_auto_20200131_2247")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='nomcountorderable',
-            name='NomCount',
-        ),
+        migrations.RemoveField(model_name="nomcountorderable", name="NomCount"),
         migrations.AddField(
-            model_name='nomcountorderable',
-            name='count',
+            model_name="nomcountorderable",
+            name="count",
             field=models.IntegerField(default=0),
         ),
         migrations.AddField(
-            model_name='nomcountorderable',
-            name='office',
-            field=models.ForeignKey(default=3, on_delete=django.db.models.deletion.PROTECT, to='core.Office'),
+            model_name="nomcountorderable",
+            name="office",
+            field=models.ForeignKey(
+                default=3, on_delete=django.db.models.deletion.PROTECT, to="core.Office"
+            ),
             preserve_default=False,
         ),
     ]

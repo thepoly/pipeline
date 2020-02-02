@@ -9,14 +9,36 @@ import wagtail.snippets.blocks
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0025_electionindexpage_panels'),
-    ]
+    dependencies = [("core", "0025_electionindexpage_panels")]
 
     operations = [
         migrations.AlterField(
-            model_name='electionindexpage',
-            name='panels',
-            field=wagtail.core.fields.StreamField([('three_cards', wagtail.core.blocks.StructBlock([('cards', wagtail.core.blocks.StructBlock([('office', wagtail.snippets.blocks.SnippetChooserBlock(core.models.Office))]))]))], null=True),
-        ),
+            model_name="electionindexpage",
+            name="panels",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "three_cards",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "cards",
+                                    wagtail.core.blocks.StructBlock(
+                                        [
+                                            (
+                                                "office",
+                                                wagtail.snippets.blocks.SnippetChooserBlock(
+                                                    core.models.Office
+                                                ),
+                                            )
+                                        ]
+                                    ),
+                                )
+                            ]
+                        ),
+                    )
+                ],
+                null=True,
+            ),
+        )
     ]

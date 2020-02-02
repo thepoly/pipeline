@@ -7,38 +7,52 @@ import wagtail.search.index
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0009_auto_20200131_0045'),
-    ]
+    dependencies = [("core", "0009_auto_20200131_0045")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='candidate',
-            name='nominations',
-        ),
-        migrations.RemoveField(
-            model_name='candidate',
-            name='reqd_nominations',
-        ),
+        migrations.RemoveField(model_name="candidate", name="nominations"),
+        migrations.RemoveField(model_name="candidate", name="reqd_nominations"),
         migrations.AlterField(
-            model_name='candidate',
-            name='position',
+            model_name="candidate",
+            name="position",
             field=models.CharField(max_length=255),
         ),
         migrations.CreateModel(
-            name='RunningFor',
+            name="RunningFor",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nominations', models.IntegerField()),
-                ('reqd_nominations', models.IntegerField()),
-                ('office', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.PROTECT, related_name='offices', to='core.Office')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nominations", models.IntegerField()),
+                ("reqd_nominations", models.IntegerField()),
+                (
+                    "office",
+                    models.ForeignKey(
+                        blank=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="offices",
+                        to="core.Office",
+                    ),
+                ),
             ],
             bases=(wagtail.search.index.Indexed, models.Model),
         ),
         migrations.AddField(
-            model_name='candidate',
-            name='runningFor',
-            field=models.ForeignKey(blank=True, default='', on_delete=django.db.models.deletion.PROTECT, related_name='offices', to='core.RunningFor'),
+            model_name="candidate",
+            name="runningFor",
+            field=models.ForeignKey(
+                blank=True,
+                default="",
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="offices",
+                to="core.RunningFor",
+            ),
             preserve_default=False,
         ),
     ]

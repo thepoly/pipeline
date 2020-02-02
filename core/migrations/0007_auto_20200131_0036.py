@@ -7,35 +7,46 @@ import wagtail.search.index
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0006_candidate'),
-    ]
+    dependencies = [("core", "0006_candidate")]
 
     operations = [
         migrations.CreateModel(
-            name='Office',
+            name="Office",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('req_nominations', models.IntegerField()),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("req_nominations", models.IntegerField()),
             ],
             bases=(wagtail.search.index.Indexed, models.Model),
         ),
         migrations.AddField(
-            model_name='candidate',
-            name='position',
-            field=models.CharField(default='', max_length=255),
+            model_name="candidate",
+            name="position",
+            field=models.CharField(default="", max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='candidate',
-            name='reqd_nominations',
+            model_name="candidate",
+            name="reqd_nominations",
             field=models.IntegerField(default=0),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='candidate',
-            name='contributor',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='core.Office'),
+            model_name="candidate",
+            name="contributor",
+            field=models.OneToOneField(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="core.Office",
+            ),
         ),
     ]

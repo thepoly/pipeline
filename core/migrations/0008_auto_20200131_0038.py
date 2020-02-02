@@ -6,18 +6,19 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0007_auto_20200131_0036'),
-    ]
+    dependencies = [("core", "0007_auto_20200131_0036")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='candidate',
-            name='contributor',
-        ),
+        migrations.RemoveField(model_name="candidate", name="contributor"),
         migrations.AlterField(
-            model_name='candidate',
-            name='position',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='office', to='core.Office'),
+            model_name="candidate",
+            name="position",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="office",
+                to="core.Office",
+            ),
         ),
     ]

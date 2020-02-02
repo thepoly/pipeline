@@ -5,15 +5,13 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0016_auto_20200131_0323'),
-    ]
+    dependencies = [("core", "0016_auto_20200131_0323")]
 
     operations = [
         migrations.AddField(
-            model_name='candidatepage',
-            name='nominations',
+            model_name="candidatepage",
+            name="nominations",
             field=models.IntegerField(default=5),
             preserve_default=False,
-        ),
+        )
     ]

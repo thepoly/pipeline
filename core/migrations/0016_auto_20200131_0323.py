@@ -7,14 +7,16 @@ import modelcluster.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0015_candidatepage_officesorderable'),
-    ]
+    dependencies = [("core", "0015_candidatepage_officesorderable")]
 
     operations = [
         migrations.AlterField(
-            model_name='officesorderable',
-            name='page',
-            field=modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='offices_in', to='core.CandidatePage'),
-        ),
+            model_name="officesorderable",
+            name="page",
+            field=modelcluster.fields.ParentalKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="offices_in",
+                to="core.CandidatePage",
+            ),
+        )
     ]

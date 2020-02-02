@@ -6,19 +6,20 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0013_electionindexpage_featured_articles'),
-    ]
+    dependencies = [("core", "0013_electionindexpage_featured_articles")]
 
     operations = [
         migrations.RemoveField(
-            model_name='electionindexpage',
-            name='featured_articles',
+            model_name="electionindexpage", name="featured_articles"
         ),
         migrations.AddField(
-            model_name='electionindexpage',
-            name='electionID',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='core.Election'),
+            model_name="electionindexpage",
+            name="electionID",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="core.Election",
+            ),
             preserve_default=False,
         ),
     ]

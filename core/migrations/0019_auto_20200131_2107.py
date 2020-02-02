@@ -5,20 +5,18 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0018_remove_candidatepage_offices'),
-    ]
+    dependencies = [("core", "0018_remove_candidatepage_offices")]
 
     operations = [
         migrations.AddField(
-            model_name='electionindexpage',
-            name='electionName',
-            field=models.CharField(default='test', max_length=255),
+            model_name="electionindexpage",
+            name="electionName",
+            field=models.CharField(default="test", max_length=255),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='electionindexpage',
-            name='electionID',
+            model_name="electionindexpage",
+            name="electionID",
             field=models.IntegerField(),
         ),
     ]

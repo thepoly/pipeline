@@ -5,13 +5,8 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0023_auto_20200201_2030'),
-    ]
+    dependencies = [("core", "0023_auto_20200201_2030")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='candidatepage',
-            name='nominations',
-        ),
+        migrations.RemoveField(model_name="candidatepage", name="nominations")
     ]

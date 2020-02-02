@@ -7,15 +7,18 @@ import modelcluster.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0020_auto_20200131_2115'),
-    ]
+    dependencies = [("core", "0020_auto_20200131_2115")]
 
     operations = [
         migrations.AddField(
-            model_name='officesorderable',
-            name='electionPage',
-            field=modelcluster.fields.ParentalKey(default=546, on_delete=django.db.models.deletion.CASCADE, related_name='election_offices', to='core.ElectionIndexPage'),
+            model_name="officesorderable",
+            name="electionPage",
+            field=modelcluster.fields.ParentalKey(
+                default=546,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="election_offices",
+                to="core.ElectionIndexPage",
+            ),
             preserve_default=False,
-        ),
+        )
     ]

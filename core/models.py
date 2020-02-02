@@ -804,35 +804,35 @@ class ElectionIndexPage(Page):
     ]
 
 
-@register_snippet
-class Candidate(index.Indexed, models.Model):
+# @register_snippet
+# class Candidate(index.Indexed, models.Model):
 
-    election_in = models.ForeignKey(Election, on_delete=models.PROTECT)
+#     election_in = models.ForeignKey(Election, on_delete=models.PROTECT)
 
-    rich_name = RichTextField(
-        features=["italic"], max_length=255, null=True, blank=True
-    )
+#     rich_name = RichTextField(
+#         features=["italic"], max_length=255, null=True, blank=True
+#     )
 
-    search_fields = [index.SearchField("name", partial_match=True)]
-    autocomplete_search_field = "name"
+#     search_fields = [index.SearchField("name", partial_match=True)]
+#     autocomplete_search_field = "name"
 
-    def autocomplete_label(self):
-        return self.name
+#     def autocomplete_label(self):
+#         return self.name
 
-    @classmethod
-    def autocomplete_create(kls: type, value: str):
-        return kls.objects.create(name=value)
+#     @classmethod
+#     def autocomplete_create(kls: type, value: str):
+#         return kls.objects.create(name=value)
 
-    # def get_articles(self):
-    #     return (
-    #         ArticlePage.objects.live()
-    #         .filter(authors__author=self)
-    #         .order_by("-first_published_at")
-    #         .all()
-    #     )
+#     # def get_articles(self):
+#     #     return (
+#     #         ArticlePage.objects.live()
+#     #         .filter(authors__author=self)
+#     #         .order_by("-first_published_at")
+#     #         .all()
+#     #     )
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
 class CandidatePage(RoutablePageMixin, Page):

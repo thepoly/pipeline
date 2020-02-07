@@ -5,17 +5,13 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0026_auto_20200202_0329'),
-    ]
+    dependencies = [("core", "0026_auto_20200202_0329")]
 
     operations = [
         migrations.AddField(
-            model_name='nomcountorderable',
-            name='required',
+            model_name="nomcountorderable",
+            name="required",
             field=models.IntegerField(default=100),
         ),
-        migrations.DeleteModel(
-            name='Candidate',
-        ),
+        migrations.DeleteModel(name="Candidate"),
     ]

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load cache %}
-{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text cache %}
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags wagtailroutablepage_tags rich_text cache %}
 {% cache 60 page request.is_preview %}
 
 {% block body_class %}template-electionindexpage{% endblock %}
@@ -22,7 +22,7 @@
                                 <img class="" src="{{ photo.url }}">
                         </div>
                         <div class="card-content">
-                            <a class="card-title" href="{% pageurl candidate %}">
+                            <a class="card-title" href="{% routablepageurl election_page 'candidate_route' page.electionName candidate.slug %}">
                                 {% if candidate %}
                                     {{candidate.title}}
                                 {% endif %}

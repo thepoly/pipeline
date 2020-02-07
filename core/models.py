@@ -16,6 +16,11 @@ from django.utils.functional import cached_property
 from django.utils.html import format_html, mark_safe
 from django.utils.text import slugify
 from wagtail.core import blocks
+from django.templatetags.static import static
+from django.utils.html import format_html
+from wagtail.admin import widgets as wagtailadmin_widgets
+from wagtail.core import hooks
+from wagtail.admin.edit_handlers import TabbedInterface, ObjectList
 
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
@@ -713,7 +718,7 @@ class MigrationInformation(models.Model):
 
 
 class OfficesOrderable(Orderable):
-    """This allows us to select one or more blog authors from Snippets."""
+    """This allows us to select one or more offices from Snippets."""
 
     office = models.ForeignKey("core.Office", on_delete=models.CASCADE)
 
@@ -763,8 +768,9 @@ class NomCountOrderable(Orderable):
         FieldPanel("count"),
         FieldPanel("required"),
     ]
+
     def get_percent(self):
-        return min(int(100 * (self.count / self.required)),100)
+        return min(int(100 * (self.count / self.required)), 100)
 
     def __str__(self):
         return self.office.name
@@ -783,21 +789,64 @@ class ThreeCardBlock(blocks.StructBlock):
     cards = OfficeBlock()
 
 
-class ElectionIndexPage(Page):
+@hooks.register("register_page_listing_buttons")
+def page_listing_buttons(page, page_perms, is_parent=False):
+    if isinstance(page, ElectionIndexPage):
+        yield wagtailadmin_widgets.PageListingButton(
+            "Import Election", "/goes/to/a/url/", priority=10
+        )
+
+
+class ElectionIndexPage(RoutablePageMixin, Page):
     subpage_types = ["CandidatePage"]
     electionName = models.CharField(max_length=255)
     electionID = models.IntegerField()
 
     panels = StreamField([("three_cards", ThreeCardBlock())], null=True)
+    @route(r'^$') # will override the default Page serving mechanism
+    def post_404(self, request):
+        raise Http404
 
+    @route(r"^([^\/]*)\/$")
+    def election_page(self,request,name,*args, **kwargs):
+        print(name)
+        context = self.get_context(request)
+        try:
+            page = ElectionIndexPage.objects.live().get(
+                electionName=name
+            )
+        except ElectionIndexPage.DoesNotExist:
+            raise Http404
+        return page.serve(request, *args, **kwargs)
+   
+    @route(r'^(.*)\/(.*)\/$')
+    def candidate_route(self, request, name, candidate, *args, **kwargs):
+        page = CandidatePage.objects.live().descendant_of(self).get(slug=candidate)
+        return page.serve(request, *args, **kwargs)
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(ElectionIndexPage, self).get_context(request, *args, **kwargs)
+        context['election_page'] = self
+        return context
+        
     def get_candidates(self):
         return CandidatePage.objects.live().descendant_of(self)
 
-    content_panels = [
+    content_panels = Page.content_panels + [
         StreamFieldPanel("panels"),
         FieldPanel("electionID"),
-        FieldPanel("electionName")
+        FieldPanel("electionName"),
     ]
+    import_panels = []
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(import_panels, heading="Import"),
+            ObjectList(Page.promote_panels, heading="Promote"),
+            ObjectList(Page.settings_panels, heading="Settings", classname="settings"),
+        ]
+    )
+
 
 class CandidatePage(RoutablePageMixin, Page):
     parent_page_types = ["ElectionIndexPage"]
@@ -822,6 +871,24 @@ class CandidatePage(RoutablePageMixin, Page):
             [InlinePanel("nom_counts", label="nom counts")], heading="Nom Counts"
         ),
     ]
+    # @route(r"^$")
+    # def post_404(self, request):
+    #     """Return an HTTP 404 whenever the page is accessed directly.
+
+    #     This is because it should instead by accessed by its date-based path,
+    #     i.e. `<year>/<month>/<slug>/`."""
+    #     raise Http404
+
+    def set_url_path(self, parent):
+        # Set the url since we are using external routing
+        print(self.get_parent())
+        self.url_path = f"/elections/{parent.name}/{self.rcs_id}/"
+        return self.url_path
+    
+    def get_context(self, request, *args, **kwargs):
+        context = super(CandidatePage, self).get_context(request, *args, **kwargs)
+        context['candidate'] = self
+        return context
 
     def get_offices(self):
         return [r.office for r in self.offices_in.select_related("office")]
@@ -838,4 +905,3 @@ class CandidatePage(RoutablePageMixin, Page):
             if office.name == office_name:
                 return true
         return false
-

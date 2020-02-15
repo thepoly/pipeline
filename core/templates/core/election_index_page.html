@@ -33,7 +33,7 @@
                                     <p class="office">{{nc.office}}</p>
                                     <div class="card-progress">
                                         <p>{{nc.count}}/{{nc.required}}</p>
-                                        <div style="width: {{ nc.get_percent }}%" class="inner-progress"></div>
+                                    <div style="width: {{ nc.get_percent }}%;" class="inner-progress {% if nc.get_percent >= 100 %} green {% endif %}" ></div>
                                     </div>
                                 {% endif %}
                                 {% endfor %}

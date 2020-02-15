@@ -1,6 +1,6 @@
 from django import template
 
-from core.models import ArticlesIndexPage, ArticlePage, StaffPage
+from core.models import ArticlesIndexPage, ArticlePage, StaffPage, CandidatePage, ElectionIndexPage
 from home.models import HomePage
 
 register = template.Library()
@@ -58,7 +58,7 @@ def bottom_menu():
         home.get_descendants()
         .live()
         .public()
-        .not_type((ArticlePage, StaffPage))
+        .not_type((ArticlePage, StaffPage, CandidatePage, ElectionIndexPage))
         .order_by("title")
     )
     return {"pages": pages}

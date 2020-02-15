@@ -850,7 +850,6 @@ class ElectionIndexPage(RoutablePageMixin, Page):
 
 class CandidatePage(RoutablePageMixin, Page):
     parent_page_types = ["ElectionIndexPage"]
-    name = models.CharField(max_length=255)
     rcs_id = models.CharField(max_length=255)
     election_site_id = models.IntegerField()
     bio = RichTextField(features=["italic"], max_length=3000, null=True, blank=True)
@@ -862,7 +861,6 @@ class CandidatePage(RoutablePageMixin, Page):
         help_text="Candidate image",
     )
     content_panels = Page.content_panels + [
-        FieldPanel("name"),
         FieldPanel("rcs_id"),
         FieldPanel("election_site_id"),
         FieldPanel("bio"),

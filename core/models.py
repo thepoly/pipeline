@@ -803,32 +803,31 @@ class ElectionIndexPage(RoutablePageMixin, Page):
     electionID = models.IntegerField()
 
     panels = StreamField([("three_cards", ThreeCardBlock())], null=True)
-    @route(r'^$') # will override the default Page serving mechanism
+
+    @route(r"^$")  # will override the default Page serving mechanism
     def post_404(self, request):
         raise Http404
 
     @route(r"^([^\/]*)\/$")
-    def election_page(self,request,name,*args, **kwargs):
+    def election_page(self, request, name, *args, **kwargs):
         print(name)
         context = self.get_context(request)
         try:
-            page = ElectionIndexPage.objects.live().get(
-                electionName=name
-            )
+            page = ElectionIndexPage.objects.live().get(electionName=name)
         except ElectionIndexPage.DoesNotExist:
             raise Http404
         return page.serve(request, *args, **kwargs)
-   
-    @route(r'^(.*)\/(.*)\/$')
+
+    @route(r"^(.*)\/(.*)\/$")
     def candidate_route(self, request, name, candidate, *args, **kwargs):
         page = CandidatePage.objects.live().descendant_of(self).get(slug=candidate)
         return page.serve(request, *args, **kwargs)
 
     def get_context(self, request, *args, **kwargs):
         context = super(ElectionIndexPage, self).get_context(request, *args, **kwargs)
-        context['election_page'] = self
+        context["election_page"] = self
         return context
-        
+
     def get_candidates(self):
         return CandidatePage.objects.live().descendant_of(self)
 
@@ -846,13 +845,20 @@ class ElectionIndexPage(RoutablePageMixin, Page):
             ObjectList(Page.settings_panels, heading="Settings", classname="settings"),
         ]
     )
-
+class CandidateRelatedArticles(Orderable):
+    page = ParentalKey("core.CandidatePage", related_name='related_articles')
+    article = models.ForeignKey('core.ArticlePage', null=False, blank=True, related_name='+', on_delete=models.PROTECT)
+    panels = [
+        # Use a SnippetChooserPanel because blog.BlogAuthor is registered as a snippet
+        PageChooserPanel("article"),
+    ]
 
 class CandidatePage(RoutablePageMixin, Page):
     parent_page_types = ["ElectionIndexPage"]
     rcs_id = models.CharField(max_length=255)
     election_site_id = models.IntegerField()
     bio = RichTextField(features=["italic"], max_length=3000, null=True, blank=True)
+
     image = models.ForeignKey(
         CustomImage,
         null=True,
@@ -861,12 +867,13 @@ class CandidatePage(RoutablePageMixin, Page):
         help_text="Candidate image",
     )
     content_panels = Page.content_panels + [
+        InlinePanel("related_articles", label="Related Pages"),
         FieldPanel("rcs_id"),
         FieldPanel("election_site_id"),
         FieldPanel("bio"),
         ImageChooserPanel("image"),
         MultiFieldPanel(
-            [InlinePanel("nom_counts", label="nom counts")], heading="Nom Counts"
+            [InlinePanel("nom_counts", label="Nom Counts")], heading="Nom Counts"
         ),
     ]
     # @route(r"^$")
@@ -879,14 +886,22 @@ class CandidatePage(RoutablePageMixin, Page):
 
     def set_url_path(self, parent):
         # Set the url since we are using external routing
-        print(self.get_parent())
-        self.url_path = f"/elections/{parent.name}/{self.rcs_id}/"
+        self.url_path = f"/elections/{self.get_parent().electionName}/{self.rcs_id}/"
         return self.url_path
-    
+
     def get_context(self, request, *args, **kwargs):
         context = super(CandidatePage, self).get_context(request, *args, **kwargs)
-        context['candidate'] = self
+        context["candidate"] = self
         return context
+    
+    def get_articles(self):
+        return [r.article for r in self.related_articles.select_related("article")]
+        return (
+            ArticlePage.objects.live()
+            .filter(authors__author=self.contributor)
+            .order_by("-first_published_at")
+            .all()
+        )
 
     def get_offices(self):
         return [r.office for r in self.offices_in.select_related("office")]

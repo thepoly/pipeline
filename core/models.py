@@ -845,13 +845,22 @@ class ElectionIndexPage(RoutablePageMixin, Page):
             ObjectList(Page.settings_panels, heading="Settings", classname="settings"),
         ]
     )
+
+
 class CandidateRelatedArticles(Orderable):
-    page = ParentalKey("core.CandidatePage", related_name='related_articles')
-    article = models.ForeignKey('core.ArticlePage', null=False, blank=True, related_name='+', on_delete=models.PROTECT)
+    page = ParentalKey("core.CandidatePage", related_name="related_articles")
+    article = models.ForeignKey(
+        "core.ArticlePage",
+        null=False,
+        blank=True,
+        related_name="+",
+        on_delete=models.PROTECT,
+    )
     panels = [
         # Use a SnippetChooserPanel because blog.BlogAuthor is registered as a snippet
-        PageChooserPanel("article"),
+        PageChooserPanel("article")
     ]
+
 
 class CandidatePage(RoutablePageMixin, Page):
     parent_page_types = ["ElectionIndexPage"]
@@ -893,15 +902,9 @@ class CandidatePage(RoutablePageMixin, Page):
         context = super(CandidatePage, self).get_context(request, *args, **kwargs)
         context["candidate"] = self
         return context
-    
+
     def get_articles(self):
         return [r.article for r in self.related_articles.select_related("article")]
-        return (
-            ArticlePage.objects.live()
-            .filter(authors__author=self.contributor)
-            .order_by("-first_published_at")
-            .all()
-        )
 
     def get_offices(self):
         return [r.office for r in self.offices_in.select_related("office")]

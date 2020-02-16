@@ -9,3 +9,4 @@
 /pipeline-env/
 **/__pycache__/**
 
+*.backup

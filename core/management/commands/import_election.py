@@ -158,13 +158,13 @@ class Command(BaseCommand):
                     pageToUpdate = CandidatePage.objects.get(id=page.id)
                     if nc.office.elections_site_id == office["office_id"]:
                         reqd = office["nominations_required"]
-                    mnc = pageToUpdate.nom_counts.get(id=nc.id)
-                    if reqd != -1:
-                        mnc.required = reqd
-                    mnc.save()
-                    mnc.page = pageToUpdate
+                        mnc = pageToUpdate.nom_counts.get(id=nc.id)
+                        if reqd != -1:
+                            mnc.required = reqd
+                        mnc.save()
+                        mnc.page = pageToUpdate
 
-                    pageToUpdate.save_revision()
+                        pageToUpdate.save_revision()
     
             
         r = requests.get("https://elections.union.rpi.edu/api/nominations/counts")

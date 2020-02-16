@@ -1,6 +1,12 @@
 from django import template
 
-from core.models import ArticlesIndexPage, ArticlePage, StaffPage, CandidatePage, ElectionIndexPage
+from core.models import (
+    ArticlesIndexPage,
+    ArticlePage,
+    StaffPage,
+    CandidatePage,
+    ElectionIndexPage,
+)
 from home.models import HomePage
 
 register = template.Library()

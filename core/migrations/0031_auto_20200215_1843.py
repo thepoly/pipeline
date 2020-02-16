@@ -7,25 +7,35 @@ import modelcluster.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0030_candidatepage_related_articles'),
-    ]
+    dependencies = [("core", "0030_candidatepage_related_articles")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='candidatepage',
-            name='related_articles',
-        ),
+        migrations.RemoveField(model_name="candidatepage", name="related_articles"),
         migrations.CreateModel(
-            name='CandidateRelatedAuthors',
+            name="CandidateRelatedAuthors",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sort_order', models.IntegerField(blank=True, editable=False, null=True)),
-                ('page', modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='related_articles', to='core.ArticlePage')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "sort_order",
+                    models.IntegerField(blank=True, editable=False, null=True),
+                ),
+                (
+                    "page",
+                    modelcluster.fields.ParentalKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="related_articles",
+                        to="core.ArticlePage",
+                    ),
+                ),
             ],
-            options={
-                'ordering': ['sort_order'],
-                'abstract': False,
-            },
+            options={"ordering": ["sort_order"], "abstract": False},
         ),
     ]

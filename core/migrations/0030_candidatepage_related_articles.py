@@ -6,14 +6,18 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0029_remove_candidatepage_name'),
-    ]
+    dependencies = [("core", "0029_remove_candidatepage_name")]
 
     operations = [
         migrations.AddField(
-            model_name='candidatepage',
-            name='related_articles',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='+', to='core.ArticlePage'),
-        ),
+            model_name="candidatepage",
+            name="related_articles",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="+",
+                to="core.ArticlePage",
+            ),
+        )
     ]

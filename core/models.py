@@ -732,10 +732,13 @@ class OfficesOrderable(Orderable):
 class Office(index.Indexed, models.Model):
     name = models.CharField(max_length=255)
     elections_site_id = models.IntegerField()
-    election_in = models.ForeignKey(Election, on_delete=models.PROTECT)
+    election_in = models.IntegerField()
 
     search_fields = [index.SearchField("name", partial_match=True)]
     autocomplete_search_field = "name"
+
+    def get_election_site_id(self):
+        return self.election_site_id
 
     def autocomplete_label(self):
         return self.name
@@ -893,10 +896,10 @@ class CandidatePage(RoutablePageMixin, Page):
     #     i.e. `<year>/<month>/<slug>/`."""
     #     raise Http404
 
-    def set_url_path(self, parent):
-        # Set the url since we are using external routing
-        self.url_path = f"/elections/{self.get_parent().electionName}/{self.rcs_id}/"
-        return self.url_path
+    # def set_url_path(self, parent):
+    #     # Set the url since we are using external routing
+    #     self.url_path = f"/elections/{self.get_parent().electionName}/{self.rcs_id}/"
+    #     return self.url_path
 
     def get_context(self, request, *args, **kwargs):
         context = super(CandidatePage, self).get_context(request, *args, **kwargs)

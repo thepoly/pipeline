@@ -138,7 +138,7 @@ class Command(BaseCommand):
                 )
                 nc = NomCountOrderable()
                 nc.office = office
-                nc.count = 5
+                nc.count = 0
                 nc.required = 100
                 self.electionIndex.add_child(instance=page)
                 nc.page = page

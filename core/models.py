@@ -896,10 +896,10 @@ class CandidatePage(RoutablePageMixin, Page):
     #     i.e. `<year>/<month>/<slug>/`."""
     #     raise Http404
 
-    # def set_url_path(self, parent):
-    #     # Set the url since we are using external routing
-    #     self.url_path = f"/elections/{self.get_parent().electionName}/{self.rcs_id}/"
-    #     return self.url_path
+    def set_url_path(self, parent):
+        # Set the url since we are using external routing
+        self.url_path = f"/elections/{self.get_parent().specific.electionName}/{self.rcs_id}/"
+        return self.url_path
 
     def get_context(self, request, *args, **kwargs):
         context = super(CandidatePage, self).get_context(request, *args, **kwargs)

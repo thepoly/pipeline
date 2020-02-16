@@ -150,7 +150,25 @@ class Command(BaseCommand):
         # Update noms
         r = requests.get("https://elections.union.rpi.edu/api/offices")
         office_json = r.json()
+        pages = self.electionIndex.get_children().type(CandidatePage).all()
+        for page in pages:
+            for nc in page.specific.nom_counts.get_object_list():
+                for office in office_json:
+                    reqd = -1
+                    pageToUpdate = CandidatePage.objects.get(id=page.id)
+                    if nc.office.elections_site_id == office["office_id"]:
+                        reqd = office["nominations_required"]
+                    mnc = pageToUpdate.nom_counts.get(id=nc.id)
+                    if reqd != -1:
+                        mnc.required = reqd
+                    mnc.save()
+                    mnc.page = pageToUpdate
+
+                    pageToUpdate.save_revision()
+    
+            
         r = requests.get("https://elections.union.rpi.edu/api/nominations/counts")
+        
         for count in r.json():
             pages = self.electionIndex.get_children().type(CandidatePage).all()
             for page in pages:

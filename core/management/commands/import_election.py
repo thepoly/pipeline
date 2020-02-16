@@ -165,10 +165,9 @@ class Command(BaseCommand):
                         mnc.page = pageToUpdate
 
                         pageToUpdate.save_revision()
-    
-            
+
         r = requests.get("https://elections.union.rpi.edu/api/nominations/counts")
-        
+
         for count in r.json():
             pages = self.electionIndex.get_children().type(CandidatePage).all()
             for page in pages:

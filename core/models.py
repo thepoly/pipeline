@@ -898,7 +898,9 @@ class CandidatePage(RoutablePageMixin, Page):
 
     def set_url_path(self, parent):
         # Set the url since we are using external routing
-        self.url_path = f"/elections/{self.get_parent().specific.electionName}/{self.rcs_id}/"
+        self.url_path = (
+            f"/elections/{self.get_parent().specific.electionName}/{self.rcs_id}/"
+        )
         return self.url_path
 
     def get_context(self, request, *args, **kwargs):

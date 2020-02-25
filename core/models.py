@@ -24,6 +24,7 @@ from wagtail.core.blocks import (
     StructValue,
     ChoiceBlock,
     IntegerBlock,
+    StreamBlock
 )
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page, Orderable
@@ -336,12 +337,27 @@ class MarqueeBlock(StructBlock):
 class GalleryPhotoBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)
-
+        
 class UnionEvent(StructBlock):
     title=RichTextBlock(required=True, default="")
     date=RichTextBlock(required=True, default="")
-    body=RichTextBlock(required=True, default="")
+    body=ListBlock(StructBlock([
+        ("phrase", RichTextBlock()),
+        ("definition", RichTextBlock(required=False)),
+    ]))
     featured_image = ImageChooserBlock(required=False)
+
+'''class UnionEvent(StructBlock):
+    title=RichTextBlock(required=True, default="")
+    date=RichTextBlock(required=True, default="")
+    body=ListBlock(StructBlock([
+        ("paragraph", RichTextBlock()),
+        ("tooltip", StructBlock([
+            ("phrase", RichTextBlock()),
+            ("definition", RichTextBlock(required=False)),
+        ])),
+    ]))
+    featured_image = ImageChooserBlock(required=False)'''
 
 class UnionTimeline(Page):
     events=StreamField(

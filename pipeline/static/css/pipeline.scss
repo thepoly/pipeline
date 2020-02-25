@@ -374,7 +374,9 @@ ul.pagination {
 }
 
 .template-articlepage .embed.video {
-  max-width: var(--breakpoint-lg);
+  width: 550px;
+  //max-width: 50%;
+  //max-width: var(--breakpoint-lg);
 }
 
 .template-homepage .header-logo img {

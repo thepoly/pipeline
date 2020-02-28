@@ -56,31 +56,31 @@
     z-index:999;
   }
   .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-  }
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
 
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 300px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
   
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -60px;
-  }
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
 
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-  }
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 </style>
 
 <div class="container mt-5 mb-5">
@@ -99,13 +99,15 @@
             <div class="row">
               <div class="col-12 col-md-8">
                 {% if block.value.body %}
-                  {% for item in block.value.body %}
-                    {% if item.definition %}
-                      <div class="tooltip">{{item.phrase}}
-                        <span class="tooltiptext">{{item.definition}}</span>
-                      </div>
+                  {% for event_body_block in block.value.body %}
+                    {% if event_body_block.definition %}
+                      <span class="tooltip">{{event_body_block.phrase}}
+                        <span class="tooltiptext">{{event_body_block.definition}}</span>
+                      </span>
                     {% else %}
-                      {{item.phrase}}
+                      <span>
+                        {{event_body_block.phrase}}
+                      </span>
                     {% endif %}
                   {% endfor %}
                 {% endif %}

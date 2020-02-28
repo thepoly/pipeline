@@ -24,7 +24,8 @@ from wagtail.core.blocks import (
     StructValue,
     ChoiceBlock,
     IntegerBlock,
-    StreamBlock
+    StreamBlock,
+    TextBlock
 )
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page, Orderable
@@ -338,14 +339,33 @@ class GalleryPhotoBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)
         
+class EventPhrase(RichTextBlock):
+    phrase=RichTextBlock()
+
 class UnionEvent(StructBlock):
     title=RichTextBlock(required=True, default="")
     date=RichTextBlock(required=True, default="")
     body=ListBlock(StructBlock([
-        ("phrase", RichTextBlock()),
+        ("phrase", TextBlock()),
         ("definition", RichTextBlock(required=False)),
     ]))
     featured_image = ImageChooserBlock(required=False)
+
+    def get_text_html(self):
+        """Get the HTML that represents paragraphs within the article as a string."""
+        builder = ""
+        for block in event.body:
+            builder += str(block.value.phrase)
+        return builder
+
+    def get_plain_text(self):
+        builder = ""
+        soup = BeautifulSoup(self.get_text_html(), "html.parser")
+        for para in soup.findAll("p"):
+            builder += para.text
+            builder += " "
+        return builder[:-1]
+    
 
 '''class UnionEvent(StructBlock):
     title=RichTextBlock(required=True, default="")
@@ -365,6 +385,23 @@ class UnionTimeline(Page):
     )
 
     content_panels = Page.content_panels + [StreamFieldPanel("events")]
+
+    '''def get_text_html(self, current_block):
+        """Get the HTML that represents paragraphs within the article as a string."""
+        builder = ""
+        for event in self.events:
+            for block in event.body:
+                if (block.value.phrase==current_block.value.phrase):
+                    builder += str(block.value.phrase)
+        return builder
+
+    def get_plain_text(self, current_block):
+        builder = ""
+        soup = BeautifulSoup(self.get_text_html(current_block), "html.parser")
+        for para in soup.findAll("p"):
+            builder += para.text
+            builder += " "
+        return builder[:-1]'''
         
 
 class ArticlePage(RoutablePageMixin, Page):

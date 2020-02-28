@@ -4,6 +4,8 @@ $theme-colors: (
   "primary": #DA1E05,
 );
 
+$off-white: #fefefe;
+
 $enable-gradients: true;
 
 $font-family-base: 'Lora', serif;
@@ -45,6 +47,8 @@ $font-family-base: 'Lora', serif;
 // @import "~bootstrap/scss/carousel";
 @import "~bootstrap/scss/utilities";
 // @import "~bootstrap/scss/print";
+
+@import "./elections.scss";
 
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
@@ -250,16 +254,22 @@ ul.pagination {
   }
 }
 
-
-.template-articlepage .featured-photo img {
-  height: auto;
-  width: 100%;
+@include media-breakpoint-up(sm) {
+  .template-articlepage .featured-photo img {
+    height: auto;
+    width: 768px;
+  }
+}
+@include media-breakpoint-down(sm) {
+  .template-articlepage .featured-photo img {
+    height: auto;
+    width: 100%;
+  }
 }
 
 .img-container{
+  text-align: center;
   width: 100%;
-  max-width: 768px;
-
 }
 
 .template-articlepage .featured-photo .meta {

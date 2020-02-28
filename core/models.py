@@ -372,16 +372,13 @@ class MarqueeBlock(StructBlock):
 class GalleryPhotoBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)
-        
-class EventPhrase(RichTextBlock):
-    phrase=RichTextBlock()
 
 class UnionEvent(StructBlock):
     title=RichTextBlock(required=True, default="")
     date=RichTextBlock(required=True, default="")
     body=ListBlock(StructBlock([
         ("phrase", TextBlock()),
-        ("definition", RichTextBlock(required=False)),
+        ("definition", TextBlock(required=False)),
     ]))
     featured_image = ImageChooserBlock(required=False)
 

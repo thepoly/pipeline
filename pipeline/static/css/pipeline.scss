@@ -373,11 +373,21 @@ ul.pagination {
   }
 }
 
-.template-articlepage .embed.video {
-  width: 550px;
-  //max-width: 50%;
-  //max-width: var(--breakpoint-lg);
+.template-articlepage .embed.small {
+  max-width: var(--breakpoint-sm);
 }
+.template-articlepage .embed.medium {
+  max-width: var(--breakpoint-md);
+}
+.template-articlepage .embed.large {
+  max-width: var(--breakpoint-xl);
+}
+
+//.template-articlepage .embed.video {
+//  width: 550px;
+//  //max-width: 50%;
+//  //max-width: var(--breakpoint-lg);
+//}
 
 .template-homepage .header-logo img {
   height: 80px;

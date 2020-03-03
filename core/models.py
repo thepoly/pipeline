@@ -300,6 +300,11 @@ class EmbeddedMediaValue(StructValue):
 
 class EmbeddedMediaBlock(StructBlock):
     embed = EmbedBlock(help_text="URL to the content to embed.")
+    size = ChoiceBlock(
+        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
+        default="medium",
+        help_text="Width of video in article.",
+    )
 
     class Meta:
         value_class = EmbeddedMediaValue
@@ -368,7 +373,13 @@ class ArticlePage(RoutablePageMixin, Page):
         on_delete=models.PROTECT,
         help_text="Shown at the top of the article and on the home page.",
     )
+    size = ChoiceBlock(
+        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
+        default="medium",
+        help_text="Width of image in article.",
+    )
     featured_caption = RichTextField(features=["italic"], blank=True, null=True)
+
 
     content_panels = [
         MultiFieldPanel(

@@ -373,13 +373,7 @@ class ArticlePage(RoutablePageMixin, Page):
         on_delete=models.PROTECT,
         help_text="Shown at the top of the article and on the home page.",
     )
-    size = ChoiceBlock(
-        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
-        default="medium",
-        help_text="Width of image in article.",
-    )
     featured_caption = RichTextField(features=["italic"], blank=True, null=True)
-
 
     content_panels = [
         MultiFieldPanel(

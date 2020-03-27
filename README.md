@@ -41,7 +41,7 @@ Read about creating a user [here](https://www.postgresql.org/docs/10/role-attrib
 git clone git@github.com:thepoly/pipeline.git
 cd pipeline
 npm install
-npx wp --config webpack.development.config.js
+npx webpack --config webpack.development.config.js
 pipenv install --dev
 pipenv run python manage.py createcachetable
 ```

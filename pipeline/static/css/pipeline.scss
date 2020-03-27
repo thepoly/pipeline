@@ -4,6 +4,8 @@ $theme-colors: (
   "primary": #DA1E05,
 );
 
+$off-white: #fefefe;
+
 $enable-gradients: true;
 
 $font-family-base: 'Lora', serif;
@@ -45,6 +47,8 @@ $font-family-base: 'Lora', serif;
 // @import "~bootstrap/scss/carousel";
 @import "~bootstrap/scss/utilities";
 // @import "~bootstrap/scss/print";
+
+@import "./elections.scss";
 
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {

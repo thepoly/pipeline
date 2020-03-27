@@ -15,6 +15,13 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.html import format_html, mark_safe
 from django.utils.text import slugify
+from wagtail.core import blocks
+from django.templatetags.static import static
+from django.utils.html import format_html
+from wagtail.admin import widgets as wagtailadmin_widgets
+from wagtail.core import hooks
+from wagtail.admin.edit_handlers import TabbedInterface, ObjectList
+
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
     RichTextBlock,
@@ -198,6 +205,28 @@ class StaffIndexPage(Page):
             .annotate(latest_term_ended=Max("terms__date_ended"))
             .order_by(F("latest_term_ended").desc(nulls_last=True))
         )
+
+
+@register_snippet
+class Election(index.Indexed, models.Model):
+    name = models.CharField(max_length=255)
+    election_site_id = models.IntegerField(default=-1)
+    autocomplete_search_field = "name"
+
+    def autocomplete_label(self):
+        return self.name
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(name=value)
+
+    def __str__(self):
+        return self.name
+
+
+class CandidateBlock(StructBlock):
+    image = ImageChooserBlock()
+    caption = RichTextBlock(features=["italic"], required=False)
 
 
 @register_snippet
@@ -633,3 +662,267 @@ class MigrationInformation(models.Model):
     article = models.OneToOneField(ArticlePage, on_delete=models.CASCADE)
     link = models.URLField(db_index=True)
     guid = models.CharField(max_length=255, primary_key=True)
+
+
+## ELECTION PAGES
+
+# TODO: Support adding articles and ads alongside candidate page
+
+# class ArticleBlock(blocks.StructBlock):
+#     article = blocks.PageChooserBlock(target_model="core.ArticlePage")
+#     headline = blocks.RichTextBlock(
+#         help_text="Optional. Will override the article's headline.", required=False
+#     )
+#     # TODO: add a photo override block
+#     # TODO: add a "hide photo" block
+
+#     class Meta:
+#         template = "home/article_block.html"
+
+# class CandidateBlock(blocks.StructBlock):
+#     article = blocks.PageChooserBlock(target_model="core.CandidatePage")
+
+#     class Meta:
+#         template = "core/candidate_block.html"
+
+# class CandidateBlock(blocks.StructBlock):
+#     article = blocks.PageChooserBlock(target_model="core.ArticlePage")
+#     headline = blocks.RichTextBlock(
+#         help_text="Optional. Will override the article's headline.", required=False
+#     )
+#     # TODO: add a photo override block
+#     # TODO: add a "hide photo" block
+
+#     class Meta:
+#         template = "home/article_block.html"
+
+
+# class OneColumnBlock(blocks.StructBlock):
+#     column = ArticleBlock()
+
+#     def article_pks(self):
+#         return set(self.column.value.pk)  # pylint: disable=E1101
+
+# class TwoColumnBlock(blocks.StructBlock):
+#     left_column = ArticleBlock()
+#     right_column = ArticleBlock()
+#     emphasize_column = blocks.ChoiceBlock(
+#         choices=[("left", "Left"), ("right", "Right")],
+#         required=False,
+#         help_text="Which article, if either, should appear larger.",
+#     )
+
+#     def article_pks(self):
+#         # pylint: disable=E1101
+#         return set(self.left_column.value.pk, self.right_column.value.pk)
+
+
+class OfficesOrderable(Orderable):
+    """This allows us to select one or more offices from Snippets."""
+
+    office = models.ForeignKey("core.Office", on_delete=models.CASCADE)
+
+    panels = [
+        # Use a SnippetChooserPanel because blog.BlogAuthor is registered as a snippet
+        SnippetChooserPanel("office")
+    ]
+
+
+@register_snippet
+class Office(index.Indexed, models.Model):
+    name = models.CharField(max_length=255)
+    elections_site_id = models.IntegerField()
+    election_in = models.IntegerField()
+
+    search_fields = [index.SearchField("name", partial_match=True)]
+    autocomplete_search_field = "name"
+
+    def get_election_site_id(self):
+        return self.election_site_id
+
+    def autocomplete_label(self):
+        return self.name
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(name=value)
+
+    def __str__(self):
+        return self.name
+
+
+@register_snippet
+class NomCount(index.Indexed, models.Model):
+    count = models.IntegerField(default=0)
+    office = models.ForeignKey(Office, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.office.name + "-" + str(self.count)
+
+
+class NomCountOrderable(Orderable):
+    page = ParentalKey("core.CandidatePage", related_name="nom_counts")
+    office = models.ForeignKey(Office, on_delete=models.PROTECT)
+    count = models.IntegerField(default=0)
+    required = models.IntegerField(default=100)
+    panels = [
+        # Use a SnippetChooserPanel because blog.BlogAuthor is registered as a snippet
+        SnippetChooserPanel("office"),
+        FieldPanel("count"),
+        FieldPanel("required"),
+    ]
+
+    def get_percent(self):
+        return min(int(100 * (self.count / self.required)), 100)
+
+    def __str__(self):
+        return self.office.name
+
+
+class OfficeBlock(blocks.StructBlock):
+    office = SnippetChooserBlock(Office)
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["candidates"] = [a for a in CandidatePage.objects.live()]
+        return context
+
+
+class ThreeCardBlock(blocks.StructBlock):
+    cards = OfficeBlock()
+
+
+@hooks.register("register_page_listing_buttons")
+def page_listing_buttons(page, page_perms, is_parent=False):
+    if isinstance(page, ElectionIndexPage):
+        yield wagtailadmin_widgets.PageListingButton(
+            "Import Election", "/goes/to/a/url/", priority=10
+        )
+
+
+class ElectionIndexPage(RoutablePageMixin, Page):
+    subpage_types = ["CandidatePage"]
+    electionName = models.CharField(max_length=255)
+    electionID = models.IntegerField()
+
+    panels = StreamField([("three_cards", ThreeCardBlock())], null=True)
+
+    @route(r"^$")  # will override the default Page serving mechanism
+    def post_404(self, request):
+        raise Http404
+
+    @route(r"^([^\/]*)\/$")
+    def election_page(self, request, name, *args, **kwargs):
+        print(name)
+        context = self.get_context(request)
+        try:
+            page = ElectionIndexPage.objects.live().get(electionName=name)
+        except ElectionIndexPage.DoesNotExist:
+            raise Http404
+        return page.serve(request, *args, **kwargs)
+
+    @route(r"^(.*)\/(.*)\/$")
+    def candidate_route(self, request, name, candidate, *args, **kwargs):
+        page = CandidatePage.objects.live().descendant_of(self).get(slug=candidate)
+        return page.serve(request, *args, **kwargs)
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(ElectionIndexPage, self).get_context(request, *args, **kwargs)
+        context["election_page"] = self
+        return context
+
+    def get_candidates(self):
+        return CandidatePage.objects.live().descendant_of(self)
+
+    content_panels = Page.content_panels + [
+        StreamFieldPanel("panels"),
+        FieldPanel("electionID"),
+        FieldPanel("electionName"),
+    ]
+    import_panels = []
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(import_panels, heading="Import"),
+            ObjectList(Page.promote_panels, heading="Promote"),
+            ObjectList(Page.settings_panels, heading="Settings", classname="settings"),
+        ]
+    )
+
+
+class CandidateRelatedArticles(Orderable):
+    page = ParentalKey("core.CandidatePage", related_name="related_articles")
+    article = models.ForeignKey(
+        "core.ArticlePage",
+        null=False,
+        blank=True,
+        related_name="+",
+        on_delete=models.PROTECT,
+    )
+    panels = [
+        # Use a SnippetChooserPanel because blog.BlogAuthor is registered as a snippet
+        PageChooserPanel("article")
+    ]
+
+
+class CandidatePage(RoutablePageMixin, Page):
+    parent_page_types = ["ElectionIndexPage"]
+    rcs_id = models.CharField(max_length=255)
+    election_site_id = models.IntegerField()
+    bio = RichTextField(features=["italic"], max_length=3000, null=True, blank=True)
+
+    image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        help_text="Candidate image",
+    )
+    content_panels = Page.content_panels + [
+        InlinePanel("related_articles", label="Related Pages"),
+        FieldPanel("rcs_id"),
+        FieldPanel("election_site_id"),
+        FieldPanel("bio"),
+        ImageChooserPanel("image"),
+        MultiFieldPanel(
+            [InlinePanel("nom_counts", label="Nom Counts")], heading="Nom Counts"
+        ),
+    ]
+    # @route(r"^$")
+    # def post_404(self, request):
+    #     """Return an HTTP 404 whenever the page is accessed directly.
+
+    #     This is because it should instead by accessed by its date-based path,
+    #     i.e. `<year>/<month>/<slug>/`."""
+    #     raise Http404
+
+    def set_url_path(self, parent):
+        # Set the url since we are using external routing
+        self.url_path = (
+            f"/elections/{self.get_parent().specific.electionName}/{self.rcs_id}/"
+        )
+        return self.url_path
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(CandidatePage, self).get_context(request, *args, **kwargs)
+        context["candidate"] = self
+        return context
+
+    def get_articles(self):
+        return [r.article for r in self.related_articles.select_related("article")]
+
+    def get_offices(self):
+        return [r.office for r in self.offices_in.select_related("office")]
+
+    def get_nom_counts(self):
+        return [r for r in self.nom_counts.select_related("office")]
+
+    def get_office_names(self):
+        return [r.office.name for r in self.nom_counts.select_related("office")]
+
+    # This is probably really bad
+    def is_in_office(self, office_name):
+        for office in [r for r in self.nom_counts.select_related("office")]:
+            if office.name == office_name:
+                return true
+        return false

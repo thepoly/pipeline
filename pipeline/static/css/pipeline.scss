@@ -377,8 +377,14 @@ ul.pagination {
   }
 }
 
-.template-articlepage .embed.video {
-  max-width: var(--breakpoint-lg);
+.template-articlepage .embed.small .embed.video {
+  max-width: var(--breakpoint-sm);
+}
+.template-articlepage .embed.medium .embed.video {
+  max-width: var(--breakpoint-md);
+}
+.template-articlepage .embed.large .embed.video {
+  max-width: var(--breakpoint-xl);
 }
 
 .template-homepage .header-logo img {

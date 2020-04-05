@@ -114,15 +114,17 @@
                     </div>
                 </div>
             {% elif block.block_type == 'embed' %}
-                {% if block.value.type == 'video' %}
-                    <div class="container-fluid embed video embed-responsive embed-responsive-16by9">
-                        {% embed block.value.embed.url %}
-                    </div>
-                {% else %}
-                    <div class="container embed narrow embed-responsive embed-responsive-21by9">
-                        {% embed block.value.embed.url %}
-                    </div>
-                {% endif %}
+                <div class="embed d-flex flex-column align-items-center {{ block.value.size }}">
+                    {% if block.value.type == 'video' %}
+                            <div class="container-fluid embed video embed-responsive embed-responsive-16by9">
+                                {% embed block.value.embed.url %}
+                            </div>
+                    {% else %}
+                        <div class="container embed narrow embed-responsive embed-responsive-21by9">
+                            {% embed block.value.embed.url %}
+                        </div>
+                    {% endif %}
+                </div>
             {% else %}
                 <div class="container narrow">
                     {% include_block block %}

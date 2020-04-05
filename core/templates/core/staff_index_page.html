@@ -29,12 +29,14 @@
 
     <h4>Previously...</h4>
     <div class="d-flex flex-wrap">
-        {% for person in page.get_previous_staff %}
-            <div class="previous-person px-3 py-2">
-                <h5>
-                    <a href="{% pageurl person %}">{{ person.title }}</a>
-                </h5>
-            </div>
+        {% for previous_staff in page.get_previous_staff_by_years %}
+            {% for person in previous_staff %}
+                <div class="previous-person px-3 py-2">
+                    <h5>
+                        <a href="{% pageurl person %}">{{ person.title }}</a>
+                    </h5>
+                </div>
+            {% endfor %}
         {% endfor %}
     </div>
 </div>

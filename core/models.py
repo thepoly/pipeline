@@ -208,6 +208,26 @@ class StaffIndexPage(Page):
             .annotate(latest_term_ended=Max("terms__date_ended"))
             .order_by(F("latest_term_ended").desc(nulls_last=True))
         )
+    
+    def get_previous_staff_by_years(self):          #fall semester: may to dec; spring sem: dec to may
+        print(self.get_previous_staff())
+        print(self.get_previous_staff()[0])
+        d=datetime.datetime.today()
+        previous_year=d.year-1
+        resulting_staff=[]
+        while (True):
+            previous_staff=[]
+            for person in self.get_previous_staff():
+                print(person, "*********")
+                for term in person.get_previous_terms():
+                    if (term.date_ended.year==previous_year):
+                        previous_staff.append(person)
+            resulting_staff.append(previous_staff)
+            previous_year-=1
+            
+
+        
+
 
 
 @register_snippet

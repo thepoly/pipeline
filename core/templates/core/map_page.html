@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-mappage{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- {% for Location in page.places %}
+        <strong id ="places" class="text-primary text-uppercase text-kicker">{{ Location.value.name }}</strong>
+    {% endfor %} -->
+    <hr class="pb-3">
+
+    <html>
+  <head>
+    <style>
+       /* Set the size of the div element that contains the map */
+      #map {
+        height: 525px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+
+    </style>
+  </head>
+  <body>
+
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <script>
+
+      // Get values for map locations
+      window.latitude = [
+      {% for Location in page.places %}
+          `{{Location.value.latitude}}`,
+      {% endfor %}
+      ]
+      window.longitude = [
+      {% for Location in page.places %}
+          `{{Location.value.longitude}}`,
+      {% endfor %}
+      ]
+      window.descriptions = [
+      {% for Location in page.places %}
+          `{{Location.value.description}}`,
+      {% endfor %}
+      ]
+
+      // Parse longitude
+      window.parsedlongitudes = []
+      for(i = 0; i< window.longitude.length;i++){
+        var addressString = window.longitude[i];
+        var index = addressString.search("<p>");
+        var index2 = addressString.search("/p");
+        var addressString = addressString.slice(index + 3,index2-1);
+        window.parsedlongitudes.push(addressString);
+      }
+
+      // Parse latitude
+      window.parsedlatitudes = []
+      for(i = 0; i< window.latitude.length;i++){
+        var addressString = window.latitude[i];
+        var index = addressString.search("<p>");
+        var index2 = addressString.search("</p>");
+        var addressString = addressString.slice(index + 3,index2-1);
+        window.parsedlatitudes.push(addressString);
+      }
+
+      // Initialize and add the map
+      function initMap() {
+        var customMapType = new google.maps.StyledMapType([
+            {
+              elementType: 'labels',
+              stylers: [{visibility: 'off'}]
+            },{
+              featureType: "road",
+              stylers: [{visibility: 'on'}]
+            }
+          ], {
+            name: 'Custom Style'
+        });
+
+      var customMapTypeId = 'custom_style';
+      // The location of Troy
+      var Troy = {lat: 42.728, lng: -73.691};
+      // The map, centered at Troy
+      var map = new google.maps.Map(
+          document.getElementById('map'), {zoom: 16, center: Troy});
+
+      //create markers per address
+      for(i=0;i<window.parsedlongitudes.length;i++){
+        var marker = new google.maps.Marker({
+          position: {lat:parseFloat(window.parsedlatitudes[i]), lng:parseFloat(window.parsedlongitudes[i])},
+          title:"A marker"
+        });
+        var contentString = window.descriptions[i];
+
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+
+        marker.setMap(map);
+      }
+    map.mapTypes.set(customMapTypeId, customMapType);
+    map.setMapTypeId(customMapTypeId);
+}
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2QD1ngZzv0QjZhylFw0T4_22hzOMjx34&callback=initMap">
+    </script>
+  </body>
+</html>
+
+
+</div>
+{% endblock %}

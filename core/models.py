@@ -183,6 +183,25 @@ class StaffPage(Page):
     def get_previous_terms(self):
         return [term for term in self.terms.filter(date_ended__isnull=False)]
 
+class Location(StructBlock):
+    latitude = RichTextBlock(required = True, default ="")
+    longitude = RichTextBlock(required = True, default ="")
+    description = RichTextBlock(required = True, default ="")
+
+
+class MapPage(Page):
+    places = StreamField([("Locations", Location())])
+
+    content_panels = Page.content_panels + [StreamFieldPanel("places")]
+
+    def get_context(self, request):
+        context = super().get_context(request)
+
+
+
+        return context
+
+
 
 class StaffIndexPage(Page):
     subpage_types = ["StaffPage"]

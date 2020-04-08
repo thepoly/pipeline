@@ -11,34 +11,103 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('wagtailcore', '0041_group_collection_permissions_verbose_name_plural'),
+        ("wagtailcore", "0041_group_collection_permissions_verbose_name_plural")
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Newsletter',
+            name="Newsletter",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('subject', models.CharField(max_length=255)),
-                ('body', wagtail.core.fields.StreamField([('article', wagtail.core.blocks.StructBlock([('article', wagtail.core.blocks.PageChooserBlock(page_type=['core.ArticlePage'])), ('headline', wagtail.core.blocks.RichTextBlock(help_text="Optional. Will override the article's headline.", required=False)), ('summary', wagtail.core.blocks.RichTextBlock(help_text="Optional. Will override the article's summary.", required=False))])), ('text', wagtail.core.blocks.RichTextBlock())])),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("subject", models.CharField(max_length=255)),
+                (
+                    "body",
+                    wagtail.core.fields.StreamField(
+                        [
+                            (
+                                "article",
+                                wagtail.core.blocks.StructBlock(
+                                    [
+                                        (
+                                            "article",
+                                            wagtail.core.blocks.PageChooserBlock(
+                                                page_type=["core.ArticlePage"]
+                                            ),
+                                        ),
+                                        (
+                                            "headline",
+                                            wagtail.core.blocks.RichTextBlock(
+                                                help_text="Optional. Will override the article's headline.",
+                                                required=False,
+                                            ),
+                                        ),
+                                        (
+                                            "summary",
+                                            wagtail.core.blocks.RichTextBlock(
+                                                help_text="Optional. Will override the article's summary.",
+                                                required=False,
+                                            ),
+                                        ),
+                                    ]
+                                ),
+                            ),
+                            ("text", wagtail.core.blocks.RichTextBlock()),
+                        ]
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Subscription',
+            name="Subscription",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254, unique=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("email", models.EmailField(max_length=254, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='NewsletterSettings',
+            name="NewsletterSettings",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('subscriptions_token', models.CharField(help_text='The token required to access the subscription list', max_length=255)),
-                ('site', models.OneToOneField(editable=False, on_delete=django.db.models.deletion.CASCADE, to='wagtailcore.Site')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "subscriptions_token",
+                    models.CharField(
+                        help_text="The token required to access the subscription list",
+                        max_length=255,
+                    ),
+                ),
+                (
+                    "site",
+                    models.OneToOneField(
+                        editable=False,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="wagtailcore.Site",
+                    ),
+                ),
             ],
-            options={
-                'verbose_name': 'newsletter settings',
-            },
+            options={"verbose_name": "newsletter settings"},
         ),
     ]

@@ -7,17 +7,21 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Color',
+            name="Color",
             fields=[
-                ('R', models.IntegerField(default=255)),
-                ('G', models.IntegerField(default=0)),
-                ('B', models.IntegerField(default=0)),
-                ('id', models.IntegerField(default=0, editable=False, primary_key=True, serialize=False)),
+                ("R", models.IntegerField(default=255)),
+                ("G", models.IntegerField(default=0)),
+                ("B", models.IntegerField(default=0)),
+                (
+                    "id",
+                    models.IntegerField(
+                        default=0, editable=False, primary_key=True, serialize=False
+                    ),
+                ),
             ],
-        ),
+        )
     ]

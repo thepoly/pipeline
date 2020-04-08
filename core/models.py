@@ -32,7 +32,7 @@ from wagtail.core.blocks import (
     ChoiceBlock,
     IntegerBlock,
     StreamBlock,
-    TextBlock
+    TextBlock,
 )
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page, Orderable
@@ -373,13 +373,15 @@ class GalleryPhotoBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)
 
+
 class UnionEvent(StructBlock):
-    title=RichTextBlock(required=True, default="")
-    date=RichTextBlock(required=True, default="")
-    body=ListBlock(StructBlock([
-        ("phrase", TextBlock()),
-        ("definition", TextBlock(required=False)),
-    ]))
+    title = RichTextBlock(required=True, default="")
+    date = RichTextBlock(required=True, default="")
+    body = ListBlock(
+        StructBlock(
+            [("phrase", TextBlock()), ("definition", TextBlock(required=False))]
+        )
+    )
     featured_image = ImageChooserBlock(required=False)
 
     def get_text_html(self):
@@ -397,19 +399,18 @@ class UnionEvent(StructBlock):
             builder += " "
         return builder[:-1]
 
-class UnionTimeline(Page):
-    events=StreamField(
-        [("event", UnionEvent())]
-    )
 
-    content_panels = [InlinePanel(
-                    "authors",
-                    panels=[
-                        AutocompletePanel("author", target_model="core.Contributor")
-                    ],
-                    label="Author",
-                ),
-                StreamFieldPanel("events")]
+class UnionTimeline(Page):
+    events = StreamField([("event", UnionEvent())])
+
+    content_panels = [
+        InlinePanel(
+            "authors",
+            panels=[AutocompletePanel("author", target_model="core.Contributor")],
+            label="Author",
+        ),
+        StreamFieldPanel("events"),
+    ]
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -421,7 +422,8 @@ class UnionTimeline(Page):
 
     def get_author_names(self):
         return [a.name for a in self.get_authors()]
-        
+
+
 class ArticlePage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
@@ -678,8 +680,11 @@ class ArticleAuthorRelationship(models.Model):
     class Meta:
         unique_together = [("article", "author")]
 
+
 class UnionTimelineAuthorRelationship(models.Model):
-    timeline = ParentalKey(UnionTimeline, related_name="authors", on_delete=models.CASCADE)
+    timeline = ParentalKey(
+        UnionTimeline, related_name="authors", on_delete=models.CASCADE
+    )
     author = models.ForeignKey(
         Contributor, related_name="timeline", on_delete=models.PROTECT
     )

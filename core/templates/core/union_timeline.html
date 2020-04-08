@@ -124,13 +124,8 @@
               </div>
               <div class="col-6 col-md-4 align-self-center" style="height: auto; padding-bottom: 25px">
                 {% if block.value.featured_image %}
-                    <div class="photo">      
-                    {% image block.value.featured_image width-400 as photo %}
-                    {% image block.value.featured_image width-500 as big_photo %}
-                      <img class="thumbnail" src="{{ photo.url }}">
-              
-                  </div>
-        
+                  {% image block.value.featured_image width-400 as photo %}
+                  <img class="" src="{{ photo.url }}">
                 {% endif %}
               </div>
 

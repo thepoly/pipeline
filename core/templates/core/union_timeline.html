@@ -88,6 +88,7 @@
     <div class="col-md-6 offset-md-2">
       <h1>Union Events Timeline</h1>
         <span class="mr-1">
+          {% if authors %}
             By {% for author in authors %}
                 {% if forloop.last and authors|length > 1 %} and {% endif %}
                 {% if author.staff_page %}
@@ -96,6 +97,7 @@
                     <span class="author-name">{% firstof author.rich_name author.name %}</span>{% if not forloop.last and authors|length > 2 %}, {% endif %}
                 {% endif %}
             {% endfor %}
+          {% endif %}
         </span>
       <ul class="timeline">
         {% for block in page.events %}

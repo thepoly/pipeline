@@ -332,6 +332,11 @@ class EmbeddedMediaValue(StructValue):
 
 class EmbeddedMediaBlock(StructBlock):
     embed = EmbedBlock(help_text="URL to the content to embed.")
+    size = ChoiceBlock(
+        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
+        default="medium",
+        help_text="Width of video in article.",
+    )
 
     class Meta:
         value_class = EmbeddedMediaValue

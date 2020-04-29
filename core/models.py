@@ -644,7 +644,7 @@ class ArticlePage(RoutablePageMixin, Page):
 
 
 class ArticlesIndexPage(RoutablePageMixin, Page):
-    subpage_types = ["ArticlePage"]
+    subpage_types = ["ArticlePage", "UnionTimeline"]
 
     @route(r"^(\d{4})\/(\d{2})\/(.*)\/$")
     def post_by_date(self, request, year, month, slug, *args, **kwargs):

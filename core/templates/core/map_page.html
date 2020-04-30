@@ -37,7 +37,48 @@
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
+	  
+	  window.latitude = [
+      {% for Location in page.places %}
+          `{{Location.value.latitude}}`,
+      {% endfor %}
+      ]
+      window.longitude = [
+      {% for Location in page.places %}
+          `{{Location.value.longitude}}`,
+      {% endfor %}
+      ]
+      window.descriptions = [
+      {% for Location in page.places %}
+          `{{Location.value.description}}`,
+      {% endfor %}
+      ]
 
+	  // Parse longitude
+      window.parsedlongitudes = []
+      for(i = 0; i< window.longitude.length;i++){
+        var addressString = window.longitude[i];
+        var index = addressString.search("<p>");
+        var index2 = addressString.search("</p>");
+        var addressString = addressString.slice(index + 3,index2);
+        window.parsedlongitudes.push(addressString);
+      }
+
+      // Parse latitude
+      window.parsedlatitudes = []
+      for(i = 0; i< window.latitude.length;i++){
+        var addressString = window.latitude[i];
+        var index = addressString.search("<p>");
+        var index2 = addressString.search("</p>");
+        var addressString = addressString.slice(index + 3,index2);
+        window.parsedlatitudes.push(addressString);
+      }
+	  
+	  var i;
+	  for (i = 0; i < window.parsedlatitudes.length; i++) {
+		 L.marker([parsedlatitudes[i], parsedlongitudes[i]]).addTo(map)
+    .bindPopup(window.descriptions[i]);
+	  }
     </script>
     <!--The div element for the map -->
     <!-- <div id="map"></div> -->

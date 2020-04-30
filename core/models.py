@@ -184,14 +184,9 @@ class Location(StructBlock):
 
 class MapPage(Page):
     places = StreamField([("Locations", Location())])
-
     content_panels = Page.content_panels + [StreamFieldPanel("places")]
-
     def get_context(self, request):
         context = super().get_context(request)
-
-
-
         return context
 
 

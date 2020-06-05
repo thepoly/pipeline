@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 wagtail = "<=2.7"
-Django = "<2.2.11"
+Django = "<2.2.14"
 django-debug-toolbar = "==2.1"
 django-webpack-loader = "*"
 "beautifulsoup4" = "==4.6.0"

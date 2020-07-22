@@ -38,8 +38,11 @@ manage.py is a file that allows us to run command line commands.
 The folder with your project name has 4 files within.
 
 __init__.py  an empty file that tells python that this is a python file
+
 Settings.py  This is where you change the settings and configurations
+
 Urls.py      This is where we set up the mapping for certain urls to where they go
+
 Wsgi.py	     How python web app communicate
 
 You can see the default website by running:

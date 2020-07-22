@@ -184,3 +184,43 @@ home.html
 ```
 
 Also note how we can use "title" from context dictionary.
+
+The video also goes into using snippets of Html/CSS. I did not note those down, as
+it is not relevant. But, if you want, please do look into it. The video provides
+very useful snippets. You can break them down.
+
+
+## Admin Page
+
+[Video](https://www.youtube.com/watch?v=1PkNiYlkkjo&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=4)
+
+This video is short and to the point. It basically goes over what the admin page is,
+how you can create users, and how to manage some access. The admin page comes with
+DJango and is very useful for making changes to the backend that would otherwise be
+cumbersome.
+
+The first time you access the admin page, you need to create a new user. Do so with:
+
+```
+python manage.py createsuperuser
+```
+
+It won't work if you don't have a database set up. We can get a database set up if
+one isn't set up already by calling:
+
+```
+python manage.py makemigrations
+```
+This basically tells DJango to detect changes and prepare to run changes
+
+Then use the migrate command to propagate changes.
+
+```
+python manage.py migrate
+```
+
+The very first time, it will create some default tables for you and the database.
+
+In the admin page, you can create more users, with varying access levels and modify
+existing users.
+

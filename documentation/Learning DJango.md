@@ -109,21 +109,74 @@ An example of the third argument would be "context":
 ```
 posts = [
 	{
-		Author:
-		Title:
-		Content:
-		Date_posted:
-	},
-	{
-		Author:
-		Title:
-		Content:
-		Date_posted:
-	},
+        'author':"Justin",
+        'title':"hey",
+        'content':"just a test",
+        'date_posted':"now, would usually be a date time object",
+    },
+    {
+        'author':"Noob",
+        'title':"bye",
+        'content':"ending the test",
+        'date_posted':"after now",
+    },
 ]
 
-Context = {
-	“posts”: posts
-}
+def home(request):
+    Context = {
+	"posts": posts,
+        "title": "hey",
+    }
+
+    return render(request, 'blog/home.html', Context)
 ```
 
+Now with templates, you can inherit from other templates. This way, you can create a
+base template with similar html code. You can have a "base.html" that home.html and
+about.html could inherit from.
+
+To have a template inherit from another template, place this at the top of the template
+that is inheriting:
+
+```
+{% extends "blog/base.html" %}
+```
+
+{ } are used to write code. If you have variables, use {{ }}. Now you can have fill it in
+in the base.html. You create these fill it in spots with:
+
+```
+{% block content %}
+{% endblock %}
+```
+
+"Content" is just the name of the block. Now the home.html template inheriting from base.html
+can fill it in by making a block too.
+
+base.html
+```
+<!DOCTYPE html>
+<html>
+<head>
+    {% if title %}
+	    <title>Django Blog - {{title}}</title>
+    {% else %}
+        <title>Django Blog</title>
+    {% endif %}
+</head>
+
+<body>
+	{% block content %} {% endblock content %}
+</body>
+</html>
+```
+
+home.html
+```
+{% extends "blog/base.html" %}
+
+{% block content %}
+    {% for post in posts %}
+    {% endfor %}
+{% endblock content %}
+```

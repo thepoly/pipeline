@@ -150,6 +150,8 @@ in the base.html. You create these fill it in spots with:
 {% endblock %}
 ```
 
+By wrapping unique code in the block in the inheriting template, you override this block.
+
 "Content" is just the name of the block. Now the home.html template inheriting from base.html
 can fill it in by making a block too.
 
@@ -180,3 +182,5 @@ home.html
     {% endfor %}
 {% endblock content %}
 ```
+
+Also note how we can use "title" from context dictionary.

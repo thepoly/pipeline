@@ -76,4 +76,54 @@ so that the project urls.py will check the blog app's urls.py too. All this work
 by chopping up the url in the user's browser to get to the mapped response.
 
 
+# Templates
+
+[Video](https://www.youtube.com/watch?v=qDwdMDQ8oX4&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=3)
+
+To use templates, we need to make a template directory in the app directory.
+
+After making the templates directory, add a blog directory inside it. This is just
+DJango convention for storing templates.
+
+Now the templates are basically just html files as templates. To make sure you can
+use the template, you have to add the blog app to the project's installed apps list in
+settings.py. Now we can use those templates in views.py (in blogs app).
+
+First, make sure you import render with:
+
+```
+from django.shortcuts import render
+```
+
+Then you can plug in the template by returning the object from the render() method.
+
+```
+return render(request, 'blog/templateName.html')
+```
+
+There can also be a third argument to the render() method. It's basically a dictionary
+of arguments to pass in.
+
+An example of the third argument would be "context":
+
+```
+posts = [
+	{
+		Author:
+		Title:
+		Content:
+		Date_posted:
+	},
+	{
+		Author:
+		Title:
+		Content:
+		Date_posted:
+	},
+]
+
+Context = {
+	“posts”: posts
+}
+```
 

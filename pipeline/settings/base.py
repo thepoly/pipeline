@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.templatetags.static",
     "django.contrib.sitemaps",
     "webpack_loader",
     "django_prometheus",
@@ -138,6 +139,7 @@ USE_TZ = True
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.templatetags.static",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 

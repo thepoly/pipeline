@@ -327,7 +327,7 @@ post_2.save()
 user.post_set
 
 user.post_set.create(title=”Blog 3”, content=”Third Post Content!”)
-'''
+```
 
 We first create a post with the following fields. Then we save it so that we can
 actually query it. Else, the change won't be reflected. The second post is just

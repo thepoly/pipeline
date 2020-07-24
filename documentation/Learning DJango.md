@@ -224,3 +224,151 @@ The very first time, it will create some default tables for you and the database
 In the admin page, you can create more users, with varying access levels and modify
 existing users.
 
+
+## Database and Migrations
+
+[Video](https://www.youtube.com/watch?v=aHC3uTkT9r8&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=5)
+
+DJango has its own ORM, or object relational mapper. It allows us to access our database
+in an easy manner without using database specific calls. This helps unify the calls to
+querying from the database. This way, we can have multiple databases easily and not have
+to change our querying code if we change the database we use.
+
+We can represent our database structures as classes or models.
+
+Look at the models.py in the app folder. This is where you add your classes / models.
+So now, instead of using dummy data in views.py, we can instead make a class in
+modelsy.py.
+
+```
+class Post(models.Model):
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+    date_posted = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+```
+
+title in this case can be a string of max length 100.
+content is just a textfield, meaning unlimited size.
+date_posted is a DateTime object. In this case, we set the default to be the current
+time. May sure to import timezone to use the above code snippet.
+
+```
+from django.utils import timezone
+```
+
+We can actually do the same thing with:
+
+```
+date_posted = models.DateTimeField(auto_now=True)
+```
+
+The problem with this is that you can not modify this later on.
+
+"on_delete=models.CASCADE" makes a user with a foreign key. on_delete specifies that
+when the user is deleted, delete the posts.
+
+Now doing this is actually making changes to the database. Thus, you have to make
+migrations. Do so by:
+
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+This just checks for migrations that can be made and preps it. Then it applies the
+migrations with the second command. Now if you look at the migrations folder, you'll
+see a new file called "0001_initial.py". This is the migration. You can look inside
+to see how the code works with the database.
+
+You can see it as sql query code by executing:
+```
+python manage.py sqlmigrate appName 0001
+```
+
+Now that we set that up, we actually have to create some posts. To do so, enter into
+the interactive shell with:
+```
+python manage.py shell
+```
+
+Now import the model you made and the User class, so that we can use them.
+
+```
+from blog.models import Post
+from django.contrib.auth.models import User
+```
+
+To see the users you can use the first command. Then you can filter it to get your
+desired user.
+```
+user.objects.all()
+user = User.objects.filter(username='username').first()
+```
+Note that we filter by username and it returns a list. We then take the first item
+in the list. "user" is just a variable we made. Variables are wiped everytime we
+exit() the shell. Also note that changes are only applied when we exit the shell.
+
+We can similarly see the Post objects with:
+
+```
+Post.objects.all()
+```
+
+It'll return an empty list for now because we didn't make anything yet. Try:
+
+```
+post_1 = Post(title='Blog 1', content='First Post Content!', author=user)
+post_1.save()
+
+post_2 = Post(title="Blog 2", content="Second Post Content!", author_id=user.id)
+post_2.save()
+
+user.post_set
+
+user.post_set.create(title=”Blog 3”, content=”Third Post Content!”)
+'''
+
+We first create a post with the following fields. Then we save it so that we can
+actually query it. Else, the change won't be reflected. The second post is just
+to show that you can fill in the author field with the user id. user.post_set
+is in the user.modelname_set format. It gives all the posts with the user as the
+author. The third way to create a post is to actually use the user and create a
+post to the user's post_set. It automatically fills in the user as the author.
+
+Note that all the post objects had the date time field automatically filled in
+already by our timezone call.
+
+Now to switch from using dummy data to querying our database. Change the Context
+dictionary to:
+
+```
+Context = {
+        'posts': Post.objects.all()     
+    }
+```
+
+### Side Note
+You can actually change the how the date time object displays the date. You can
+refer to the [documentation](https://www.youtube.com/redirect?redir_token=QUFFLUhqazZuYVRxX0xZM1BLTE9JakpyVXQ0dUNFTDVQZ3xBQ3Jtc0tsdTBRSjRod2JnREZzaHN1VUIza3pOUmNTaGRXUEwxbFN1UGpHSzVYbEtOdVpPaWp0Z0VvaFZZQU9PQmhTUkNDUWc4bENFWmlDQ3N4UEt0cTI4SnQyZVdSOFQ4ZlVUYURHZklTWC0xRG9GZ0lYTEE2Zw%3D%3D&q=https%3A%2F%2Fdocs.djangoproject.com%2Fen%2F2.0%2Fref%2Ftemplates%2Fbuiltins%2F%23date&event=video_description&v=aHC3uTkT9r8) for more info.
+
+Now you can actually add the model to the admin page. This lets you modify and
+create posts in the admin page. Do so by going to the "admin.py" file and
+adding your model. In this case it would be:
+
+```
+admin.site.register(Post)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

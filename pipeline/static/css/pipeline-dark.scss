@@ -6,6 +6,13 @@ $theme-colors: (
 
 $off-white: #fefefe00; //fefefe // I don't think this is actually even used
 
+// Defaults
+// $light: #dddddd;
+// $dark: #011100;
+
+$light: #403c3b;
+$border-color: #6c757d;
+
 $enable-gradients: true;
 
 $font-family-base: 'Lora', serif;
@@ -78,20 +85,7 @@ $font-family-base: 'Lora', serif;
 // Dark Mode Settings
 * {
   color: #c9c3c2;
-  //background: #403c3b;
 }
-
-:not(header) {
-  background: #403c3b;
-}
-
-section {
-  background: #403c3b;
-}
-
-// .bg-light {
-//   background: #403c3b;
-// }
 
 header {
   background: #403c3b;
@@ -241,7 +235,7 @@ header a.search {
   padding: 2.5rem 0;
   color: #c9c3c2; //#666
   text-align: center;
-  background-color: #403c3b; // #f6f6f6
+  background-color: #383534;
   border-top: .05rem solid #4f4f4f; //e5e5e5
   font-size: 0.9rem;
 }

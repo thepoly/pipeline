@@ -75,6 +75,31 @@ $font-family-base: 'Lora', serif;
     }
   }
 }
+// Dark Mode Settings
+* {
+  color: #c9c3c2;
+  //background: #403c3b;
+}
+
+:not(header) {
+  background: #403c3b;
+}
+
+section {
+  background: #403c3b;
+}
+
+// .bg-light {
+//   background: #403c3b;
+// }
+
+header {
+  background: #403c3b;
+}
+
+border { // overrides above
+  color: #6c757d;
+}
 
 // Original
 
@@ -431,21 +456,4 @@ ul.pagination {
 
 .template-staffpage .photo img {
   width: 100px;
-}
-
-// Dark Mode Settings
-* {
-  color: #c9c3c2;
-  background: #403c3b;
-}
-.bg-light {
-  background: #403c3b;
-}
-
-header {
-  background: #403c3b;
-}
-
-border { // overrides above
-  color: #6c757d;
 }

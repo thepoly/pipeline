@@ -11,7 +11,9 @@ $off-white: #fefefe00; //fefefe // I don't think this is actually even used
 // $dark: #011100;
 
 $light: #403c3b;
-$border-color: #6c757d;
+$border-color: #383534;
+$white: #383534;
+$dark: #c9c3c2;
 
 $enable-gradients: true;
 
@@ -87,12 +89,8 @@ $font-family-base: 'Lora', serif;
   color: #c9c3c2;
 }
 
-header {
-  background: #403c3b;
-}
-
-border { // overrides above
-  color: #6c757d;
+svg {
+  stroke:#403c3b; // Sets the color for the search icon
 }
 
 // Original
@@ -236,7 +234,7 @@ header a.search {
   color: #c9c3c2; //#666
   text-align: center;
   background-color: #383534;
-  border-top: .05rem solid #4f4f4f; //e5e5e5
+  border-top: .05rem solid #383534; //e5e5e5
   font-size: 0.9rem;
 }
 

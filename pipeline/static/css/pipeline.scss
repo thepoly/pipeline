@@ -2,7 +2,41 @@
 
 $theme-colors: (
   "primary": #DA1E05,
+  "primaryDark": #C9311D,
 );
+
+// .bg-light .dark-theme {
+//   background-color: #403c3b;
+// }
+
+// .bg-white .dark-theme {
+//   background-color: #383534;
+// }
+
+// .bg-dark .dark-theme {
+//   background-color: #c9c3c2;
+// }
+
+
+
+[data-theme="dark"] .bg-white {
+  background-color: #383534 !important;
+}
+
+// [data-theme="dark"] .bg-dark {
+//   background-color: #c9c3c2 !important;
+// }
+
+// :root.dark-theme {
+//   .bg-light {
+//     background-color: #403c3b;
+//   }
+// }
+
+// $light: #403c3b;
+// $border-color: #383534;
+// $white: #383534;
+// $dark: #c9c3c2;
 
 $off-white: #fefefe;
 
@@ -49,6 +83,17 @@ $font-family-base: 'Lora', serif;
 // @import "~bootstrap/scss/print";
 
 @import "./elections.scss";
+
+// .bg-light {
+//     background-color: #333 !important;
+// }
+
+// .btn-outline-light {
+//   background-color: #333 !important;
+// }
+
+
+
 
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
@@ -293,7 +338,7 @@ ul.pagination {
   width: 100%;
 }
 
-.template-articlepage .photo-block.small img {
+.template-articlepage .photo-blockzz.small img {
   max-width: var(--breakpoint-sm);
 }
 .template-articlepage .photo-block.medium img {
@@ -430,3 +475,50 @@ ul.pagination {
 .template-staffpage .photo img {
   width: 100px;
 }
+
+div .btn-outline-light {
+  color: #ffffff;
+}
+
+[data-theme="dark"] {
+  // $light: #403c3b;
+  // $border-color: #383534;
+  // $white: #383534;
+  // $dark: #c9c3c2;
+  // $light: #403c3b;
+  // $border-color: #383534;
+  // $white: #383534;
+  // $dark: #c9c3c2;
+  background-color: #403c3b !important;
+  color: #c9c3c2;
+}
+
+[data-theme="dark"] .btn-outline-light {
+  color: #e5e5e5;
+}
+
+[data-theme="dark"] .footer {
+  color: #c9c3c2; //#666
+  background-color: #383534;
+  border-top: .05rem solid #383534; //e5e5e5
+}
+
+// [data-theme="dark"] .template-homepage .bg-featured-gradient {
+//   background-image: linear-gradient(141deg, theme-color-level("primaryDark", 1) 0, theme-color-level("primaryDark", -4) 71%, theme-color-level("primaryDark", -5) 100%);
+// }
+
+// [data-theme="dark"] $theme-colors: (
+//   "primary": #C9311D //#DA1E05,
+// );
+
+// [data-theme="dark"] .bg-light {
+//   background-color: #403c3b !important;
+// }
+
+// [data-theme="dark"] .text-light {
+//   color: #c9c3c2 !important;
+// }
+
+// [data-theme="dark"] .btn-outline-light {
+//   background-color: #403c3b !important;
+// }

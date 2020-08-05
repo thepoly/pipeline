@@ -21,11 +21,25 @@
                     <a class="btn btn-sm btn-outline-light" onclick="darkMode()">Dark</a>
 
                     <script>
+
+                        const currentTheme = localStorage.getItem("theme");
+                        if (currentTheme == null) { // On first load
+                            lightMode();
+                        }
+                        else if (currentTheme == "light") {
+                            lightMode();
+                        }
+                        else {
+                            darkMode();
+                        }
+
                         function darkMode() {
+                            localStorage.setItem("theme","dark");
                             document.body.setAttribute('data-theme', 'dark');
                         }
 
                         function lightMode() {
+                            localStorage.setItem("theme","light");
                             document.body.removeAttribute('data-theme');
                         }
                     </script>

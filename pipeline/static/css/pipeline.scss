@@ -2,7 +2,7 @@
 
 $theme-colors: (
   "primary": #DA1E05,
-  //"primaryDark": #C9311D,
+  "primaryDark": #C9311D,
 );
 
 [data-theme="dark"] .bg-white {
@@ -441,16 +441,20 @@ div .btn-outline-light {
 }
 
 [data-theme="dark"] {
-  // $light: #403c3b;
-  // $border-color: #383534;
-  // $white: #383534;
-  // $dark: #c9c3c2;
+
   // $light: #403c3b;
   // $border-color: #383534;
   // $white: #383534;
   // $dark: #c9c3c2;
   background-color: #403c3b !important;
   color: #c9c3c2;
+}
+
+// Does not work. Not overriding...
+[data-them="dark"] .template-homepage .bg-featured-gradient {
+  color: #000000;
+  background-image: none !important;
+  //background-image: linear-gradient(141deg, theme-color-level("primaryDark", 1) 0, theme-color-level("primaryDark", -4) 71%, theme-color-level("primaryDark", -5) 100%) !important;
 }
 
 [data-theme="dark"] .btn-outline-light {

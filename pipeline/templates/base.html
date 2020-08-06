@@ -60,18 +60,41 @@
                             <a class="text-light search" href="{% url 'search' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
                             </a>     
-                                <a class="btn btn-sm btn-outline-light" onclick="lightMode()">Light</a>
-                                <a class="btn btn-sm btn-outline-light" onclick="darkMode()">Dark</a>
+                            <a class="btn btn-sm btn-outline-light" onclick="toggle()">Toggle</a>
 
-                                <script>
-                                    function darkMode() {
-                                        document.body.setAttribute('data-theme', 'dark');
+                            <script>
+        
+                                const currentTheme = localStorage.getItem("theme");
+                                if (currentTheme == null) { // On first load
+                                    lightMode();
+                                }
+                                else if (currentTheme == "light") {
+                                    lightMode();
+                                }
+                                else {
+                                    darkMode();
+                                }
+        
+                                function darkMode() {
+                                    localStorage.setItem("theme","dark");
+                                    document.body.setAttribute('data-theme', 'dark');
+                                }
+        
+                                function lightMode() {
+                                    localStorage.setItem("theme","light");
+                                    document.body.removeAttribute('data-theme');
+                                }
+        
+                                function toggle() { // Won't be null by now
+                                    const theme = localStorage.getItem("theme");
+                                    if (theme == "dark") {
+                                        lightMode();
                                     }
-
-                                    function lightMode() {
-                                        document.body.removeAttribute('data-theme');
+                                    else {
+                                        darkMode();
                                     }
-                                </script>
+                                }
+                            </script>
                                 
                             <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/">Subscribe</a>
                         </div>

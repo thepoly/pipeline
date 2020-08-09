@@ -360,6 +360,214 @@ adding your model. In this case it would be:
 admin.site.register(Post)
 ```
 
+## User Registration / Forms
+
+[Video](https://www.youtube.com/watch?v=q4jPR-M0TAQ&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=6)
+
+
+User Registration / Making an admin page for other users
+
+We start off by making a new app to control user registration
+
+“python3 manage.py startapp users”
+
+Add it to the installed apps list in settings
+
+We will create the URL Pattern after making the view
+
+To make the view create a form would be very complicated generally. But DJango already has forms for us.
+
+```
+from django.contrib.auth.forms import UserCreationForm
+```
+
+Create the template
+Create a templates folder and the users sub directory
+```
+{% extends "blog/base" %}
+ 
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">
+                    Join Today!
+                </legend>
+                {{ form.as_p }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type ="submit">
+                    Sign Up
+                </button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account?
+                <a class="ml-2" href="#">Sign In</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}
+```
+First thing to note, we can actually still extend our template for the blog app.
+
+All the class attributes in the code are just for styling.
+The csrf token provides protection against certain attacks.
+We can print the form by simply calling it. The as_p method just prints the form in paragraph tags.
+
+We have the views.py register() as so:
+```
+def register(request):
+    form = UserCreationForm()
+    return render(request, "users/register.html", {"form": form})
+```
+
+Now let's add the URL Pattern
+Here we do it by importing the view directly.
+```
+from django.contrib import admin
+from django.urls import path, include
+from users import views as user_views
+ 
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('register/', user_views.register, name='register'),
+    path('', include('blog.urls')), # a path to map to your blog app
+]
+```
+
+Currently, if we enter any info, the form just redirects us to the same page. It doesn’t store any of the info.
+
+We need to do something with the data.
+
+```
+from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
+ 
+# Create your views here.
+ 
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+    else:
+        form = UserCreationForm()
+    return render(request, "users/register.html", {"form": form})
+```
+
+So we now add a conditional, that if there is data from POST, we make a form with the data given.
+
+Cleaned_data is the data from the form in dictionary form. We can access this to retrieve data written.
+
+Now let's add a flash message to show success. We can import the messages class and use the success message. These are the types of messages we can use:
+```
+messages.debug
+messages.info
+messages.success
+messages.warning
+messages.error
+```
+
+It should look like this now:
+
+```
+from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+ 
+# Create your views here.
+ 
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+    else:
+        form = UserCreationForm()
+    return render(request, "users/register.html", {"form": form})
+```
+
+Now make it redirect to blog home
+```
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+ 
+# Create your views here.
+ 
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('blog-home')
+    else:
+        form = UserCreationForm()
+    return render(request, "users/register.html", {"form": form})
+```
+
+To make sure that messages are printed, add this before the content block in the base.html:
+```
+{% if messages %}
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags}}">
+                {{ message }}
+              </div>
+              {% endfor %}
+            {% endif %}
+```
+
+Message.tags gets the specific type of message and uses the corresponding css class.
+
+Now let’s use the other fields.
+
+Add in the “forms.save()”
+
+```
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+ 
+# Create your views here.
+ 
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('blog-home')
+    else:
+        form = UserCreationForm()
+    return render(request, "users/register.html", {"form": form})
+```
+
+Now we want to add in more fields. To do this, we actually have to inherit from forms and then add the fields. So create a new class that inherits UserCreationForm and add fields to it.
+
+```
+from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+ 
+class UserRegisterForm(UserCreationForm):
+    email = forms.EmailField(required=False)
+ 
+    class Meta:
+        model = User
+        fields = ['username', 'password1','email', 'password2']
+```
+
+Now, change all the instances of UserCreationForm to UserRegisterForm.
+
+The rest of the video is just for styling.
+
+
 
 
 

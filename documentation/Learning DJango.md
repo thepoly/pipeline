@@ -369,7 +369,9 @@ User Registration / Making an admin page for other users
 
 We start off by making a new app to control user registration
 
-“python3 manage.py startapp users”
+```
+python3 manage.py startapp users
+```
 
 Add it to the installed apps list in settings
 

@@ -5,6 +5,11 @@ $theme-colors: (
   "primaryDark": #C9311D,
 );
 
+//$theme-colors: map-remove($theme-colors, "primary");
+// $theme-colors: (
+//   "primary": #C9311D,
+// );
+
 [data-theme="dark"] .bg-white {
   background-color: #383534 !important;
 }
@@ -450,12 +455,10 @@ div .btn-outline-light {
   color: #c9c3c2;
 }
 
-// Does not work. Not overriding...
-[data-them="dark"] .template-homepage .bg-featured-gradient {
-  color: #000000;
-  background-image: none !important;
-  //background-image: linear-gradient(141deg, theme-color-level("primaryDark", 1) 0, theme-color-level("primaryDark", -4) 71%, theme-color-level("primaryDark", -5) 100%) !important;
-}
+//Does not work. Not overriding...
+// .template-homepage .bg-featured-gradient {
+//   background-image: linear-gradient(141deg, theme-color-level("primaryDark", 1) 0, theme-color-level("primaryDark", -4) 71%, theme-color-level("primaryDark", -5) 100%) !important;
+// }
 
 [data-theme="dark"] .btn-outline-light {
   color: #e5e5e5;
@@ -469,4 +472,8 @@ div .btn-outline-light {
   color: #c9c3c2; //#666
   background-color: #383534;
   border-top: .05rem solid #383534; //e5e5e5
+}
+
+[data-theme="dark"] .bg-gradient-primary {
+  background-image: linear-gradient(141deg, theme-color-level("primaryDark", 0) 0, theme-color-level("primaryDark", 0) 71%, theme-color-level("primaryDark", 0) 100%) !important;
 }

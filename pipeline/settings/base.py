@@ -54,9 +54,10 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
     "django.templatetags.static",
-    "django.contrib.sitemaps",
+   # django.templatetags.static.static
+   # "django.contrib.staticfiles",
+   # "django.contrib.sitemaps",
     "webpack_loader",
     "django_prometheus",
     "widget_tweaks",
@@ -91,6 +92,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+            ],
+            "builtins": [
+                "django.templatetags.static",  # <------------ New way
             ]
         },
     }

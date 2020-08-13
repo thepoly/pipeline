@@ -460,16 +460,22 @@ div .btn-outline-light {
 //   background-image: linear-gradient(141deg, theme-color-level("primaryDark", 1) 0, theme-color-level("primaryDark", -4) 71%, theme-color-level("primaryDark", -5) 100%) !important;
 // }
 
-[data-theme="dark"] .btn-outline-light {
-  color: #e5e5e5;
-}
-
 [data-theme="dark"] a {
   color: #c9c3c2 !important;
 }
 
 [data-theme="dark"] .text-dark {
   color: #c9c3c2 !important;
+}
+
+[data-theme="dark"] .btn-outline-light {
+  color: #e5e5e5 !important;
+  stroke: #e5e5e5 !important;
+  border-color: #e5e5e5 !important;
+}
+
+[data-theme="dark"] svg {
+  stroke: #e5e5e5 !important;
 }
 
 [data-theme="dark"] .footer {

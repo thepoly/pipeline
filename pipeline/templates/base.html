@@ -62,40 +62,7 @@
                             </a>     
                             <a class="btn btn-sm btn-outline-light" onclick="toggle()">Toggle</a>                                
                             <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/">Subscribe</a>
-                            <!-- <script>
 
-                                const currentTheme = localStorage.getItem("theme");
-
-                                if (currentTheme == null) { // On first load
-                                    lightMode();
-                                }
-                                else if (currentTheme == "light") {
-                                    lightMode();
-                                }
-                                else {
-                                    darkMode();
-                                }
-
-                                function darkMode() {
-                                    localStorage.setItem("theme","dark");
-                                    document.body.setAttribute('data-theme', 'dark');
-                                }
-
-                                function lightMode() {
-                                    localStorage.setItem("theme","light");
-                                    document.body.removeAttribute('data-theme');
-                                }
-
-                                function toggle() { // Won't be null by now
-                                    const theme = localStorage.getItem("theme");
-                                    if (theme == "dark") {
-                                        lightMode();
-                                    }
-                                    else {
-                                        darkMode();
-                                    }
-                                }
-                            </script> -->
                             <script src="../static/js/darkMode.js"></script>
                         </div>
                     </div>

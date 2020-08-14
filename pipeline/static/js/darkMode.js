@@ -1,9 +1,7 @@
-const currentTheme = localStorage.getItem("theme");
-
-if (currentTheme == null) { // On first load
+if (localStorage.getItem("theme") == null) { // On first load
     lightMode();
 }
-else if (currentTheme == "light") {
+else if (localStorage.getItem("theme") == "light") {
     lightMode();
 }
 else {

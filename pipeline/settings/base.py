@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.templatetags.static",
-   # django.templatetags.static.static
    # "django.contrib.staticfiles",
    # "django.contrib.sitemaps",
     "webpack_loader",

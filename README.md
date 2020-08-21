@@ -118,10 +118,34 @@ When you visit the site, you should see the following message on a white screen:
 
 This is normal. You will now need to go the admin page of the site. Go to [127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) or [localhost:8000/admin](http://localhost:8000/admin).
 
-You'll need to use your new **Wagtail Admin Login** from the previous section to sign in.
+You'll need to use your new **Wagtail Admin Login** from the previous section to sign in. Once you do, you'll see the Wagtail interface on the screen. You can use the tabs on the left side of the screen or the url to navigate around this interface. *Wagtail allows both non-developers and developers add content to their Django site.*
 
-## Section 4: 
+Then, perform the following steps (you can find this sequence of steps on the wiki [here](https://github.com/thepoly/pipeline/wiki/Welcome-to-your-new-Wagtail-site!)).
+1. Navigate to localhost:8000/admin/pages and delete the page there.
+2. First, you have to create an article page that can go on your homepage. Click "add child page" and publish an article page.
+3. Click "add child page," and create a home page. Call it "Home" and feature the article that you made on the page.
+4. Publish the page.
+5. Navigate to Settings > Sites. Click the "Add a site" in the top right corner. The hostname and port are whatever you set them to be (typically localhost and 80 respectively), and the root page should be the home page you just made.
 
+As of yet, there is no easy way to immediately fill out your version of the Polytechnic site. You'll need to add your own test articles and pages manually. You can do this by copying over articles from the [Poly](https://poly.rpi.edu) site onto your development environment.
+
+## Section 4: Now... How to Start and Stop 
+Now, whenever you need to start up the server, you'll need to do the following.
+
+Open the `pipenv` shell, start your database, and run your server.
+```
+pipenv shell
+brew services start postgresql
+python manage.py runserver
+```
+
+Then, once you're ready to stop the server, enter control-C (the `control` and `C` keys on your keyboard). Then stop the database, and exit the shell.
+```
+brew services stop postgresql
+exit
+```
+
+That's all there is to it! The only other thing to remember is that you'll need to use the [admin](http://localhost:8000/admin) page of the site to manage the content of your development environment!
 
 ## Section 5: Docker (Optional)
 
@@ -138,67 +162,15 @@ python manage.py createsuperuser
 
 Pipeline will be available at port 8000 on localhost.
 
-### Standards
+## Section 6: Standards
+
+The [issues](https://github.com/thepoly/pipeline/issues) page has features we'd like to implement and bugs we'd like to address.
+
+Typical workflow for this project means a new branch should be created for each new feature being developed.
 
 Make sure you format your code with [Black](https://github.com/python/black) and use [Flake8](http://flake8.pycqa.org/en/latest/) to find problems.
 
-### How to make changes to styling
+## Section 7: How to make changes to styling
 
-With your terminal/command prompt running ```python manage.py runserver```, open another at the project folder location and run ```npm run watch```.
+With your terminal/command prompt running `python manage.py runserver`, open another at the project folder location and run `npm run watch`.
 Now you can edit styles at pipeline/pipeline/static/css/pipeline.scss
-
-## Status
-
-Many of the following features are partially complete, but this isn't indicated. Look at the Issues page if you need to know what is being worked on.
-
-- [ ] Articles
-  - [x] Index pages
-  - [ ] Article pages
-    - [x] Basic layout
-    - [ ] Section-specific layouts
-    - [x] Editor previews
-  - [x] Summaries
-  - [x] Kickers
-    - [x] Autocomplete
-  - [x] Subdecks
-  - [ ] Archive pages
-  - [ ] WordPress importer
-  - [ ] Old site importer
-  - [x] Related to authors
-- [ ] Photos
-  - [x] Uploads
-  - [x] Captions
-  - [x] Bylines
-  - [x] Multiple per article
-  - [x] Galleries
-- [ ] Syndication
-  - [x] RSS feed
-  - [x] Sitemap
-  - [x] Facebook tags
-  - [x] Twitter tags
-  - [ ] oEmbed
-  - [ ] Apple News
-- [ ] Home page
-  - [x] Basic article prioritization
-  - [ ] Full user control of column layout
-- [ ] Staff
-  - [x] Index page
-  - [ ] Individual pages
-    - [x] Authored articles
-    - [ ] Bylined photos
-  - [x] Positions/terms
-  - [x] Staff photos
-- [ ] Contact
-  - [x] Email addresses on staff pages
-- [ ] Users
-  - [x] Basic publish permission level
-  - [x] Fine grained permissions
-  - [ ] G Suite authentication
-- [ ] Search
-  - [x] Basic headline search
-  - [x] Search all fields of articles
-  - [ ] Search non-article pages
-- [ ] Instrumentation
-  - [x] Basic Prometheus metrics
-  - [ ] DB metrics
-  - [ ] HTTP Basic auth

@@ -24,13 +24,13 @@ Ensure these are installed before continuing. The provided links should help you
 - [Pipenv](https://docs.pipenv.org)
 - [npm](https://www.npmjs.com/get-npm)
 - [Postgres](https://www.postgresql.org)
-  - **Importantly, be sure to leave the default options checked. Your port number should default to '5432' and your user name and password should be set to 'postgres'.**
+  - **Importantly, be sure to leave the default options checked. Your port number should default to `5432` and your user name and password should be set to `postgres`.**
 
 *You can change Pipeline's settings to use SQLite instead of Postgres, but this is not recommended because Pipeline relies on Postgres's full-text search features.*
 
 ## Section 3: Getting Started
 
-*Pipeline is written in Python. It uses Sass and PostCSS on the frontend with webpack to glue them together.*
+Pipeline is written in Python. It uses Sass and PostCSS on the frontend with webpack to glue them together.
 
 ### Section 3.1: Note about Postgres
 
@@ -43,19 +43,19 @@ createdb pipeline
 ```
 
 #### Section 3.1.1: If you are asked for a password
-After running `createdb pipeline`, you might be asked for a password for your desktop username. You'll find that your desktop password fails if this is the case. You'll need to switch your username to 'postgres'.
+After running `createdb pipeline`, you might be asked for a password for your desktop username. You'll find that your desktop password fails if this is the case. You'll need to switch your username to `postgres`.
 
 ```
 psql -U postgres
 ```
 
-Enter 'postgres' as your password. The command 'psql' will open the postgres command line. To create the pipeline database from here, you'll need to do:
+Enter `postgres` as your password. The command `psql` will open the postgres command line. To create the pipeline database from here, you'll need to do:
 
 ```
 CREATE DATABASE pipeline;
 ```
 
-Note the ';' (semicolon), this is required syntax for the end of a command in SQL.
+Note the `;` (semicolon), this is required syntax for the end of a command in SQL.
 
 To confirm the database has been created, you can run:
 
@@ -84,7 +84,7 @@ Then do the following (make sure you are located in the cloned repository folder
 cd pipeline
 ```
 
-This next series of commands are important. If there are error messages here, try reading through the Terminal output, and troubleshoot your issues by looking them up online. If you need extra troubleshooting help, reach out to your mentor and potentially other members of your team.
+This next series of commands are important. If there are error messages here, try reading through the Terminal output, and troubleshoot your issues by looking them up online. If you need extra troubleshooting help, reach out to your mentor and possibly other members of your team.
 ```
 npm install
 npx webpack --config webpack.development.config.js
@@ -100,7 +100,7 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-After entering the last command, i.e., `...createsuperuser` enter a username, password, and email (optional). Follow the Terminal prompts closely and remember these credentials. This will be your **Wagtail Admin Login**.
+After entering the last command, i.e., `python manage.py createsuperuser` enter a username, password, and email (optional). Follow the Terminal prompts closely and remember these credentials. This will be your **Wagtail Admin Login**.
 
 ```
 python manage.py runserver
@@ -112,9 +112,13 @@ python manage.py runserver
 
 Once the server is up and running with `python manage.py runserver`, you should be able to access your development environment in your browser.
 
-Visit `localhost` at port `8000`. There are two ways to formally access this: [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and [http://localhost:8000/](http://localhost:8000/). *Both mean the same thing, `localhost` and `127.0.0.1` are synonymous with each other. The `:8000` specifies the port number.*
+Visit `localhost` at port `8000`. You can access this by visiting [127.0.0.1:8000](http://127.0.0.1:8000/) or [localhost:8000](http://localhost:8000/). *Both mean the same thing, `localhost` and `127.0.0.1` are synonymous with each other. The `:8000` specifies the port number.*
 
+When you visit the site, you should see the following message on a white screen: `Welcome to your new Wagtail site!`.
 
+This is normal. You will now need to go the admin page of the site. Go to [127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) or [localhost:8000/admin](http://localhost:8000/admin).
+
+You'll need to use your new **Wagtail Admin Login** from the previous section to sign in.
 
 ## Section 4: 
 

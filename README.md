@@ -147,7 +147,8 @@ exit
 
 That's all there is to it! The only other thing to remember is that you'll need to use the [admin](http://localhost:8000/admin) page of the site to manage the content of your development environment!
 
-## Section 5: Docker (Optional)
+## Section 5: Additional (Less Important) Sections
+### Section 5.1: Docker (Optional)
 
 Pipeline can also be run in its production configuration with Docker. It requires three containers: one for running the Django project with gunicorn, another to put nginx in front of it and additionally serve static files, and finally a Postgres container.
 
@@ -162,7 +163,7 @@ python manage.py createsuperuser
 
 Pipeline will be available at port 8000 on localhost.
 
-## Section 6: Standards
+### Section 5.2: Standards
 
 The [issues](https://github.com/thepoly/pipeline/issues) page has features we'd like to implement and bugs we'd like to address.
 
@@ -170,7 +171,7 @@ Typical workflow for this project means a new branch should be created for each 
 
 Make sure you format your code with [Black](https://github.com/python/black) and use [Flake8](http://flake8.pycqa.org/en/latest/) to find problems.
 
-## Section 7: How to make changes to styling
+### Section 5.3: How to make changes to styling
 
 With your terminal/command prompt running `python manage.py runserver`, open another at the project folder location and run `npm run watch`.
 Now you can edit styles at pipeline/pipeline/static/css/pipeline.scss

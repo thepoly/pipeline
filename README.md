@@ -136,3 +136,12 @@ Many of the following features are partially complete, but this isn't indicated.
   - [x] Basic Prometheus metrics
   - [ ] DB metrics
   - [ ] HTTP Basic auth
+
+Django 3.0 and Wagtail 2.9.2 update info:
+    All instances of django.six replaced with six
+    All instances of Django.config.staticfiles replaced with django.templatetags.static
+    Asgi interface supported, should switch to that sometime in the future
+    All python 2.7 packages and implementations replaced with newer instances
+    August 2020: As of this date this version works, however tests have yet to be run
+    See: https://docs.djangoproject.com/en/dev/internals/deprecation/ for information on deprecated packages
+    See: https://docs.wagtail.io/en/stable/releases/2.10.html for Wagtail deprecation

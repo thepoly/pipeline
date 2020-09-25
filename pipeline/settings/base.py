@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "webpack_loader",
     "django_prometheus",
     "widget_tweaks",
+    "hitcount",
 ]
 
 MIDDLEWARE = [
@@ -95,7 +96,7 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = "pipeline.wsgi.application"
+WSGI_APPLICATION = "wsgi.application"
 
 
 # Database

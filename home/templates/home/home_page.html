@@ -55,7 +55,11 @@
                         <div class="lead d-none d-lg-block">{{ block.value.column.article.specific.summary|richtext }}</div>
                     </div>
                     <div class="col-lg-5">
-                        {% image block.value.column.article.featured_image width-1200 as photo %}
+                    	{% if block.value.column.image %}
+                    	    {% image block.value.column.image width-1200 as photo %}
+                    	{% else %}
+                           {% image block.value.column.article.featured_image width-1200 as photo %}
+                        {% endif %}
                         <a href="{% pageurl block.value.column.article %}">
                             <img class="img-fluid mb-3" src="{{ photo.url }}">
                         </a>

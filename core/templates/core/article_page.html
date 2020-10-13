@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text %}
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text cache %}
+{% cache 60 page request.is_preview %}
 
 {% block extra_head %}
     <link rel="canonical" href="{{ page.full_url }}">
@@ -113,31 +114,17 @@
                     </div>
                 </div>
             {% elif block.block_type == 'embed' %}
-                {% if block.value.type == 'video' %}
-                    <div class="container-fluid embed video embed-responsive embed-responsive-16by9">
-                        {% embed block.value.embed.url %}
-                    </div>
-                {% else %}
-                    <div class="container embed narrow embed-responsive embed-responsive-21by9">
-                        {% embed block.value.embed.url %}
-                    </div>
-                {% endif %}
-        
-            {% elif block.block_type == 'form' %}
-                <div class="form d-flex flex-column align-items-center">
-                        {{ page.intro|richtext }}
-                <form action="{% pageurl page %}" method="POST" width = 600>
-                    {% csrf_token %}
-                    <label for="data">
-                        <span>Tell us what you think:</span>
-                        <br>
-                        <input id="data" type="text" name="data">
-                        <abbr title="required" aria-label="required">*</abbr>
-                    {{ form.as_p }}
-                    <br>
-                    <input type="submit" value="Submit">
-                    </form>
-                    </div>
+                <div class="embed d-flex flex-column align-items-center {{ block.value.size }}">
+                    {% if block.value.type == 'video' %}
+                            <div class="container-fluid embed video embed-responsive embed-responsive-16by9">
+                                {% embed block.value.embed.url %}
+                            </div>
+                    {% else %}
+                        <div class="container embed narrow embed-responsive embed-responsive-21by9">
+                            {% embed block.value.embed.url %}
+                        </div>
+                    {% endif %}
+                </div>
             {% else %}
                 <div class="container narrow">
                     {% include_block block %}
@@ -181,3 +168,5 @@
     </div>
 {% endif %}
 {% endblock %}
+{% endcache %}
+

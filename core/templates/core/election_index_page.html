@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load cache %}
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags wagtailroutablepage_tags rich_text cache %}
+{% cache 60 page request.is_preview %}
+
+{% block body_class %}template-electionindexpage{% endblock %}
+
+{% block content %}
+<div class="container election_page">
+    <h1 class="mb-3">{{page.title}}</h1>
+    {{page.electionID.name}}
+    {% for block in page.panels %}
+        {% if block.block_type == "three_cards" %}
+        <h2>{{block.value.cards.office}}</h2>
+
+            <div class="elections-grid">
+                {% for candidate in page.get_candidates %}
+                    {% if block.value.cards.office.name in candidate.get_office_names %}
+                    <div class="card">
+                        <div class="card-image">
+                            {% image candidate.image fill-300x300 as photo %}
+                                <img class="" src="{{ photo.url }}">
+                        </div>
+                        <div class="card-content">
+                            <a class="card-title" href="{% routablepageurl election_page 'candidate_route' page.electionName candidate.slug %}">
+                                {% if candidate %}
+                                    {{candidate.title}}
+                                {% endif %}
+                            </a>
+                            <div class="offices">
+                                {% for nc in candidate.get_nom_counts %}
+                                {% if block.value.cards.office.name == nc.office.name %}
+                                    <p class="office">{{nc.office}}</p>
+                                    <div class="card-progress">
+                                        <p>{{nc.count}}/{{nc.required}}</p>
+                                    <div style="width: {{ nc.get_percent }}%;" class="inner-progress {% if nc.get_percent >= 100 %} green {% endif %}" ></div>
+                                    </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>    
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        {% endif %}
+    {% endfor %}
+
+</div>
+{% endblock %}
+{% endcache %}

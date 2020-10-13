@@ -9,22 +9,24 @@
     <div class="d-flex">
         <div class="flex-grow-1">
             <h1>{{ page.title }}</h1>
+            {% for office in page.get_office_names %}
             <h4>
-                {{ page.get_positions_html }}
+                {{office}}
             </h4>
+            {% endfor %}
         </div>
-        {% if page.photo %}
+        {% if page.image %}
             <div class="photo pl-3">
-                {% image page.photo fill-200x200-c50 as photo %}
-                <img class="rounded-circle" src="{{ photo.url }}">
+                {% image page.image fill-200x200 as photo %}
+                <img class="" src="{{ photo.url }}">
             </div>
         {% endif %}
     </div>
     <hr>
     <div class="row">
-        <div class="col-md-4 order-md-2">
-            {% if page.biography %}
-                {{ page.biography|richtext }}
+        <div class="col-md-12">
+            {% if page.bio %}
+                {{ page.bio|richtext }}
             {% endif %}
 
             {% if page.email_address and page.is_active %}
@@ -47,8 +49,9 @@
                 </ul>
             {% endif %}
         </div>
-        
-        <div class="col-xs-12 col-md-8">
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
             {% include "core/includes/articles_list.html" with articles=page.get_articles show_dates=True only %}
         </div>
     </div>

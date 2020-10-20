@@ -1,7 +1,7 @@
 import datetime
 import logging
 import operator
-
+from django.conf import settings
 from bs4 import BeautifulSoup
 from django.apps import apps
 from django.core.paginator import Paginator
@@ -45,7 +45,7 @@ register = template.Library()
 # admin.site.register(Post)
 # admin.site.register(Comment)
 
-from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField, AbstractFormSubmission
 from wagtail.core.blocks import (
     RichTextBlock,
     ListBlock,
@@ -408,10 +408,20 @@ class FormPage(AbstractEmailForm):
                 ),
                 FieldPanel("subject"),
             ],
-            "Email",
-        ),
+            "Email"),
     ]
+    #add get submission class and process form submission to complete implementation
+    def get_submission_class(self):
+        return CustomFormSubmission
 
+    def process_form_submission(self, form):
+        self.get_submission_class().objects.create(
+            form_data=json.dumps(form.cleaned_data, cls=DjangoJSONEncoder),
+            page=self, user=form.user
+        )
+#add class to complete custom form submission implementation
+class CustomFormSubmission(AbstractFormSubmission):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 # class NameForm(forms.Form):
 #   set_name = 'Comment'

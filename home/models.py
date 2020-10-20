@@ -18,7 +18,6 @@ class ArticleBlock(blocks.StructBlock):
     help_text="Optional. Ovverides the image on the post.",
     required=False
     )
-    # TODO: add a "hide photo" block
 
     class Meta:
         template = "home/article_block.html"

@@ -63,7 +63,28 @@
         }
     </style>
 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!--<script src="js/seekBook.js"></script>-->
 
+    <script>
+    $('#search').hide(0).show(500);
+    window.setInterval(function() {
+        var availableTutorials = [
+            "ActionScript",
+            "Bootstrap",
+            "C",
+            "C++",
+        ];
+
+
+        $('#search').autocomplete({
+            source: availableTutorials
+        });
+    }, 100);
+    </script>
 
     <body class="bg-light {% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
@@ -79,7 +100,7 @@
 
                         <div class="hide-mobile col text-right" id="largeDisplay">
                             <form action="{% url 'search' %}">
-                                <input type="text" name="query" id="query" placeholder="Search..." style="border-radius: 5px; size: 10; position: relative; top:1px; resize: none;">
+                                <input type="text" name="query" id="search" placeholder="Search..." style="border-radius: 5px; size: 10; position: relative; top:1px; resize: none;">
                                 <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
                             </form>
                         </div>

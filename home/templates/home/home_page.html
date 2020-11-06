@@ -53,7 +53,11 @@
                         {% endif %}
                         <h1 class="display-4 mb-3">
                             <a class="text-dark" href="{% pageurl block.value.column.article %}">
-                                {{ block.value.column.article.specific.headline|richtext_unwrapped }}
+                                {% if block.value.column.headline %}
+                                	{{ block.value.column.headline }}
+                                {% else %}
+                                	{{ block.value.column.article.specific.headline|richtext_unwrapped }}
+                                {% endif %}
                             </a>
                         </h1>
                         <div class="lead d-none d-lg-block">{{ block.value.column.article.specific.summary|richtext }}</div>

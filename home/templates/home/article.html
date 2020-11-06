@@ -16,7 +16,13 @@
             <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
         {% endif %}
         <h3 class="mb-2 headline">
-            <a class="text-dark" href="{% pageurl article %}">{{ article.headline|richtext_unwrapped }}</a>
+            <a class="text-dark" href="{% pageurl article %}">
+            	{% if block_headline %}
+			{{ block_headline }}
+            	{% else %}	
+            		{{ article.headline|richtext_unwrapped }}
+            	{% endif %}
+            </a>
         </h3>
         <div class="card-text mb-auto summary">{{ article.summary|richtext }}</div>
     </div>

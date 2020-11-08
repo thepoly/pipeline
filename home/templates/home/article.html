@@ -2,8 +2,12 @@
 
 <div class="flex-md-row">
     <div class="d-flex flex-column align-items-start">
-        {% if article.featured_image %}
-            {% image article.featured_image width-1200 as photo %}
+        {% if block_image or article.featured_image %}
+            {% if block_image %}
+                {% image block_image width-1200 as photo %}
+            {% elif article.featured_image %}
+                {% image article.featured_image width-1200 as photo %}
+            {% endif %}
             <a href="{% pageurl article %}">
                 <img class="img-fluid mb-2 mb-md-3" src="{{ photo.url }}">
             </a>
@@ -12,7 +16,13 @@
             <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
         {% endif %}
         <h3 class="mb-2 headline">
-            <a class="text-dark" href="{% pageurl article %}">{{ article.headline|richtext_unwrapped }}</a>
+            <a class="text-dark" href="{% pageurl article %}">
+            	{% if block_headline %}
+			{{ block_headline }}
+            	{% else %}	
+            		{{ article.headline|richtext_unwrapped }}
+            	{% endif %}
+            </a>
         </h3>
         <div class="card-text mb-auto summary">{{ article.summary|richtext }}</div>
     </div>

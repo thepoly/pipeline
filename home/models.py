@@ -2,6 +2,7 @@ from wagtail.core.models import Page
 from wagtail.core.fields import StreamField
 from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.core import blocks
+from wagtail.images.blocks import ImageChooserBlock
 
 from core.models import ArticlePage, ArticlesIndexPage, AdBlock, MarqueeBlock
 
@@ -11,8 +12,12 @@ class ArticleBlock(blocks.StructBlock):
     headline = blocks.RichTextBlock(
         help_text="Optional. Will override the article's headline.", required=False
     )
-    # TODO: add a photo override block
-    # TODO: add a "hide photo" block
+
+    # Image override block.
+    image = ImageChooserBlock(
+    help_text="Optional. Ovverides the image on the post.",
+    required=False
+    )
 
     class Meta:
         template = "home/article_block.html"

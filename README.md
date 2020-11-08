@@ -19,7 +19,7 @@ You can change Pipeline's settings to use SQLite instead of Postgres, but this i
 
 ## Getting started
 
-Pipeline is written in Python. It uses Sass and PostCSS on the frontend with webpack to glue them together.
+Pipeline is written in Python. It uses Sass and PostCSS on the frontend with webpack to glue them together. For new users working within a virtual machine, it is strongly recommended to use Ubuntu. 
 
 #### Note about Postgres
 
@@ -31,12 +31,31 @@ brew services start postgresql
 createdb pipeline
 ```
 
-To setup Postgres on [Arch Linux](https://www.archlinux.org/), the instructions are similar:
+To setup Postgres on [Arch Linux](https://www.archlinux.org/):
 
 ```
 sudo pacman -Syu # Optional, to refresh and update packages
 sudo pacman -S postgresql
 sudo -u postgres initdb --locale en_US.UTF-8 -D /var/lib/postgres/data
+sudo systemctl start postgresql
+```
+
+To setup Postgres on [Ubuntu](https://ubuntu.com/):
+
+```
+// Install
+sudo apt-get update
+sudo apt-get -y install postgresql postgresql-contrib
+// Setup
+sudo -i -u postgres
+psql
+CREATE USER postgres WITH PASSWORD 'postgres'
+\q
+*reopen terminal*
+sudo -u postgres psql
+\password postgres // Enter 'postgres' twice
+\q
+*reopen terminal*
 sudo systemctl start postgresql
 ```
 
@@ -51,6 +70,18 @@ git clone git@github.com:thepoly/pipeline.git
 cd pipeline
 npm install
 npx webpack --config webpack.development.config.js
+pipenv install --dev
+pipenv run python manage.py createcachetable
+```
+
+On Ubuntu:
+```
+git clone git@github.com:thepoly/pipeline.git
+cd pipeline
+sudo apt install npm
+npx webpack --config webpack.development.config.js // Type "yes" when prompted
+npm audit fix
+sudo apt install pipenv
 pipenv install --dev
 pipenv run python manage.py createcachetable
 ```

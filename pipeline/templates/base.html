@@ -44,10 +44,105 @@
         {% endblock %}
     </head>
 
+    <style>
+        @media only screen and (max-width: 750px) {
+            #largeDisplay {
+                display: none;
+            }
+            #smallDisplay {
+                display: block;
+            }
+        }
+        @media only screen and (min-width: 750px) {
+            #largeDisplay {
+                display: block;
+            }
+            #smallDisplay {
+                display: none;
+            }
+        }
+    </style>
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    var availableTags = [
+        "Polytechnic",
+        "Student Activity Board",
+        "Student Union",
+        "Commons",
+        "Polytechnic",
+        "Rennslaer",
+        "Arch",
+        "COVID",
+        "GM Week",
+        "Student Senate",
+        "Top Hat",
+        "Rensselaer Union",
+        "Joint Top Hat",
+        "Derby",
+        "Editorial",
+        "Notebook",
+        "Executive",
+        "Board",
+        "Town Hall",
+        "EBoard",
+        "Recommendations",
+        "Academics",
+        "On-Campus Event",
+        "EMPAC",
+        "Interview",
+        "Clubs",
+        "Sports",
+        "Basketball",
+        "Engineers",
+        "Hockey",
+        "Football",
+        "E-Sports",
+        "Racquetball",
+        "Lacrosse",
+        "Swimming",
+        "Student Rights",
+        "Student Handbook",
+        "Job"
+    ];
+
+    $( "#tags" )
+      .on( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          response( $.ui.autocomplete.filter(
+            availableTags, (request.term.split(" ")).pop() ) );
+        },
+        focus: function() {
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = this.value.split(" ");
+          terms.pop();
+          terms.push( ui.item.value );
+          terms.push( "" );
+          this.value = terms.join( " " );
+          return false;
+        }
+      });
+  } );
+  </script>
+
+
     <body class="bg-light {% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
-
         {% block header_block %}
+
             <header class="py-2 bg-gradient-primary">
                 <div class="container">
                     <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
@@ -56,11 +151,20 @@
                                 <img src="{% static 'images/logo_minimal.png' %}" alt="The Polytechnic">
                             </a>
                         </div>
-                        <div class="col text-right">
-                            <a class="text-light search" href="{% url 'search' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
-                            </a>
-                            <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/">Subscribe</a>
+
+                        <div class="ui-widget hide-mobile col text-right" id="largeDisplay">
+                            <form action="{% url 'search' %}">
+                                <input type="text" name="query" id="tags"  placeholder="Search..." style="border-radius: 5px; size: 10; position: relative; top:1px; resize: none;" multiple>
+                                <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
+                            </form>
+                        </div>
+                        <div class="hide-desktop col text-right" id="smallDisplay">
+                            <div class="col text-right mb-3 mb-md-0">
+                                <a class="text-light search" href="{% url 'search' %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
+                                </a>
+                                <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/">Subscribe</a>
+                            </div>
                         </div>
                     </div>
                 </div>

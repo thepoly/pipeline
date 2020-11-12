@@ -1,0 +1,30 @@
+Stages for deploying update GitHub master branch
+
+Go to: https://srv1.poly.rpi.edu/ui/#/host/vms/36 on Cisco VPN using vpn.rpi.edu network
+
+Ask Polytechnic for root login and password
+
+Got to Dokku virtual machine and launch console
+
+Login with creditials from the Polytechnic
+
+Enter:
+sudo -i #access admin rights
+[Poly password]
+
+cd home/poly/pipeline #directory with .git files 
+git pull #will update the remote master branch with the GitHub master branch
+
+git merge dokku/master
+If changes don't appear reverse detached HEAD using 
+"git reset --hard"
+"git checkout master"
+
+To check status of HEAD: "git rev-parse --short HEAD"
+
+Other useful debug commands:
+
+git status # displays the most recent commit made
+git show # shows movement of HEAD along with previous commits
+git fetch # fetches changes from GitHub master without merging
+git log # shows activity of recent commits

@@ -1,7 +1,7 @@
 import datetime
 import logging
 import operator
-from django.conf import settings
+
 from bs4 import BeautifulSoup
 from django.apps import apps
 from django.core.paginator import Paginator
@@ -13,9 +13,6 @@ from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.functional import cached_property
-from django import forms
-
-# from blog.models import Comment
 from django.utils.html import format_html, mark_safe
 from django.utils.text import slugify
 from wagtail.core import blocks
@@ -26,26 +23,6 @@ from wagtail.core import hooks
 from wagtail.admin.edit_handlers import TabbedInterface, ObjectList
 
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
-from modelcluster.fields import ParentalKey
-from wagtail.admin.edit_handlers import (
-    FieldPanel,
-    FieldRowPanel,
-    InlinePanel,
-    MultiFieldPanel,
-)
-
-from django.contrib import admin
-from django import template
-
-# from myapp.models import MyCustomSettings
-
-register = template.Library()
-# from .models import Post, Comment
-
-# admin.site.register(Post)
-# admin.site.register(Comment)
-
-from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField, AbstractFormSubmission
 from wagtail.core.blocks import (
     RichTextBlock,
     ListBlock,
@@ -55,9 +32,11 @@ from wagtail.core.blocks import (
     ChoiceBlock,
 )
 from wagtail.core.fields import RichTextField, StreamField
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.core.models import Page, Orderable
 from wagtail.admin.edit_handlers import (
     FieldPanel,
+    FieldRowPanel,
     StreamFieldPanel,
     MultiFieldPanel,
     InlinePanel,
@@ -104,7 +83,12 @@ class Contributor(index.Indexed, models.Model):
         return kls.objects.create(name=value)
 
     def get_articles(self):
-        return [r.article for r in self.articles.select_related("article").all()]
+        return (
+            ArticlePage.objects.live()
+            .filter(authors__author=self)
+            .order_by("-first_published_at")
+            .all()
+        )
 
     def __str__(self):
         return self.name
@@ -371,127 +355,49 @@ class PhotoBlock(StructBlock):
         icon = "image"
 
 
+class AdBlock(StructBlock):
+    image = ImageChooserBlock(help_text="Image should be 22:7")
+    link = URLBlock(label="target", required=False)
+
+    class Meta:
+        icon = "image"
+
+
+class MarqueeBlock(StructBlock):
+    body = RichTextBlock(required=True)
+    banner_type = ChoiceBlock(
+        choices=[("moves", "Rotating")],  # can add stationary later
+        default="moves",
+        help_text="Determines whether the marquee banner is stationary or rotating. Only rotating works right now.",
+        required=True,
+    )
+
+
 class GalleryPhotoBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)
 
-
 class FormField(AbstractFormField):
-    page = ParentalKey("FormPage", on_delete=models.CASCADE, related_name="form_fields")
-
-
-class BaseField:
-    def get_options(self, block_value):
-        return {
-            "label": block_value.get("label"),
-            "help_text": block_value.get("help_text"),
-            "required": block_value.get("required"),
-            "initial": block_value.get("default_value"),
-        }
-
+    page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
 
 class FormPage(AbstractEmailForm):
-    template = "core/article_page.html"
+    #template = "core/form_page.html"
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
+
     content_panels = AbstractEmailForm.content_panels + [
-        FieldPanel("intro", classname="full"),
-        InlinePanel("form_fields", label="Form fields"),
-        FieldPanel("thank_you_text", classname="full"),
-        MultiFieldPanel(
-            [
-                FieldRowPanel(
-                    [
-                        FieldPanel("from_address", classname="col6"),
-                        FieldPanel("to_address", classname="col6"),
-                    ]
-                ),
-                FieldPanel("subject"),
-            ],
-            "Email"),
-    ]
-    #add get submission class and process form submission to complete implementation
-    def get_submission_class(self):
-        return CustomFormSubmission
-
-    def process_form_submission(self, form):
-        self.get_submission_class().objects.create(
-            form_data=json.dumps(form.cleaned_data, cls=DjangoJSONEncoder),
-            page=self, user=form.user
-        )
-#add class to complete custom form submission implementation
-class CustomFormSubmission(AbstractFormSubmission):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-# class NameForm(forms.Form):
-#   set_name = 'Comment'
-#  your_text = forms.CharField(label='Comment', max_length=100)
-"""
-    class NameForm(forms.ModelForm):
-    class Meta:
-            model = Comment
-            fields = ('name',)
-class Comment(models.Model):
-    def Comment(self):
-        name = models.CharField(max_length=100, blank=True)
-        class Meta:
-            verbose_name_plural = "Form"
-            
-class NameForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ('name',)
-"""
-"""
-class Comment(models.Model):
-    post = models.ForeignKey('blog.Post', on_delete=models.CASCADE, related_name='comments')
-    author = models.CharField(max_length=200)
-    text = models.TextField()
-    created_date = models.DateTimeField(default=timezone.now)
-    approved_comment = models.BooleanField(default=False)
-
-def approve(self):
-    self.approved_comment = True
-    self.save()
-
-def __str__(self):
-    return self.text
-"""
-
-
-class NameForm(forms.Form):
-    your_name = forms.CharField(label="Your name", max_length=100)
-    content_panels = AbstractEmailForm.content_panels + [
-        FieldPanel("intro", classname="full"),
-        InlinePanel("form_fields", label="Form fields"),
-        FieldPanel("thank_you_text", classname="full"),
-        MultiFieldPanel(
-            [
-                FieldRowPanel(
-                    [
-                        FieldPanel("from_address", classname="col6"),
-                        FieldPanel("to_address", classname="col6"),
-                    ]
-                ),
-                FieldPanel("subject"),
-            ],
-            "Email",
-        ),
+        FieldPanel('intro', classname="full"),
+        InlinePanel('form_fields', label="Form fields"),
+        FieldPanel('thank_you_text', classname="full"),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('from_address', classname="col6"),
+                FieldPanel('to_address', classname="col6"),
+            ]),
+            FieldPanel("subject"),
+        ], "Email"),
     ]
 
-
-class ContactForm(forms.Form):
-    subject = forms.CharField(max_length=100)
-    message = forms.CharField(widget=forms.Textarea)
-    sender = forms.EmailField()
-    cc_myself = forms.BooleanField(required=False)
-
-
-class CustomTextField(forms.Form):
-    field_class = forms.CharField(max_length=100)
-
-
-# Look at this section for form implementation.
 class ArticlePage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
@@ -502,7 +408,6 @@ class ArticlePage(RoutablePageMixin, Page):
             ("photo", PhotoBlock()),
             ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
-            # ("form", FormBlock()),
         ],
         blank=True,
     )
@@ -521,9 +426,6 @@ class ArticlePage(RoutablePageMixin, Page):
     )
     featured_caption = RichTextField(features=["italic"], blank=True, null=True)
 
-    Forms = models.ForeignKey(
-        FormField, null=True, blank=True, on_delete=models.SET_NULL,
-    )
     content_panels = [
         MultiFieldPanel(
             [FieldPanel("headline", classname="title"), FieldPanel("subdeck")]
@@ -546,8 +448,6 @@ class ArticlePage(RoutablePageMixin, Page):
         ),
         FieldPanel("summary"),
         StreamFieldPanel("body"),
-        FieldPanel("Forms"),
-        # PageChooserPanel('feedback_form_page', ['base.FormPage']),
     ]
 
     search_fields = Page.search_fields + [
@@ -570,7 +470,7 @@ class ArticlePage(RoutablePageMixin, Page):
     @route(r"^$")
     def post_404(self, request):
         """Return an HTTP 404 whenever the page is accessed directly.
-        
+
         This is because it should instead by accessed by its date-based path,
         i.e. `<year>/<month>/<slug>/`."""
         raise Http404
@@ -678,8 +578,9 @@ class ArticlePage(RoutablePageMixin, Page):
 
         # description: either the article's summary or first paragraph
         if self.summary is not None:
-            tags["og:description"] = self.summary
-            tags["twitter:description"] = self.summary
+            soup = BeautifulSoup(self.summary, "html.parser")
+            tags["og:description"] = soup.get_text()
+            tags["twitter:description"] = soup.get_text()
         else:
             first_chars = self.get_first_chars()
             if first_chars is not None:
@@ -693,6 +594,13 @@ class ArticlePage(RoutablePageMixin, Page):
             rendition_url = self.get_site().root_url + rendition.url
             tags["og:image"] = rendition_url
             tags["twitter:image"] = rendition_url
+        else:
+            tags["og:image"] = (
+                self.get_site().root_url + "/static/images/minimal_logo_tag_padding.png"
+            )
+            tags["twitter:image"] = (
+                self.get_site().root_url + "static/images/minimal_logo_tag_padding.png"
+            )
 
         tags["twitter:site"] = "@rpipoly"
         tags["twitter:title"] = self.title

@@ -28,3 +28,9 @@ git status # displays the most recent commit made
 git show # shows movement of HEAD along with previous commits
 git fetch # fetches changes from GitHub master without merging
 git log # shows activity of recent commits
+
+Additional steps if first time committing and pushing changes:
+
+Use ssh://dokku@10.10.10.22/pipeline to ssh into the poly server and add a key in order to push changes remotely
+
+build the new django software with git push dokku [current branch]

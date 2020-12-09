@@ -57,6 +57,8 @@ from django.contrib.contenttypes.fields import GenericRelation
 
 logger = logging.getLogger("pipeline")
 
+
+
 class Post(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -64,15 +66,10 @@ class Post(models.Model):
     slug = models.SlugField(unique=True, max_length=100)
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk',
      related_query_name='hit_count_generic_relation')
+     
+    
+    Tracker.objects.create_from_request(self.request, obj)
 
-
-    def __str__(self):
-        return self.title
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        return super(Post, self).save(*args, **kwargs)
 
 class StaticPage(Page):
     body = RichTextField(blank=True, null=True)

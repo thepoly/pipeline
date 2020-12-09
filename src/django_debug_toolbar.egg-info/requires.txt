@@ -1,0 +1,2 @@
+Django>=1.11
+sqlparse>=0.2.0

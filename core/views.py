@@ -11,17 +11,14 @@ class PostListView(ListView):
     template_name = 'views_list.html'
 
 
-class PostDetailView(HitCountDetailView):
+class PostDetailView(DetailView):
     model = Post
-    template_name = 'views_detail.html'
-    context_object_name = 'post'
-    slug_field = 'slug'
-    # set to True to count the hit
-    count_hit = True
 
-    def get_context_data(self, **kwargs):
-        context = super(PostDetailView, self).get_context_data(**kwargs)
-        context.update({
-        'popular_posts': Post.objects.order_by('-hit_count_generic__hits')[:3],
-        })
-        return context
+    def get_object(self, queryset=None):
+        # Retrieve the blog post just using `get_object` functionality.
+        obj = super(PostDetailView, self).get_object(queryset)
+
+        # Track the users access to the blog by post!
+        Tracker.objects.create_from_request(self.request, obj)
+
+        return obj

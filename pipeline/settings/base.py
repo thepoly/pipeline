@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     "django.contrib.sitemaps",
     "webpack_loader",
     "django_prometheus",
+    "django_user_agents",
+    "tracking_analyzer",
     "widget_tweaks",
     "hitcount",
 ]

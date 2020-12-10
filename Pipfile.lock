@@ -128,7 +128,7 @@
         },
         "draftjs-exporter": {
             "hashes": [
-                "sha256:5839cbc29d7bce2fb99837a404ca40c3a07313f2a20e2700de7ad6aa9a9a18fb"
+                "sha256:d415a9964690a2cddb66a31ef32dd46c277e9b80434b94e39e3043188ed83e33"
             ],
             "version": "==2.1.7"
         },

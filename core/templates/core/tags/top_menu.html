@@ -1,5 +1,5 @@
 {% load core_menu wagtailcore_tags static %}
-<div class="nav-scroller py-1 mb-4 box-shadow bg-white"{% if is_home %} data-controller="navigation" data-action="scroll@window->navigation#onScroll" data-target="navigation.scroller"{% endif %}>
+<div class="nav-scroller py-1 mb-4 box-shadow bg-dark"{% if is_home %} data-controller="navigation" data-action="scroll@window->navigation#onScroll" data-target="navigation.scroller"{% endif %}>
     <div class="container">
         <nav class="nav d-flex flex-nowrap justify-content-between">
             {% if is_home %}

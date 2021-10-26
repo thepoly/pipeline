@@ -1,8 +1,28 @@
 @import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i|Playfair+Display:400,400i,700,700i,900,900i|Raleway:500,500i,600,600i,700,700i');
+
 @import "_theme_colors";
+
+@import "node_modules/bootstrap/scss/functions";
+
 $enable-gradients: true;
 
 $font-family-base: 'Lora', serif;
+
+
+@include themed(){
+  $theme-colors: map-merge((
+    "primary":      t('primary'),
+    "secondary":    t('secondary'),
+    "success":      t('$success'),
+    "info":         t('info'),
+    "warning":      t('warning'),
+    "danger":       t('danger'),
+    "light":        t('light'),
+    "dark":         t('dark')
+  ),
+  $theme-map) !global;
+  $border-color: t('border');
+}
 
 // Optional
 @import "~bootstrap/scss/root";
@@ -38,19 +58,9 @@ $font-family-base: 'Lora', serif;
 @import "~bootstrap/scss/utilities";
 // @import "~bootstrap/scss/print";
 
-@include themed(){
-    $theme-colors: (
-      "primary": t('primary'),
-      "secondary":  t('secondary'),
-        "success":    t('$success'),
-        "info":       t('info'),
-        "warning":    t('warning'),
-        "danger":     t('danger'),
-        "light":      t('light'),
-        "dark":       t('dark')
-    );
-    $border-color: t('border')
-}
+
+
+@debug map-get($theme-colors, "primary");
 
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
@@ -213,7 +223,7 @@ header a.search {
 
 @include themed(){
 .border-top { border-top: 1px solid t('border') }
-.border-bottom { border-bottom: 1px solid t('border') }
+.border-bottom { border-bottom: 1px solid t('border')}
 }
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
@@ -222,7 +232,7 @@ header a.search {
     padding: 2.5rem 0;
     color: #666;
     text-align: center;
-    background-color: #f6f6f6;
+    background-color: #0000ff;
     border-top: .05rem solid t('border');
     font-size: 0.9rem;
   }

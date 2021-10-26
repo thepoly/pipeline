@@ -2,7 +2,7 @@
 {% load render_bundle from webpack_loader %}
 
 <!DOCTYPE html>
-<main id="app-root" class="theme-dark">
+<main id="app-root" >
 <html class="no-js">
     <head>
         <meta charset="utf-8" />
@@ -21,10 +21,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="alternate" type="application/rss+xml" title="The Polytechnic" href="/feed/">
         <link rel="icon" href="{% static 'images/lettermark.png' %}">
+        <link id="dark-theme-style" rel="stylesheet" />
         <link rel="apple-touch-icon" href="{% static 'images/lettermark.png' %}">
         <link rel="mask-icon" href="{% static 'images/lettermark_nobg.svg' %}" color="#DA1E05">
         <meta name="apple-mobile-web-app-title" content="The Poly">
         <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script src="{% static 'js/toggle.js' %}" defer></script>
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-76250947-1"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -45,11 +47,11 @@
         {% endblock %}
     </head>
 
-    <body class="bg-light {% block body_class %}{% endblock %}">
+    <body class="bg-light text-dark {% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
         {% block header_block %}
-            <header class="py-2 bg-gradient-primary">
+            <header class="py-2 bg-primary">
                 <div class="container">
                     <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
                         <div class="col">
@@ -61,20 +63,20 @@
                             <a class="text-light search" href="{% url 'search' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
                             </a>
-                            //<a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}">Toggle Theme</a>
+                            <div class="btn btn-sm btn-outline-light" id="btnSwitch" >Toggle Theme</div>
                             <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/">Subscribe</a>
                         </div>
                     </div>
                 </div>
             </header>
         {% endblock %}
-
+        
         {% block menu %}
             {% get_site_root as site_root %}
             {% top_menu parent=site_root calling_page=self %}
         {% endblock %}
 
-        <section class="content">
+        <section class="content" id="darkTheme">
             {% block content %}{% endblock %}
         </section>
 

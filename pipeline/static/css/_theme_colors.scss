@@ -16,7 +16,6 @@ $border--dark: #6c757d;
 $pipeline-red--dark: #c9311d;
 $ft--dark: #4f4f4f; //footer
 
-
 $themes: (
   light: (
     primary:    #DA1E05,
@@ -28,20 +27,25 @@ $themes: (
     light:      $light,
     dark:       $dark,
     border:     $gray-300
-  ),
-  dark: (
-    primary:    #c81b04,
-    secondary:  #C9C3C2,
-    success:    $success,
-    info:       $info,
-    warning:    $warning,
-    danger:     $danger,
-    light:      $light,
-    dark:       $dark,
-    border:     #6c757d
-  ),
+  )
 );
 
+.theme-dark{
+  $bg: $bg--dark;
+  $text: $text--dark;
+  $border: $border--dark;
+  $pipeline-red: $pipeline-red--dark;
+  $ft: $ft--dark;
+  $border: #6c757d;
+}
+.theme-light{
+  $bg: $bg--light;
+  $text: $text--light;
+  $border: $border--light;
+  $pipeline-red: $pipeline-red--light;
+  $border: $gray-300;
+  $ft: $ft--light;
+}
 @mixin themed() {
   @each $theme, $map in $themes {
 
@@ -53,7 +57,7 @@ $themes: (
       }
 
       @content;
-      $theme-map: null !global;
+      
     }
 
   }

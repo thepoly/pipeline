@@ -932,8 +932,8 @@ class CandidatePage(RoutablePageMixin, Page):
     def is_in_office(self, office_name):
         for office in [r for r in self.nom_counts.select_related("office")]:
             if office.name == office_name:
-                return true
-        return false
+                return True
+        return False
 
 
 class MapPage(Page):

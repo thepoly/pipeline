@@ -934,3 +934,8 @@ class CandidatePage(RoutablePageMixin, Page):
             if office.name == office_name:
                 return true
         return false
+
+
+class MapPage(Page):
+    def __str__(self):
+        return 'thing'

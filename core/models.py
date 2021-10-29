@@ -72,6 +72,9 @@ class Contributor(index.Indexed, models.Model):
     search_fields = [index.SearchField("name", partial_match=True)]
 
     autocomplete_search_field = "name"
+    
+    class Meta:
+        ordering = ['name']
 
     def autocomplete_label(self):
         return self.name

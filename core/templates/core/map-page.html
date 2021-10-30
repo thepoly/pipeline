@@ -25,14 +25,18 @@
 
     function initMap() {
 
-      var macc = {{lat: -25.344, lng: 131.036};
+      var Troy = {lat: 42.728, lng: -73.691};
 
       var map = new google.maps.Map(
 
-          document.getElementById('map'), {zoom: 15, center: macc});
+          document.getElementById('map'), {zoom: 15, center: Troy});
 
-      var marker = new google.maps.Marker({position: macc, map: map});
+      var marker = new google.maps.Marker({
+            position: Troy,
+            title:"The city of Troy"
+        });
 
+       marker.setMap(map);
     }
 
  </script>

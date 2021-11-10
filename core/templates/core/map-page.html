@@ -14,6 +14,11 @@
   <head>
     <style>
 
+      #map {
+        height: 400px;
+        width: 100%;
+       }
+
     </style>
   </head>
   <body>
@@ -25,10 +30,22 @@
 
     function initMap() {
 
+      var customMapType = new google.maps.StyledMapType([{
+            elementType: 'labels',
+            stylers: [{visibility: 'off'}]
+          },{
+            featureType: "road",
+            stylers: [{visibility: 'on'}]
+          }
+        ], {
+          name: 'Custom Style'
+      });
+
+      var customMapTypeId = 'custom_style';
+
       var Troy = {lat: 42.728, lng: -73.691};
 
       var map = new google.maps.Map(
-
           document.getElementById('map'), {zoom: 15, center: Troy});
 
       var marker = new google.maps.Marker({
@@ -37,6 +54,8 @@
         });
 
        marker.setMap(map);
+       map.mapTypes.set(customMapTypeId, customMapType);
+       map.setMapTypeId(customMapTypeId);
     }
 
  </script>

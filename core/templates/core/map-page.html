@@ -28,7 +28,35 @@
 
 <script>
 
+
+      window.names = [
+      {% for Location in page.places %}
+          `{{Location.value.name}}`,
+      {% endfor %}
+      ]
+      window.addresses = [
+      {% for Location in page.places %}
+          `{{Location.value.address}}`,
+      {% endfor %}
+      ]
+      window.descriptions = [
+      {% for Location in page.places %}
+          `{{Location.value.description}}`,
+      {% endfor %}
+      ]
+
+
+      window.parsedaddresses = []
+      for(i = 0; i< window.addresses.length;i++){
+        var addressString = window.addresses[i];
+        var index = addressString.search("p");
+        var index2 = addressString.search("/p");
+        var addressString = addressString.slice(index + 2,index2-1);
+        window.parsedaddresses.push(addressString);
+      }
+
     function initMap() {
+
 
       var customMapType = new google.maps.StyledMapType([{
             elementType: 'labels',

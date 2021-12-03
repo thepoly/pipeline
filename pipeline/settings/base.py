@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "webpack_loader",
     "django_prometheus",
     "widget_tweaks",
+    "osm_field",
 ]
 
 MIDDLEWARE = [

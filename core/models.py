@@ -51,6 +51,8 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from osm_field.fields import LatitudeField, LongitudeField, OSMField
+
 
 
 logger = logging.getLogger("pipeline")
@@ -936,6 +938,7 @@ class CandidatePage(RoutablePageMixin, Page):
         return False
 
 
-class MapPage(Page):
-    def __str__(self):
-        return 'thing'
+class MapPage(models.Model):
+    location = OSMField()
+    location_lat = LatitudeField()
+    location_lon = LongitudeField()

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-mappage{% endblock %}
+
+{% block content %}
+<div class="container">
+    <hr class="pb-3">
+    <html>
+  <head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
+    <style>
+       /* Set the size of the div element that contains the map */
+      #map {
+        height: 525px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+    </style>
+	 <script >
+	function init(){
+      var map = L.map('map').setView([ 42.7305,-73.6841], 15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+	  window.latitude = [
+      {% for Location in page.places %}
+          `{{Location.value.latitude}}`,
+      {% endfor %}
+      ]
+      window.longitude = [
+      {% for Location in page.places %}
+          `{{Location.value.longitude}}`,
+      {% endfor %}
+      ]
+      window.descriptions = [
+      {% for Location in page.places %}
+          `{{Location.value.description}}`,
+      {% endfor %}
+      ]
+
+	  // Parse longitude
+      window.parsedlongitudes = []
+      for(i = 0; i< window.longitude.length;i++){
+        var addressString = window.longitude[i];
+        var index = addressString.search("<p>");
+        var index2 = addressString.search("</p>");
+        var addressString = addressString.slice(index + 3,index2);
+        window.parsedlongitudes.push(addressString);
+      }
+
+      // Parse latitude
+      window.parsedlatitudes = []
+      for(i = 0; i< window.latitude.length;i++){
+        var addressString = window.latitude[i];
+        var index = addressString.search("<p>");
+        var index2 = addressString.search("</p>");
+        var addressString = addressString.slice(index + 3,index2);
+        window.parsedlatitudes.push(addressString);
+      }
+
+	  var i;
+	  for (i = 0; i < window.parsedlatitudes.length; i++) {
+		 L.marker([parsedlatitudes[i], parsedlongitudes[i]]).addTo(map)
+    .bindPopup(window.descriptions[i]);
+	  }
+	}
+    </script>
+  </head>
+  <body onload = init();>
+    <div id="map"></div>
+  </body>
+</html>
+</div>
+{% endblock %}

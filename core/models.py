@@ -53,8 +53,6 @@ from wagtailautocomplete.edit_handlers import AutocompletePanel
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from osm_field.fields import LatitudeField, LongitudeField, OSMField
 
-
-
 logger = logging.getLogger("pipeline")
 
 
@@ -74,7 +72,7 @@ class Contributor(index.Indexed, models.Model):
     search_fields = [index.SearchField("name", partial_match=True)]
 
     autocomplete_search_field = "name"
-    
+
     class Meta:
         ordering = ['name']
 
@@ -88,9 +86,9 @@ class Contributor(index.Indexed, models.Model):
     def get_articles(self):
         return (
             ArticlePage.objects.live()
-            .filter(authors__author=self)
-            .order_by("-first_published_at")
-            .all()
+                .filter(authors__author=self)
+                .order_by("-first_published_at")
+                .all()
         )
 
     def __str__(self):
@@ -146,9 +144,9 @@ class StaffPage(Page):
     def get_articles(self):
         return (
             ArticlePage.objects.live()
-            .filter(authors__author=self.contributor)
-            .order_by("-first_published_at")
-            .all()
+                .filter(authors__author=self.contributor)
+                .order_by("-first_published_at")
+                .all()
         )
 
     def get_positions_html(self):
@@ -195,20 +193,20 @@ class StaffIndexPage(Page):
     def get_active_staff(self):
         return (
             StaffPage.objects.live()
-            .descendant_of(self)
-            .filter(terms__position__isnull=False, terms__date_ended__isnull=True)
-            .select_related("photo")
-            .prefetch_related("terms__position")
-            .distinct()
+                .descendant_of(self)
+                .filter(terms__position__isnull=False, terms__date_ended__isnull=True)
+                .select_related("photo")
+                .prefetch_related("terms__position")
+                .distinct()
         )
 
     def get_previous_staff(self):
         return (
             StaffPage.objects.live()
-            .descendant_of(self)
-            .exclude(terms__date_ended__isnull=True, terms__position__isnull=False)
-            .annotate(latest_term_ended=Max("terms__date_ended"))
-            .order_by(F("latest_term_ended").desc(nulls_last=True))
+                .descendant_of(self)
+                .exclude(terms__date_ended__isnull=True, terms__position__isnull=False)
+                .annotate(latest_term_ended=Max("terms__date_ended"))
+                .order_by(F("latest_term_ended").desc(nulls_last=True))
         )
 
 
@@ -482,9 +480,9 @@ class ArticlePage(RoutablePageMixin, Page):
 
     def get_published_date(self):
         return (
-            self.go_live_at
-            or self.first_published_at
-            or getattr(self.get_latest_revision(), "created_at", None)
+                self.go_live_at
+                or self.first_published_at
+                or getattr(self.get_latest_revision(), "created_at", None)
         )
 
     def get_text_html(self):
@@ -579,10 +577,10 @@ class ArticlePage(RoutablePageMixin, Page):
             tags["twitter:image"] = rendition_url
         else:
             tags["og:image"] = (
-                self.get_site().root_url + "/static/images/minimal_logo_tag_padding.png"
+                    self.get_site().root_url + "/static/images/minimal_logo_tag_padding.png"
             )
             tags["twitter:image"] = (
-                self.get_site().root_url + "static/images/minimal_logo_tag_padding.png"
+                    self.get_site().root_url + "static/images/minimal_logo_tag_padding.png"
             )
 
         tags["twitter:site"] = "@rpipoly"
@@ -613,9 +611,9 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
     def get_articles(self):
         return (
             ArticlePage.objects.live()
-            .descendant_of(self)
-            .order_by("-first_published_at")
-            .select_related("kicker", "featured_image")
+                .descendant_of(self)
+                .order_by("-first_published_at")
+                .select_related("kicker", "featured_image")
         )
 
     def get_context(self, request):
@@ -649,8 +647,8 @@ class ArchivesPage(RoutablePageMixin, Page):
             ArticlePage.objects.filter(
                 first_published_at__year=year, first_published_at__month=month
             )
-            .order_by("-first_published_at")
-            .select_related("kicker", "featured_image")
+                .order_by("-first_published_at")
+                .select_related("kicker", "featured_image")
         )
 
         if len(articles) == 0:
@@ -898,6 +896,7 @@ class CandidatePage(RoutablePageMixin, Page):
             [InlinePanel("nom_counts", label="Nom Counts")], heading="Nom Counts"
         ),
     ]
+
     # @route(r"^$")
     # def post_404(self, request):
     #     """Return an HTTP 404 whenever the page is accessed directly.
@@ -938,7 +937,16 @@ class CandidatePage(RoutablePageMixin, Page):
         return False
 
 
-class MapPage(models.Model):
-    location = OSMField()
-    location_lat = LatitudeField()
-    location_lon = LongitudeField()
+class Location(StructBlock):
+    latitude = RichTextBlock(required=True, default="")
+    longitude = RichTextBlock(required=True, default="")
+    description = RichTextBlock(required=True, default="")
+
+
+class MapPage(Page):
+    places = StreamField([("Locations", Location())])
+    content_panels = Page.content_panels + [StreamFieldPanel("places")]
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        return context

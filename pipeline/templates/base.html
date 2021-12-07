@@ -24,6 +24,7 @@
         <link rel="mask-icon" href="{% static 'images/lettermark_nobg.svg' %}" color="#DA1E05">
         <meta name="apple-mobile-web-app-title" content="The Poly">
         <!-- Global site tag (gtag.js) - Google Analytics -->
+
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-76250947-1"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -139,11 +140,11 @@
   </script>
 
 
-    <body class="bg-light {% block body_class %}{% endblock %}">
+    <body id="colorbody" class="bg-light {% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
         {% block header_block %}
 
-            <header class="py-2 bg-gradient-primary">
+            <header id="colorhead" class="py-2 bg-gradient-primary">
                 <div class="container">
                     <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
                         <div class="col">
@@ -155,6 +156,7 @@
                         <div class="ui-widget hide-mobile col text-right" id="largeDisplay">
                             <form action="{% url 'search' %}">
                                 <input type="text" name="query" id="tags"  placeholder="Search..." style="border-radius: 5px; size: 10; position: relative; top:1px; resize: none;" multiple>
+                                <div class="btn btn-sm btn-outline-light" id="btnSwitch" >Toggle Theme</div>
                                 <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
                             </form>
                         </div>
@@ -163,6 +165,7 @@
                                 <a class="text-light search" href="{% url 'search' %}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
                                 </a>
+                                <div class="btn btn-sm btn-outline-light" id="btnSwitch" >Toggle Theme</div>
                                 <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/">Subscribe</a>
                             </div>
                         </div>
@@ -195,7 +198,7 @@
                 <span class="text-nowrap">Powered by <a href="https://github.com/thepoly/pipeline">Pipeline</a>.</span>
             </p>
         </footer>
-
+        <script src="/static/js/toggle.js" data-turbolinks-permanent defer></script>
         {% block extra_js %}
             {# Override this in templates to add extra JavaScript #}
         {% endblock %}

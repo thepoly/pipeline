@@ -8,11 +8,28 @@
     {% for tag, val in page.get_meta_tags.items %}
         <meta property="{{tag}}" content="{{val}}">
     {% endfor %}
+      <style>
+          #colorhead{
+            {% if page.header_color %}
+              background: {{page.header_color}} linear-gradient(180deg,{{page.lightheader_color}},{{page.header_color}}) repeat-x !important
+
+            {% endif %}
+          }
+          #colorbody{
+            {% if page.font_color %}
+              color:{{page.font_color}} !important;
+            {% endif %}
+            {% if page.background_color %}
+              background-color:{{page.background_color}}!important;
+            {% endif %}
+          }
+      </style>
 {% endblock %}
 
 {% block body_class %}template-articlepage{% endblock %}
 
 {% block content %}
+
 <article>
     <div class="container narrow">
         {% if page.kicker %}
@@ -156,4 +173,3 @@
 {% endif %}
 {% endblock %}
 {% endcache %}
-

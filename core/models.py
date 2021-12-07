@@ -51,6 +51,8 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from wagtail_color_panel.fields import ColorField
+from wagtail_color_panel.edit_handlers import NativeColorPanel
 
 
 logger = logging.getLogger("pipeline")
@@ -383,6 +385,11 @@ class ArticlePage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
     kicker = models.ForeignKey(Kicker, null=True, blank=True, on_delete=models.PROTECT)
+    lightheader_color = ColorField(default="#e0402b")
+    header_color = ColorField(default="#DA1E05")
+    font_color = ColorField(default="#000000")
+    background_color = ColorField(default="#FFFFFF")
+
     body = StreamField(
         [
             ("paragraph", RichTextBlock()),
@@ -407,9 +414,20 @@ class ArticlePage(RoutablePageMixin, Page):
     )
     featured_caption = RichTextField(features=["italic"], blank=True, null=True)
 
+
     content_panels = [
         MultiFieldPanel(
             [FieldPanel("headline", classname="title"), FieldPanel("subdeck")]
+        ),
+        MultiFieldPanel(
+            [
+                NativeColorPanel('header_color'),
+                NativeColorPanel('lightheader_color'),
+                NativeColorPanel('font_color'),
+                NativeColorPanel('background_color'),
+            ],
+            heading="Style",
+            classname="collapsible"
         ),
         MultiFieldPanel(
             [

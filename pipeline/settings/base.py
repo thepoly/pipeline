@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "webpack_loader",
     "django_prometheus",
     "widget_tweaks",
+    'wagtail_color_panel',
 ]
 
 MIDDLEWARE = [
@@ -71,7 +72,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "wagtail.core.middleware.SiteMiddleware",
+    "wagtail.contrib.legacy.sitemiddleware.SiteMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "core.middleware.MigrationRedirectMiddleware",
     "django_prometheus.middleware.PrometheusAfterMiddleware",
@@ -121,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"

@@ -24,7 +24,7 @@
         <link rel="mask-icon" href="{% static 'images/lettermark_nobg.svg' %}" color="#DA1E05">
         <meta name="apple-mobile-web-app-title" content="The Poly">
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        
+
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-76250947-1"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -140,11 +140,11 @@
   </script>
 
 
-    <body class="bg-light {% block body_class %}{% endblock %}">
+    <body id="colorbody" class="bg-light {% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
         {% block header_block %}
 
-            <header class="py-2 bg-gradient-primary">
+            <header id="colorhead" class="py-2 bg-gradient-primary">
                 <div class="container">
                     <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
                         <div class="col">

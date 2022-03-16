@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+                
 {% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text cache %}
 {% cache 60 page request.is_preview %}
 
@@ -125,6 +128,27 @@
                         </div>
                     {% endif %}
                 </div>
+            {% elif block.block_type == 'carousel' %}
+            <div class="container">
+           	<div id="carousel" class="carousel slide">
+    		   <div class="carousel-inner">
+        	      {% for sub_block in block.value %}
+        	      {% image sub_block.value width-1400 as carousel_img %}
+        	      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ carousel_img.url }}" class="d-block w-100" alt="{{ carousel_img.alt }}">
+                      </div>
+                      {% endfor %}
+                  </div>
+    		   <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+        	     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        	     <span class="sr-only">Previous</span>
+    		  </a>
+    		  <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+        	     <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        	     <span class="sr-only">Next</span>
+    		  </a>
+              </div>
+              </div>
             {% else %}
                 <div class="container narrow">
                     {% include_block block %}
@@ -132,6 +156,7 @@
             {% endif %}
         {% endfor %}
     </div>
+    
 </article>
 
 {% if page.get_related_articles %}

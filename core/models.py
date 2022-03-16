@@ -31,6 +31,23 @@ from wagtail.core.blocks import (
     StructValue,
     ChoiceBlock,
 )
+
+from django.db import models
+
+from modelcluster.fields import ParentalKey
+
+from wagtail.admin.edit_handlers import (
+    FieldPanel,
+    MultiFieldPanel,
+    InlinePanel,
+    StreamFieldPanel,
+    PageChooserPanel,
+)
+from wagtail.core.models import Page, Orderable
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.images.edit_handlers import ImageChooserPanel
+
+
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page, Orderable
 from wagtail.admin.edit_handlers import (
@@ -54,7 +71,6 @@ from modelcluster.fields import ParentalKey, ParentalManyToManyField
 
 
 logger = logging.getLogger("pipeline")
-
 
 class StaticPage(Page):
     body = RichTextField(blank=True, null=True)
@@ -329,6 +345,11 @@ class EmbeddedMediaValue(StructValue):
         embed = get_embed(embed_url)
         return embed.type
 
+class CarouselBlock(blocks.StreamBlock):
+    image = ImageChooserBlock()
+    
+    class Meta:
+        icon = "media"
 
 class EmbeddedMediaBlock(StructBlock):
     embed = EmbedBlock(help_text="URL to the content to embed.")
@@ -389,6 +410,7 @@ class ArticlePage(RoutablePageMixin, Page):
             ("photo", PhotoBlock()),
             ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
+            ("carousel", CarouselBlock()),
         ],
         blank=True,
     )
@@ -622,7 +644,6 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
         page = request.GET.get("page")
         context["articles"] = paginator.get_page(page)
         return context
-
 
 class ArticleAuthorRelationship(models.Model):
     article = ParentalKey(ArticlePage, related_name="authors", on_delete=models.CASCADE)

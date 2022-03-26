@@ -345,11 +345,6 @@ class EmbeddedMediaValue(StructValue):
         embed = get_embed(embed_url)
         return embed.type
 
-class CarouselBlock(blocks.StreamBlock):
-    image = ImageChooserBlock()
-    
-    class Meta:
-        icon = "media"
 
 class EmbeddedMediaBlock(StructBlock):
     embed = EmbedBlock(help_text="URL to the content to embed.")
@@ -410,7 +405,6 @@ class ArticlePage(RoutablePageMixin, Page):
             ("photo", PhotoBlock()),
             ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
-            ("carousel", CarouselBlock()),
         ],
         blank=True,
     )
@@ -451,6 +445,10 @@ class ArticlePage(RoutablePageMixin, Page):
         ),
         FieldPanel("summary"),
         StreamFieldPanel("body"),
+	MultiFieldPanel(
+            [InlinePanel("carousel_images", max_num=5, min_num=1, label="Image")],
+            heading="Carousel Images",
+        ),
     ]
 
     search_fields = Page.search_fields + [
@@ -644,6 +642,21 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
         page = request.GET.get("page")
         context["articles"] = paginator.get_page(page)
         return context
+
+
+class HomePageCarouselImages(Orderable):
+    """Between 1 and 5 images for the home page carousel."""
+
+    page = ParentalKey(ArticlePage, related_name="carousel_images")
+    carousel_image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    panels = [ImageChooserPanel("carousel_image")]
 
 class ArticleAuthorRelationship(models.Model):
     article = ParentalKey(ArticlePage, related_name="authors", on_delete=models.CASCADE)

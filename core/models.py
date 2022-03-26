@@ -70,6 +70,12 @@ from wagtailautocomplete.edit_handlers import AutocompletePanel
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 
 
+from django import forms
+from django.utils.encoding import force_text
+from django.utils.html import format_html
+from wagtail.core.blocks import FieldBlock
+
+
 logger = logging.getLogger("pipeline")
 
 class StaticPage(Page):
@@ -383,6 +389,29 @@ class AdBlock(StructBlock):
 
     class Meta:
         icon = "image"
+        
+class BlockQuoteBlock(FieldBlock):
+
+    def __init__(self, required=True, help_text=None, max_length=None, min_length=None, **kwargs):
+        self.field = forms.CharField(
+            required=required,
+            help_text=help_text,
+            max_length=max_length,
+            min_length=min_length
+        )
+        super(BlockQuoteBlock, self).__init__(**kwargs)
+
+    def get_searchable_content(self, value):
+        return [force_text(value)]
+
+    def render_basic(self, value, context=None):
+        if value:
+            return format_html('<p class="indent">{0}</p>', value)
+        else:
+            return ''
+
+    class Meta:
+        icon = "openquote"
 
 
 class MarqueeBlock(StructBlock):
@@ -411,6 +440,7 @@ class ArticlePage(RoutablePageMixin, Page):
             ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
             ("carousel", CarouselBlock()),
+            ("blockquote", BlockQuoteBlock()),
         ],
         blank=True,
     )

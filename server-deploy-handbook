@@ -33,4 +33,4 @@ Additional steps if first time committing and pushing changes:
 
 Use ssh://dokku@10.10.10.22/pipeline to ssh into the poly server and add a key in order to push changes remotely
 
-build the new django software with git push dokku [current branch]
+build the new django software with git push dokku as the poly user (su poly) [current branch]

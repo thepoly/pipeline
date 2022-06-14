@@ -30,6 +30,9 @@ from wagtail.core.blocks import (
     URLBlock,
     StructValue,
     ChoiceBlock,
+    IntegerBlock,
+    StreamBlock,
+    TextBlock,
 )
 
 from django.db import models
@@ -429,6 +432,56 @@ class GalleryPhotoBlock(StructBlock):
     caption = RichTextBlock(features=["italic"], required=False)
 
 
+class UnionEvent(StructBlock):
+    title = RichTextBlock(required=True, default="")
+    date = RichTextBlock(required=True, default="")
+    body = ListBlock(
+        StructBlock(
+            [("phrase", TextBlock()), ("definition", TextBlock(required=False))]
+        )
+    )
+    featured_image = ImageChooserBlock(required=False)
+
+    def get_text_html(self):
+        """Get the HTML that represents paragraphs within the article as a string."""
+        builder = ""
+        for block in event.body:
+            builder += str(block.value.phrase)
+        return builder
+
+    def get_plain_text(self):
+        builder = ""
+        soup = BeautifulSoup(self.get_text_html(), "html.parser")
+        for para in soup.findAll("p"):
+            builder += para.text
+            builder += " "
+        return builder[:-1]
+
+
+class UnionTimeline(Page):
+    events = StreamField([("event", UnionEvent())])
+
+    content_panels = [
+        InlinePanel(
+            "authors",
+            panels=[AutocompletePanel("author", target_model="core.Contributor")],
+            label="Author",
+        ),
+        StreamFieldPanel("events"),
+    ]
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context["authors"] = self.get_authors()
+        return context
+
+    def get_authors(self):
+        return [r.author for r in self.authors.select_related("author")]
+
+    def get_author_names(self):
+        return [a.name for a in self.get_authors()]
+
+
 class ArticlePage(RoutablePageMixin, Page):
     headline = RichTextField(features=["italic"])
     subdeck = RichTextField(features=["italic"], null=True, blank=True)
@@ -646,7 +699,7 @@ class ArticlePage(RoutablePageMixin, Page):
 
 
 class ArticlesIndexPage(RoutablePageMixin, Page):
-    subpage_types = ["ArticlePage"]
+    subpage_types = ["ArticlePage", "UnionTimeline"]
 
     @route(r"^(\d{4})\/(\d{2})\/(.*)\/$")
     def post_by_date(self, request, year, month, slug, *args, **kwargs):
@@ -685,6 +738,20 @@ class ArticleAuthorRelationship(models.Model):
 
     class Meta:
         unique_together = [("article", "author")]
+
+
+class UnionTimelineAuthorRelationship(models.Model):
+    timeline = ParentalKey(
+        UnionTimeline, related_name="authors", on_delete=models.CASCADE
+    )
+    author = models.ForeignKey(
+        Contributor, related_name="timeline", on_delete=models.PROTECT
+    )
+
+    panels = [SnippetChooserPanel("author")]
+
+    class Meta:
+        unique_together = [("timeline", "author")]
 
 
 class ArchivesPage(RoutablePageMixin, Page):

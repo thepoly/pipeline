@@ -135,7 +135,7 @@
         	      {% for sub_block in block.value %}
         	      {% image sub_block.value width-1400 as carousel_img %}
         	      <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ carousel_img.url }}" class="d-block w-100" alt="{{ carousel_img.alt }}">
+                        <img src="{{ carousel_img.url }}" class="d-block w-75" alt="{{ carousel_img.alt }}">
                       </div>
                       {% endfor %}
                   </div>

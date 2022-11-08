@@ -130,20 +130,50 @@
                 </div>
             {% elif block.block_type == 'carousel' %}
             <div class="container">
-           	<div id="carousel" class="carousel slide">
+           	<div id="carousel{{ forloop.counter0 }}" class="carousel slide" 
+                {% if block.value.size == 'small' %} style="width:500px"
+                {% elif block.value.size == 'medium' %} style="width:1000px"
+                {% else %} style="width:1400px" {% endif%}>
+                <!--
+                {% if block.value.images|length > 1 %}
+                <ol class="carousel-indicators">
+                    {% for carousel_item in block.value.images %}
+                    <li data-target="#carousel{{ forloop.parentloop.counter0 }}" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %} class="active" {% endif%}></li>
+                    {% endfor %}
+                </ol>
+                {% endif %}
+            -->
     		   <div class="carousel-inner">
-        	      {% for sub_block in block.value %}
-        	      {% image sub_block.value width-1400 as carousel_img %}
+        	      {% for captioned in block.value.images %}
+                  {% if block.value.size == 'small' %}
+                        {% image captioned.image width-500 as carousel_img %}
+                    {% elif block.value.size == 'medium' %}
+                        {% image captioned.image width-1000 as carousel_img %}
+                    {% else %}
+                        {% image captioned.image width-1400 as carousel_img %}
+                    {% endif %}
         	      <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ carousel_img.url }}" class="d-block w-75" alt="{{ carousel_img.alt }}">
+                        <img src="{{ carousel_img.url }}" class="d-block" alt="{{ carousel_img.alt }}">
+                        {% if captioned.caption or captioned.image.photographer %}
+                        <div class="meta container mt-1">
+                        {% if captioned.caption %}
+                            <span class="caption text-dark">{{ captioned.caption.source|richtext_unwrapped }}</span>
+                        {% endif %}
+                        {% if captioned.image.photographer %}
+                            <span class="small text-muted">
+                                {{ captioned.image.get_attribution_html }}
+                            </span>
+                        {% endif %}
+                        </div>
+                    {% endif %}
                       </div>
                       {% endfor %}
                   </div>
-    		   <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+    		   <a class="carousel-control-prev" href="#carousel{{ forloop.counter0 }}" role="button" data-slide="prev">
         	     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         	     <span class="sr-only">Previous</span>
     		  </a>
-    		  <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+    		  <a class="carousel-control-next" href="#carousel{{ forloop.counter0 }}" role="button" data-slide="next">
         	     <span class="carousel-control-next-icon" aria-hidden="true"></span>
         	     <span class="sr-only">Next</span>
     		  </a>

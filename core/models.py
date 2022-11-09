@@ -351,21 +351,8 @@ class EmbeddedMediaValue(StructValue):
         embed = get_embed(embed_url)
         return embed.type
 
-class CaptionedImage(StructBlock):
+class CarouselBlock(blocks.StreamBlock):
     image = ImageChooserBlock()
-    caption = RichTextBlock(classname="caption",required=False)
-
-    class Meta:
-        icon = "picture"
-
-class CarouselBlock(StructBlock):
-    size = ChoiceBlock(
-        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
-        default="medium",
-        help_text="Size of carousel.",
-    )
-
-    images = ListBlock(CaptionedImage())
     
     class Meta:
         icon = "media"

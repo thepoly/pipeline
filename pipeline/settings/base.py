@@ -160,6 +160,33 @@ WAGTAIL_SITE_NAME = "Pipeline"
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = "https://poly.rpi.edu"
 
+#Embeds (Fixes Youtube URLS for Wagtail Versions < 2.11, should remove on update)
+WAGTAILEMBEDS_FINDERS = [
+    {
+        'class': 'wagtail.embeds.finders.oembed',
+        'providers': [
+            {
+                "endpoint": "https://www.youtube.com/oembed",
+                "urls": [
+                    r'^https?://(?:[-\w]+\.)?youtube\.com/watch.+$',
+                    r'^https?://(?:[-\w]+\.)?youtube\.com/v/.+$',
+                    r'^https?://youtu\.be/.+$',
+                    r'^https?://(?:[-\w]+\.)?youtube\.com/user/.+$',
+                    r'^https?://(?:[-\w]+\.)?youtube\.com/[^#?/]+#[^#?/]+/.+$',
+                    r'^https?://m\.youtube\.com/index.+$',
+                    r'^https?://(?:[-\w]+\.)?youtube\.com/profile.+$',
+                    r'^https?://(?:[-\w]+\.)?youtube\.com/view_play_list.+$',
+                    r'^https?://(?:[-\w]+\.)?youtube\.com/playlist.+$',
+                ],
+            }
+        ],
+        'options': {'scheme': 'https'}
+    },
+    {
+        'class': 'wagtail.embeds.finders.oembed',
+    }
+]
+
 # Search
 WAGTAILSEARCH_BACKENDS = {
     "default": {"BACKEND": "wagtail.contrib.postgres_search.backend"}

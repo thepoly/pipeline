@@ -10,7 +10,7 @@ class RecentArticlesFeed(Feed):
         return ArticlePage.objects.live().order_by("-first_published_at")[:20]
 
     def item_title(self, item):
-        return item.headline
+        return item.title
 
     def item_description(self, item):
         return item.body

@@ -351,9 +351,28 @@ class EmbeddedMediaValue(StructValue):
         embed = get_embed(embed_url)
         return embed.type
 
+class CaptionedImage(StructBlock):
+    image = ImageChooserBlock()
+    caption = RichTextBlock(classname="caption",required=False)
+
+    class Meta:
+        icon = "picture"
+
 class CarouselBlock(blocks.StreamBlock):
     image = ImageChooserBlock()
+
+    class Meta:
+        icon = "picture"
     
+class SizeableCarousel(StructBlock):
+    size = ChoiceBlock(
+        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
+        default="medium",
+        help_text="Size of carousel.",
+    )
+
+    images = ListBlock(CaptionedImage())
+
     class Meta:
         icon = "media"
 
@@ -439,7 +458,7 @@ class ArticlePage(RoutablePageMixin, Page):
             ("photo", PhotoBlock()),
             ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
             ("embed", EmbeddedMediaBlock()),
-            ("carousel", CarouselBlock()),
+            ("carousel", SizeableCarousel()),
             ("blockquote", BlockQuoteBlock()),
         ],
         blank=True,

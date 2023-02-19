@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-wagtail = "<=2.7"
+wagtail = "<=2.8"
 Django = "<2.2.11"
 django-debug-toolbar = "==2.1"
 django-webpack-loader = "*"

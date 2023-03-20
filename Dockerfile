@@ -18,7 +18,7 @@ RUN groupadd -r pipeline && useradd --no-log-init -r -g pipeline pipeline
 RUN pip install pipenv
 COPY ./Pipfile ./Pipfile.lock /app/
 WORKDIR /app
-RUN pipenv install --system --deploy --skip-lock
+RUN pipenv install --system --deploy
 
 COPY . /app/
 COPY --from=node /app/pipeline/static/webpack_bundles/ /app/pipeline/static/webpack_bundles/

@@ -45,7 +45,7 @@ class RecentArticlesFeedTest(TestCase):
         item = root[0].find("item")
         self.assertIsNot(item, None)
 
-        self.assertEqual(item.find("title").text, page.title)
+        self.assertEqual(item.find("title").text, page.headline)
         self.assertEqual(item.find("description").text, str(page.body))
         self.assertEqual(item.find("link").text, page.full_url)
         self.assertEqual(

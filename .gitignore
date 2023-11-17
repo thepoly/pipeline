@@ -5,6 +5,7 @@
 /static/
 /webpack-stats.json
 /.vscode/
+*.code-workspace
 .DS_Store
 /pipeline-env/
 **/__pycache__/**

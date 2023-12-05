@@ -1,4 +1,5 @@
 {% load core_menu static wagtailuserbar wagtailcore_tags %}
+{% wagtail_site as current_site %}
 {% load render_bundle from webpack_loader %}
 
 <!DOCTYPE html>
@@ -19,7 +20,7 @@
                     {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
                 {% endblock %}
                 {% block title_suffix %}
-                    {% with request.site.site_name as site_name %}
+                    {% with current_site.site_name as site_name %}
                         {% if site_name %}- {{ site_name }}{% endif %}
                     {% endwith %}
                 {% endblock %}
@@ -150,7 +151,7 @@
                 <div class="container">
                     <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
                         <div class="col">
-                            <a class="header-logo" href="{% pageurl request.site.root_page %}">
+                            <a class="header-logo" href="{% pageurl current_site.root_page %}">
                                 <img src="{% static 'images/logo_minimal.png' %}" alt="The Polytechnic">
                             </a>
                         </div>
@@ -158,7 +159,7 @@
                         <div class="ui-widget hide-mobile col text-right" id="largeDisplay">
                             <form action="{% url 'search' %}">
                                 <input type="text" name="query" id="tags"  placeholder="Search..." style="border-radius: 5px; size: 10; position: relative; top:1px; resize: none;" multiple>
-                                <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
+                                <a class="btn btn-sm btn-outline-light" href="{% pageurl current_site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
                             </form>
                         </div>
                         <div class="hide-desktop col text-right" id="smallDisplay">
@@ -166,7 +167,7 @@
                                 <a class="text-light search" href="{% url 'search' %}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
                                 </a>
-                                <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/">Subscribe</a>
+                                <a class="btn btn-sm btn-outline-light" href="{% pageurl current_site.root_page %}subscribe/">Subscribe</a>
                             </div>
                         </div>
                     </div>

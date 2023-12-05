@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% load static wagtailcore_tags wagtailimages_tags rich_text %}
+{% wagtail_site as current_site %}
 
-{% block title_block %}{{ request.site.site_name }}{% endblock %}
+{% block title_block %}{{ current_site.site_name }}{% endblock %}
 
 {% block extra_head %}
     <meta name="description" content="News, features, opinion, and more from Rensselaer Polytechnic Institute's student news organization.">
@@ -112,14 +113,14 @@
                     <div class="ui-widget hide-mobile col text-right" id="largeDisplay">
                         <form action="{% url 'search' %}">
                             <input type="text" name="query" id="tags" placeholder="Search..." style="border-radius: 5px; size: 10; position: relative; top:1px; resize: none;">
-                            <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
+                            <a class="btn btn-sm btn-outline-light" href="{% pageurl current_site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
                         </form>
                     </div>
                     <div class="hide-desktop col text-right" id="smallDisplay">
                         <div class="ui-widget hide-mobile col text-right" id="largeDisplay">
                             <form action="{% url 'search' %}">
                                 <input type="text" name="query" id="tags" placeholder="Search..." style="border-radius: 5px; size: 10; position: relative; top:10px; resize: none;">
-                                <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
+                                <a class="btn btn-sm btn-outline-light" href="{% pageurl current_site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
                             </form>
                         </div>
                         <div class="hide-desktop col text-right" id="smallDisplay">
@@ -127,13 +128,13 @@
                                 <a class="text-light search" href="{% url 'search' %}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
                                 </a>
-                                <a class="btn btn-sm btn-outline-light" href="{% pageurl request.site.root_page %}subscribe/">Subscribe</a>
+                                <a class="btn btn-sm btn-outline-light" href="{% pageurl current_site.root_page %}subscribe/">Subscribe</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 text-center">
-                    <a class="header-logo" href="{% pageurl request.site.root_page %}">
+                    <a class="header-logo" href="{% pageurl current_site.root_page %}">
                         <img class="img-fluid" src="{% static 'images/logo.png' %}" alt="The Polytechnic">
                     </a>
                 </div>

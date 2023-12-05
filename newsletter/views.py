@@ -4,7 +4,7 @@ from django.views import View
 
 from .forms import SubscriptionForm
 from .models import Subscription, NewsletterSettings
-
+from wagtail.core.models import Site
 
 class NewsletterView(View):
     def get(self, request):
@@ -25,7 +25,7 @@ class NewsletterView(View):
 
 class SubscriptionsView(View):
     def get(self, request):
-        settings = NewsletterSettings.for_site(request.site)
+        settings = NewsletterSettings.for_site(Site.find_for_request(request))
         if request.GET.get("token") != settings.subscriptions_token:
             return HttpResponseForbidden()
         subscriptions = Subscription.objects.all()

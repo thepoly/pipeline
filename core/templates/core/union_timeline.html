@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-uniontimeline{% endblock %}
+
+{% block content %}
+<style> 
+  ul.timeline {
+    list-style-type: none;
+    position: relative;
+  }
+  ul.timeline:before {
+    content: ' ';
+    background: #d4d9df;
+    display: inline-block;
+    position: absolute;
+    left: 29px;
+    width: 2px;
+    height: 100%;
+    z-index: 400;
+  }
+  ul.timeline > li {
+    margin: 20px;
+    padding-left: 20px;
+  }
+  ul.timeline > li:before {
+    content: ' ';
+    background: white;
+    display: inline-block;
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid #DA1E05;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+    z-index: 400;
+  }
+  ul.timeline > li:after {
+    content: ' ';
+    background: #d4d9df;
+    display: inline-block;
+    position: absolute;
+    left: 29px;
+    width: 100%;
+    height: 2px;
+    z-index: 400;
+  }
+.thumbnail:hover {
+    position:sticky;
+    top: 25%;
+    left: 0%;
+    width:500px;
+    height:auto;
+    display:block;
+    z-index:999;
+  }
+  .tooltip {
+  position: relative;
+  display: inline;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 500px;
+  background-color: black;
+  color: #fff;
+  text-align: justify;
+  border-radius: 6px;
+  padding: 15px;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 0%;
+  margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+</style>
+
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-2">
+      <h1>Union Events Timeline</h1>
+        <span class="mr-1">
+          {% if authors %}
+            By {% for author in authors %}
+                {% if forloop.last and authors|length > 1 %} and {% endif %}
+                {% if author.staff_page %}
+                    <a class="author-name" href="{% pageurl author.staff_page %}">{{ author.staff_page.name }}</a>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                {% else %}
+                    <span class="author-name">{% firstof author.rich_name author.name %}</span>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                {% endif %}
+            {% endfor %}
+          {% endif %}
+        </span>
+      <ul class="timeline">
+        {% for block in page.events %}
+        <li>
+          <div>
+            <div class="row">
+              <div class="col">
+                {{ block.value.date }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-8">
+                {% if block.value.body %}
+                  {% for event_body_block in block.value.body %}
+                    {% if event_body_block.definition %}
+                      <span class="tooltip">{{event_body_block.phrase}}
+                        <span class="tooltiptext">{{event_body_block.definition}}</span>
+                      </span>
+                    {% else %}
+                      <span>
+                        {{event_body_block.phrase}}
+                      </span>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <div class="col-6 col-md-4 align-self-center" style="height: auto; padding-bottom: 25px">
+                {% if block.value.featured_image %}
+                  {% image block.value.featured_image width-400 as photo %}
+                  <img class="" src="{{ photo.url }}">
+                {% endif %}
+              </div>
+
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

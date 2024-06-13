@@ -87,6 +87,7 @@ class StaticPage(Page):
 @register_snippet
 class Contributor(index.Indexed, models.Model):
     name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     rich_name = RichTextField(
         features=["italic"], max_length=255, null=True, blank=True
     )

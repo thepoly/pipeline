@@ -1,6 +1,0 @@
-{% load core_menu wagtailcore_tags %}
-<p class="bottom-menu container d-flex flex-wrap justify-content-center">
-    {% for p in pages %}
-        <a class="px-2 text-small" href="{% pageurl p %}">{{ p }}</a>
-    {% endfor %}
-</p>

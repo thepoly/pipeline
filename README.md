@@ -1,17 +1,17 @@
 # Pipeline
 
-Pipeline is [_The Rensselaer Polytechnic_](https://poly.rpi.edu)'s next
-website. It will enable rapid development of new article layouts and
-interactive features. In the long term, it will provide a solid platform for
-our content over the coming decade and support _The Poly_'s focus on
-online-first journalism.
+Pipeline is [_The Rensselaer Polytechnic_](https://poly.rpi.edu)'s. It 
+enables rapid development of new article layouts and interactive features. 
+In the long term, it will provide a solid platform for our content over the
+coming decade and support _The Poly_'s focus on online-first journalism.
 
 ## Requirements
 
 Ensure these are installed before continuing.
 
-- [Python 3.7](https://www.python.org) or Python 3.6
+- [Python 3.10](https://www.python.org) or greater
 - [Pipenv](https://docs.pipenv.org)
+- [Node v20](https://nodejs.org) or greater
 - [npm](https://www.npmjs.com/get-npm)
 - [Postgres](https://www.postgresql.org)
 

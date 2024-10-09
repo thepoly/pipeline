@@ -1,0 +1,62 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="row">
+    {% for article in articles %}
+    <div class="col-12 mb-5 row no-gutters">
+        <div class="col d-flex flex-column align-items-start order-2 order-md-1">
+            {% if article.kicker %}
+                <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
+            {% endif %}
+            <h3 class="mb-2 headline">
+                <a class="text-dark" href="{% pageurl article %}">{{ article.headline|richtext }}</a>
+            </h3>
+
+            {% if show_authors or show_dates %}
+                <div class="mb-2">
+                    {% if show_authors %}
+                        {% with article.get_authors as authors %}
+                        <span class="authors mr-1">
+                            By {% for author in authors %}
+                                {% if forloop.last and authors|length > 1 %} and {% endif %}
+                                {% if author.staff_page %}
+                                    <a class="author-name" href="{% pageurl author.staff_page %}">{{ author.staff_page.name }}</a>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                                {% else %}
+                                    <span class="author-name">{% firstof author.rich_name|richtext author.name %}</span>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                        {% endwith %}
+                    {% endif %}
+
+                    {% if show_dates %}
+                        <span class="text-muted small published-date">
+                            {{ article.get_published_date|date:"F j, Y" }}
+                        </span>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="card-text mb-auto summary">
+                {% if article.summary %}
+                    {{ article.summary|richtext }}
+                {% else %}
+                    {{ article.get_first_chars|richtext }}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if article.featured_image %}
+            <div class="col-12 col-md-4 pl-md-3 order-1 order-md-2">
+                {% image article.featured_image fill-800x800 as photo %}
+                <a href="{% pageurl article %}">
+                    <img class="img-fluid mb-2 mb-md-0" src="{{ photo.url }}">
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p>No articles.</p>
+    </div>
+    {% endfor %}
+</div>

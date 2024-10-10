@@ -8,7 +8,7 @@
                 <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
             {% endif %}
             <h3 class="mb-2 headline">
-                <a class="text-dark" href="{% pageurl article %}">{{ article.headline|richtext }}</a>
+                <a class="text-dark" href="{% pageurl article %}">{{ article.title|richtext }}</a>
             </h3>
 
             {% if show_authors or show_dates %}

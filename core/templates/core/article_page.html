@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags rich_text cache %}
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags cache %}
 {% cache 60 page request.is_preview %}
 
 {% block extra_head %}
@@ -17,9 +17,9 @@
         {% if page.kicker %}
             <strong class="text-primary text-uppercase text-kicker">{{ page.kicker }}</strong>
         {% endif %}
-        <h1 class="article-headline mb-3">{{ page.headline|richtext_unwrapped }}</h1>
+        <h1 class="article-headline mb-3">{{ page.title|richtext }}</h1>
         {% if page.subdeck %}
-            <h4 class="article-subdeck mb-4">{{ page.subdeck|richtext_unwrapped }}</h4>
+            <h2 class="article-subdeck mb-4">{{ page.subdeck|richtext }}</h2>
         {% endif %}
     </div>
     {% if page.featured_image %}
@@ -32,7 +32,7 @@
             {% if page.featured_caption or photo.image.photographer %}
                 <div class="meta container mt-1 mb-2">
                 {% if page.featured_caption %}
-                    <span class="caption text-dark">{{ page.featured_caption|richtext_unwrapped }}</span>
+                    <span class="caption text-dark">{{ page.featured_caption|richtext }}</span>
                 {% endif %}
                 {% if page.featured_image.photographer %}
                     <span class="small text-muted text-nowrap">
@@ -43,24 +43,6 @@
             {% endif %}
         </div>
     {% endif %}
-    <div class="container narrow mb-4">
-        {% if authors %}
-        <span class="authors mr-1">
-            By {% for author in authors %}
-                {% if forloop.last and authors|length > 1 %} and {% endif %}
-                {% if author.staff_page %}
-                    <a class="author-name" href="{% pageurl author.staff_page %}">{{ author.staff_page.name }}</a>{% if not forloop.last and authors|length > 2 %}, {% endif %}
-                {% else %}
-                    <span class="author-name">{% firstof author.rich_name|richtext_unwrapped author.name %}</span>{% if not forloop.last and authors|length > 2 %}, {% endif %}
-                {% endif %}
-            {% endfor %}
-        </span>
-        {% endif %}
-        <a class="text-muted small published-date text-nowrap" href="{% pageurl page %}">
-            {{ page.get_published_date|date:"F j, Y" }}
-        </a>
-    </div>
-
     <div class="body">
         {% for block in page.body %}
             {% if block.block_type == 'photo' %}
@@ -77,7 +59,7 @@
                     {% if block.value.caption or photo.image.photographer %}
                         <div class="meta container mt-1">
                         {% if block.value.caption %}
-                            <span class="caption text-dark">{{ block.value.caption.source|richtext_unwrapped }}</span>
+                            <span class="caption text-dark">{{ block.value.caption.source|richtext }}</span>
                         {% endif %}
                         {% if photo.image.photographer %}
                             <span class="small text-muted">
@@ -106,7 +88,7 @@
                             {% image gallery_photo.image fill-600x600 as small_photo %}
                             {% image gallery_photo.image max-2000x1500 as large_photo %}
                             <a data-action="photo-gallery#showPhoto mouseover->photo-gallery#hoverPhoto">
-                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ gallery_photo.caption.source|richtext_unwrapped }}" data-photographer='{{ gallery_photo.image.get_attribution_html }}'>
+                                <img class="" src="{{ small_photo.url }}" data-target="photo-gallery.photo" data-large-src="{{ large_photo.url }}" data-caption="{{ gallery_photo.caption.source|richtext }}" data-photographer='{{ gallery_photo.image.get_attribution_html }}'>
                             </a>
                         </div>
                     {% endfor %}
@@ -148,12 +130,12 @@
             {% elif block.block_type == 'blockquote' %}
                 <div class="container narrow">
                 <style>
-  		  p.indent {
-    			text-indent: 15px;
-    			margin-left: 30px;
-    			margin-right: 30px;
-		  }
-		 </style>
+                    p.indent {
+                        text-indent: 15px;
+                        margin-left: 30px;
+                        margin-right: 30px;
+                    }
+		        </style>
                     {% include_block block %}
                 </div>
             {% else %}
@@ -163,28 +145,8 @@
             {% endif %}
         {% endfor %}
     </div>
-    
 </article>
 
-{% if page.get_related_articles %}
-    <div class="container related-articles">
-        <h4>Related articles</h4>
-        <hr>
-        <div class="row">
-        {% for article in page.get_related_articles %}
-            <a href="{% pageurl article %}" class="related-article col col-sm-6 col-md-4 col-lg-3 flex-column align-items-start mb-4 mb-sm-0 {% if forloop.counter > 3 %}d-none d-lg-flex{% elif forloop.counter > 2 %}d-none d-md-flex{% else %}d-flex{% endif %}">
-                {% if article.featured_image %}
-                    {% image article.featured_image width-1200 as photo %}
-                    <img class="img-fluid mb-3" src="{{ photo.url }}">
-                {% endif %}
-                {% if article.kicker %}
-                    <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
-                {% endif %}
-                <h3 class="mb-2 headline text-dark">{{ article.headline|richtext_unwrapped }}</h3>
-            </a>
-        {% endfor %}
-        </div>
-    </div>
-{% endif %}
 {% endblock %}
+
 {% endcache %}

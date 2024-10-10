@@ -46,7 +46,7 @@ from wagtail.snippets.blocks import SnippetChooserBlock
 from wagtail.snippets.models import register_snippet
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
-# from wagtailautocomplete.panels import AutocompletePanel
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 
 
@@ -54,6 +54,78 @@ from django import forms
 from django.utils.encoding import force_str
 from django.utils.html import format_html
 from wagtail.blocks import FieldBlock
+
+class PhotoBlock(StructBlock):
+    image = ImageChooserBlock()
+    caption = RichTextBlock(features=["italic"], required=False)
+    size = ChoiceBlock(
+        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
+        default="medium",
+        help_text="Width of image in article.",
+    )
+    class Meta:
+        icon = "image"
+
+    def render(self, value, context=None):
+        if value:
+            return format_html(
+                '<figure><img src="{}" alt="{}" /><figcaption>{}</figcaption></figure>',
+                value["image"].url,
+                value["image"].title,
+                value["caption"],
+            )
+        return ""
+
+class GalleryPhotoBlock(StructBlock):
+    image = ImageChooserBlock()
+    caption = RichTextBlock(features=["italic"], required=False)
+
+class EmbeddedMediaValue(StructValue):
+    def type(self):
+        embed_url = self.get("embed").url
+        embed = get_embed(embed_url)
+        return embed.type
+
+class EmbeddedMediaBlock(StructBlock):
+    embed = EmbedBlock(help_text="URL to the content to embed.")
+    size = ChoiceBlock(
+        choices=[("small", "Small"), ("medium", "Medium"), ("large", "Large")],
+        default="medium",
+        help_text="Width of video in article.",
+    )
+
+    class Meta:
+        value_class = EmbeddedMediaValue
+        icon = "media"
+
+class CarouselBlock(StructBlock):
+    image = ImageChooserBlock()
+    
+    class Meta:
+        icon = "media"
+
+class BlockQuoteBlock(FieldBlock):
+
+    def __init__(self, required=True, help_text=None, max_length=None, min_length=None, **kwargs):
+        self.field = forms.CharField(
+            required=required,
+            help_text=help_text,
+            max_length=max_length,
+            min_length=min_length
+        )
+        super(BlockQuoteBlock, self).__init__(**kwargs)
+
+    def get_searchable_content(self, value):
+        return [force_str(value)]
+
+    def render_basic(self, value, context=None):
+        if value:
+            return format_html('<p class="indent">{0}</p>', value)
+        else:
+            return ''
+
+    class Meta:
+        icon = "openquote"
 
 class ArticlesIndexPage(RoutablePageMixin, Page):
     subpage_types = ["ArticlePage"]
@@ -86,25 +158,56 @@ class ArticlesIndexPage(RoutablePageMixin, Page):
         return context
 
 class ArticlePage(RoutablePageMixin, Page):
+    subdeck = RichTextField(features=["italic"], blank=True, null=True)
     date = models.DateField("Post date")
-    kicker = models.CharField(max_length=250)
-    body = RichTextField(blank=True)
-    # featured_image = models.ForeignKey(
-    #     "wagtailimages.Image",
-    #     null=True,
-    #     blank=True,
-    #     on_delete=models.SET_NULL,
-    #     related_name="+",
-    # )
+    kicker = models.ForeignKey("Kicker", null=True, blank=True, on_delete=models.PROTECT)
+    # body = RichTextField(blank=True)
+    body = StreamField(
+        [
+            ("paragraph", RichTextBlock()),
+            ("photo", PhotoBlock()),
+            ("photo_gallery", ListBlock(GalleryPhotoBlock(), icon="image")),
+            ("embed", EmbeddedMediaBlock()),
+            ("carousel", CarouselBlock()),
+            ("blockquote", BlockQuoteBlock()),
+        ],
+        blank=True,
+    )
+    summary = RichTextField(
+        features=["italic"],
+        null=True,
+        blank=True,
+        help_text="Displayed on the home page or other places to provide a taste of what the article is about.",
+    )
+    featured_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    featured_caption = RichTextField(features=["italic"], blank=True, null=True)
+
 
     search_fields = Page.search_fields + [
+        index.SearchField("title"),
         index.SearchField("kicker"),
         index.SearchField("body"),
     ]
 
     content_panels = Page.content_panels + [
+        FieldPanel("subdeck"),
         FieldPanel("date"),
-        FieldPanel("kicker"),
+        MultiFieldPanel(
+            [
+                AutocompletePanel("kicker", target_model="core.Kicker"),
+                FieldPanel("featured_image"),
+                FieldPanel("featured_caption"),
+            ],
+            heading="Metadata",
+            classname="collapsible",
+        ),
+        FieldPanel("summary"),
         FieldPanel("body"),
         # ImageChooserPanel("featured_image"),
         # FieldPanel("featured_image"),
@@ -132,3 +235,34 @@ class Kicker(models.Model):
 
     def __str__(self):
         return self.title
+
+@register_snippet
+class Contributor(index.Indexed, models.Model):
+    name = models.CharField(max_length=255)
+    rich_name = RichTextField(features=["italic"], max_length=255, null=True, blank=True)
+    id = models.AutoField(primary_key=True)
+
+    search_fields = [index.SearchField("name", partial_match=True)]
+
+    autocomplete_search_field = "name"
+
+    class Meta:
+        ordering = ["name"]
+
+    def autocomplete_label(self):
+        return self.name
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(name=value)
+
+    def get_articles(self):
+        return (
+            ArticlePage.objects.live()
+            .filter(authors__author=self)
+            .order_by("-first_published_at")
+            .all()
+        )
+    
+    def __str__(self):
+        return self.name

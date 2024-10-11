@@ -1,3 +1,7 @@
+import operator
+
+from bs4 import BeautifulSoup
+
 from django.apps import apps
 from django.core.paginator import Paginator
 from django.db import models
@@ -193,6 +197,7 @@ class ArticlePage(RoutablePageMixin, Page):
         index.SearchField("title"),
         index.SearchField("kicker"),
         index.SearchField("body"),
+        index.SearchField("get_author_names", partial_match=True),
     ]
 
     content_panels = Page.content_panels + [
@@ -200,6 +205,13 @@ class ArticlePage(RoutablePageMixin, Page):
         FieldPanel("date"),
         MultiFieldPanel(
             [
+                InlinePanel(
+                    "authors",
+                    panels=[
+                        AutocompletePanel("author", target_model="core.Contributor")
+                    ],
+                    label="Author",
+                ),
                 AutocompletePanel("kicker", target_model="core.Kicker"),
                 FieldPanel("featured_image"),
                 FieldPanel("featured_caption"),
@@ -217,13 +229,65 @@ class ArticlePage(RoutablePageMixin, Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context["related_articles"] = (
+        context["related_articles"] = self.get_related_articles()
+        context["authors"] = self.get_authors()
+        return context
+
+    def set_url_path(self, parent):
+        """Make sure the page knows its own path. The published date might not be set,
+        so we have to take that into account and ignore it if so."""
+        date = self.get_published_date() or timezone.now()
+        self.url_path = f"{parent.url_path}{date.year}/{date.month:02d}/{self.slug}/"
+        return self.url_path
+
+    def get_published_date(self):
+        return (
+            self.date
+            or self.go_live_at
+            or self.first_published_at
+            or getattr(self.get_latest_revision(), "created_at", None)
+        )
+
+    def get_authors(self):
+        return [r.author for r in self.authors.select_related("author")]
+
+    def get_author_names(self):
+        return [a.name for a in self.get_authors()]
+
+    def get_plain_text(self):
+        builder = ""
+        soup = BeautifulSoup(self.get_text_html(), "html.parser")
+        for para in soup.findAll("p"):
+            builder += para.text
+            builder += " "
+        return builder[:-1]
+
+    def get_text_html(self):
+        """Get the HTML that represents paragraphs within the article as a string."""
+        builder = ""
+        for block in self.body:
+            if block.block_type == "paragraph":
+                builder += str(block.value)
+        return builder
+
+    def get_related_articles(self):
+        return (
             ArticlePage.objects.live()
             .exclude(id=self.id)
-            .filter(kicker=self.kicker)
-            .order_by("-first_published_at")[:3]
+            .filter(path__startswith=self.get_parent().path)
+            .order_by("-date")[:4]
         )
-        return context
+
+class ArticleAuthorRelationship(models.Model):
+    article = ParentalKey(ArticlePage, related_name="authors", on_delete=models.CASCADE)
+    author = models.ForeignKey("Contributor", related_name="articles", on_delete=models.CASCADE)
+
+    panels = [
+        FieldPanel("author"),
+    ]
+
+    class Meta:
+        unique_together = ("article", "author")
 
 @register_snippet
 class Kicker(models.Model):

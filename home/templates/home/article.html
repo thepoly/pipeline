@@ -1,0 +1,29 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="flex-md-row">
+    <div class="d-flex flex-column align-items-start">
+        {% if block_image or article.featured_image %}
+            {% if block_image %}
+                {% image block_image width-1200 as photo %}
+            {% elif article.featured_image %}
+                {% image article.featured_image width-1200 as photo %}
+            {% endif %}
+            <a href="{% pageurl article %}">
+                <img class="img-fluid mb-2 mb-md-3" src="{{ photo.url }}" alt="{{ article.featured_caption|striptags }}">
+            </a>
+        {% endif %}
+        {% if article.kicker %}
+            <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
+        {% endif %}
+        <h2 class="mb-2 headline">
+            <a class="text-dark" href="{% pageurl article %}">
+            	{% if block_headline %}
+			{{ block_headline }}
+            	{% else %}	
+            		{{ article.title|richtext }}
+            	{% endif %}
+            </a>
+        </h2>
+        <div class="card-text mb-auto summary">{{ article.summary|richtext }}</div>
+    </div>
+</div>

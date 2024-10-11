@@ -49,12 +49,12 @@
         {% wagtailuserbar %}
         {% block header_block %}
 
-            <header class="py-2 bg-gradient-primary">
+            <header class="py-2 bg-gradient-primary" style="background: #da1e05;">
                 <div class="container">
                     <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
                         <div class="col">
                             <a class="header-logo" href="{% pageurl current_site.root_page %}">
-                                <img src="{% static 'images/logo_minimal.png' %}" alt="The Polytechnic" width="1000" height="auto">
+                                <img src="{% static 'images/logo_minimal.png' %}" alt="The Polytechnic" width="auto" height="80">
                             </a>
                         </div>
 
@@ -64,14 +64,14 @@
                                 <a class="btn btn-sm btn-outline-light" href="{% pageurl current_site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
                             </form>
                         </div>
-                        <div class="hide-desktop col text-right" id="smallDisplay">
+                        {% comment %} <div class="hide-desktop col text-right" id="smallDisplay">
                             <div class="col text-right mb-3 mb-md-0">
                                 <a class="text-light search" href="{% url 'search' %}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
                                 </a>
                                 <a class="btn btn-sm btn-outline-light" href="{% pageurl current_site.root_page %}subscribe/">Subscribe</a>
                             </div>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                 </div>
             </header>

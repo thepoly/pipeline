@@ -1,13 +1,145 @@
 {% extends "base.html" %}
 
-<!-- load wagtailcore_tags by adding this: -->
-{% load wagtailcore_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% wagtail_site as current_site %}
+
+{% block title_block %}{{ current_site.site_name }}{% endblock %}
+
+{% block extra_head %}
+    <meta name="description" content="News, features, opinion, and more from Rensselaer Polytechnic Institute's student news organization.">
+{% endblock %}
 
 {% block body_class %}template-homepage{% endblock %}
 
 <!-- replace everything below with: -->
 {% block content %}
-    {{ page.body|richtext }}
+<div class="container">
+    {% for block in page.featured_articles %}
+        <div class="row mb-md-4">
+            {% if block.block_type == "marquee_banner" %}
+                {% if block.value.banner_type == "moves" %}
+                    <div class="w-100">
+                        <marquee onmouseover="this.stop();" onmouseout="this.start();">
+                            <strong>{{block.value.body}}</strong>
+                        </marquee>
+                    </div>
+                {% endif %}
+            {% elif block.block_type == "one_column" %}
+                <div class="featured border-md-bottom pb-1 mb-5 mb-md-0 d-lg-flex">
+                    {% if block.value.column.image or block.value.column.article.featured_image %}
+                    	<div class="col-lg-7">
+                    {% else %}
+			<div class="col-lg-12">
+                    {% endif %}
+                        {% if block.value.column.article.specific.kicker %}
+                            <strong class="text-primary text-uppercase text-kicker">{{ block.value.column.article.specific.kicker }}</strong>
+                        {% endif %}
+                        <h1 class="display-4 mb-3">
+                            <a class="text-dark" href="{% pageurl block.value.column.article %}">
+                                {% if block.value.column.title %}
+                                	{{ block.value.column.title }}
+                                {% else %}
+                                	{{ block.value.column.article.specific.title|richtext }}
+                                {% endif %}
+                            </a>
+                        </h1>
+                        <div class="lead d-none d-lg-block">{{ block.value.column.article.specific.summary|richtext }}</div>
+                    </div>
+                    {% if block.value.column.image or block.value.column.article.featured_image %}
+                    <div class="col-lg-5">
+                    	{% if block.value.column.image %}
+                    	    {% image block.value.column.image width-1200 as photo %}
+                    	{% else %}
+                           {% image block.value.column.article.featured_image width-1200 as photo %}
+                       {% endif %}
+                        <a href="{% pageurl block.value.column.article %}">
+                            <img class="img-fluid mb-3" src="{{ photo.url }}" alt="{{ block.value.column.article.featured_caption|striptags }}">
+                        </a>
+                    </div>
+                    {% endif %}
+                    <div class="col-lg-7 d-lg-none">
+                        <div class="lead">{{ block.value.column.article.specific.summary|richtext }}</div>
+                    </div>
+                </div>
+            {% elif block.block_type == "one_ad_column" %}
+                <div class="featured border-md-bottom pb-1 mb-5 mb-md-0 d-lg-flex">
+                    <div class="col-lg-12">
+                        <strong class="text-primary text-uppercase text-kicker">ADVERTISEMENT</strong>
+                        {% image block.value.image width-1200 height-400 as photo %}
+                        <div class="align-items-center">
+                            {% if block.value.link != "" %}
+                            <a href="{{ block.value.link }}">
+                            {% endif %}
+                                <img class="img-fluid mb-3" src="{{ photo.url }}" alt="{{ article.featured_caption|striptags }}">
+                            {% if block.value.link != "" %}
+                            </a>
+                            {% endif %}                            
+                        </div>
+                    </div>
+                </div>
+            {% elif block.block_type == "two_columns" %}
+                <div class="
+                    {% if block.value.emphasize_column == 'left' %}
+                        col-md-8
+                    {% elif block.value.emphasize_column == 'right' %}
+                        col-md-4
+                    {% else %}
+                        col-md-6
+                    {% endif %}
+                    featured border-md-right pr-md-4 mb-5 mb-md-0">
+                    {% include_block block.value.left_column %}
+                </div>
+                <div class="
+                    {% if block.value.emphasize_column == 'left' %}
+                        col-md-4
+                    {% elif block.value.emphasize_column == 'right' %}
+                        col-md-8
+                    {% else %}
+                        col-md-6
+                    {% endif %}
+                    featured pl-md-4 mb-5 mb-md-0">
+                    {% include_block block.value.right_column %}
+                </div>
+            {% elif block.block_type == "three_columns" %}
+                <div class="col-md-4 featured border-md-right pr-md-4 mb-5 mb-md-0">
+                    {% include_block block.value.left_column %}
+                </div>
+                <div class="col-md-4 featured border-md-right pl-md-4 pr-md-4 mb-5 mb-md-0">
+                    {% include_block block.value.middle_column %}
+                </div>
+                <div class="col-md-4 featured pl-md-4 mb-5 mb-md-0">
+                    {% include_block block.value.right_column %}
+                </div>
+            {% elif block.block_type == "recent_articles" %}
+                {% for article in block.value.get_articles %}
+                    <div class="col-md-4 featured mb-5 mb-md-0
+                        {% cycle 'pr-md-4' 'pr-md-4 pl-md-4 border-md-left' 'pl-md-4 border-md-left' %}">
+                        {% include "home/article.html" with article=article only %}
+                    </div>
+                    {% if forloop.counter|divisibleby:"3" and not forloop.last %}
+                        <div class="col-12 mb-4 d-none d-md-block"></div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                unsupported block type
+            {% endif %}
+        </div>
+    {% endfor %}
+    
+    <!-- See more, appears at end of page above footer -->
+    {% if page.get_sections %}
+        <div class="see-more">
+            <img src="{% static 'images/logo_inverted.png' %}" alt="The Polytechnic wordmark with red text" class="logo" height="auto" width="140">
+            <hr>
+            <div class="d-flex flex-row justify-content-between">
+            {% for section in page.get_sections %}
+                <a href="{% pageurl section %}" class="h5 text-primary">{{ section.title }}</a>
+            {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+
 {% endblock %}
 
 

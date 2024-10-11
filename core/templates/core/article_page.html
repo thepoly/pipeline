@@ -26,7 +26,7 @@
         <div class="featured-photo mt-4 mb-4 d-flex flex-column align-items-center">
             {% image page.featured_image width-1200 as photo %}
             <div class="img-container">
-                <img class="" src="{{ photo.url }}">
+                <img class="" src="{{ photo.url }}" alt="{{ page.featured_caption|striptags }}">
 
             </div>
             {% if page.featured_caption or photo.image.photographer %}
@@ -43,6 +43,25 @@
             {% endif %}
         </div>
     {% endif %}
+
+    <div class="container narrow mb-4">
+        {% if authors %}
+        <span class="authors mr-1">
+            By {% for author in authors %}
+                {% if forloop.last and authors|length > 1 %} and {% endif %}
+                {% if author.staff_page %}
+                    <a class="author-name" href="{% pageurl author.staff_page %}">{{ author.staff_page.name }}</a>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                {% else %}
+                    <span class="author-name">{% firstof author.rich_name|richtext author.name %}</span>{% if not forloop.last and authors|length > 2 %}, {% endif %}
+                {% endif %}
+            {% endfor %}
+        </span>
+        {% endif %}
+        <a class="text-muted small published-date text-nowrap" href="{% pageurl page %}">
+            {{ page.get_published_date|date:"F j, Y" }}
+        </a>
+    </div>
+
     <div class="body">
         {% for block in page.body %}
             {% if block.block_type == 'photo' %}
@@ -146,6 +165,27 @@
         {% endfor %}
     </div>
 </article>
+
+{% if page.get_related_articles %}
+    <div class="container related-articles">
+        <h2>Related articles</h2>
+        <hr>
+        <div class="row">
+        {% for article in page.get_related_articles %}
+            <a href="{% pageurl article %}" class="related-article col col-sm-6 col-md-4 col-lg-3 flex-column align-items-start mb-4 mb-sm-0 {% if forloop.counter > 3 %}d-none d-lg-flex{% elif forloop.counter > 2 %}d-none d-md-flex{% else %}d-flex{% endif %}">
+                {% if article.featured_image %}
+                    {% image article.featured_image width-1200 as photo %}
+                    <img class="img-fluid mb-3" src="{{ photo.url }}" alt="{{ article.featured_caption|striptags }}">
+                {% endif %}
+                {% if article.kicker %}
+                    <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
+                {% endif %}
+                <h3 class="mb-2 headline text-dark">{{ article.title|richtext }}</h3>
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+{% endif %}
 
 {% endblock %}
 

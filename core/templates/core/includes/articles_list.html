@@ -7,9 +7,9 @@
             {% if article.kicker %}
                 <strong class="d-inline-block mb-0 text-primary text-uppercase text-kicker">{{ article.kicker }}</strong>
             {% endif %}
-            <h3 class="mb-2 headline">
+            <h2 class="mb-2 headline">
                 <a class="text-dark" href="{% pageurl article %}">{{ article.title|richtext }}</a>
-            </h3>
+            </h2>
 
             {% if show_authors or show_dates %}
                 <div class="mb-2">
@@ -49,7 +49,7 @@
             <div class="col-12 col-md-4 pl-md-3 order-1 order-md-2">
                 {% image article.featured_image fill-800x800 as photo %}
                 <a href="{% pageurl article %}">
-                    <img class="img-fluid mb-2 mb-md-0" src="{{ photo.url }}">
+                    <img class="img-fluid mb-2 mb-md-0" src="{{ photo.url }}" alt="{{ article.featured_caption|striptags }}">
                 </a>
             </div>
         {% endif %}

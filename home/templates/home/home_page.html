@@ -24,12 +24,45 @@
                         </marquee>
                     </div>
                 {% endif %}
+            {% elif block.block_type == "hero" %}
+                <div class="featured border-md-bottom pb-1 mb-5 mb-md-0">
+                    {% if block.value.column.article.specific.kicker %}
+                        <strong class="text-primary text-uppercase text-kicker">{{ block.value.column.article.specific.kicker }}</strong>
+                    {% endif %}
+                <div class="col-lg-12">
+                    <h1 class="display-10 mb-3">
+                        <a class="text-dark" href="{% pageurl block.value.column.article %}">
+                            {% if block.value.column.title %}
+                                {{ block.value.column.title }}
+                            {% else %}
+                                {{ block.value.column.article.specific.title|richtext }}
+                            {% endif %}
+                        </a>
+                    </h1>
+                    <div class="lead d-none d-lg-block">{{ block.value.column.article.specific.summary|richtext }}</div>
+                </div>
+                {% if block.value.column.image or block.value.column.article.featured_image %}
+                    <div class="col-lg-5">
+                        {% if block.value.column.image %}
+                            {% image block.value.column.image width-1200 as photo %}
+                        {% else %}
+                        {% image block.value.column.article.featured_image width-1200 as photo %}
+                    {% endif %}
+                        <a href="{% pageurl block.value.column.article %}">
+                            <img class="img-fluid mb-3" src="{{ photo.url }}" alt="{{ block.value.column.article.featured_caption|striptags }}">
+                        </a>
+                    </div>
+                    {% endif %}
+                    <div class="col-lg-7 d-lg-none">
+                        <div class="lead">{{ block.value.column.article.specific.summary|richtext }}</div>
+                    </div>
+                </div>
             {% elif block.block_type == "one_column" %}
                 <div class="featured border-md-bottom pb-1 mb-5 mb-md-0 d-lg-flex">
                     {% if block.value.column.image or block.value.column.article.featured_image %}
                     	<div class="col-lg-7">
                     {% else %}
-			<div class="col-lg-12">
+			    <div class="col-lg-12">
                     {% endif %}
                         {% if block.value.column.article.specific.kicker %}
                             <strong class="text-primary text-uppercase text-kicker">{{ block.value.column.article.specific.kicker }}</strong>

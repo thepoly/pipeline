@@ -174,7 +174,7 @@ STORAGES = {
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "pipeline"
-
+WAGTAILIMAGES_IMAGE_MODEL = "core.CustomImage"
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
 WAGTAILSEARCH_BACKENDS = {

@@ -184,7 +184,7 @@ class ArticlePage(RoutablePageMixin, Page):
         help_text="Displayed on the home page or other places to provide a taste of what the article is about.",
     )
     featured_image = models.ForeignKey(
-        "wagtailimages.Image",
+        "core.CustomImage",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -324,9 +324,198 @@ class Contributor(index.Indexed, models.Model):
         return (
             ArticlePage.objects.live()
             .filter(authors__author=self)
-            .order_by("-first_published_at")
+            .order_by("-date")
             .all()
         )
     
     def __str__(self):
         return self.name
+
+# https://docs.wagtail.org/en/v6.2.2/advanced_topics/images/custom_image_model.html
+class CustomImage(AbstractImage):
+    photographer = models.ForeignKey(
+        "Contributor",
+        on_delete=models.CASCADE,
+        related_name="images",
+        blank=True,
+        null=True,
+    )
+
+    admin_form_fields = Image.admin_form_fields + ("photographer",)
+
+    def get_attribution_html(self):
+        if self.photographer is None:
+            return ""
+
+        if hasattr(self.photographer, "staff_page"):
+            sp = self.photographer.staff_page
+            return format_html(
+                '<a href="{}">{}</a>/<i>The Polytechnic</i>', sp.url, sp.name
+            )
+
+        return self.photographer.name
+
+# Delete the source image file when an image is deleted
+@receiver(pre_delete, sender=CustomImage)
+def image_delete(sender, instance, **kwargs):
+    instance.file.delete(False)
+
+
+""" # Do feature detection when a user saves an image without a focal point
+@receiver(pre_save, sender=CustomImage)
+def image_feature_detection(sender, instance, **kwargs):
+    # Make sure the image doesn't already have a focal point
+    if not instance.has_focal_point():
+        # Set the focal point
+        instance.set_focal_point(instance.get_suggested_focal_point())
+ """
+
+class CustomRendition(AbstractRendition):
+    image = models.ForeignKey(
+        "CustomImage", on_delete=models.CASCADE, related_name="renditions"
+    )
+
+    class Meta:
+        unique_together = ("image", "filter_spec", "focal_point_key")
+
+# Delete the rendition image file when a rendition is deleted
+# TODO: test if this actually works
+@receiver(pre_delete, sender=CustomRendition)
+def rendition_delete(sender, instance, **kwargs):
+    instance.file.delete(False)
+
+
+class StaffIndexPage(Page):
+    subpage_types = ["StaffPage"]
+
+    def get_active_staff(self):
+        return (
+            StaffPage.objects.live()
+            .descendant_of(self)
+            .filter(terms__position__isnull=False, terms__date_ended__isnull=True)
+            .select_related("photo")
+            .prefetch_related("terms__position")
+            .distinct()
+        )
+
+    def get_previous_staff(self):
+        return (
+            StaffPage.objects.live()
+            .descendant_of(self)
+            .exclude(terms__date_ended__isnull=True, terms__position__isnull=False)
+            .annotate(latest_term_ended=Max("terms__date_ended"))
+            .order_by(F("latest_term_ended").desc(nulls_last=True))
+        )
+
+class StaffPage(Page):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    biography = RichTextField(null=True, blank=True)
+    photo = models.ForeignKey(
+        "CustomImage", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    email_address = models.EmailField(null=True, blank=True)
+    contributor = models.OneToOneField(
+        Contributor,
+        on_delete=models.SET_NULL, 
+        null=True,
+        blank=True,
+        related_name="staff_page",
+    )
+
+    parent_page_types = ["StaffIndexPage"]
+    subpage_types = []
+
+    content_panels = [
+        MultiFieldPanel(
+            [FieldPanel("first_name"), FieldPanel("last_name")], heading="Name"
+        ),
+        FieldPanel("email_address"),
+        FieldPanel("biography"),
+        FieldPanel("photo"),
+        InlinePanel("terms", label="Term", heading="Terms", min_num=0),
+        AutocompletePanel("contributor", target_model="core.Contributor"),
+    ]
+
+    search_fields = [index.SearchField("first_name"), index.SearchField("last_name")]
+
+    @property
+    def name(self):
+        return self.title
+
+    @cached_property
+    def is_active(self):
+        return self.terms.filter(
+            date_ended__isnull=True, position__isnull=False
+        ).exists()
+
+    def clean(self):
+        super().clean()
+        self.title = f"{self.first_name} {self.last_name}"
+
+    def get_articles(self):
+        return (
+            ArticlePage.objects.live()
+            .filter(authors__author=self.contributor)
+            .order_by("-first_published_at")
+            .all()
+        )
+
+    def get_positions_html(self):
+        terms = self.current_terms
+        builder = ""
+        for i, term in enumerate(terms):
+            if i == len(terms) - 1 and len(terms) > 1:
+                builder += " and "
+
+            position_prefix = ""
+            if term.acting:
+                if i == 0:
+                    position_prefix += "Acting "
+                else:
+                    position_prefix += "acting "
+            elif term.de_facto:
+                if i == 0:
+                    position_prefix += "<i>De facto</i> "
+                else:
+                    position_prefix += "<i>de facto</i> "
+
+            builder += mark_safe(position_prefix) + term.position.title
+            if i < len(terms) - 1 and len(terms) > 2:
+                builder += ", "
+
+        return mark_safe(builder)
+
+    @cached_property
+    def current_terms(self):
+        return [term for term in self.terms.filter(date_ended__isnull=True)]
+
+    @cached_property
+    def get_active_positions(self):
+        return [term.position for term in self.terms.all() if term.date_ended is None]
+
+    @cached_property
+    def get_previous_terms(self):
+        return [term for term in self.terms.filter(date_ended__isnull=False)]
+
+@register_snippet
+class Position(models.Model):
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
+
+@register_snippet
+class Term(Orderable, models.Model):
+    position = models.ForeignKey(
+        Position, on_delete=models.PROTECT, related_name="terms"
+    )
+    person = ParentalKey(StaffPage, on_delete=models.SET_NULL, related_name="terms", null=True)
+    date_started = models.DateField(blank=True, null=True)
+    date_ended = models.DateField(blank=True, null=True)
+    acting = models.BooleanField(default=False)
+    de_facto = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.position.title} ({self.date_started}—{self.date_ended or "now"})'

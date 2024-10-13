@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load cache %}
+{% cache 60 page request.is_preview %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-staffindexpage{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-3">Staff</h1>
+    <div class="row">
+        {% for person in page.get_active_staff %}
+            <div class="col-6 col-md-4 col-lg-3 text-center person mb-3">
+                {% if person.photo %}
+                    {% image person.photo fill-400x400-c35 as photo %}
+                    <a href="{% pageurl person %}">
+                        <img class="rounded mb-2" src="{{ photo.url }}">
+                    </a>
+                {% endif %}
+                <h2 class="mb-0">
+                    <a href="{% pageurl person %}">{{ person.title }}</a>
+                </h2>
+                <p>
+                    {{ person.get_positions_html }}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2>Previously...</h2>
+    <div class="d-flex flex-wrap">
+        {% for person in page.get_previous_staff %}
+            <div class="previous-person px-3 py-2">
+                <h3>
+                    <a href="{% pageurl person %}">{{ person.title }}</a>
+                </h3>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% endcache %}

@@ -61,7 +61,7 @@ def bottom_menu():
         home.get_descendants()
         .live()
         .public()
-        .not_type((ArticlePage, StaffPage, CandidatePage, ElectionIndexPage))
+        .not_type((ArticlePage))
         .order_by("title")
     )
     return {"pages": pages}

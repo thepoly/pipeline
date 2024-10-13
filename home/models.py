@@ -35,6 +35,12 @@ class ArticleBlock(blocks.StructBlock):
         template = "home/article_block.html"
 
 
+class HeroBlock(blocks.StructBlock):
+    column = ArticleBlock()
+
+    def article_pks(self):
+        return set(self.column.value.pk)
+
 class OneColumnBlock(blocks.StructBlock):
     column = ArticleBlock()
 
@@ -108,6 +114,7 @@ class HomePage(Page):
             ("two_columns", TwoColumnBlock()),
             ("three_columns", ThreeColumnBlock()),
             ("recent_articles", RecentArticlesBlock()),
+            ("hero", HeroBlock()),
         ],
         null=True,
     )
@@ -128,6 +135,8 @@ class HomePage(Page):
                 pks.add(block.value["left_column"]["article"].pk)
                 pks.add(block.value["middle_column"]["article"].pk)
                 pks.add(block.value["right_column"]["article"].pk)
+            elif block.block_type == "hero":
+                pks.add(block.value["column"]["article"].pk)
         return pks
 
     def get_sections(self):

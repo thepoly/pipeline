@@ -86,9 +86,9 @@
             {% block content %}{% endblock %}
         </section>
 
-        {% comment %} <footer class="footer px-2 mt-4">
+        <footer class="footer px-2 mt-4">
             {% block footer_logo_block %}
-                <img src="{% static 'images/logo_inverted.png' %}" class="logo mb-3">
+                <img src="{% static 'images/logo_inverted.png' %}" class="logo mb-3" alt="The Polytechnic wordmark" width="160">
             {% endblock %}
             <p>
                 <span class="text-nowrap">Serving the Rensselaer community since 1885.</span>
@@ -100,7 +100,7 @@
                 <span class="text-nowrap">&copy; {% now "Y" %} <i>The Rensselaer Polytechnic</i>.</span>
                 <span class="text-nowrap">Powered by <a href="https://github.com/thepoly/pipeline">Pipeline</a>.</span>
             </p>
-        </footer> {% endcomment %}
+        </footer>
 
         {% block extra_js %}
             {# Override this in templates to add extra JavaScript #}

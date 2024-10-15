@@ -59,6 +59,11 @@ from django.utils.encoding import force_str
 from django.utils.html import format_html
 from wagtail.blocks import FieldBlock
 
+class StaticPage(Page):
+    body = RichTextField(blank=True, null=True)
+
+    content_panels = Page.content_panels + [FieldPanel("body")]
+
 class PhotoBlock(StructBlock):
     image = ImageChooserBlock()
     caption = RichTextBlock(features=["italic"], required=False)
@@ -334,7 +339,7 @@ class Contributor(index.Indexed, models.Model):
 # https://docs.wagtail.org/en/v6.2.2/advanced_topics/images/custom_image_model.html
 class CustomImage(AbstractImage):
     photographer = models.ForeignKey(
-        "Contributor",
+        "core.Contributor",
         on_delete=models.CASCADE,
         related_name="images",
         blank=True,
@@ -342,6 +347,11 @@ class CustomImage(AbstractImage):
     )
 
     admin_form_fields = Image.admin_form_fields + ("photographer",)
+
+    # TODO: add autocomplete panel for photographer, doesn't work
+    # panels = [
+    #     AutocompletePanel("photographer", target_model="core.Contributor"),
+    # ]
 
     def get_attribution_html(self):
         if self.photographer is None:
@@ -372,7 +382,7 @@ def image_feature_detection(sender, instance, **kwargs):
 
 class CustomRendition(AbstractRendition):
     image = models.ForeignKey(
-        "CustomImage", on_delete=models.CASCADE, related_name="renditions"
+        "core.CustomImage", on_delete=models.CASCADE, related_name="renditions"
     )
 
     class Meta:
@@ -388,15 +398,34 @@ def rendition_delete(sender, instance, **kwargs):
 class StaffIndexPage(Page):
     subpage_types = ["StaffPage"]
 
+    # create an editable list of positions where the inputs are the position titles and the order matters
+    positions = StreamField(
+        [("position", SnippetChooserBlock("core.Position"))],
+        blank=True,
+        help_text="Order matters. The first position is the most important.",
+    )
+
+    content_panels = Page.content_panels + [FieldPanel("positions")]
+
+
     def get_active_staff(self):
-        return (
-            StaffPage.objects.live()
-            .descendant_of(self)
-            .filter(terms__position__isnull=False, terms__date_ended__isnull=True)
-            .select_related("photo")
-            .prefetch_related("terms__position")
-            .distinct()
-        )
+        # take the positions from the stream field and get the activate staff for each position in the order they are in the stream field
+        positions = [block.value for block in self.positions]
+        staff = []
+        for position in positions:
+            staff.extend(
+                StaffPage.objects.live()
+                .descendant_of(self)
+                .filter(
+                    terms__position=position,
+                    terms__date_ended__isnull=True,
+                )
+                .select_related("photo")
+                .prefetch_related("terms__position")
+                .distinct()
+            )
+
+        return staff  
 
     def get_previous_staff(self):
         return (
@@ -412,7 +441,7 @@ class StaffPage(Page):
     last_name = models.CharField(max_length=100)
     biography = RichTextField(null=True, blank=True)
     photo = models.ForeignKey(
-        "CustomImage", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+        "core.CustomImage", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
     )
     email_address = models.EmailField(null=True, blank=True)
     contributor = models.OneToOneField(
@@ -501,6 +530,20 @@ class StaffPage(Page):
 @register_snippet
 class Position(models.Model):
     title = models.CharField(max_length=100)
+
+    search_fields = [index.SearchField("title", partial_match=True)]
+
+    autocomplete_search_field = "title"
+
+    class Meta:
+        ordering = ["title"]
+
+    def autocomplete_label(self):
+        return self.title
+
+    @classmethod
+    def autocomplete_create(kls: type, value: str):
+        return kls.objects.create(title=value)
 
     def __str__(self):
         return self.title

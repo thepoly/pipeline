@@ -14,7 +14,7 @@
                 {% if person.photo %}
                     {% image person.photo fill-400x400-c35 as photo %}
                     <a href="{% pageurl person %}">
-                        <img class="rounded mb-2" src="{{ photo.url }}">
+                        <img class="rounded mb-2" src="{{ photo.url }}" alt="Profile picture for {{ person.title }}" width="150" height="auto">
                     </a>
                 {% endif %}
                 <h2 class="mb-0">

@@ -1,0 +1,22 @@
+{% extends "wagtailadmin/base.html" %}
+{% block titletag %}{{ current_year }} calendar{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+        table.month {
+            margin: 20px;
+        }
+        table.month td, table.month th {
+            padding: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% include "wagtailadmin/shared/header.html" with title="Calendar" icon="date" %}
+
+    <div class="nice-padding">
+        {{ calendar_html|safe }}
+    </div>
+{% endblock %}

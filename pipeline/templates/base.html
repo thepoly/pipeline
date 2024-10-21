@@ -1,4 +1,4 @@
-{% load core_menu static wagtailcore_tags wagtailuserbar %}
+{% load static core_menu wagtailcore_tags wagtailuserbar %}
 {% wagtail_site as current_site %}
 
 <!DOCTYPE html>
@@ -78,8 +78,9 @@
         {% endblock %}
 
         {% block menu %}
+            {# site_root causes an error, no idea why. Need to investigate, granted it doesn't seem to cause any issues #}
             {% comment %} {% get_site_root as site_root %} {% endcomment %}
-            {% comment %} {% top_menu parent=site_root calling_page=self %} {% endcomment %}
+            {% top_menu parent=current_site.root_page calling_page=self %}
         {% endblock %}
 
         <section class="content">

@@ -1,0 +1,22 @@
+{% load core_menu wagtailcore_tags static %}
+{% wagtail_site as current_site %}
+<div class="nav-scroller py-1 mb-4 box-shadow bg-white"{% if is_home %} data-controller="navigation" data-action="scroll@window->navigation#onScroll" data-target="navigation.scroller"{% endif %}>
+    <div class="container">
+        <nav class="nav d-flex flex-nowrap justify-content-between">
+            {% if is_home %}
+                <a class="home-link nav-link flex-grow-0" href="{% pageurl current_site.root_page %}">
+                    <img src="{% static 'images/lettermark.png' %}" alt="The Polytechnic" width="25">
+                </a>
+            {% else %}
+                <span></span>
+            {% endif %}
+            {% for menuitem in menuitems %}
+                <a class="text-muted flex-grow-0 nav-link nav-link-{{ forloop.counter0 }}{% if menuitem.active %} active{% endif %}" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+                {% if divider_index == forloop.counter0 %}
+                    <div class="divider flex-grow-0"></div>
+                {% endif %}
+            {% endfor %}
+            <span></span>
+        </nav>
+    </div>
+</div>

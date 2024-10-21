@@ -226,11 +226,10 @@ class ArticlePage(RoutablePageMixin, Page):
         ),
         FieldPanel("summary"),
         FieldPanel("body"),
-        # ImageChooserPanel("featured_image"),
-        # FieldPanel("featured_image"),
     ]
 
     parent_page_types = ["ArticlesIndexPage"]
+    subpage_types = []
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -466,7 +465,10 @@ class StaffPage(Page):
         AutocompletePanel("contributor", target_model="core.Contributor"),
     ]
 
-    search_fields = [index.SearchField("first_name"), index.SearchField("last_name")]
+    search_fields = Page.search_fields + [
+        index.SearchField("first_name"), 
+        index.SearchField("last_name")
+    ]
 
     @property
     def name(self):

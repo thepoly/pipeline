@@ -95,6 +95,9 @@ DATABASES = {
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
+# We should switch to managed DB at some point to make development easier between team members
+# Will probably use something like https://neon.tech/ for this, but for now use a sqlite db
+
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",

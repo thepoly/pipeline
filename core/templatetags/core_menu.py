@@ -3,6 +3,7 @@ from django import template
 from core.models import (
     ArticlesIndexPage,
     ArticlePage,
+    StaffPage,
 )
 from home.models import HomePage
 
@@ -13,7 +14,10 @@ register = template.Library()
 def get_site_root(context):
     # NB this returns a core.Page, not the implementation-specific model used
     # so object-comparison to self will return false as objects would differ
-    return context["request"].site.root_page
+    try:
+        return context["request"].site.root_page
+    except KeyError:
+        return None
 
 
 # Retrieves the top menu items - the immediate children of the parent page
@@ -53,7 +57,7 @@ def top_menu(context, parent, calling_page=None):
 @register.inclusion_tag("core/tags/bottom_menu.html")
 def bottom_menu():
     try:
-        home = HomePage.objects.get()
+        home = HomePage.objects.first()
     except HomePage.DoesNotExist:
         return {"pages": []}
 
@@ -61,7 +65,7 @@ def bottom_menu():
         home.get_descendants()
         .live()
         .public()
-        .not_type((ArticlePage))
+        .not_type((ArticlePage, StaffPage))
         .order_by("title")
     )
     return {"pages": pages}

@@ -1,0 +1,28 @@
+{% extends "wagtailadmin/base.html" %}
+
+{% block titletag %}Articles Table{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% include "wagtailadmin/shared/header.html" with title="Articles Table" icon="table" %}
+
+    <div class="nice-padding">
+        {% include "postline/table_content.html" %}
+    </div>
+{% endblock %}

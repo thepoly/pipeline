@@ -1,0 +1,20 @@
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Authors</th>
+        <th>Summary</th>
+    </tr>
+    {% for article in articles %}
+    <tr>
+        <td>{{ article.title }}</td>
+        <td>{{ article.date }}</td>
+        <td>
+            {% for author in authors %}
+                {{ author.name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </td>
+        <td>{{ article.summary|truncatewords:20|striptags }}</td>
+    </tr>
+    {% endfor %}
+</table>

@@ -6,33 +6,96 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-<h1>Search</h1>
+<div class="container">
+    <form class="my-5" action="{% url 'search' %}" method="get">
+        <div class="input-group input-group-lg mb-3">
+            <input type="text" placeholder="Search..." class="form-control" name="query" autofocus{% if search_query %} value="{{ search_query }}"{% endif %}>
+            <div class="input-group-append">
+                <input type="submit" value="Search" class="input-group-btn form-control form-control-lg btn btn-primary">
+            </div>
+        </div>
+        <div>
+            <div class="mb-3">
+                <label for="section" class="form-label">Section</label>
+                <select class="form-select" id="section" name="section">
+                    <option value="">All</option>
+                    {% for section in sections %}
+                        <option value="{{ section.id }}" {% if section.id == selected_section %}selected{% endif %}>{{ section }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- Add filter by relevance, older first, newer first, etc -->
+            <div class="mb-3">
+                <label for="order" class="form-label">Sort by</label>
+                <select class="form-select" id="order" name="order">
+                    <option value="">Relevance</option>
+                    <option value="newest" {% if order == "newest" %}selected{% endif %}>Newest</option>
+                    <option value="oldest" {% if order == "oldest" %}selected{% endif %}>Oldest</option>
+                </select>
+            </div>
+            <!-- Add filter for date range -->
+            <div class="mb-3">
+                <label for="date_range" class="form-label">Date Range</label>
+                <select class="form-select" id="date_range" name="date_range" onchange="toggleCustomDatePicker()">
+                    <option value="">All</option>
+                    <option value="7" {% if date_range == "7" %}selected{% endif %}>Last 7 days</option>
+                    <option value="30" {% if date_range == "30" %}selected{% endif %}>Last 30 days</option>
+                    <option value="365" {% if date_range == "365" %}selected{% endif %}>Last 365 days</option>
+                    <option value="custom" {% if date_range == "custom" %}selected{% endif %}>Custom</option>                    
+                </select>
+            </div>
+            <div id="custom_date_picker" class="mb-3" style="display: {% if date_range == 'custom' %}block{% else %}none{% endif %};">
+                <div class="input-group">
+                    <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
+                    <span class="input-group-text">to</span>
+                    <input type="date" class="form-control" name="end_date" value="{{ end_date }}">
+                </div>
+            </div>
+        </div>
 
-<form action="{% url 'search' %}" method="get">
-    <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
-    <input type="submit" value="Search" class="button">
-</form>
-
-{% if search_results %}
-<ul>
-    {% for result in search_results %}
-    <li>
-        <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
-        {% if result.search_description %}
-        {{ result.search_description }}
+        {% if search_query %}
+            <p class="mt-3">Results for "{{ search_query }}"</p>
         {% endif %}
-    </li>
-    {% endfor %}
-</ul>
+    </form>
 
-{% if search_results.has_previous %}
-<a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
-{% endif %}
+    <script>
+        function toggleCustomDatePicker() {
+            var dateRange = document.getElementById('date_range').value;
+            var customDatePicker = document.getElementById('custom_date_picker');
+            if (dateRange === 'custom') {
+                customDatePicker.style.display = 'block';
+            } else {
+                customDatePicker.style.display = 'none';
+            }
+        }
+    
+        // Call the function on page load to ensure the correct state
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleCustomDatePicker();
+        });
+    </script>
+    
 
-{% if search_results.has_next %}
-<a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
-{% endif %}
-{% elif search_query %}
-No results found
-{% endif %}
+    {% if search_results %}
+        {% include "core/includes/articles_list.html" with articles=search_results show_authors=True show_dates=True only %}
+
+        {% if search_results.has_previous %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        {% for i in search_results.paginator.page_range %}
+            {% if i == search_results.number %}
+                <strong>{{ i }}</strong>
+            {% else %}
+                <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ i }}">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if search_results.has_next %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
+        {% endif %}
+    {% elif search_query %}
+        No results found.
+    {% endif %}
+</div>
 {% endblock %}

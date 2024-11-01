@@ -4,17 +4,25 @@
         <th>Date</th>
         <th>Authors</th>
         <th>Summary</th>
+        <th>Instagram Status</th>
     </tr>
     {% for article in articles %}
     <tr>
         <td>{{ article.title }}</td>
         <td>{{ article.date }}</td>
         <td>
-            {% for author in authors %}
+            {% for author in article.authors.all %}
                 {{ author.name }}{% if not forloop.last %}, {% endif %}
             {% endfor %}
         </td>
         <td>{{ article.summary|truncatewords:20|striptags }}</td>
+        <td>
+            {% if article.posted %}
+                <a href="{{ article.instagram_link }}">Posted on Instagram</a>
+            {% else %}
+                Not posted
+            {% endif %}
+        </td>
     </tr>
     {% endfor %}
 </table>

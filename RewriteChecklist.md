@@ -1,0 +1,50 @@
+# Rewrite Checklist
+
+- [x] Articles
+  - [x] Index pages
+  - [x] Article pages
+    - [x] Basic layout
+    - [x] Editor previews
+  - [x] Summaries
+  - [x] Kickers
+    - [x] Autocomplete
+  - [x] Subdecks
+  - [x] Archive pages
+  - [x] Related to authors
+- [ ] Photos
+  - [x] Uploads
+  - [x] Captions
+  - [x] Bylines
+  - [x] Multiple per article
+  - [ ] Galleries
+- [ ] Syndication
+  - [ ] RSS feed
+  - [ ] Sitemap
+  - [ ] Facebook tags
+  - [ ] Twitter tags
+- [x] Home page
+  - [x] Basic article prioritization
+- [ ] Staff
+  - [x] Index page
+  - [x] Individual pages
+    - [x] Authored articles
+    - [ ] Bylined photos
+  - [x] Positions/terms
+  - [x] Staff photos
+- [x] Contact
+  - [x] Email addresses on staff pages
+- [ ] Users
+  - [ ] Basic publish permission level
+  - [ ] Fine grained permissions
+- [ ] Search
+  - [ ] Basic headline search
+  - [ ] Search all fields of articles
+  - [ ] Search non-article pages
+- [ ] Instrumentation
+  - [ ] Basic Prometheus metrics
+  - [ ] DB metrics
+  - [ ] HTTP Basic auth
+- [ ] Style
+  - [ ] Basic CSS
+  - [ ] Responsive design
+- Status: 11/37 done

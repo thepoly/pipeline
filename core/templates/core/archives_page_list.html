@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailroutablepage_tags %}
+
+{% block body_class %}template-archivespagelist{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>
+        <a class="text-dark" href="{{ self.url }}">Archives</a>
+    </h1>
+    <h2>{{ date|date:"F Y" }}</h4>
+    <hr class="pb-3">
+    {% include "core/includes/articles_list.html" with articles=articles show_authors=True show_dates=True only %}
+</div>
+{% endblock %}

@@ -1,4 +1,5 @@
 import operator
+import datetime
 
 from bs4 import BeautifulSoup
 
@@ -14,6 +15,7 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.html import format_html, mark_safe
 from django.utils.text import slugify
+from django.urls import reverse
 
 # Create your models here.
 from django.templatetags.static import static
@@ -564,3 +566,31 @@ class Term(Orderable, models.Model):
 
     def __str__(self):
         return f'{self.position.title} ({self.date_started}—{self.date_ended or "now"})'
+
+class ArchivesPage(RoutablePageMixin, Page):
+    body = RichTextField(blank=True, null=True)
+    content_panels = Page.content_panels + [ FieldPanel("body") ]
+    subpage_types = []
+
+    @route(r"(\d{4})/(\d{2})/$")
+    def by_year_month(self, request, year, month, *args, **kwargs):
+        articles = (
+            ArticlePage.objects.filter(
+                first_published_at__year=year, first_published_at__month=month
+            )
+            .order_by("-first_published_at")
+            .select_related("kicker", "featured_image")
+        )
+
+        if len(articles) == 0:
+            raise Http404
+
+        date = datetime.datetime(int(year), int(month), 1)
+        context = super().get_context(request)
+        context["articles"] = articles
+        context["date"] = date
+        return render(request, "core/archives_page_list.html", context)
+
+    def get_months(self):
+        return ArticlePage.objects.live().dates("first_published_at", "month")
+

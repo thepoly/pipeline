@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="container">
-    <form class="my-5" action="{% url 'search' %}" method="get">
+    <form class="my-5" id="search-form" action="{% url 'search' %}" method="get">
         <div class="input-group input-group-lg mb-3">
             <input type="text" placeholder="Search..." class="form-control" name="query" autofocus{% if search_query %} value="{{ search_query }}"{% endif %}>
             <div class="input-group-append">
@@ -15,6 +15,7 @@
             </div>
         </div>
         <div>
+            <!-- Filter by section -->
             <div class="mb-3">
                 <label for="section" class="form-label">Section</label>
                 <select class="form-select" id="section" name="section">
@@ -24,7 +25,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <!-- Add filter by relevance, older first, newer first, etc -->
+            <!-- Filter by relevance, newest, oldest -->
             <div class="mb-3">
                 <label for="order" class="form-label">Sort by</label>
                 <select class="form-select" id="order" name="order">
@@ -33,17 +34,18 @@
                     <option value="oldest" {% if order == "oldest" %}selected{% endif %}>Oldest</option>
                 </select>
             </div>
-            <!-- Add filter for date range -->
+            <!-- Filter by date -->
             <div class="mb-3">
                 <label for="date_range" class="form-label">Date Range</label>
                 <select class="form-select" id="date_range" name="date_range" onchange="toggleCustomDatePicker()">
-                    <option value="">All</option>
-                    <option value="7" {% if date_range == "7" %}selected{% endif %}>Last 7 days</option>
-                    <option value="30" {% if date_range == "30" %}selected{% endif %}>Last 30 days</option>
-                    <option value="365" {% if date_range == "365" %}selected{% endif %}>Last 365 days</option>
-                    <option value="custom" {% if date_range == "custom" %}selected{% endif %}>Custom</option>                    
+                    <option value="">Any</option>
+                    <option value="7">Last week</option>
+                    <option value="30">Last month</option>
+                    <option value="365">Last year</option>
+                    <option value="custom">Custom</option>                    
                 </select>
             </div>
+            <!-- Custom date picker -->
             <div id="custom_date_picker" class="mb-3" style="display: {% if date_range == 'custom' %}block{% else %}none{% endif %};">
                 <div class="input-group">
                     <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
@@ -69,9 +71,60 @@
             }
         }
     
-        // Call the function on page load to ensure the correct state
         document.addEventListener('DOMContentLoaded', function() {
             toggleCustomDatePicker();
+
+            let url = new URL(window.location.href);
+            let section = url.searchParams.get('section');
+            if (section) {
+                document.getElementById('section').value = section;
+            }
+
+            let order = url.searchParams.get('order');
+            if (order) {
+                document.getElementById('order').value = order;
+            }
+
+            let dateRange = url.searchParams.get('date_range');
+            if (dateRange) {
+                document.getElementById('date_range').value = dateRange;
+                if (dateRange === 'custom') {
+                    document.getElementById('custom_date_picker').style.display = 'block';
+                    let startDate = url.searchParams.get('start_date');
+                    let endDate = url.searchParams.get('end_date');
+                    if (!startDate) {
+                        let today = new Date();
+                        startDate = today.toISOString().split('T')[0];
+                    }
+                    if (!endDate) {
+                        let today = new Date();
+                        endDate = today.toISOString().split('T')[0];
+                    }
+                    document.getElementsByName('start_date')[0].value = startDate;
+                    document.getElementsByName('end_date')[0].value = endDate;
+                }
+            }
+        });
+
+        // if date_range is not custom on submit and date_range is not empty, set start_date and end_date
+        document.getElementById('search-form').addEventListener('submit', function() {
+            let dateRange = document.getElementById('date_range').value;
+            if (dateRange !== 'custom' && dateRange !== '') {
+                let today = new Date();
+                let startDate = new Date();
+                let endDate = new Date();
+                if (dateRange === '7') {
+                    startDate.setDate(today.getDate() - 7);
+                } else if (dateRange === '30') {
+                    startDate.setMonth(today.getMonth() - 1);
+                } else if (dateRange === '365') {
+                    startDate.setFullYear(today.getFullYear() - 1);
+                }
+                document.getElementsByName('start_date')[0].value = startDate.toISOString().split('T')[0];
+                document.getElementsByName('end_date')[0].value = endDate.toISOString().split('T')[0];
+                console.log(startDate.toISOString().split('T')[0]);
+                console.log(endDate.toISOString().split('T')[0]);
+            }
         });
     </script>
     

@@ -79,6 +79,11 @@ def search(request):
         "search_query": search_query,
         "search_results": search_results,
         "search_results_count": paginator.count,
+        "selected_section": selected_section,
         "sections": sections,
+        "order": order,
+        "start_date": start_date,
+        "end_date": end_date,
     }
+    print(context)
     return render(request, "search/search.html", context)

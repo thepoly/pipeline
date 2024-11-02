@@ -71,6 +71,7 @@
             }
         }
     
+        // on page load, set value of filters from URL query parameters
         document.addEventListener('DOMContentLoaded', function() {
             toggleCustomDatePicker();
 
@@ -122,8 +123,6 @@
                 }
                 document.getElementsByName('start_date')[0].value = startDate.toISOString().split('T')[0];
                 document.getElementsByName('end_date')[0].value = endDate.toISOString().split('T')[0];
-                console.log(startDate.toISOString().split('T')[0]);
-                console.log(endDate.toISOString().split('T')[0]);
             }
         });
     </script>

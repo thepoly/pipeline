@@ -36,10 +36,9 @@
 - [ ] Users
   - [ ] Basic publish permission level
   - [ ] Fine grained permissions
-- [ ] Search
+- [x] Search
   - [x] Basic headline search
   - [x] Search all fields of articles
-  - [ ] Search non-article pages
 - [ ] Instrumentation
   - [ ] Basic Prometheus metrics
   - [ ] DB metrics
@@ -47,4 +46,3 @@
 - [ ] Style
   - [ ] Basic CSS
   - [ ] Responsive design
-- Status: 11/37 done

@@ -1,8 +1,9 @@
 from django.db import models
 from wagtail.admin.panels import FieldPanel
 from core.models import ArticlePage
+from wagtail.models import Page
 
-class ExtendedArticlePage(ArticlePage):
+class PostlineIndexPage(ArticlePage):
     #Extension of ArticlePage that tracks Instagram posting status
     
     parent_page_types = ['core.ArticlesIndexPage']
@@ -22,7 +23,7 @@ class ExtendedArticlePage(ArticlePage):
         """Returns the Instagram link if posted, None otherwise"""
         if self.posted:
             return self.instagram_link
-        return None
+        return "Not Posted"
 
     content_panels = ArticlePage.content_panels + [
         FieldPanel('posted'),
@@ -32,3 +33,4 @@ class ExtendedArticlePage(ArticlePage):
     class Meta:
         verbose_name = "Extended Article Page"
         verbose_name_plural = "Extended Article Pages"
+

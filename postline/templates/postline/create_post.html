@@ -1,0 +1,7 @@
+<h1>Create Instagram Post for "{{ article.title }}"</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>

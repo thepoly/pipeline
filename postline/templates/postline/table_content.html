@@ -12,7 +12,7 @@
         <td>{{ article.date }}</td>
         <td>
             {% for author in article.authors.all %}
-                {{ author.name }}{% if not forloop.last %}, {% endif %}
+                {{ author }}{% if not forloop.last %}, {% endif %}
             {% endfor %}
         </td>
         <td>{{ article.summary|truncatewords:20|striptags }}</td>
@@ -20,7 +20,9 @@
             {% if article.posted %}
                 <a href="{{ article.instagram_link }}">Posted on Instagram</a>
             {% else %}
-                Not posted
+                <a href="{% url 'postline:create_instagram_post' article.id %}">
+                    Create Post
+                </a>
             {% endif %}
         </td>
     </tr>

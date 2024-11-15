@@ -1,28 +1,43 @@
-import calendar
-from django.shortcuts import render
-from django.utils import timezone
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import path
 
 from core.models import ArticlePage
+from postline.models import PostlineIndexPage  # Changed import
+from wagtail.admin import messages
 
-def index(request):
-    current_year = timezone.now().year
-    calendar_html = calendar.HTMLCalendar().formatyear(current_year)
-
-    return render(request, 'postline/index.html', {
-        'current_year': current_year,
-        'calendar_html': calendar_html,
-    })
-
-def display_table(request):
-    # Sample data for the table
-    data = [
-        {'name': 'Alice', 'age': 30, 'city': 'New York'},
-        {'name': 'Bob', 'age': 25, 'city': 'Los Angeles'},
-        {'name': 'Charlie', 'age': 35, 'city': 'Chicago'},
-    ]
-    return render(request, 'postline/table.html', {'data': data})
+from postline.forms import InstagramPostForm  # Create a form for handling the content
 
 def display_articles_table(request):
     # Fetch all articles
     articles = ArticlePage.objects.live().order_by('-date')
-    return render(request, 'postline/table.html', {'articles': articles})
+    return render(request, 'postline/table.html', {
+        'articles': articles,
+        'user_has_permission': request.user.has_perm('postline.add_postlinepage')
+    })
+
+def create_instagram_post(request, article_id):
+    # Fetch the article (base model)
+    article = get_object_or_404(ArticlePage, id=article_id)
+
+    # Add default behavior for fields if it's not a PostlineIndexPage
+    if not isinstance(article, PostlineIndexPage):
+        # Dynamically add the Postline fields for compatibility
+        article.posted = getattr(article, 'posted', False)
+        article.instagram_link = getattr(article, 'instagram_link', None)
+
+    # Rest of your logic remains the same
+    if request.method == 'POST':
+        form = InstagramPostForm(request.POST)
+        if form.is_valid():
+            article.posted = True
+            article.instagram_link = form.cleaned_data['instagram_link']
+            article.save()
+            return redirect('postline:display_articles_table')
+    else:
+        form = InstagramPostForm(initial={
+            'title': article.title,
+            'summary': article.summary,
+            'instagram_link': article.instagram_link,
+        })
+    
+    return render(request, 'postline/create_post.html', {'form': form, 'article': article})

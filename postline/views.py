@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import path
+from django.utils.html import strip_tags
+
 
 from core.models import ArticlePage
 from postline.models import PostlineIndexPage  # Changed import
-from wagtail.admin import messages
-
 from postline.forms import InstagramPostForm  # Create a form for handling the content
 
 def display_articles_table(request):
@@ -36,7 +36,7 @@ def create_instagram_post(request, article_id):
     else:
         form = InstagramPostForm(initial={
             'title': article.title,
-            'summary': article.summary,
+            'summary': strip_tags(article.summary),
             'instagram_link': article.instagram_link,
         })
     

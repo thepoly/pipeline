@@ -1,7 +1,73 @@
-<h1>Create Instagram Post for "{{ article.title }}"</h1>
+{% extends "wagtailadmin/base.html" %}
+{% load static wagtailadmin_tags %}
+{% block content %}
+    <h1>Create Instagram Post for "{{ article.title }}"</h1>
+    
+    <form method="post" class="w-form">
+        {% csrf_token %}
+        
+        <div class="w-field-group">
+            <label for="{{ form.caption.id_for_label }}">Caption</label>
+            {{ form.caption }}
+            {% if form.caption.errors %}
+                <ul class="errorlist">
+                    {% for error in form.caption.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <small class="form-text text-muted">Enter the caption for your Instagram post. Max 2200 characters.</small>
+        </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+        <div class="w-field-group">
+            {{ form.summary }}
+            {% if form.summary.errors %}
+                <ul class="errorlist">
+                    {% for error in form.summary.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <div class="w-field-group">
+            <label for="{{ form.image_url.id_for_label }}">Image URL</label>
+            {{ form.image_url }}
+            {% if form.image_url.errors %}
+                <ul class="errorlist">
+                    {% for error in form.image_url.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <small class="form-text text-muted">Provide a valid URL to the image you want to post.</small>
+        </div>
+        
+        <div class="w-field-group">
+            <label for="{{ form.scheduled_time.id_for_label }}">Scheduled Time</label>
+            {{ form.scheduled_time }}
+            {% if form.scheduled_time.errors %}
+                <ul class="errorlist">
+                    {% for error in form.scheduled_time.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <small class="form-text text-muted">Select the date and time you want the post to be published (optional).</small>
+        </div>
+        
+        <div class="w-field-group">
+            <button type="submit" class="button button-primary">Submit</button>
+            <a href="{% url 'postline:display_articles_table' %}" class="button button-secondary">Cancel</a>
+        </div>
+    </form>
+    
+    <!-- Success Message -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

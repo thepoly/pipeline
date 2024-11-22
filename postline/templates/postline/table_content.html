@@ -16,6 +16,7 @@
             {% endfor %}
         </td>
         <td>{{ article.summary|truncatewords:20|striptags }}</td>
+        <td>{{ article.paragraph }}</td>
         <td>
             {% if article.posted %}
                 <a href="{{ article.instagram_link }}">Posted on Instagram</a>

@@ -1,3 +1,4 @@
+<!-- postline/templates/postline/create_post.html -->
 {% extends "wagtailadmin/base.html" %}
 {% load static wagtailadmin_tags %}
 {% block content %}
@@ -18,18 +19,7 @@
             {% endif %}
             <small class="form-text text-muted">Enter the caption for your Instagram post. Max 2200 characters.</small>
         </div>
-
-        <div class="w-field-group">
-            {{ form.summary }}
-            {% if form.summary.errors %}
-                <ul class="errorlist">
-                    {% for error in form.summary.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-
+        
         <div class="w-field-group">
             <label for="{{ form.image_url.id_for_label }}">Image URL</label>
             {{ form.image_url }}
@@ -57,12 +47,38 @@
         </div>
         
         <div class="w-field-group">
+            <label for="{{ form.add_all_paragraphs.id_for_label }}">{{ form.add_all_paragraphs.label }}</label>
+            {{ form.add_all_paragraphs }}
+            {% if form.add_all_paragraphs.errors %}
+                <ul class="errorlist">
+                    {% for error in form.add_all_paragraphs.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <small class="form-text text-muted">{{ form.add_all_paragraphs.help_text }}</small>
+        </div>
+        
+        <div class="w-field-group">
+            <label for="{{ form.paragraph.id_for_label }}">{{ form.paragraph.label }}</label>
+            {{ form.paragraph }}
+            {% if form.paragraph.errors %}
+                <ul class="errorlist">
+                    {% for error in form.paragraph.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <small class="form-text text-muted">{{ form.paragraph.help_text }}</small>
+        </div>
+        
+        <div class="w-field-group">
             <button type="submit" class="button button-primary">Submit</button>
             <a href="{% url 'postline:display_articles_table' %}" class="button button-secondary">Cancel</a>
         </div>
     </form>
     
-    <!-- Success Message -->
+    <!-- Display Messages -->
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }}">
@@ -70,4 +86,20 @@
             </div>
         {% endfor %}
     {% endif %}
+    
+    <!-- Optional: Add some basic styling -->
+    <style>
+        .w-field-group {
+            margin-bottom: 20px;
+        }
+        .errorlist {
+            color: red;
+            list-style-type: none;
+            padding: 0;
+        }
+        .form-text {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
 {% endblock %}

@@ -8,45 +8,6 @@
         {% csrf_token %}
         
         <div class="w-field-group">
-            <label for="{{ form.caption.id_for_label }}">Caption</label>
-            {{ form.caption }}
-            {% if form.caption.errors %}
-                <ul class="errorlist">
-                    {% for error in form.caption.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            <small class="form-text text-muted">Enter the caption for your Instagram post. Max 2200 characters.</small>
-        </div>
-        
-        <div class="w-field-group">
-            <label for="{{ form.image_url.id_for_label }}">Image URL</label>
-            {{ form.image_url }}
-            {% if form.image_url.errors %}
-                <ul class="errorlist">
-                    {% for error in form.image_url.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            <small class="form-text text-muted">Provide a valid URL to the image you want to post.</small>
-        </div>
-        
-        <div class="w-field-group">
-            <label for="{{ form.scheduled_time.id_for_label }}">Scheduled Time</label>
-            {{ form.scheduled_time }}
-            {% if form.scheduled_time.errors %}
-                <ul class="errorlist">
-                    {% for error in form.scheduled_time.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            <small class="form-text text-muted">Select the date and time you want the post to be published (optional).</small>
-        </div>
-        
-        <div class="w-field-group">
             <label for="{{ form.add_all_paragraphs.id_for_label }}">{{ form.add_all_paragraphs.label }}</label>
             {{ form.add_all_paragraphs }}
             {% if form.add_all_paragraphs.errors %}
@@ -73,7 +34,7 @@
         </div>
         
         <div class="w-field-group">
-            <button type="submit" class="button button-primary">Submit</button>
+            <button type="submit" class="button button-primary">Generate Images</button>
             <a href="{% url 'postline:display_articles_table' %}" class="button button-secondary">Cancel</a>
         </div>
     </form>
@@ -87,7 +48,6 @@
         {% endfor %}
     {% endif %}
     
-    <!-- Optional: Add some basic styling -->
     <style>
         .w-field-group {
             margin-bottom: 20px;

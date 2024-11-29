@@ -1,0 +1,45 @@
+postline/templates/postline/generated_images.html
+{% extends "wagtailadmin/base.html" %}
+{% load static wagtailadmin_tags %}
+{% block content %}
+    <h1>Generated Images</h1>
+    
+    {% if generated_images %}
+        <div class="images-container">
+            {% for image_url in generated_images %}
+                <div class="image-wrapper">
+                    <img src="{{ image_url }}" alt="Generated Image" width="300px">
+                    <a href="{{ image_url }}" download class="download-button">Download</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No images were generated. (Here) </p>
+    {% endif %}
+    
+    <a href="{% url 'postline:display_articles_table' %}" class="button button-secondary">Back to Articles</a>
+    
+    <style>
+        .images-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .image-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .download-button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .download-button:hover {
+            background-color: #218838;
+        }
+    </style>
+{% endblock %}

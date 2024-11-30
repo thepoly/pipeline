@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import path
 from django.utils.html import strip_tags
 from django.contrib import messages
+from django.http import HttpResponse
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from postline.models import PostlinePage  # Changed import
 from postline.forms import InstagramPostForm  # Create a form for handling the content
 from core.models import ArticlePage
@@ -9,6 +12,9 @@ from django.conf import settings
 from PIL import Image, ImageDraw, ImageFont
 import os
 import uuid
+import io
+import zipfile
+
 
 def display_articles_table(request):
     # Fetch all articles
@@ -107,7 +113,7 @@ def generate_image_from_text(text):
         draw = ImageDraw.Draw(image)
         
         # Define font and size
-        font_path = os.path.join(settings.BASE_DIR, 'postline', 'fonts', 'arial.ttf')  # Ensure correct path
+        font_path = os.path.join(settings.BASE_DIR, 'postline', 'fonts', 'Raleway-Regular.ttf')  # Ensure correct path
         font_size = 40
         try:
             font = ImageFont.truetype(font_path, font_size)
@@ -175,3 +181,40 @@ def text_wrap(text, font, max_width):
                 i += 1
             lines.append(line)
     return lines
+
+
+@login_required
+@require_POST
+def download_all_images(request):
+    image_urls = request.POST.getlist('image_urls')
+    
+    if not image_urls:
+        messages.error(request, 'No images available for download.')
+        return redirect('postline:display_articles_table')
+    
+    # Create a BytesIO buffer to hold the zip file in memory
+    zip_buffer = io.BytesIO()
+    
+    with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+        for image_url in image_urls:
+            # Remove MEDIA_URL from the image_url to get the relative path
+            if image_url.startswith(settings.MEDIA_URL):
+                relative_path = image_url.replace(settings.MEDIA_URL, '')
+                file_path = os.path.join(settings.MEDIA_ROOT, relative_path)
+                
+                if os.path.exists(file_path):
+                    # Add the file to the zip archive
+                    zip_file.write(file_path, arcname=os.path.basename(file_path))
+                else:
+                    messages.warning(request, f'File not found: {relative_path}')
+            else:
+                messages.warning(request, f'Invalid URL: {image_url}')
+    
+    if zip_buffer:
+        zip_buffer.seek(0)
+        response = HttpResponse(zip_buffer, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename=generated_images.zip'
+        return response
+    else:
+        messages.error(request, 'Failed to create zip file.')
+        return redirect('postline:display_articles_table')

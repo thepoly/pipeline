@@ -1,45 +1,47 @@
-postline/templates/postline/generated_images.html
 {% extends "wagtailadmin/base.html" %}
 {% load static wagtailadmin_tags %}
 {% block content %}
-    <h1>Generated Images</h1>
+    <div class="hero">
+        <h1 class="page-title">Generated Images</h1>
+    </div>
     
     {% if generated_images %}
-        <div class="images-container">
+        <div class="cards-container">
             {% for image_url in generated_images %}
-                <div class="image-wrapper">
-                    <img src="{{ image_url }}" alt="Generated Image" width="300px">
-                    <a href="{{ image_url }}" download class="download-button">Download</a>
+                <div class="card">
+                    <img src="{{ image_url }}" alt="Generated Image" class="card-image">
+                    <div class="card-body">
+                        <a href="{{ image_url }}" download class="button button-download">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
                 </div>
             {% endfor %}
         </div>
+        
+        {% if generated_images|length > 1 %}
+            <div class="actions-container">
+                <form method="post" action="{% url 'postline:download_all_images' %}">
+                    {% csrf_token %}
+                    {% for image_url in generated_images %}
+                        <input type="hidden" name="image_urls" value="{{ image_url }}">
+                    {% endfor %}
+                    <button type="submit" class="button button-download-all">
+                        <i class="fas fa-download"></i> Download All
+                    </button>
+                </form>
+            </div>
+        {% endif %}
     {% else %}
-        <p>No images were generated. (Here) </p>
+        <p class="no-images-message">No images were generated.</p>
     {% endif %}
     
-    <a href="{% url 'postline:display_articles_table' %}" class="button button-secondary">Back to Articles</a>
-    
-    <style>
-        .images-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .image-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .download-button {
-            margin-top: 10px;
-            padding: 8px 16px;
-            background-color: #28a745;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-        .download-button:hover {
-            background-color: #218838;
-        }
-    </style>
+    <div class="actions-container">
+        <a href="javascript:history.back()" class="button button-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Previous Page
+        </a>
+    </div>
+
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/generated_images.css' %}">
 {% endblock %}

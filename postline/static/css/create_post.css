@@ -1,0 +1,39 @@
+.page-title {
+    text-align: center;
+}
+.form-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    background-color: #222222;
+}
+.errorlist {
+    color: red;
+    list-style-type: none;
+    padding: 0;
+}
+.form-text {
+    font-size: 1em;
+    color: #6c757d;
+}
+.w-form {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.w-field-group {
+    margin-bottom: 2px;
+}
+    /* Style the checkbox labels */
+.w-field-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Style the checkboxes */
+.w-field-group input[type="checkbox"] {
+    margin-right: 10px;
+}

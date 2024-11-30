@@ -1,44 +1,67 @@
 <!-- postline/templates/postline/create_post.html -->
 {% extends "wagtailadmin/base.html" %}
 {% load static wagtailadmin_tags %}
+
+{% block extra_css %}
+    <!-- Reference the external CSS file -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/create_post.css' %}">
+{% endblock %}
+
 {% block content %}
-    <h1>Create Instagram Post for "{{ article.title }}"</h1>
-    
-    <form method="post" class="w-form">
+    <h1 class="page-title">Generate Images for "{{ article.title }} to Post"</h1>
+
+    <form method="post" class="w-form" id="create-post-form">
         {% csrf_token %}
-        
-        <div class="w-field-group">
-            <label for="{{ form.add_all_paragraphs.id_for_label }}">{{ form.add_all_paragraphs.label }}</label>
-            {{ form.add_all_paragraphs }}
-            {% if form.add_all_paragraphs.errors %}
-                <ul class="errorlist">
-                    {% for error in form.add_all_paragraphs.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            <small class="form-text text-muted">{{ form.add_all_paragraphs.help_text }}</small>
+
+        <div class="form-box">
+            <div class="w-field-group">
+                <!-- "Select All Paragraphs" Checkbox -->
+                <input 
+                    type="checkbox" 
+                    id="{{ form.add_all_paragraphs.id_for_label }}" 
+                    name="{{ form.add_all_paragraphs.name }}" 
+                    class="checkbox-input"
+                    {% if form.add_all_paragraphs.value %}checked{% endif %}
+                >
+                <label for="{{ form.add_all_paragraphs.id_for_label }}" class="checkbox-label">
+                    {{ form.add_all_paragraphs.label }}
+                </label>
+                {% if form.add_all_paragraphs.help_text %}
+                    <small class="form-text text-muted">{{ form.add_all_paragraphs.help_text }}</small>
+                {% endif %}
+                {% if form.add_all_paragraphs.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.add_all_paragraphs.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
         </div>
-        
-        <div class="w-field-group">
-            <label for="{{ form.paragraph.id_for_label }}">{{ form.paragraph.label }}</label>
-            {{ form.paragraph }}
-            {% if form.paragraph.errors %}
-                <ul class="errorlist">
-                    {% for error in form.paragraph.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            <small class="form-text text-muted">{{ form.paragraph.help_text }}</small>
+
+        <div class="form-box">
+            <div class="w-field-group">
+                <label for="{{ form.paragraph.id_for_label }}">{{ form.paragraph.label }}</label>
+                {{ form.paragraph }}
+                {% if form.paragraph.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.paragraph.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <small class="form-text text-muted">{{ form.paragraph.help_text }}</small>
+            </div>
         </div>
-        
-        <div class="w-field-group">
-            <button type="submit" class="button button-primary">Generate Images</button>
-            <a href="{% url 'postline:display_articles_table' %}" class="button button-secondary">Cancel</a>
+
+        <div class="form-box">
+            <div class="w-field-group">
+                <button type="submit" class="button button-primary">Generate</button>
+                <a href="{% url 'postline:display_articles_table' %}" class="button button-secondary">Return</a>
+            </div>
         </div>
     </form>
-    
+
     <!-- Display Messages -->
     {% if messages %}
         {% for message in messages %}
@@ -47,19 +70,12 @@
             </div>
         {% endfor %}
     {% endif %}
-    
-    <style>
-        .w-field-group {
-            margin-bottom: 20px;
-        }
-        .errorlist {
-            color: red;
-            list-style-type: none;
-            padding: 0;
-        }
-        .form-text {
-            font-size: 0.9em;
-            color: #6c757d;
-        }
-    </style>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        window.paragraphName = "{{ form.paragraph.name }}";
+        window.addAllParagraphsId = "{{ form.add_all_paragraphs.auto_id }}";
+    </script>
+    <script src="{% static 'js/create_post.js' %}"></script>
 {% endblock %}

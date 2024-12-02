@@ -1,31 +1,34 @@
+{% load static wagtailadmin_tags %}
 <table>
     <tr>
         <th>Title</th>
         <th>Date</th>
         <th>Authors</th>
         <th>Summary</th>
-        <th>Instagram Status</th>
+        <th>Actions</th>
     </tr>
     {% for article in articles %}
     <tr>
         <td>{{ article.title }}</td>
         <td>{{ article.date }}</td>
         <td>
-            {% for author in article.authors.all %}
-                {{ author }}{% if not forloop.last %}, {% endif %}
+            {% for author in article.get_authors %}
+                {{ author.name }}{% if not forloop.last %}, {% endif %}
+            {% empty %}
+                No authors assigned.
             {% endfor %}
         </td>
         <td>{{ article.summary|truncatewords:20|striptags }}</td>
-        <td>{{ article.paragraph }}</td>
         <td>
-            {% if article.posted %}
-                <a href="{{ article.instagram_link }}">Posted on Instagram</a>
-            {% else %}
-                <a href="{% url 'postline:create_instagram_post' article.id %}">
-                    Create Post
-                </a>
-            {% endif %}
+            <a href="{% url 'postline:create_instagram_post' article.id %}">
+                Create Post
+            </a>
         </td>
     </tr>
     {% endfor %}
+
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/table_content.css' %}">
+    </head>
+    
 </table>

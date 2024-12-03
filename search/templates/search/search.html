@@ -15,35 +15,37 @@
             </div>
         </div>
         <div>
-            <!-- Filter by section -->
-            <div class="mb-3">
-                <label for="section" class="form-label">Section</label>
-                <select class="form-select" id="section" name="section">
-                    <option value="">All</option>
-                    {% for section in sections %}
-                        <option value="{{ section.id }}" {% if section.id == selected_section %}selected{% endif %}>{{ section }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <!-- Filter by relevance, newest, oldest -->
-            <div class="mb-3">
-                <label for="order" class="form-label">Sort by</label>
-                <select class="form-select" id="order" name="order">
-                    <option value="">Relevance</option>
-                    <option value="newest" {% if order == "newest" %}selected{% endif %}>Newest</option>
-                    <option value="oldest" {% if order == "oldest" %}selected{% endif %}>Oldest</option>
-                </select>
-            </div>
-            <!-- Filter by date -->
-            <div class="mb-3">
-                <label for="date_range" class="form-label">Date Range</label>
-                <select class="form-select" id="date_range" name="date_range" onchange="toggleCustomDatePicker()">
-                    <option value="">Any</option>
-                    <option value="7">Last week</option>
-                    <option value="30">Last month</option>
-                    <option value="365">Last year</option>
-                    <option value="custom">Custom</option>                    
-                </select>
+            <div style="display: flex; justify-content: space-between; gap: 20px; width: 100%;">
+                <!-- Filter by section -->
+                <div class="mb-3" style="flex: 1;">
+                    <label for="section" class="form-label">Section</label>
+                    <select class="form-select" id="section" name="section">
+                        <option value="">All</option>
+                        {% for section in sections %}
+                            <option value="{{ section.id }}" {% if section.id == selected_section %}selected{% endif %}>{{ section }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Filter by relevance, newest, oldest -->
+                <div class="mb-3" style="flex: 1;">
+                    <label for="order" class="form-label">Sort by</label>
+                    <select class="form-select" id="order" name="order">
+                        <option value="">Relevance</option>
+                        <option value="newest" {% if order == "newest" %}selected{% endif %}>Newest</option>
+                        <option value="oldest" {% if order == "oldest" %}selected{% endif %}>Oldest</option>
+                    </select>
+                </div>
+                <!-- Filter by date -->
+                <div class="mb-3" style="flex: 1;">
+                    <label for="date_range" class="form-label">Date Range</label>
+                    <select class="form-select" id="date_range" name="date_range" onchange="toggleCustomDatePicker()">
+                        <option value="">Any</option>
+                        <option value="7">Last week</option>
+                        <option value="30">Last month</option>
+                        <option value="365">Last year</option>
+                        <option value="custom">Custom</option>                    
+                    </select>
+                </div>
             </div>
             <!-- Custom date picker -->
             <div id="custom_date_picker" class="mb-3" style="display: {% if date_range == 'custom' %}block{% else %}none{% endif %};">

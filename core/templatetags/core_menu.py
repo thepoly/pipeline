@@ -2,8 +2,9 @@ from django import template
 
 from core.models import (
     ArticlesIndexPage,
-    ArticlePage,
-    StaffPage,
+    StaffIndexPage,
+    ArchivesPage,
+    StaticPage
 )
 from home.models import HomePage
 
@@ -65,7 +66,7 @@ def bottom_menu():
         home.get_descendants()
         .live()
         .public()
-        .not_type((ArticlePage, StaffPage))
+        .exact_type(ArticlesIndexPage, StaffIndexPage, StaticPage, ArchivesPage)
         .order_by("title")
     )
     return {"pages": pages}

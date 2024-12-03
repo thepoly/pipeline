@@ -54,16 +54,16 @@
                     <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
                         <div class="col">
                             <a class="header-logo" href="{% pageurl current_site.root_page %}">
-                                <img src="{% static 'images/logo_minimal.png' %}" alt="The Polytechnic" width="auto" height="80">
+                                <img src="{% static 'images/logo_minimal.png' %}" alt="The Polytechnic wordmark">
                             </a>
                         </div>
 
-                        <div class="ui-widget hide-mobile col text-right" id="largeDisplay">
+                        {% comment %} <div class="ui-widget hide-mobile col text-right" id="largeDisplay">
                             <form action="{% url 'search' %}">
                                 <input type="text" name="query" id="tags"  placeholder="Search..." style="border-radius: 5px; size: 10; position: relative; top:1px; resize: none;" multiple>
                                 <a class="btn btn-sm btn-outline-light" href="{% pageurl current_site.root_page %}subscribe/" style="resize: none; top: 5px">Subscribe</a>
                             </form>
-                        </div>
+                        </div> {% endcomment %}
                         {% comment %} <div class="hide-desktop col text-right" id="smallDisplay">
                             <div class="col text-right mb-3 mb-md-0">
                                 <a class="text-light search" href="{% url 'search' %}">

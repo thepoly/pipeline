@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "mini-css-extract-plugin": "^2.9.2",
+    "webpack": "^5.96.1",
+    "webpack-bundle-tracker": "^3.1.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "cssnano": "^7.0.6"
+  }
+}

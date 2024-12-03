@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "postline",
     "home",
     "search",
+    "webpack_loader",
     "wagtailautocomplete",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -154,6 +155,7 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, "static"),
+    os.path.join(BASE_DIR, 'assets'),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
@@ -161,6 +163,18 @@ STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+
+DEBUG = True
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'webpack_bundles/',
+        'CACHE': not DEBUG,
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+    }
+}
 
 # Default storage settings, with the staticfiles storage updated.
 # See https://docs.djangoproject.com/en/5.1/ref/settings/#std-setting-STORAGES

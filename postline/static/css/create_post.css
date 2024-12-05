@@ -37,3 +37,34 @@
 .w-field-group input[type="checkbox"] {
     margin-right: 10px;
 }
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px 20px;
+    border-radius: 14px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.generate-button {
+    background-color: #DA1E05 !important;
+    color: #fff;
+    border: none;
+}
+
+.generate-button:hover {
+    background-color: #740010 !important;
+    transform: scale(1.05);
+}
+
+.button-secondary:hover {
+    background-color: #5a6268;
+    transform: scale(1.05);
+}

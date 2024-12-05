@@ -2,10 +2,7 @@
 {% extends "wagtailadmin/base.html" %}
 {% load static wagtailadmin_tags %}
 
-{% block extra_css %}
-    <!-- Reference the external CSS file -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/create_post.css' %}">
-{% endblock %}
+
 
 {% block content %}
     <h1 class="page-title">Generate Images for "{{ article.title }}" to Post </h1>
@@ -54,11 +51,11 @@
             </div>
         </div>
 
-        <div class="form-box">
-            <div class="w-field-group">
-                <button type="submit" class="button button-primary">Generate</button>
-                <a href="{% url 'postline:display_articles_table' %}" class="button button-secondary">Return</a>
-            </div>
+        <div class="test">
+            <button type="submit" class="button generate-button">Generate</button>
+            <a href="{% url 'postline:display_articles_table' %}" class="button button-secondary">
+                <i class="fas fa-arrow-left"></i> Return
+            </a>
         </div>
     </form>
 
@@ -78,4 +75,10 @@
         window.addAllParagraphsId = "{{ form.add_all_paragraphs.auto_id }}";
     </script>
     <script src="{% static 'js/create_post.js' %}"></script>
+{% endblock %}
+
+{% block extra_css %}
+    <!-- Reference the external CSS file -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/create_post.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 {% endblock %}

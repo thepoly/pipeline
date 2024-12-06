@@ -4,6 +4,7 @@ from django import forms
 
 class InstagramPostForm(forms.Form):
     add_all_paragraphs = forms.BooleanField(required=False, label='Add all paragraphs')
+    generate_title_image = forms.BooleanField(required=False, label='Generate Title Image')
     paragraph = forms.MultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,

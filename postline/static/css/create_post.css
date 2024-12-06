@@ -1,6 +1,7 @@
 .page-title {
     text-align: center;
 }
+
 .form-box {
     border: 1px solid #ddd;
     padding: 20px;
@@ -8,34 +9,43 @@
     border-radius: 8px;
     background-color: #212121;
 }
+
 .errorlist {
     color: red;
     list-style-type: none;
     padding: 0;
 }
+
 .form-text {
     font-size: 1em;
     color: #6c757d;
 }
+
 .w-form {
     max-width: 1300px;
     margin: 0 auto;
     padding: 0 15px;
 }
+
 .w-field-group {
-    margin-bottom: 2px;
-}
-    /* Style the checkbox labels */
-.w-field-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
-    display: inline-flex;
+    display: flex;
+    justify-content: center;
     align-items: center;
+    gap: 15px;
 }
 
-/* Style the checkboxes */
+.w-field-group label {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #f5f5f5;
+    gap: 10px;
+}
+
 .w-field-group input[type="checkbox"] {
-    margin-right: 10px;
+    transform: scale(1.2);
+    cursor: pointer;
 }
 
 .button {
@@ -67,4 +77,40 @@
 .button-secondary:hover {
     background-color: #5a6268;
     transform: scale(1.05);
+}
+
+.paragraph-box-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.paragraph-box {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #282828;
+    display: flex;
+    align-items: flex-start;
+}
+
+.paragraph-box .checkbox-label {
+    margin-left: 10px;
+    font-size: 1rem;
+    color: #f5f5f5;
+}
+
+.paragraph-box input[type="checkbox"] {
+    margin-top: 5px;
+}
+
+.paragraph-box:hover {
+    background-color: #3a3a3a;
+    transition: background-color 0.3s ease;
+}
+
+.no-paragraphs-message {
+    text-align: center;
+    font-size: 1rem;
+    font-style: italic;
+    color: #f5f5f5;
 }

@@ -1,9 +1,8 @@
-// static/js/create_post.js
-
 document.addEventListener('DOMContentLoaded', function() {
     // Access variables passed from the template
     const paragraphName = window.paragraphName;
     const addAllParagraphsId = window.addAllParagraphsId;
+    const generateTitleImageId = window.generateTitleImageId;
 
     // Form submission validation
     document.getElementById('create-post-form').addEventListener('submit', function(event) {
@@ -14,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 isAnyChecked = true;
             }
         });
-        if (!isAnyChecked) {
+        if (!isAnyChecked && !document.getElementById(generateTitleImageId).checked) {
             event.preventDefault();
             alert('Please select at least one paragraph');
         }
@@ -23,13 +22,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle "Select All Paragraphs" checkbox
     const addAllParagraphsField = document.getElementById(addAllParagraphsId);
     const paragraphCheckboxes = document.querySelectorAll(`input[name="${paragraphName}"]`);
+    const generateTitleImageField = document.getElementById(generateTitleImageId);
 
     if (addAllParagraphsField && paragraphCheckboxes.length > 0) {
         addAllParagraphsField.addEventListener('change', function() {
             const isChecked = this.checked;
+
+            // Check/uncheck all paragraph checkboxes
             paragraphCheckboxes.forEach(function(checkbox) {
                 checkbox.checked = isChecked;
             });
+
+            // Also check/uncheck the "Generate Title Image" checkbox
+            if (generateTitleImageField) {
+                generateTitleImageField.checked = isChecked;
+            }
         });
 
         // Synchronize "Select All" checkbox with individual checkboxes
@@ -39,6 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     return cb.checked;
                 });
                 addAllParagraphsField.checked = allChecked;
+
+                // If not all are checked, uncheck "Generate Title Image"
+                if (generateTitleImageField) {
+                    generateTitleImageField.checked = allChecked;
+                }
             });
         });
     }

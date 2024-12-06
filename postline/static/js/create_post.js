@@ -46,11 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     return cb.checked;
                 });
                 addAllParagraphsField.checked = allChecked;
-
-                // If not all are checked, uncheck "Generate Title Image"
-                if (generateTitleImageField) {
-                    generateTitleImageField.checked = allChecked;
-                }
             });
         });
     }

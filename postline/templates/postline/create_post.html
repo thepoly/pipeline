@@ -1,7 +1,6 @@
 {% extends "wagtailadmin/base.html" %}
 {% load static wagtailadmin_tags %}
 
-
 {% block content %}
     <form method="post" class="w-form" id="create-post-form">
         {% csrf_token %}
@@ -32,6 +31,24 @@
                     <label for="{{ form.generate_title_image.id_for_label }}" class="checkbox-label">
                         {{ form.generate_title_image.label }}
                     </label>
+                </div>
+            </div>
+
+            <!-- Extra Text Section -->
+            <div class="form-box">
+                <div class="w-field-group">
+                    <label for="{{ form.extra_text.id_for_label }}" class="form-text">Add Extra Text (e.g., "NEWS")</label>
+                    <input 
+                        type="text" 
+                        id="{{ form.extra_text.id_for_label }}" 
+                        name="{{ form.extra_text.name }}" 
+                        class="text-input" 
+                        value="{{ form.extra_text.value|default:'' }}"
+                    >
+                </div>
+                <div class="w-field-group">
+                    <label for="{{ form.extra_text_position.id_for_label }}" class="form-text">Position Extra Text</label>
+                    {{ form.extra_text_position }}
                 </div>
             </div>
 
@@ -90,6 +107,8 @@
         window.paragraphName = "{{ form.paragraph.name }}";
         window.addAllParagraphsId = "{{ form.add_all_paragraphs.auto_id }}";
         window.generateTitleImageId = "{{ form.generate_title_image.auto_id }}";
+        window.extraTextId = "{{ form.extra_text.auto_id }}";
+        window.extraTextPositionId = "{{ form.extra_text_position.auto_id }}";
     </script>
     <script src="{% static 'js/create_post.js' %}"></script>
 {% endblock %}

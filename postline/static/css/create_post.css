@@ -114,3 +114,10 @@
     font-style: italic;
     color: #f5f5f5;
 }
+
+.text-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

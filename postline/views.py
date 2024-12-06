@@ -28,7 +28,7 @@ def display_articles_table(request):
 def create_instagram_post(request, article_id):
     article = get_object_or_404(ArticlePage, id=article_id)
     title = article.title
-    summary = strip_tags(article.summary)  # Assuming a 'summary' field exists in ArticlePage
+    summary = strip_tags(article.summary)
 
     # Extract paragraphs from the article
     paragraphs = [
@@ -43,28 +43,43 @@ def create_instagram_post(request, article_id):
         if form.is_valid():
             add_all = form.cleaned_data.get('add_all_paragraphs')
             generate_title_image = form.cleaned_data.get('generate_title_image')
-            selected_paragraphs = form.cleaned_data.get('paragraph') if not add_all else list(map(str, range(1, len(paragraphs)+1)))
-            
+            extra_text = form.cleaned_data.get('extra_text', "").strip()  # Remove any unnecessary whitespace
+            extra_text_position = form.cleaned_data.get('extra_text_position', "left")
+
+            selected_paragraphs = form.cleaned_data.get('paragraph') if not add_all else list(map(str, range(1, len(paragraphs) + 1)))
             generated_images = []
 
-            # First image: Title + Summary (only if the checkbox is selected)
+            # First image: Title + Summary
             if generate_title_image:
-                first_image = generate_image_from_text(title, summary, article_id, 1)
+                first_image = generate_image_from_text(
+                    title=title,
+                    content=summary,
+                    extra_text=extra_text,
+                    extra_text_position=extra_text_position,
+                    article_id=article_id,
+                    image_number=1,
+                    is_first_image=True
+                )
                 if first_image:
                     generated_images.append(settings.MEDIA_URL + first_image)
 
             # Remaining images: Paragraphs
-            if paragraphs:
-                for idx, paragraph in enumerate(paragraphs, start=1):
-                    if add_all or str(idx) in selected_paragraphs:
-                        image_filename = generate_image_from_text(paragraph, "", article_id, idx + 1)
-                        if image_filename:
-                            generated_images.append(settings.MEDIA_URL + image_filename)
+            for idx, paragraph in enumerate(paragraphs, start=1):
+                if add_all or str(idx) in selected_paragraphs:
+                    image_filename = generate_image_from_text(
+                        title=None,  # No title for subsequent images
+                        content=paragraph,
+                        extra_text=extra_text,
+                        extra_text_position=extra_text_position,
+                        article_id=article_id,
+                        image_number=idx + 1,
+                        is_first_image=False
+                    )
+                    if image_filename:
+                        generated_images.append(settings.MEDIA_URL + image_filename)
 
             if generated_images:
-                return render(request, 'postline/generated_images.html', {
-                    'generated_images': generated_images,
-                })
+                return render(request, 'postline/generated_images.html', {'generated_images': generated_images})
             else:
                 messages.warning(request, 'No images were generated.')
                 return redirect('postline:display_articles_table')
@@ -73,22 +88,17 @@ def create_instagram_post(request, article_id):
     else:
         form = InstagramPostForm(paragraphs=paragraph_choices)
 
-    # Pass flag to template to handle no paragraphs
-    has_paragraphs = bool(paragraphs)
-
     return render(request, 'postline/create_post.html', {
         'form': form,
         'article': article,
-        'has_paragraphs': has_paragraphs,  # Pass flag for no paragraphs
+        'has_paragraphs': bool(paragraphs)
     })
-
-
 
 import logging
 
 logger = logging.getLogger(__name__)
 
-def generate_image_from_text(title="", content="", article_id=None, image_number=1):
+def generate_image_from_text(title=None, content="", extra_text="", extra_text_position="left", article_id=None, image_number=1, is_first_image=False):
     try:
         img_width = 1080
         img_height = 1080
@@ -98,40 +108,77 @@ def generate_image_from_text(title="", content="", article_id=None, image_number
         image = Image.new('RGB', (img_width, img_height), color=background_color)
         draw = ImageDraw.Draw(image)
 
-        # Load font
-        font_path = os.path.join(settings.BASE_DIR, 'postline', 'fonts', 'Raleway-Regular.ttf')
-        font_size = 40
-        try:
-            font = ImageFont.truetype(font_path, font_size)
-        except IOError:
-            font = ImageFont.load_default()
+        # Fonts
+        font_path_italic = os.path.join(settings.BASE_DIR, 'postline', 'fonts', 'Raleway-Italic.ttf')
+        font_path_bold_italic = os.path.join(settings.BASE_DIR, 'postline', 'fonts', 'Raleway-BoldItalic.ttf')
+        font_path_black_italic = os.path.join(settings.BASE_DIR, 'postline', 'fonts', 'Raleway-BlackItalic.ttf')
+        font_size_title = 60
+        font_size_summary = 40
+        font_size_extra_text = 200
+        min_font_size_extra_text = 50  # Define a minimum font size
 
-        text_color = (0, 0, 0)
+        try:
+            title_font = ImageFont.truetype(font_path_bold_italic, font_size_title)
+            content_font = ImageFont.truetype(font_path_italic, font_size_summary)
+            extra_text_font = ImageFont.truetype(font_path_black_italic, font_size_extra_text)
+        except IOError:
+            title_font = ImageFont.load_default()
+            content_font = ImageFont.load_default()
+            extra_text_font = ImageFont.load_default()
+
+        text_color = (218, 30, 5)
+        extra_text_color = (246, 218, 215)
         margin = 50
         max_width = img_width - 2 * margin
 
+        if extra_text:
+            # Adjust font size to fit extra_text
+            # while True:
+            #     text_bbox = draw.textbbox((0, 0), extra_text, font=extra_text_font)
+            #     text_width = font_size_extra_text
+            #     max_extra_text_height = img_width - 2 * margin
+
+            #     if text_width <= max_extra_text_height:
+            #         break
+            #     extra_text_font = ImageFont.truetype(font_path_black_italic, extra_text_font.size - 10)
+
+            text_img = Image.new('RGBA', (img_height, img_width), (255, 255, 255, 0))  # Transparent background
+            text_draw = ImageDraw.Draw(text_img)
+            text_bbox = text_draw.textbbox((0, 0), extra_text, font=extra_text_font)
+
+            # Draw the text onto the transparent image
+            text_x = 35
+            text_y = -40
+            text_draw.text((text_x, text_y), extra_text, font=extra_text_font, fill=extra_text_color)
+
+            # Rotate the text image
+            rotated_text_img = text_img.rotate(90, expand=True)
+
+            # Paste the rotated text onto the main image
+            if extra_text_position == "left":
+                image.paste(rotated_text_img, (0, 0), rotated_text_img)
+            elif extra_text_position == "right":
+                image.paste(rotated_text_img, (img_width - (font_size_extra_text) + text_y, 0), rotated_text_img)
+
         # Combine title and content
-        title_lines = text_wrap(title, font, max_width) if title else []
-        content_lines = text_wrap(content, font, max_width) if content else []
+        combined_lines = []
+        if is_first_image and title:
+            combined_lines += text_wrap(title, title_font, max_width)
+            combined_lines.append("")
+            combined_lines.append("")
+        combined_lines += text_wrap(content, content_font, max_width)
 
-        # Calculate line heights
-        line_height = (font.getbbox('A')[3] - font.getbbox('A')[1]) + 10
-        total_text_height = (line_height * len(title_lines)) + (line_height * len(content_lines)) + (30 if title and content else 0)
-
-        # Start drawing text
+        # Calculate total height of the text and center it
+        line_height = max(
+            (title_font.getbbox('A')[3] - title_font.getbbox('A')[1]),
+            (content_font.getbbox('A')[3] - content_font.getbbox('A')[1])
+        ) + 10
+        total_text_height = line_height * len(combined_lines)
         current_y = (img_height - total_text_height) // 2
 
-        # Draw title
-        for line in title_lines:
-            draw.text((margin, current_y), line, font=font, fill=text_color)
-            current_y += line_height
-
-        # Add spacing between title and content
-        if title and content:
-            current_y += 30  # Add some extra space between title and content
-
-        # Draw content
-        for line in content_lines:
+        # Draw text
+        for line in combined_lines:
+            font = title_font if line in combined_lines[:len(combined_lines) - len(text_wrap(content, content_font, max_width))] else content_font
             draw.text((margin, current_y), line, font=font, fill=text_color)
             current_y += line_height
 
@@ -141,13 +188,13 @@ def generate_image_from_text(title="", content="", article_id=None, image_number
         full_path = os.path.join(settings.MEDIA_ROOT, upload_path)
 
         os.makedirs(os.path.dirname(full_path), exist_ok=True)
-
         image.save(full_path, format='PNG')
 
         return upload_path
     except Exception as e:
         logger.error(f"Error generating image: {e}")
         return None
+
 
 def text_wrap(text, font, max_width):
     """

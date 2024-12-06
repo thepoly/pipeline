@@ -6,9 +6,10 @@
         {% csrf_token %}
         
         {% if has_paragraphs %}
-            <!-- Checkbox for "Select All Paragraphs" and "Generate Title Image" -->
-            <div class="form-box">
-                <div class="w-field-group">
+        <div class="form-box">
+            <div class="w-field-group">
+                <!-- Checkbox: Add All Paragraphs -->
+                <div class="checkbox-group">
                     <input 
                         type="checkbox" 
                         id="{{ form.add_all_paragraphs.id_for_label }}" 
@@ -19,38 +20,46 @@
                     <label for="{{ form.add_all_paragraphs.id_for_label }}" class="checkbox-label">
                         {{ form.add_all_paragraphs.label }}
                     </label>
-
-                    <input 
-                        type="checkbox" 
-                        id="{{ form.generate_title_image.id_for_label }}" 
-                        name="{{ form.generate_title_image.name }}" 
-                        class="checkbox-input"
-                        style="margin-left: 20px;"
-                        {% if form.generate_title_image.value %}checked{% endif %}
-                    >
-                    <label for="{{ form.generate_title_image.id_for_label }}" class="checkbox-label">
-                        {{ form.generate_title_image.label }}
-                    </label>
                 </div>
-            </div>
-
-            <!-- Extra Text Section -->
-            <div class="form-box">
-                <div class="w-field-group">
-                    <label for="{{ form.extra_text.id_for_label }}" class="form-text">Add Extra Text (e.g., "NEWS")</label>
-                    <input 
-                        type="text" 
-                        id="{{ form.extra_text.id_for_label }}" 
-                        name="{{ form.extra_text.name }}" 
-                        class="text-input" 
-                        value="{{ form.extra_text.value|default:'' }}"
-                    >
+        
+                <!-- Checkbox: Generate Title Image -->
+                <div class="title-text-group">
+                    <!-- Title Page Checkbox -->
+                    <div class="checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="{{ form.generate_title_image.id_for_label }}" 
+                            name="{{ form.generate_title_image.name }}" 
+                            class="checkbox-input"
+                            {% if form.generate_title_image.value %}checked{% endif %}
+                        >
+                        <label for="{{ form.generate_title_image.id_for_label }}" class="checkbox-label">
+                            {{ form.generate_title_image.label }}
+                        </label>
+                    </div>
+                
+                    <!-- Add Extra Text Input -->
+                    <div class="extra-text-group">
+                        <label for="{{ form.extra_text.id_for_label }}" class="form-text">
+                            {{ form.extra_text.label }}
+                        </label>
+                        <input 
+                            type="text" 
+                            id="{{ form.extra_text.id_for_label }}" 
+                            name="{{ form.extra_text.name }}" 
+                            class="text-input extra-text-input" 
+                            value="{{ form.extra_text.value|default:'' }}"
+                        >
+                    </div>
                 </div>
-                <div class="w-field-group">
-                    <label for="{{ form.extra_text_position.id_for_label }}" class="form-text">Position Extra Text</label>
+        
+                <!-- Dropdown: Position Extra Text -->
+                <div class="extra-text-position-group">
+                    <label for="{{ form.extra_text_position.id_for_label }}" class="form-text">Position</label>
                     {{ form.extra_text_position }}
                 </div>
             </div>
+        </div>
 
             <!-- Paragraph Selection -->
             <div class="form-box">

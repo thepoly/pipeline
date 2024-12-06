@@ -8,6 +8,8 @@
     margin: 10px 0;
     border-radius: 8px;
     background-color: #212121;
+    display: flex;
+    flex-direction: column;
 }
 
 .errorlist {
@@ -32,6 +34,7 @@
     justify-content: center;
     align-items: center;
     gap: 15px;
+    flex-wrap: wrap;
 }
 
 .w-field-group label {
@@ -40,8 +43,9 @@
     align-items: center;
     font-size: 1.1rem;
     color: #f5f5f5;
-    gap: 10px;
+    gap: 15px;
 }
+
 
 .w-field-group input[type="checkbox"] {
     transform: scale(1.2);
@@ -115,9 +119,51 @@
     color: #f5f5f5;
 }
 
-.text-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.title-text-group {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.extra-text-input {
+    width: 35%;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.checkbox-input,
+.text-input,
+select {
+    margin-right: 10px;
+}
+
+.form-text {
+    font-size: 1rem;
+    color: #f5f5f5;
+}
+
+.checkbox-group,
+.extra-text-group,
+.extra-text-position-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.extra-text-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.extra-text-input {
+    width: 200px;
+    max-width: 300px;
+}
+
+@media (max-width: 768px) {
+    .w-field-group {
+        gap: 15px;
+    }
 }

@@ -113,52 +113,62 @@ def generate_image_from_text(title=None, content="", extra_text="", extra_text_p
         font_path_bold_italic = os.path.join(settings.BASE_DIR, 'postline', 'fonts', 'Raleway-BoldItalic.ttf')
         font_path_black_italic = os.path.join(settings.BASE_DIR, 'postline', 'fonts', 'Raleway-BlackItalic.ttf')
         font_size_title = 60
-        font_size_summary = 40
+        font_size_summary = 38
         font_size_extra_text = 200
-        min_font_size_extra_text = 50  # Define a minimum font size
+        font_size_poly_text = 34
 
         try:
             title_font = ImageFont.truetype(font_path_bold_italic, font_size_title)
             content_font = ImageFont.truetype(font_path_italic, font_size_summary)
             extra_text_font = ImageFont.truetype(font_path_black_italic, font_size_extra_text)
+            poly_text_font = ImageFont.truetype(font_path_bold_italic, font_size_poly_text)
         except IOError:
             title_font = ImageFont.load_default()
             content_font = ImageFont.load_default()
             extra_text_font = ImageFont.load_default()
+            poly_text_font = ImageFont.load_default()
 
         text_color = (218, 30, 5)
         extra_text_color = (246, 218, 215)
-        margin = 50
+        margin = 100
+        extra_text_margin = 5
         max_width = img_width - 2 * margin
 
-        if extra_text:
-            # Adjust font size to fit extra_text
-            # while True:
-            #     text_bbox = draw.textbbox((0, 0), extra_text, font=extra_text_font)
-            #     text_width = font_size_extra_text
-            #     max_extra_text_height = img_width - 2 * margin
+        if extra_text: # NEW, FEATURES ... etc
+            while True:
+                text_width, text_height = get_text_size(extra_text, extra_text_font)
+                if text_width <= image.width - extra_text_margin:
+                    break
+                font_size_extra_text -= 5
+                extra_text_font = ImageFont.truetype(font_path_black_italic, font_size_extra_text)
 
-            #     if text_width <= max_extra_text_height:
-            #         break
-            #     extra_text_font = ImageFont.truetype(font_path_black_italic, extra_text_font.size - 10)
-
-            text_img = Image.new('RGBA', (img_height, img_width), (255, 255, 255, 0))  # Transparent background
+            text_img = Image.new('RGBA', (img_height, img_width), (255, 255, 255, 0))
             text_draw = ImageDraw.Draw(text_img)
             text_bbox = text_draw.textbbox((0, 0), extra_text, font=extra_text_font)
 
-            # Draw the text onto the transparent image
-            text_x = 35
-            text_y = -40
-            text_draw.text((text_x, text_y), extra_text, font=extra_text_font, fill=extra_text_color)
+            poly_text_width, poly_text_height = get_text_size("The Polytechnic", poly_text_font)
+            poly_text_img = Image.new('RGBA', (img_width, img_height), (255, 255, 255, 0))  # Transparent background
+            poly_text_draw = ImageDraw.Draw(poly_text_img)
+            poly_text_draw.text((0, 0), "the polytechnic", font=poly_text_font, fill=text_color)
 
+            text_x = 10
+            text_y = 10
+            # Draw the text onto the transparent image
+            text_y_offset = text_bbox[1]  # Top offset of the text
+            text_draw.text((text_x, text_y - text_y_offset), extra_text, font=extra_text_font, fill=extra_text_color)
+            
             # Rotate the text image
             rotated_text_img = text_img.rotate(90, expand=True)
-
+            rotated_poly_text_img = poly_text_img.rotate(90, expand=True)
+            
             # Paste the rotated text onto the main image
             if extra_text_position == "left":
                 image.paste(rotated_text_img, (0, 0), rotated_text_img)
+                print(poly_text_width)
+                image.paste(rotated_poly_text_img, (img_width - poly_text_height - text_x, 0 - (img_height - poly_text_width - text_y)), rotated_poly_text_img)
             elif extra_text_position == "right":
-                image.paste(rotated_text_img, (img_width - (font_size_extra_text) + text_y, 0), rotated_text_img)
+                image.paste(rotated_text_img, (img_width - text_height - (2 * text_x), 0 - text_y), rotated_text_img)
+                image.paste(poly_text_img, (0 + text_x, img_height - poly_text_height - text_y), poly_text_img)
 
         # Combine title and content
         combined_lines = []
@@ -263,3 +273,9 @@ def download_all_images(request):
     else:
         messages.error(request, 'Failed to create zip file.')
         return redirect('postline:display_articles_table')
+
+def get_text_size(text, font):
+    bbox = font.getbbox(text)
+    text_width = bbox[2] - bbox[0]  # x_max - x_min
+    text_height = bbox[3] - bbox[1]  # y_max - y_min
+    return text_width, text_height

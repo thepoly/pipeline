@@ -1,18 +1,36 @@
+:root {
+    --background: #212121;
+    --text-color: #ffffff;
+    --header-bg: #DA1E05;
+    --link-hover: #FF5F57;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
     font-size: 1rem;
     font-family: Arial, sans-serif;
-    background-color: #212121;
-    color: #ffffff;
+    background-color: var(--background);
+    color: var(--text-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 th {
-    background-color: #DA1E05;
-    color: #ffffff;
+    background-color: var(--header-bg);
+    color: var(--text-color);
     text-align: left;
     padding: 12px;
+    font-weight: bold;
+    border-bottom: 2px solid #444444;
 }
 
 tr:nth-child(even) {
@@ -20,7 +38,8 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: #575757;
+    background-color: #484848;
+    cursor: pointer;
 }
 
 td {
@@ -29,13 +48,13 @@ td {
 }
 
 a {
-    color: #DA1E05; 
+    color: var(--header-bg);
     text-decoration: none;
     font-weight: bold;
 }
 
 a:hover {
-    color: #740010;
+    color: var(--link-hover);
     text-decoration: underline;
 }
 
@@ -44,37 +63,50 @@ th a {
     color: #ffffff;
 }
 
-th a .arrow {
-    margin-left: 5px;
-    font-size: 0.8em;
+td a {
+    color: var(--header-bg); /* Ensure it's visible */
+    text-decoration: none;
+    font-size: 1.2rem; /* Slightly larger for accessibility */
+}
+
+td a i {
+    margin-right: 4px;
+}
+
+td a:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
 }
 
 .search-bar {
-    margin-bottom: 20px;
-}
-
-.search-bar form {
     display: flex;
-    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #292929;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .search-bar input[type="text"] {
-    padding: 8px;
-    width: 200px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    width: 300px;
+    border: none;
     border-radius: 4px;
+    background-color: #444444;
+    color: #ffffff;
 }
 
 .search-bar button {
-    padding: 8px 12px;
+    padding: 10px 16px;
     margin-left: 10px;
-    background-color: #DA1E05;
-    color: #fff;
+    background-color: var(--header-bg);
+    color: var(--text-color);
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .search-bar button:hover {
-    background-color: #740010;
+    background-color: var(--link-hover);
 }

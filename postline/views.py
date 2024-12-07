@@ -17,11 +17,26 @@ import zipfile
 
 
 def display_articles_table(request):
-    # Fetch all articles
-    articles = ArticlePage.objects.live().order_by('-date')
+    sort = request.GET.get('sort', 'date')
+    order = request.GET.get('order', 'desc')
+    
+    if sort not in ['title', 'date']:
+        sort = 'date'
+    if order not in ['asc', 'desc']:
+        order = 'desc'
+    
+    ordering = sort if order == 'asc' else f'-{sort}'
+    articles = ArticlePage.objects.live().order_by(ordering)
+    
+    # Determine the next order for each field
+    next_order = 'asc' if order == 'desc' else 'desc'
+    
     return render(request, 'postline/table.html', {
         'articles': articles,
-        'user_has_permission': request.user.has_perm('postline.add_postlinepage')
+        'user_has_permission': request.user.has_perm('postline.add_postlinepage'),
+        'current_sort': sort,
+        'current_order': order,
+        'next_order': next_order,
     })
 
 

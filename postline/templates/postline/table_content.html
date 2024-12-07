@@ -1,8 +1,30 @@
 {% load static wagtailadmin_tags %}
 <table>
     <tr>
-        <th>Title</th>
-        <th>Date</th>
+        <th>
+            <a href="?sort=title&order={% if current_sort == 'title' and current_order == 'asc' %}desc{% else %}asc{% endif %}">
+                Title
+                {% if current_sort == 'title' %}
+                    {% if current_order == 'asc' %}
+                        ▲
+                    {% else %}
+                        ▼
+                    {% endif %}
+                {% endif %}
+            </a>
+        </th>
+        <th>
+            <a href="?sort=date&order={% if current_sort == 'date' and current_order == 'asc' %}desc{% else %}asc{% endif %}">
+                Date
+                {% if current_sort == 'date' %}
+                    {% if current_order == 'asc' %}
+                        ▲
+                    {% else %}
+                        ▼
+                    {% endif %}
+                {% endif %}
+            </a>
+        </th>
         <th>Authors</th>
         <th>Summary</th>
         <th>Actions</th>

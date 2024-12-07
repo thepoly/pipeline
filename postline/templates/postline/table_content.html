@@ -1,8 +1,17 @@
 {% load static wagtailadmin_tags %}
+<div class="search-bar">
+    <form method="get" action="">
+        <input type="text" name="search" placeholder="Search for articles..." value="{{ search_query }}">
+        <input type="hidden" name="sort" value="{{ current_sort }}">
+        <input type="hidden" name="order" value="{{ current_order }}">
+        <button type="submit">Search</button>
+    </form>
+</div>
+
 <table>
     <tr>
         <th>
-            <a href="?sort=title&order={% if current_sort == 'title' and current_order == 'asc' %}desc{% else %}asc{% endif %}">
+            <a href="?sort=title&order={% if current_sort == 'title' and current_order == 'asc' %}desc{% else %}asc{% endif %}&search={{ search_query }}">
                 Title
                 {% if current_sort == 'title' %}
                     {% if current_order == 'asc' %}
@@ -14,7 +23,7 @@
             </a>
         </th>
         <th>
-            <a href="?sort=date&order={% if current_sort == 'date' and current_order == 'asc' %}desc{% else %}asc{% endif %}">
+            <a href="?sort=date&order={% if current_sort == 'date' and current_order == 'asc' %}desc{% else %}asc{% endif %}&search={{ search_query }}">
                 Date
                 {% if current_sort == 'date' %}
                     {% if current_order == 'asc' %}

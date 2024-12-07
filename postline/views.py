@@ -4,6 +4,7 @@ from django.utils.html import strip_tags
 from django.contrib import messages
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from postline.models import PostlinePage  # Changed import
 from postline.forms import InstagramPostForm  # Create a form for handling the content
@@ -15,28 +16,36 @@ import uuid
 import io
 import zipfile
 
-
 def display_articles_table(request):
     sort = request.GET.get('sort', 'date')
     order = request.GET.get('order', 'desc')
-    
+    search_query = request.GET.get('search', '')
+
     if sort not in ['title', 'date']:
         sort = 'date'
     if order not in ['asc', 'desc']:
         order = 'desc'
-    
-    ordering = sort if order == 'asc' else f'-{sort}'
-    articles = ArticlePage.objects.live().order_by(ordering)
-    
+
+    articles = ArticlePage.objects.live()
+
+    if search_query:
+        articles = articles.filter(
+            Q(title__icontains=search_query)
+        ).distinct()
+
+    ordering = sort if order == 'asc' else f"-{sort}"
+    articles = articles.order_by(ordering)
+
     # Determine the next order for each field
     next_order = 'asc' if order == 'desc' else 'desc'
-    
+
     return render(request, 'postline/table.html', {
         'articles': articles,
         'user_has_permission': request.user.has_perm('postline.add_postlinepage'),
         'current_sort': sort,
         'current_order': order,
         'next_order': next_order,
+        'search_query': search_query,
     })
 
 
